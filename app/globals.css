@@ -1,0 +1,157 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #ffffff; /* Neutral: White */
+  --foreground: #1a1a2e; /* Neutral: Dark Navy (text) */
+
+  --card: #ffffff; /* Neutral: White */
+  --card-foreground: #1a1a2e; /* Neutral: Dark Navy */
+
+  --popover: #ffffff;
+  --popover-foreground: #1a1a2e;
+
+  --primary: #00bcd4; /* Primary: Cyan */
+  --primary-foreground: #1a1a2e; /* Text on cyan */
+
+  --secondary: #2196f3; /* Secondary: Blue */
+  --secondary-foreground: #ffffff; /* Text on blue */
+
+  --muted: #f0f4f8; /* Neutral: Slate */
+  --muted-foreground: #1a1a2e;
+
+  --accent: #00bcd4; /* Use primary as accent to keep palette tight */
+  --accent-foreground: #1a1a2e;
+
+  /* Keep palette within 5 colors by reusing existing hues */
+  --destructive: #2196f3; /* Reuse secondary for errors to avoid extra color */
+  --destructive-foreground: #ffffff;
+
+  --border: #e0e0e0; /* Light border for light mode */
+  --input: #ffffff;
+  --ring: rgba(0, 188, 212, 0.5); /* Cyan focus ring */
+
+  /* Charts reuse the same 5-color system */
+  --chart-1: #00bcd4; /* cyan */
+  --chart-2: #2196f3; /* blue */
+  --chart-3: #f0f4f8; /* slate */
+  --chart-4: #1a1a2e; /* dark navy */
+  --chart-5: #ffffff; /* white */
+
+  --radius: 0.5rem;
+
+  /* Sidebar (for potential future layouts) */
+  --sidebar: #1a1a2e; /* dark navy */
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00bcd4; /* cyan */
+  --sidebar-primary-foreground: #1a1a2e;
+  --sidebar-accent: #2196f3; /* blue */
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #e0e0e0;
+  --sidebar-ring: rgba(33, 150, 243, 0.5); /* blue */
+}
+
+.dark {
+  --background: #1a1a2e; /* Dark Navy */
+  --foreground: #ffffff; /* White */
+
+  --card: #1a1a2e; /* Keep cards cohesive with background */
+  --card-foreground: #ffffff;
+
+  --popover: #1a1a2e;
+  --popover-foreground: #ffffff;
+
+  --primary: #00bcd4; /* Cyan */
+  --primary-foreground: #1a1a2e;
+
+  --secondary: #2196f3; /* Blue */
+  --secondary-foreground: #ffffff;
+
+  --muted: #0f172a; /* Use a slate-like dark for subtle surfaces while staying within neutrals */
+  --muted-foreground: #f0f4f8;
+
+  --accent: #00bcd4; /* Cyan */
+  --accent-foreground: #1a1a2e;
+
+  --destructive: #2196f3; /* Reuse secondary */
+  --destructive-foreground: #ffffff;
+
+  --border: #22304a; /* Soft border on dark background (derived from dark navy) */
+  --input: #111a2f; /* Slightly lighter than background for inputs, still within neutrals */
+  --ring: rgba(0, 188, 212, 0.5); /* Cyan ring */
+
+  --chart-1: #00bcd4;
+  --chart-2: #2196f3;
+  --chart-3: #f0f4f8;
+  --chart-4: #1a1a2e;
+  --chart-5: #ffffff;
+
+  --sidebar: #1a1a2e;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00bcd4;
+  --sidebar-primary-foreground: #1a1a2e;
+  --sidebar-accent: #2196f3;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #22304a;
+  --sidebar-ring: rgba(33, 150, 243, 0.5);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #00bcd4;
+  outline-offset: 2px;
+}
