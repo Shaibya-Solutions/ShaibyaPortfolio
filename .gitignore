@@ -2,11 +2,12 @@
 
 # dependencies
 /node_modules
-
+toDelete
 # next.js
 /.next/
 /out/
-
+.open-next
+.wrangler
 # production
 /build
 

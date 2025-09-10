@@ -1,17 +1,35 @@
-import Link from "next/link"
+import Link from "next/link";
+import { BsTwitterX } from "react-icons/bs";
+import { FaPhoneAlt } from "react-icons/fa";
+import { FaLinkedin, FaYoutube } from "react-icons/fa6";
+import { IoLocationSharp, IoMail } from "react-icons/io5";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-20 border-t border-slate-800/60 bg-slate-950">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 md:grid-cols-4">
-        <div>
-          <div className="mb-3 text-lg font-semibold text-white">Shaibya Solutions</div>
-          <p className="text-sm text-slate-400">
-            Building intelligent software and AI solutions for forward‑thinking teams.
+    <footer className="mt-20 border-t-2 border-white bg-slate-950">
+      <div className="mx-auto max-w-7xl gap-12 px-6 py-12 flex flex-col md:flex-row md:items-start md:justify-between">
+        {/* Logo + About */}
+        <div className="max-w-[350px]">
+          <div className="flex items-center gap-4 mb-3">
+            {/* Placeholder logo (replace with actual image if available) */}
+            <div className="h-10 w-10 rounded-lg bg-cyan-500 flex items-center justify-center font-bold text-slate-950">
+              SS
+            </div>
+            <span className="text-xl font-semibold text-white">
+              Shaibya Solutions
+            </span>
+          </div>
+          <p className="text-sm text-slate-400 leading-relaxed">
+            Building intelligent software and AI solutions for forward-thinking
+            teams.
           </p>
         </div>
+
+        {/* Navigation */}
         <div>
-          <div className="mb-3 text-sm font-semibold text-slate-200">Navigation</div>
+          <div className="mb-3 text-sm font-semibold text-slate-200">
+            Navigation
+          </div>
           <ul className="space-y-2 text-sm text-slate-400">
             <li>
               <Link href="/about" className="hover:text-white">
@@ -24,13 +42,13 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-              <Link href="/portfolio" className="hover:text-white">
-                Portfolio
+              <Link href="/projects" className="hover:text-white">
+                Projects
               </Link>
             </li>
             <li>
-              <Link href="/case-studies" className="hover:text-white">
-                Case Studies
+              <Link href="/products" className="hover:text-white">
+                Products
               </Link>
             </li>
             <li>
@@ -40,33 +58,69 @@ export function SiteFooter() {
             </li>
           </ul>
         </div>
+
+        {/* Contact */}
         <div>
-          <div id="contact" className="mb-3 text-sm font-semibold text-slate-200">
+          <div
+            id="contact"
+            className="mb-3 text-sm font-semibold text-slate-200"
+          >
             Contact
           </div>
           <ul className="space-y-2 text-sm text-slate-400">
-            <li>hello@shaibya.solutions</li>
-            <li>+1 (555) 010-2025</li>
-            <li>Remote‑first, Global</li>
+            <li className="flex items-center gap-2 hover:text-white">
+              <IoMail size={18} />
+              <a href="mailto:hello@shaibyasolutions.com">
+                hello@shaibyasolutions.com
+              </a>
+            </li>
+            <li className="flex items-center gap-2 hover:text-white">
+              <FaPhoneAlt size={18} />
+              <a href="tel:+919876543210">+91 98765 43210</a>
+            </li>
+            <li className="flex items-center gap-2 hover:text-white">
+              <IoLocationSharp size={18} />
+              Remote-first, India
+            </li>
           </ul>
         </div>
+
+        {/* Social Media */}
         <div>
-          <div className="mb-3 text-sm font-semibold text-slate-200">Newsletter</div>
-          <form className="flex gap-2">
-            <input
-              aria-label="Email"
-              placeholder="Email"
-              className="min-w-0 flex-1 rounded-md border border-slate-800 bg-slate-900 px-3 py-2 text-sm text-white placeholder:text-slate-500 outline-none focus:border-cyan-500"
-            />
-            <button className="rounded-md bg-cyan-500 px-4 text-sm font-medium text-slate-950 hover:bg-cyan-400">
-              Subscribe
-            </button>
-          </form>
+          <div className="mb-3 text-sm font-semibold text-slate-200">
+            Connect
+          </div>
+          <div className="flex items-center space-x-4 text-slate-400">
+            <Link
+              href="https://twitter.com/shaibya_solutions"
+              className="hover:text-white"
+            >
+              <BsTwitterX size={20} />
+            </Link>
+            <Link
+              href="https://linkedin.com/company/shaibya-solutions"
+              className="hover:text-white"
+            >
+              <FaLinkedin size={22} />
+            </Link>
+            <Link href="/" className="hover:text-white">
+              <FaYoutube size={22} />
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="border-t border-slate-800/60 py-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
+
+      {/* Bottom Bar */}
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between border-t border-slate-800/60 py-4 text-xs text-slate-400 px-6">
+        <div>
+          © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
+        </div>
+        <div className="mt-2 md:mt-0">
+          <Link href="/privacy" className="hover:text-white">
+            Privacy Policy
+          </Link>
+        </div>
       </div>
     </footer>
-  )
+  );
 }

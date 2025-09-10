@@ -15,7 +15,7 @@ export default function HomePage() {
     <main className='bg-slate-950 text-slate-100'>
       <SiteHeader />
 
-      <Section className='relative mt-10 grid gap-8 md:grid-cols-2'>
+      <Section className='relative mt-10 flex flex-col items-center justify-center gap-8 '>
         <div className='absolute inset-0 -z-10 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-b from-white/5 to-transparent'>
           <AnimatedBackground />
           <div
@@ -28,17 +28,17 @@ export default function HomePage() {
         </div>
 
         <div className='flex flex-col justify-center'>
-          <div className='mb-4 inline-flex items-center gap-3'>
+          {/* <div className='mb-4 inline-flex items-center gap-3'>
             <span className='rounded bg-cyan-500/20 px-2 py-1 text-xs font-medium text-cyan-300'>
               Shaibya Solutions
             </span>
             <ThemeToggle />
-          </div>
-          <h1 className='text-pretty text-4xl font-bold leading-tight text-white md:text-5xl'>
+          </div> */}
+          <h1 className='text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-8xl'>
             Building Intelligent Software for the Future
           </h1>
           <p className='mt-4 max-w-prose text-slate-300'>
-            We craft AI‑powered platforms, robust full‑stack web apps, and
+            We craft AI-powered platforms, robust full-stack web apps, and
             polished desktop/mobile experiences.
           </p>
           <div className='mt-6 flex gap-3'>
@@ -59,7 +59,7 @@ export default function HomePage() {
           {/* Stats */}
           <div className='mt-8 grid max-w-xl grid-cols-3 gap-3 text-center'>
             {[
-              { k: "10×", v: "Faster Delivery" },
+              { k: "10x", v: "Faster Delivery" },
               { k: "100TB", v: "Data Processed" },
               { k: "300%", v: "ROI on Pilots" },
             ].map((s) => (
@@ -79,7 +79,7 @@ export default function HomePage() {
         </div>
 
         {/* Hero graphic placeholder with layered cards */}
-        <div className='relative hidden md:block'>
+        <div className='relative hidden md:block max-w-xl'>
           <div className='absolute -inset-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-2xl' />
           <motion.div
             initial={{ opacity: 0, y: 16, rotate: -2 }}
@@ -121,13 +121,13 @@ export default function HomePage() {
             icon={<FaBrain />}
           />
           <FeatureCard
-            title='Full‑stack Web'
+            title='Full-stack Web'
             desc='Scalable APIs, realtime, and delightful UX.'
             icon={<FaCubes />}
           />
           <FeatureCard
             title='Desktop & Mobile'
-            desc='Cross‑platform apps, native performance.'
+            desc='Cross-platform apps, native performance.'
             icon={<FaMobileAlt />}
           />
           <FeatureCard

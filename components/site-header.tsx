@@ -7,8 +7,8 @@ import { FaBars, FaTimes } from "react-icons/fa";
 const nav = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/case-studies", label: "Case Studies" },
+  { href: "/projects", label: "Projects" },
+  { href: "/products", label: "Products" },
   { href: "/team", label: "Team" },
   { href: "/careers", label: "Careers" },
 ];
