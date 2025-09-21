@@ -16,11 +16,11 @@ const nav = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   return (
-    <header className='sticky top-0 z-50 bg-slate-950/70 backdrop-blur'>
-      <div className='relative mx-auto flex max-w-6xl items-center justify-center px-4 py-3'>
+    <header className='mt-2 sticky top-0 z-50 bg-slate-950/70 backdrop-blur'>
+      <div className='relative mx-auto flex max-w-6xl items-center justify-between px-4 py-3'>
         <Link
           href='/'
-          className='absolute left-4 font-semibold tracking-tight text-white'
+          className='font-semibold tracking-tight text-white'
         >
           <span className='rounded bg-cyan-500/20 px-2 py-1 text-cyan-300'>
             Shaibya
@@ -28,7 +28,7 @@ export function SiteHeader() {
           <span className='text-slate-200'>Solutions</span>
         </Link>
         {/* <div></div> */}
-        <nav className='hidden border-2 rounded-4xl shadow-md shadow-gray-500 py-2 px-4 items-center gap-6 md:flex'>
+        <nav className='hidden rounded-4xl shadow-md shadow-gray-500 py-3 px-6 items-center gap-8 md:flex'>
           {nav.map((item) => (
             <Link
               key={item.href}
@@ -38,13 +38,13 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href='/#contact'
-            className='rounded-full bg-cyan-500 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
-          >
-            Get in Touch
-          </Link>
         </nav>
+        <Link
+          href='/#contact'
+          className='rounded-full bg-gradient-to-r from-cyan-500 to-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
+        >
+          Get in Touch
+        </Link>
 
         <button
           aria-label='Toggle navigation'

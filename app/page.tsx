@@ -5,10 +5,13 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FeatureCard } from "@/components/feature-card";
 import { ServiceCard } from "@/components/service-card";
-import { ThemeToggle } from "@/components/theme-toggle";
+// import { ThemeToggle } from "@/components/theme-toggle";
 import AnimatedBackground from "@/components/animated-background";
+import FeedBackForm from "@/components/ui/feedback-form";
+import StackCaseStudies from "@/components/stack-cards";
 import { FaBrain, FaCubes, FaMobileAlt, FaFlask } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function HomePage() {
   return (
@@ -41,7 +44,7 @@ export default function HomePage() {
             We craft AI-powered platforms, robust full-stack web apps, and
             polished desktop/mobile experiences.
           </p>
-          <div className='mt-6 flex gap-3'>
+          {/* <div className='mt-6 flex gap-3'>
             <a
               href='#contact'
               className='rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-cyan-400'
@@ -54,28 +57,26 @@ export default function HomePage() {
             >
               Explore Services
             </a>
-          </div>
-
-          {/* Stats */}
-          <div className='mt-8 grid max-w-xl grid-cols-3 gap-3 text-center'>
-            {[
-              { k: "10x", v: "Faster Delivery" },
-              { k: "100TB", v: "Data Processed" },
-              { k: "300%", v: "ROI on Pilots" },
-            ].map((s) => (
-              <motion.div
-                key={s.k}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4 }}
-                className='rounded-xl border border-border/60 bg-white/5 px-4 py-3'
-              >
-                <div className='font-heading text-lg text-white'>{s.k}</div>
-                <div className='text-xs text-slate-300'>{s.v}</div>
-              </motion.div>
-            ))}
-          </div>
+            <div className='grid max-w-xl grid-cols-3 gap-3 text-center'>
+              {[
+                { k: "10x", v: "Faster Delivery" },
+                { k: "100TB", v: "Data Processed" },
+                { k: "300%", v: "ROI on Pilots" },
+              ].map((s) => (
+                <motion.div
+                  key={s.k}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4 }}
+                  className='rounded-xl border border-border/60 bg-white/5 px-4 py-3'
+                >
+                  <div className='font-heading text-lg text-white'>{s.k}</div>
+                  <div className='text-xs text-slate-300'>{s.v}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div> */}
         </div>
 
         {/* Hero graphic placeholder with layered cards */}
@@ -88,10 +89,13 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             className='relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-border/60'
           >
-            <img
+            <Image
               alt='Futuristic dashboard'
               className='h-full w-full object-cover'
               src='/futuristic-ai-dashboard.png'
+              width={800}
+              height={600}
+              priority
             />
           </motion.div>
           <motion.div
@@ -108,32 +112,32 @@ export default function HomePage() {
       </Section>
 
       <Section className='mt-14'>
-        <div className='mb-6 text-center'>
-          <h2 className='text-2xl font-semibold text-white'>What We Offer</h2>
-          <p className='text-sm text-slate-400'>
+        <div className='mb-12 text-center'>
+          <h2 className='text-4xl font-semibold text-white'>What We Offer</h2>
+          {/* <p className='text-sm text-slate-400'>
             Focused capabilities that deliver results.
-          </p>
+          </p> */}
         </div>
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+        <div className='grid grid-cols-3 grid-rows-2 justify-center gap-6'>
           <FeatureCard
             title='Artificial Intelligence'
             desc='ML models, analytics, and intelligent automation.'
-            icon={<FaBrain />}
+            image='/ai-solution.webp'
+            className='row-span-2'
           />
           <FeatureCard
             title='Full-stack Web'
             desc='Scalable APIs, realtime, and delightful UX.'
-            icon={<FaCubes />}
           />
           <FeatureCard
             title='Desktop & Mobile'
             desc='Cross-platform apps, native performance.'
-            icon={<FaMobileAlt />}
+            image='/customer-exp.jpg'
+            className='row-span-2'
           />
           <FeatureCard
             title='Custom R&D'
             desc='Rapid prototyping and PoC to production.'
-            icon={<FaFlask />}
           />
         </div>
       </Section>
@@ -171,6 +175,10 @@ export default function HomePage() {
           />
         </div>
       </Section>
+
+      <StackCaseStudies />
+
+      <FeedBackForm />
 
       <Section className='mt-16'>
         <div className='relative overflow-hidden rounded-2xl border border-border/60 p-8 text-center'>
