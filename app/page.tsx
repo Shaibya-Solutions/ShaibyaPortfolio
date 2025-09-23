@@ -9,9 +9,12 @@ import { ServiceCard } from "@/components/service-card";
 import AnimatedBackground from "@/components/animated-background";
 import FeedBackForm from "@/components/ui/feedback-form";
 import StackCaseStudies from "@/components/stack-cards";
+import Testimonials from "@/components/testimonials";
+import VideoSection from "@/components/video-section";
 import { FaBrain, FaCubes, FaMobileAlt, FaFlask } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import ContactSection from "@/components/contact-section";
 
 export default function HomePage() {
   return (
@@ -142,7 +145,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section className='mt-16'>
+      {/* <Section className='mt-16'>
         <div className='mb-6 text-center'>
           <h2 className='text-2xl font-semibold text-white'>
             Popular Services
@@ -174,28 +177,16 @@ export default function HomePage() {
             icon={<FaFlask />}
           />
         </div>
-      </Section>
+      </Section> */}
+      <VideoSection />
 
       <StackCaseStudies />
 
+      <Testimonials />
+
       <FeedBackForm />
 
-      <Section className='mt-16'>
-        <div className='relative overflow-hidden rounded-2xl border border-border/60 p-8 text-center'>
-          <div className='pointer-events-none absolute -inset-10 -z-10 bg-gradient-to-br from-cyan-500/15 to-blue-500/15 blur-2xl' />
-          <h3 className='font-heading text-2xl'>Join the AI Revolution</h3>
-          <p className='mx-auto mt-2 max-w-2xl text-slate-300'>
-            Partner with us to design and ship intelligent products that scale
-            with your business.
-          </p>
-          <a
-            href='#contact'
-            className='mt-5 inline-block rounded-full bg-cyan-500 px-5 py-2.5 text-sm font-medium text-slate-950 hover:bg-cyan-400'
-          >
-            Speak to an Expert
-          </a>
-        </div>
-      </Section>
+      <ContactSection />
 
       <SiteFooter />
     </main>
