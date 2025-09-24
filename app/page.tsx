@@ -11,12 +11,31 @@ import FeedBackForm from "@/components/ui/feedback-form";
 import StackCaseStudies from "@/components/stack-cards";
 import Testimonials from "@/components/testimonials";
 import VideoSection from "@/components/video-section";
-import { FaBrain, FaCubes, FaMobileAlt, FaFlask } from "react-icons/fa";
+// import { FaBrain, FaCubes, FaMobileAlt, FaFlask } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import ContactSection from "@/components/contact-section";
+import { useEffect } from "react";
+import Lenis from "@studio-freight/lenis";
 
 export default function HomePage() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2, // speed
+      easing: (t) => 1 - Math.pow(1 - t, 4), // ease-out quart
+      smoothWheel: true,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
   return (
     <main className='bg-slate-950 text-slate-100'>
       <SiteHeader />
