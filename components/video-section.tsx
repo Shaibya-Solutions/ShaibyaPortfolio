@@ -13,13 +13,7 @@ export default function VideoSection() {
         {/* Video */}
         <div className='relative h-[480px] rounded-2xl overflow-hidden shadow-lg mb-12'>
           <div className='aspect-video w-full'>
-            <iframe
-              className='w-full h-[480px]'
-              src='https://www.youtube.com/embed/dQw4w9WgXcQ' // replace with your video link
-              title='AI Solutions Video'
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-              allowFullScreen
-            ></iframe>
+            
           </div>
         </div>
 
