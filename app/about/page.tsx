@@ -1,3 +1,4 @@
+"use client"
 import { Section } from "@/components/section";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
