@@ -12,9 +12,9 @@ export default function FeedBackForm() {
             Stories that lift you up. Business that lifts the world. We're the
             human-centered entertainment that makes a difference.
           </h1>
-          <div className='relative w-full h-80 md:h-[420px]'>
+          <div className='relative w-full h-80 md:h-[480px]'>
             <Image
-              src='/feedback-form.jpg' // put your 3D image in public/images folder
+              src='/form-image.png' // put your 3D image in public/images folder
               alt='3D Character'
               fill
               className='object-cover rounded-2xl shadow-lg'
@@ -28,17 +28,24 @@ export default function FeedBackForm() {
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <input
               type='text'
-              placeholder='Your Name'
+              placeholder='First Name'
               required
               className='w-full px-4 py-3 rounded-lg bg-transparent border border-[#2a2a40] focus:outline-none focus:border-purple-400'
             />
             <input
-              type='email'
-              placeholder='example@gmail.com'
+              type='text'
+              placeholder='Last Name'
               required
               className='w-full px-4 py-3 rounded-lg bg-transparent border border-[#2a2a40] focus:outline-none focus:border-purple-400'
             />
           </div>
+
+          <input
+            type='email'
+            placeholder='Your Email'
+            required
+            className='w-full px-4 py-3 rounded-lg bg-transparent border border-[#2a2a40] focus:outline-none focus:border-purple-400'
+          />
 
           <input
             type='tel'

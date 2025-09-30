@@ -6,16 +6,18 @@ import { SiteFooter } from "@/components/site-footer";
 import { FeatureCard } from "@/components/feature-card";
 import { ServiceCard } from "@/components/service-card";
 // import { ThemeToggle } from "@/components/theme-toggle";
-import AnimatedBackground from "@/components/animated-background";
+// import AnimatedBackground from "@/components/animated-background";
 import FeedBackForm from "@/components/ui/feedback-form";
 import StackCaseStudies from "@/components/stack-cards";
 import Testimonials from "@/components/testimonials";
 import VideoSection from "@/components/video-section";
+import AboutSection from "@/components/about-section";
 // import { FaBrain, FaCubes, FaMobileAlt, FaFlask } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import ContactSection from "@/components/contact-section";
-import { useEffect } from "react";
+// import ContactSection from "@/components/contact-section";
+// import { useEffect } from "react";
+import { trustedCompanies } from "@/data";
 // import Lenis from "@studio-freight/lenis";
 
 export default function HomePage() {
@@ -65,8 +67,9 @@ export default function HomePage() {
               </span>
               <ThemeToggle />
             </div> */}
-            <h1 className='text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-8xl'>
-              Building Intelligent Software for the Future
+            <h1 className='text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-7xl lg:text-8xl'>
+              Ahead of the Curve,
+              <br /> Always
             </h1>
             <p className='mt-4 max-w-prose text-slate-300'>
               We craft AI-powered platforms, robust full-stack web apps, and
@@ -140,6 +143,7 @@ export default function HomePage() {
         </Section>
       </motion.div>
 
+      {/* What we offer section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +157,7 @@ export default function HomePage() {
               Focused capabilities that deliver results.
             </p> */}
           </div>
-          <div className='grid grid-cols-3 grid-rows-2 justify-center gap-6'>
+          <div className='sm:mx-20 md:mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 justify-center gap-6'>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -267,7 +271,7 @@ export default function HomePage() {
       </motion.section> */}
 
       {/* Trusted By Section - Adapted to AI/Software Theme */}
-      <motion.section
+      {/* <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
@@ -282,19 +286,7 @@ export default function HomePage() {
             Over 800+ companies of all sizes
           </p>
           <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12'>
-            {[
-              { src: "/logos/amazon-dark.svg", alt: "Amazon" },
-              { src: "/logos/intel.svg", alt: "Intel" },
-              { src: "/logos/flipkart.svg", alt: "Flipkart" },
-              { src: "/logos/meta-3.svg", alt: "Meta" },
-              { src: "/logos/netflix-3.svg", alt: "Netflix" },
-              { src: "/logos/tech-mahindra-new-logo.svg", alt: "Tech Mahindra" },
-              { src: "/logos/tata-consultancy-services-1.svg", alt: "Tata" },
-              { src: "/logos/tesla-motors.svg", alt: "MphasiS" },
-              { src: "/logos/porsche-2.svg", alt: "Quikr" },
-              { src: "/logos/mercedes-benz-9.svg", alt: "Montblanc" },
-              { src: "/logos/coca-cola-2021.svg", alt: "Mercedes-Benz" },
-            ].map((logo, i) => (
+            {trustedCompanies.map((logo, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -314,7 +306,7 @@ export default function HomePage() {
             ))}
           </div>
           {/* Testimonials */}
-          {/* <div className='grid md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
+      {/* <div className='grid md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -367,10 +359,20 @@ export default function HomePage() {
                 </p>
               </div>
             </motion.div>
-          </div> */}
+          </div>
         </div>
+      </motion.section> */}
+
+      <motion.section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <AboutSection />
       </motion.section>
 
+      {/* Stack cards section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -380,6 +382,7 @@ export default function HomePage() {
         <StackCaseStudies />
       </motion.section>
 
+      {/* Testimonial section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -389,6 +392,7 @@ export default function HomePage() {
         <Testimonials />
       </motion.section>
 
+      {/* Feedback Form section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

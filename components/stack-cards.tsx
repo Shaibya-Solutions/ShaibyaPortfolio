@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { projects } from "@/data";
 import styled from "styled-components";
+import Image from "next/image";
 
 export default function StackCaseStudies() {
   const containerRef = useRef(null);
@@ -27,14 +28,14 @@ export default function StackCaseStudies() {
 
   return (
     <StyledComponent ref={containerRef}>
-      <section className='relative h-[400vh] bg-black text-white'>
-        <div className='sticky top-0 h-screen flex flex-col items-center justify-center'>
-          <div className='w-full max-w-5xl mx-auto text-center'>
+      <section className='relative my-8 md:h-[400vh] bg-black text-white'>
+        <div className='md:sticky top-0 pt-4 min-h-screen flex flex-col items-center justify-center'>
+          <div className='w-full max-w-6xl mx-auto text-center'>
             <h2 className='text-4xl mb-10'>
-              Our <span className='font-bold'>Case Studies</span>
+              Our <span className='font-bold'>Projects</span>
             </h2>
 
-            <div className='stack-cards relative mt-20 h-[420px]'>
+            <div className='hidden md:block stack-cards relative mt-20 h-[430px]'>
               {/* Show stacked back layers depending on index */}
               {index > 0 && (
                 <motion.div
@@ -80,12 +81,12 @@ export default function StackCaseStudies() {
                   <motion.div
                     key={project.title}
                     style={{ y, opacity, scale }}
-                    className='absolute inset-0 bg-gradient-to-b from-[#060a35] to-black border-2 border-[#0a1054] rounded-3xl shadow-lg p-12 flex flex-col justify-between items-start'
+                    className='absolute inset-0 bg-gradient-to-b from-[#060a35] to-black border-2 border-[#0a1054] rounded-3xl shadow-lg p-12 flex flex-col gap-4 justify-between items-start'
                   >
-                    <h3 className='text-3xl max-w-md text-start font-semibold'>
+                    <h3 className='text-3xl max-w-lg text-start font-semibold'>
                       {project.title}
                     </h3>
-                    <p className='mt-2 text-sm max-w-md text-start font-extralight'>
+                    <p className='mt-2 text-sm max-w-lg text-start font-extralight'>
                       {project.description}
                     </p>
                     <div className='mt-4 flex gap-6 items-center'>
@@ -106,6 +107,22 @@ export default function StackCaseStudies() {
                   </motion.div>
                 );
               })}
+            </div>
+
+            <div className='flex flex-col gap-8 md:hidden mt-20 w-full items-center'>
+              {projects.map((project, i) => (
+                <div
+                  key={i}
+                  className='w-full flex gap-8 flex-col border-2 min-h-[200px] text-start px-8 py-4'
+                >
+                  <h3 className='mt-4 text-3xl font-semibold'>
+                    {project.title}
+                  </h3>
+                  <p className='mt-1 text-lg text-slate-300'>
+                    {project.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
