@@ -5,6 +5,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { FeatureCard } from "@/components/feature-card";
 import { ServiceCard } from "@/components/service-card";
+import { AppShowcaseCTA } from "@/components/AppShowcaseCTA"; // Import the new component
+
 // import { ThemeToggle } from "@/components/theme-toggle";
 // import AnimatedBackground from "@/components/animated-background";
 import FeedBackForm from "@/components/ui/feedback-form";
@@ -45,16 +47,15 @@ export default function HomePage() {
   // }, []);
 
   return (
-    <main className='bg-slate-950 text-slate-100 scroll-smooth'>
+    <main className="bg-slate-950 text-slate-100 scroll-smooth">
       <SiteHeader />
-
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <Section className='relative mt-10 flex flex-col items-center justify-center gap-8 '>
+        <Section className="relative mt-10 flex flex-col items-center justify-center gap-8 ">
           {/* <div className='absolute inset-0 -z-10 overflow-hidden rounded-[2rem] border border-border/60 bg-gradient-to-b from-white/5 to-transparent'>
             <AnimatedBackground />
             <div
@@ -66,18 +67,18 @@ export default function HomePage() {
             />
           </div> */}
 
-          <div className='flex flex-col justify-center'>
+          <div className="flex flex-col justify-center">
             {/* <div className='mb-4 inline-flex items-center gap-3'>
               <span className='rounded bg-cyan-500/20 px-2 py-1 text-xs font-medium text-cyan-300'>
                 Shaibya Solutions
               </span>
               <ThemeToggle />
             </div> */}
-            <h1 className='text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-7xl lg:text-8xl'>
+            <h1 className="text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-7xl lg:text-8xl">
               Ahead of the Curve,
               <br /> Always
             </h1>
-            <p className='mt-4 max-w-prose text-slate-300'>
+            <p className="mt-4 max-w-prose text-slate-300">
               We craft AI-powered platforms, robust full-stack web apps, and
               polished desktop/mobile experiences.
             </p>
@@ -117,8 +118,8 @@ export default function HomePage() {
           </div>
 
           {/* Hero graphic placeholder with layered cards */}
-          <div className='relative hidden md:block max-w-7xl'>
-            <div className='absolute -inset-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-2xl' />
+          <div className="relative hidden md:block max-w-7xl">
+            <div className="absolute -inset-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-2xl" />
             {/* <motion.div
               initial={{ opacity: 0, y: 16, rotate: -2 }}
               whileInView={{ opacity: 1, y: 0, rotate: 0 }}
@@ -148,7 +149,6 @@ export default function HomePage() {
           </div>
         </Section>
       </motion.div>
-
       {/* What we offer section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -156,25 +156,25 @@ export default function HomePage() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <Section className='mt-14'>
-          <div className='mb-12 text-center'>
-            <h2 className='text-4xl font-semibold text-white'>What We Offer</h2>
+        <Section className="mt-14">
+          <div className="mb-12 text-center">
+            <h2 className="text-4xl font-semibold text-white">What We Offer</h2>
             {/* <p className='text-sm text-slate-400'>
               Focused capabilities that deliver results.
             </p> */}
           </div>
-          <div className='sm:mx-20 md:mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 justify-center gap-6'>
+          <div className="sm:mx-20 md:mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 justify-center gap-6">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className='row-span-2'
+              className="row-span-2"
             >
               <FeatureCard
-                title='Artificial Intelligence'
-                desc='ML models, analytics, and intelligent automation.'
-                image='/ai-solution.webp'
+                title="Artificial Intelligence"
+                desc="ML models, analytics, and intelligent automation."
+                image="/ai-solution.webp"
               />
             </motion.div>
             <motion.div
@@ -184,8 +184,8 @@ export default function HomePage() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <FeatureCard
-                title='Full-stack Web'
-                desc='Scalable APIs, realtime, and delightful UX.'
+                title="Full-stack Web"
+                desc="Scalable APIs, realtime, and delightful UX."
               />
             </motion.div>
             <motion.div
@@ -193,12 +193,12 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className='row-span-2'
+              className="row-span-2"
             >
               <FeatureCard
-                title='Desktop & Mobile'
-                desc='Cross-platform apps, native performance.'
-                image='/customer-exp.jpg'
+                title="Desktop & Mobile"
+                desc="Cross-platform apps, native performance."
+                image="/customer-exp.jpg"
               />
             </motion.div>
             <motion.div
@@ -208,14 +208,13 @@ export default function HomePage() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <FeatureCard
-                title='Custom R&D'
-                desc='Rapid prototyping and PoC to production.'
+                title="Custom R&D"
+                desc="Rapid prototyping and PoC to production."
               />
             </motion.div>
           </div>
         </Section>
       </motion.section>
-
       {/* Video Section with Animation */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -225,7 +224,6 @@ export default function HomePage() {
       >
         <VideoSection />
       </motion.section>
-
       {/* Worldwide Projects Section - Adapted
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -275,7 +273,6 @@ export default function HomePage() {
           </motion.div>
         </div>
       </motion.section> */}
-
       {/* Trusted By Section - Adapted to AI/Software Theme */}
       {/* <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -368,7 +365,6 @@ export default function HomePage() {
           </div>
         </div>
       </motion.section> */}
-
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -377,7 +373,6 @@ export default function HomePage() {
       >
         <AboutSection />
       </motion.section>
-
       {/* Stack cards section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -387,7 +382,6 @@ export default function HomePage() {
       >
         <StackCaseStudies />
       </motion.section>
-
       {/* Testimonial section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -397,7 +391,6 @@ export default function HomePage() {
       >
         <Testimonials />
       </motion.section>
-
       {/* Feedback Form section */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
@@ -407,7 +400,6 @@ export default function HomePage() {
       >
         <FeedBackForm />
       </motion.section>
-
       {/* <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -416,7 +408,7 @@ export default function HomePage() {
       >
         <ContactSection />
       </motion.section> */}
-
+      <AppShowcaseCTA /> {/* Place the new component here */}
       <SiteFooter />
     </main>
   );

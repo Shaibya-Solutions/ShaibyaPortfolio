@@ -1,208 +1,218 @@
+// components/site-footer.tsx
 "use client";
-
 import Link from "next/link";
 import { BsTwitterX } from "react-icons/bs";
-import { FaPhone, FaLinkedin, FaInstagram } from "react-icons/fa6";
+import {
+  FaPhone,
+  FaLinkedin,
+  FaInstagram,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
-import { useRef, useEffect } from "react";
-import styled from "styled-components";
+import { motion, useInView, Variants } from "framer-motion";
+import { useRef } from "react";
+
+const footerVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+      when: "beforeChildren",
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export function SiteFooter() {
-  const archRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = archRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.add("is-visible");
-            observer.unobserve(el); // animate only once
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <StyledFooter>
-      {/* Arch Background */}
-      <div ref={archRef} className='footer-arch' />
-
-      {/* Top CTA */}
-      <div className='text-center relative z-10 px-6 md:px-12 lg:px-20 py-16'>
-        <h2 className='text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6'>
-          Interested in working together?
-        </h2>
-        <div className='flex flex-col md:flex-row justify-center items-center gap-6'>
-          <a
-            href='mailto:shaibyasolutions@gmail.com'
-            className='px-6 py-3 bg-orange-500 text-black font-semibold rounded-lg hover:bg-orange-600 transition'
-          >
-            Email Us
-          </a>
-          <a
-            href='tel:+919833704986'
-            className='px-6 py-3 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-600 transition'
-          >
-            Call Us
-          </a>
-        </div>
-      </div>
-
-      {/* Main Footer Links */}
-      <div className='relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pb-8 pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-gray-300'>
-        {/* Get in Touch */}
-        <div>
-          <h3 className='text-lg font-semibold text-orange-400 mb-4'>
-            Get in Touch
-          </h3>
-          <div className='space-y-2 text-sm'>
+    <motion.footer
+      ref={ref}
+      variants={footerVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className="bg-slate-900 border-t border-slate-700 relative overflow-hidden"
+    >
+      {/* Top CTA - Dynamic Banner */}
+      <motion.div
+        variants={itemVariants}
+        className="relative z-10 px-6 py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-slate-700/50"
+      >
+        <div className="text-center max-w-4xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400">
+            Ready to build the future, together?
+          </h2>
+          <p className="text-lg text-slate-300 mb-8">
+            Schedule a free consultation to see how AI and modern development
+            can accelerate your business.
+          </p>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6">
             <a
-              href='tel:+919833704986'
-              className='flex items-center gap-2 hover:text-white transition'
+              href="mailto:shaibyasolutions@gmail.com"
+              className="px-8 py-4 bg-cyan-500 text-slate-900 font-bold rounded-xl shadow-lg hover:bg-cyan-400 transition transform hover:scale-105 min-w-[200px] text-center"
             >
-              <FaPhone /> +91 9833704986
+              Start Project
             </a>
             <a
-              href='mailto:shaibyasolutions@gmail.com'
-              className='flex items-center gap-2 hover:text-white transition'
+              href="tel:+919833704986"
+              className="px-8 py-4 border border-slate-600 text-white font-semibold rounded-xl hover:border-cyan-500 hover:text-cyan-400 transition min-w-[200px] text-center"
             >
-              <IoMail /> shaibyasolutions@gmail.com
+              Call Us
             </a>
-            <div className='flex space-x-2 mt-2'>
-              <Link
-                href='#'
-                className='p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition'
-              >
-                <FaLinkedin />
-              </Link>
-              <Link
-                href='#'
-                className='p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition'
-              >
-                <FaInstagram />
-              </Link>
-              <Link
-                href='#'
-                className='p-2 bg-gray-800 rounded-full hover:bg-gray-700 transition'
-              >
-                <BsTwitterX />
-              </Link>
-            </div>
           </div>
         </div>
+      </motion.div>
+
+      {/* Main Footer Links & Info */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-12 pt-16 grid grid-cols-2 md:grid-cols-5 gap-y-10 text-gray-400">
+        {/* Company Identity */}
+        <motion.div
+          variants={itemVariants}
+          className="col-span-2 md:col-span-1"
+        >
+          <Link href="/" className="text-2xl font-bold text-white mb-4 block">
+            Shaibya Solutions
+          </Link>
+          <p className="text-sm">AI-powered development from Nagpur to USA.</p>
+          <div className="flex space-x-4 mt-4 text-xl">
+            <a
+              href="#"
+              className="hover:text-cyan-400 transition"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin />
+            </a>
+            <a
+              href="#"
+              className="hover:text-cyan-400 transition"
+              aria-label="Instagram"
+            >
+              <FaInstagram />
+            </a>
+            <a
+              href="#"
+              className="hover:text-cyan-400 transition"
+              aria-label="Twitter X"
+            >
+              <BsTwitterX />
+            </a>
+          </div>
+        </motion.div>
 
         {/* Products */}
-        <div>
-          <h3 className='text-lg font-semibold text-orange-400 mb-4'>
-            Products
-          </h3>
-          <ul className='space-y-2 text-sm'>
+        <motion.div variants={itemVariants}>
+          <h3 className="text-lg font-semibold text-white mb-4">Products</h3>
+          <ul className="space-y-3 text-sm">
             <li>
-              <Link href='#' className='hover:text-white transition'>
+              <Link href="#" className="hover:text-cyan-400 transition">
                 Hologbox
               </Link>
             </li>
             <li>
-              <Link href='#' className='hover:text-white transition'>
+              <Link href="#" className="hover:text-cyan-400 transition">
                 Hologbox Mini
               </Link>
             </li>
             <li>
-              <Link href='#' className='hover:text-white transition'>
+              <Link href="#" className="hover:text-cyan-400 transition">
                 GlamBOT
               </Link>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Services */}
-        <div>
-          <h3 className='text-lg font-semibold text-orange-400 mb-4'>
-            Services
-          </h3>
-          <ul className='space-y-2 text-sm'>
+        <motion.div variants={itemVariants}>
+          <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
+          <ul className="space-y-3 text-sm">
             <li>
-              <Link href='#' className='hover:text-white transition'>
+              <Link href="#" className="hover:text-cyan-400 transition">
                 Product development
               </Link>
             </li>
             <li>
-              <Link href='#' className='hover:text-white transition'>
+              <Link href="#" className="hover:text-cyan-400 transition">
                 CGI & 3D Animation
               </Link>
             </li>
             <li>
-              <Link href='#' className='hover:text-white transition'>
-                UI/UX Design
+              <Link href="#" className="hover:text-cyan-400 transition">
+                AI Solutions
+              </Link>
+            </li>
+            <li>
+              <Link href="#" className="hover:text-cyan-400 transition">
+                Cybersecurity
               </Link>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
-        {/* Office Address */}
-        <div>
-          <h3 className='text-lg font-semibold text-orange-400 mb-4'>
-            Office Address
-          </h3>
-          <ul className='space-y-2 text-sm'>
-            <li>Texas</li>
-            <li>Nagpur</li>
-            <li>Noida</li>
+        {/* Contact */}
+        <motion.div variants={itemVariants}>
+          <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
+          <div className="space-y-3 text-sm">
+            <a
+              href="tel:+919833704986"
+              className="flex items-center gap-2 hover:text-cyan-400 transition"
+            >
+              <FaPhone className="text-cyan-500/80" /> +91 9833704986
+            </a>
+            <a
+              href="mailto:shaibyasolutions@gmail.com"
+              className="flex items-center gap-2 hover:text-cyan-400 transition"
+            >
+              <IoMail className="text-cyan-500/80" /> shaibyasolutions@gmail.com
+            </a>
+          </div>
+        </motion.div>
+
+        {/* Locations */}
+        <motion.div variants={itemVariants}>
+          <h3 className="text-lg font-semibold text-white mb-4">Locations</h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-center gap-2">
+              <FaMapMarkerAlt className="text-cyan-500/80" /> Texas (USA)
+            </li>
+            <li className="flex items-center gap-2">
+              <FaMapMarkerAlt className="text-cyan-500/80" /> Nagpur (India)
+            </li>
+            <li className="flex items-center gap-2">
+              <FaMapMarkerAlt className="text-cyan-500/80" /> Noida (India)
+            </li>
           </ul>
-        </div>
+        </motion.div>
       </div>
 
       {/* Bottom Bar */}
-      <div className='border-t border-gray-800 py-6 px-6 text-xs text-gray-400'>
-        <div className='flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0'>
+      <div className="border-t border-slate-700 py-6 px-6 text-xs text-gray-500">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
           <div>
-            © {new Date().getFullYear()} Shaibya Solutions. All rights reserved
+            © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
           </div>
-          <div className='flex space-x-4'>
-            <Link href='#' className='hover:text-white transition'>
+          <div className="flex space-x-6">
+            <Link href="#" className="hover:text-white transition">
               Blogs
             </Link>
-            <Link href='#' className='hover:text-white transition'>
+            <Link href="#" className="hover:text-white transition">
               Privacy Policy
             </Link>
-            <Link href='#' className='hover:text-white transition'>
+            <Link href="#" className="hover:text-white transition">
               Terms & Conditions
             </Link>
           </div>
         </div>
       </div>
-    </StyledFooter>
+    </motion.footer>
   );
 }
-
-const StyledFooter = styled.footer`
-  position: relative;
-  background-color: #020617;
-
-  .footer-arch {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 300px;
-    background-image: url("/arch.png");
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: cover;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-  }
-
-  .footer-arch.is-visible {
-    opacity: 1;
-  }
-`;
