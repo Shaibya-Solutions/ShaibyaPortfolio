@@ -18,12 +18,6 @@ export default function Testimonials() {
     autoplaySpeed: 3000,
     responsive: [
       {
-        breakpoint: 1024, // tablet
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
         breakpoint: 640, // mobile
         settings: {
           slidesToShow: 1,

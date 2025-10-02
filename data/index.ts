@@ -74,16 +74,16 @@ export const testimonials = [
   },
 ];
 
-export const trustedCompanies = [
-  { src: "/logos/amazon-dark.svg", alt: "Amazon" },
-  { src: "/logos/intel.svg", alt: "Intel" },
-  { src: "/logos/flipkart.svg", alt: "Flipkart" },
-  { src: "/logos/meta-3.svg", alt: "Meta" },
-  { src: "/logos/netflix-3.svg", alt: "Netflix" },
-  { src: "/logos/tech-mahindra-new-logo.svg", alt: "Tech Mahindra" },
-  { src: "/logos/tata-consultancy-services-1.svg", alt: "Tata" },
-  { src: "/logos/tesla-motors.svg", alt: "MphasiS" },
-  { src: "/logos/porsche-2.svg", alt: "Quikr" },
-  { src: "/logos/mercedes-benz-9.svg", alt: "Montblanc" },
-  { src: "/logos/coca-cola-2021.svg", alt: "Mercedes-Benz" },
-];
+// export const trustedCompanies = [
+//   { src: "/logos/amazon-dark.svg", alt: "Amazon" },
+//   { src: "/logos/intel.svg", alt: "Intel" },
+//   { src: "/logos/flipkart.svg", alt: "Flipkart" },
+//   { src: "/logos/meta-3.svg", alt: "Meta" },
+//   { src: "/logos/netflix-3.svg", alt: "Netflix" },
+//   { src: "/logos/tech-mahindra-new-logo.svg", alt: "Tech Mahindra" },
+//   { src: "/logos/tata-consultancy-services-1.svg", alt: "Tata" },
+//   { src: "/logos/tesla-motors.svg", alt: "MphasiS" },
+//   { src: "/logos/porsche-2.svg", alt: "Quikr" },
+//   { src: "/logos/mercedes-benz-9.svg", alt: "Montblanc" },
+//   { src: "/logos/coca-cola-2021.svg", alt: "Mercedes-Benz" },
+// ];

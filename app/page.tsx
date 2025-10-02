@@ -17,8 +17,14 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 // import ContactSection from "@/components/contact-section";
 // import { useEffect } from "react";
-import { trustedCompanies } from "@/data";
+// import { trustedCompanies } from "@/data";
 // import Lenis from "@studio-freight/lenis";
+import dynamic from "next/dynamic";
+
+// Use dynamic import for client-side rendering
+const ModelViewer = dynamic(() => import("../components/3dmodel-hero"), {
+  ssr: false, // This ensures it's only rendered on the client side
+});
 
 export default function HomePage() {
   // useEffect(() => {
@@ -111,9 +117,9 @@ export default function HomePage() {
           </div>
 
           {/* Hero graphic placeholder with layered cards */}
-          <div className='relative hidden md:block max-w-xl'>
+          <div className='relative hidden md:block max-w-7xl'>
             <div className='absolute -inset-6 rounded-3xl bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-2xl' />
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 16, rotate: -2 }}
               whileInView={{ opacity: 1, y: 0, rotate: 0 }}
               viewport={{ once: true }}
@@ -138,7 +144,7 @@ export default function HomePage() {
             >
               <div className='text-xs text-slate-300'>Automation</div>
               <div className='font-heading'>Operational Intelligence</div>
-            </motion.div>
+            </motion.div> */}
           </div>
         </Section>
       </motion.div>
