@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
-import RouteLoaderProvider from "@/providers/route-loader-provider";
-import Loader from "@/components/loader";
+// import RouteLoaderProvider from "@/providers/route-loader-provider";
+// import Loader from "@/components/loader";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -34,9 +34,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className='min-h-dvh bg-slate-950 font-sans text-slate-100'>
-        <RouteLoaderProvider>
+        {/* <RouteLoaderProvider>
           <Suspense fallback={<Loader />}>{children}</Suspense>
-        </RouteLoaderProvider>
+        </RouteLoaderProvider> */}
+        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
       </body>
     </html>
   );
