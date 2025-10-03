@@ -1,0 +1,44 @@
+import type React from "react";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import "./globals.css";
+import RouteLoaderProvider from "@/providers/route-loader-provider";
+import Loader from "@/components/shared/loader";
+
+const geistSans = Geist({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-sans",
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-geist-mono",
+});
+
+export const metadata: Metadata = {
+  title: "Shaibya Solutions",
+  description: "Created with Shaibya Solutions",
+  generator: "Shaibya Solutions",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang='en'
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+    >
+      <body className='min-h-dvh bg-slate-950 font-sans text-slate-100'>
+        <RouteLoaderProvider>
+          <Suspense fallback={<Loader />}>{children}</Suspense>
+        </RouteLoaderProvider>
+        {/* <Suspense fallback={<div>Loading...</div>}>{children}</Suspense> */}
+      </body>
+    </html>
+  );
+}
