@@ -101,22 +101,7 @@ const StyledWrapper = styled.div`
     height: 100vh;
     animation: moveBg 2.9s linear infinite;
     filter: blur(2px);
-  }
-  .movable-bg::before {
-    content: "";
-    background: url("/waves.svg") no-repeat center/cover;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    animation: moveBg 2.9s linear infinite;
-  }
-  .movable-bg::after {
-    content: "";
-    background: url("/waves-after.svg") no-repeat center/cover;
-    position: absolute;
-    width: 100vw;
-    height: 100vh;
-    animation: moveBg 2.9s linear infinite;
+    background: url("/waves.svg") no-repeat center;
   }
 
   @keyframes moveBg {
