@@ -4,6 +4,8 @@ import { Section } from "@/components/shared/section";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
 import { ServiceCard } from "@/components/ui/service-card";
+// Import the new CardSwap and Card components
+import CardSwap, { Card } from "@/components/CardSwap";
 // Import all necessary icons
 import {
   FaBrain,
@@ -105,56 +107,75 @@ const PROCESS_STEPS = [
       "Ongoing support, performance monitoring, feature iteration, and scaling infrastructure for future growth.",
   },
 ];
-const KEY_STATS = [
-  {
-    icon: <FaUserFriends className="h-10 w-10 text-cyan-400" />,
-    number: "3M+",
-    label: "Users Served Globally",
-  },
-  {
-    icon: <FaRocket className="h-10 w-10 text-yellow-400" />,
-    number: "50+",
-    label: "Rapid Prototypes Delivered",
-  },
-  {
-    icon: <FaTachometerAlt className="h-10 w-10 text-rose-400" />,
-    number: "99.9%",
-    label: "Platform Uptime Assurance",
-  },
-  {
-    icon: <FaAward className="h-10 w-10 text-green-400" />,
-    number: "12",
-    label: "Industry Awards Won",
-  },
-];
+
 export default function ServicesPage() {
   return (
     <main className="bg-slate-950 text-slate-100">
       <SiteHeader />
 
-      {/* 1. Hero / Intro Section */}
+      {/* 1. Hero / Intro Section - Updated to the new design */}
       <Section className="mt-16 mb-24">
-        <div className="relative overflow-hidden rounded-3xl p-6 md:p-16 text-center border border-slate-800/60 bg-slate-900/50">
+        {/* Container for the new hero section with two columns */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between rounded-3xl p-6 md:p-16 border border-slate-800/60 bg-slate-900/50 relative overflow-hidden">
           {/* Subtle background gradient/motion */}
           <div className="pointer-events-none absolute inset-0 -top-20 -left-20 h-[calc(100%+40px)] w-[calc(100%+40px)] bg-gradient-to-br from-cyan-500/5 to-blue-500/5 opacity-50 blur-3xl animate-pulse-slow" />
 
-          <h1 className="relative font-extrabold text-5xl sm:text-7xl lg:text-[5rem] leading-tight text-white">
-            Building{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
-              Future-Ready Platforms
-            </span>
-          </h1>
-          <p className="relative mx-auto mt-6 max-w-4xl text-xl text-slate-300">
-            From prototypes to production, we craft digital solutions that scale
-            with your business—powered by AI, design, and robust security.
-          </p>
-          <button
-            className="relative mt-10 px-8 py-3 group bg-cyan-600 text-white font-semibold rounded-full shadow-xl shadow-cyan-900/50 hover:bg-cyan-500 transition duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center mx-auto"
-            onClick={() => console.log("Hero CTA: Talk to Us")} // Placeholder action
-          >
-            Talk to Us
-            <FaArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
+          {/* Left Column: Text Content */}
+          <div className="relative z-10 lg:w-1/2 text-center lg:text-left mb-10 lg:mb-0">
+            <h1 className="relative font-extrabold text-5xl sm:text-7xl lg:text-[5rem] leading-tight text-white">
+              Building{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
+                Future-Ready Platforms
+              </span>
+            </h1>
+            <p className="relative mx-auto lg:mx-0 mt-6 max-w-4xl text-xl text-slate-300">
+              From prototypes to production, we craft digital solutions that
+              scale with your business—powered by AI, design, and robust
+              security.
+            </p>
+            <button
+              className="relative mt-10 px-8 py-3 group bg-cyan-600 text-white font-semibold rounded-full shadow-xl shadow-cyan-900/50 hover:bg-cyan-500 transition duration-300 transform hover:scale-[1.02] active:scale-95 flex items-center justify-center mx-auto lg:mx-0"
+              onClick={() => console.log("Hero CTA: Talk to Us")} // Placeholder action
+            >
+              Talk to Us
+              <FaArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+
+          {/* Right Column: CardSwap Component */}
+          <div className="relative lg:w-1/2 flex justify-center items-center h-[500px] lg:h-[600px] w-full">
+            <CardSwap
+              cardDistance={60}
+              verticalDistance={70}
+              delay={5000}
+              pauseOnHover={false}
+              width={500}
+              height={400}
+            >
+              {/* You can replace this with your own custom cards */}
+              <Card customClass="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-2xl">
+                <span className="text-8xl font-black text-cyan-400">1</span>
+                <h3 className="text-2xl font-semibold mt-4">Smooth</h3>
+                <p className="text-sm mt-2 text-slate-400 text-center">
+                  Seamless animations
+                </p>
+              </Card>
+              <Card customClass="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-cyan-900 to-slate-900 text-white shadow-2xl">
+                <span className="text-8xl font-black text-purple-400">2</span>
+                <h3 className="text-2xl font-semibold mt-4">Customizable</h3>
+                <p className="text-sm mt-2 text-slate-400 text-center">
+                  Easily adjust the look
+                </p>
+              </Card>
+              <Card customClass="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-rose-900 to-slate-900 text-white shadow-2xl">
+                <span className="text-8xl font-black text-rose-400">3</span>
+                <h3 className="text-2xl font-semibold mt-4">Responsive</h3>
+                <p className="text-sm mt-2 text-slate-400 text-center">
+                  Works on all devices
+                </p>
+              </Card>
+            </CardSwap>
+          </div>
         </div>
       </Section>
 
@@ -213,38 +234,6 @@ export default function ServicesPage() {
               <p className="text-sm text-slate-400">{step.description}</p>
             </div>
           ))}
-        </div>
-      </Section>
-
-      <Section className="mb-24">
-        <div className="relative rounded-3xl p-10 md:p-16 text-center overflow-hidden bg-slate-900/50 border border-slate-800/60">
-          <div className="text-center mb-12">
-            <span className="text-sm font-semibold text-indigo-400 uppercase tracking-widest">
-              Trust & Track Record
-            </span>
-            <h2 className="text-4xl font-semibold text-white mt-2">
-              Results That Speak for Themselves
-            </h2>
-          </div>
-
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {KEY_STATS.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center justify-center p-4"
-              >
-                <div className="p-5 rounded-full bg-slate-800/50 mb-4 border border-slate-700/50">
-                  {stat.icon}
-                </div>
-                <div className="font-extrabold text-5xl text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-200">
-                  {stat.number}
-                </div>
-                <div className="text-lg font-medium text-slate-400 mt-2">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </Section>
 
