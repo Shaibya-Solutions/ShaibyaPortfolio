@@ -253,8 +253,6 @@ export default function MarketingDetailPage() {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

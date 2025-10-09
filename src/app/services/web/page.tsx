@@ -338,8 +338,6 @@ apiRouter.get('/users', async (req, res) => {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

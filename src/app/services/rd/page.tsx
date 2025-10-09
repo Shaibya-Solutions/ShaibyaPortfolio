@@ -238,8 +238,6 @@ export default function RDDetailPage() {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

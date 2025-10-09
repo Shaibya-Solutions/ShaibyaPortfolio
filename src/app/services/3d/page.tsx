@@ -104,7 +104,7 @@ export default function CGIDetailPage() {
 
   // Placeholder video source for demonstration.
   const VIDEO_SOURCE_URL =
-    "https://cdn.shopify.com/s/files/1/0532/6659/6142/files/abstract-cubes.mp4?v=1676646736";
+    "https://res.cloudinary.com/dsq9vnbvd/video/upload/f_auto,q_auto/v1728286154/Sequence_05_efos5k.mp4";
 
   // Hero Model URL
   const HERO_MODEL_URL =
@@ -148,8 +148,8 @@ export default function CGIDetailPage() {
 
       {/* 2. CGI Ads Section: Text on Left, Video on Right */}
       <Section className="mb-24">
-        <div className="flex flex-col lg:flex-row items-center justify-between rounded-3xl p-6 md:p-16 border border-slate-800/60 bg-slate-900/70 relative overflow-hidden">
-          {/* Left Column: Explanation */}
+        <div className="flex flex-col lg:flex-row items-stretch justify-between rounded-3xl p-6 md:p-16 border border-slate-800/60 bg-slate-900/70 relative overflow-hidden">
+          {/* Left Column: Explanation (Content determines height) */}
           <div className="relative z-10 lg:w-1/2 text-center lg:text-left mb-10 lg:mb-0 max-w-lg lg:pr-10">
             <h2 className="text-4xl font-extrabold text-white leading-tight">
               Cinematic <span className="text-cyan-400">CGI Advertising</span>
@@ -177,7 +177,7 @@ export default function CGIDetailPage() {
           </div>
 
           {/* Right Column: Auto-Play CGI Ad Video */}
-          <div className="relative lg:w-1/2 flex justify-center items-center aspect-video w-full rounded-xl overflow-hidden shadow-2xl">
+          <div className="relative lg:w-1/2 flex justify-center items-center w-full rounded-xl overflow-hidden shadow-2xl lg:h-full">
             <video
               className="w-full h-full object-cover"
               src={VIDEO_SOURCE_URL}
@@ -288,8 +288,6 @@ export default function CGIDetailPage() {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

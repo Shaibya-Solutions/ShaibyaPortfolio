@@ -250,8 +250,6 @@ export default function CybersecurityDetailPage() {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

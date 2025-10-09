@@ -314,8 +314,6 @@ export default function MobileDetailPage() {
           </button>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }

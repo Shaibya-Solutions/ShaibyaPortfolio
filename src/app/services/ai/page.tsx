@@ -284,8 +284,6 @@ export default function AIDetailPage() {
           </div>
         </div>
       </Section>
-
-      <SiteFooter />
     </main>
   );
 }
