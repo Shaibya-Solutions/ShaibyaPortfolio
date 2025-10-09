@@ -3,6 +3,7 @@
 import { Section } from "@/components/shared/section";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { ServiceCTA } from "@/components/shared/ServiceCTA";
 import {
   FaCamera,
   FaVrCardboard,
@@ -268,26 +269,13 @@ export default function CGIDetailPage() {
       </Section>
 
       {/* 5. Final CTA Block (Kept the existing one) */}
-      <Section className="mb-24">
-        <div className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-center bg-slate-900/70 border border-slate-800/60 shadow-2xl shadow-cyan-900/50">
-          <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Ready to visualize your product in 3D?
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-            Let’s discuss how CGI can transform your marketing and development
-            process.
-          </p>
-          <button
-            className="mt-8 px-10 py-4 group bg-indigo-600 text-white font-bold text-lg rounded-full shadow-xl shadow-indigo-900/50 hover:bg-indigo-500 transition duration-300 transform hover:scale-[1.05] active:scale-95 flex items-center justify-center mx-auto"
-            onClick={() =>
-              console.log("Final CTA: Book a CGI Call (Placeholder)")
-            }
-          >
-            Schedule a Consultation
-            <FaArrowRight className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-      </Section>
+      <ServiceCTA 
+        title="Ready to bring your vision to life in 3D?"
+        description="Let's discuss your project and create immersive experiences that captivate your audience."
+        buttonText="Schedule a Consultation"
+        buttonAction={() => console.log("Final CTA: Book a CGI Call (Placeholder)")}
+        colorTheme="indigo"
+      />
     </main>
   );
 }

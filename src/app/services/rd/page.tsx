@@ -3,6 +3,7 @@
 import { Section } from "@/components/shared/section";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { ServiceCTA } from "@/components/shared/ServiceCTA";
 import {
   FaFlask,
   FaRocket,
@@ -218,26 +219,13 @@ export default function RDDetailPage() {
       </Section>
 
       {/* 5. Final CTA Block */}
-      <Section className="mb-24">
-        <div className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-center bg-gradient-to-tr from-slate-900 to-slate-950 border border-slate-800/60 shadow-2xl shadow-rose-900/20">
-          <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Ready to validate your next big idea?
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-            Stop guessing and start building. Let's scope your Proof of Concept
-            today.
-          </p>
-          <button
-            className="mt-8 px-10 py-4 group bg-rose-600 text-white font-bold text-lg rounded-full shadow-xl shadow-rose-900/50 hover:bg-rose-500 transition duration-300 transform hover:scale-[1.05] active:scale-95 flex items-center justify-center mx-auto"
-            onClick={() =>
-              console.log("Final CTA: Book an R&D Call (Placeholder)")
-            }
-          >
-            Book a Strategy Workshop
-            <FaArrowRight className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-      </Section>
+      <ServiceCTA 
+        title="Ready to validate your next big idea?"
+        description="Stop guessing and start building. Let's scope your Proof of Concept today."
+        buttonText="Book a Strategy Workshop"
+        buttonAction={() => console.log("Final CTA: Book an R&D Call (Placeholder)")}
+        colorTheme="purple"
+      />
     </main>
   );
 }

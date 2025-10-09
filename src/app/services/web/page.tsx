@@ -3,6 +3,7 @@
 import { Section } from "@/components/shared/section";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { ServiceCTA } from "@/components/shared/ServiceCTA";
 import {
   FaCode,
   FaServer,
@@ -318,26 +319,15 @@ apiRouter.get('/users', async (req, res) => {
       </Section>
 
       {/* 6. Final CTA Block */}
-      <Section className="mb-24">
-        <div className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-center bg-gradient-to-tr from-slate-900 to-slate-950 border border-slate-800/60 shadow-2xl shadow-yellow-900/20">
-          <h2 className="text-4xl font-extrabold text-white sm:text-5xl">
-            Ready to build a platform that truly scales?
-          </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-400">
-            Let's discuss your next-generation web application or modern API
-            strategy.
-          </p>
-          <button
-            className="mt-8 px-10 py-4 group bg-yellow-600 text-slate-950 font-bold text-lg rounded-full shadow-xl shadow-yellow-900/50 hover:bg-yellow-500 transition duration-300 transform hover:scale-[1.05] active:scale-95 flex items-center justify-center mx-auto"
-            onClick={() =>
-              console.log("Final CTA: Book a Web Call (Placeholder)")
-            }
-          >
-            Start an Architecture Review
-            <FaArrowRight className="ml-3 w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-      </Section>
+      <ServiceCTA
+        title="Ready to build a platform that truly scales?"
+        description="Let's discuss your next-generation web application or modern API strategy."
+        buttonText="Start an Architecture Review"
+        buttonAction={() =>
+          console.log("Final CTA: Book a Web Call (Placeholder)")
+        }
+        colorTheme="yellow"
+      />
     </main>
   );
 }

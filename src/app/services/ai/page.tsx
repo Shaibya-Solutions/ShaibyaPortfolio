@@ -3,6 +3,7 @@
 import { Section } from "@/components/shared/section";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { ServiceCTA } from "@/components/shared/ServiceCTA";
 // New import for LightRays component
 import LightRays from "@/components/LightRays";
 import {
@@ -284,6 +285,15 @@ export default function AIDetailPage() {
           </div>
         </div>
       </Section>
+
+      {/* Final CTA Block */}
+      <ServiceCTA 
+        title="Ready to innovate with AI solutions?"
+        description="Let's discuss how AI can transform your business operations and drive growth."
+        buttonText="Start Your AI Journey"
+        buttonAction={() => console.log("AI CTA: Start AI Journey")}
+        colorTheme="cyan"
+      />
     </main>
   );
 }
