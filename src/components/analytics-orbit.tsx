@@ -15,40 +15,77 @@ interface Metric {
 const metrics: Metric[] = [
   {
     id: 1,
-    label: "Projects Completed",
-    value: 82,
-    suffix: "+",
-    planetName: "Mars",
-    orbitRadius: 200,
-    highlightColor: "#FF8A65",
-  }, // Softer Red/Orange
-  {
-    id: 2,
-    label: "Hours Spent",
-    value: 4200,
-    suffix: "+",
-    planetName: "Jupiter",
-    orbitRadius: 280,
-    highlightColor: "#FFCC80",
-  }, // Softer Orange/Yellow
-  {
-    id: 3,
-    label: "Countries Reached",
-    value: 14,
+    label: "Customer Engagements",
+    value: 1400,
     suffix: "+",
     planetName: "Mercury",
-    orbitRadius: 140,
-    highlightColor: "#E0E0E0",
-  }, // Light Gray
+    orbitRadius: 140, // Closest
+    highlightColor: "#E0E0E0", // Light Gray
+  },
   {
-    id: 4,
-    label: "Active Clients",
+    id: 2,
+    label: "Ideas Generated",
+    value: 650,
+    suffix: "+",
+    planetName: "Venus",
+    orbitRadius: 180,
+    highlightColor: "#FFECB3", // Creamy Yellow
+  },
+  {
+    id: 3,
+    label: "Active Projects",
     value: 35,
     suffix: "+",
     planetName: "Earth",
-    orbitRadius: 240,
-    highlightColor: "#81D4FA",
-  }, // Light Blue
+    orbitRadius: 220,
+    highlightColor: "#81D4FA", // Light Blue
+  },
+  {
+    id: 4,
+    label: "Client Growth",
+    value: 82,
+    suffix: "+",
+    planetName: "Mars",
+    orbitRadius: 260,
+    highlightColor: "#FF8A65", // Softer Red/Orange
+  },
+  {
+    id: 5,
+    label: "Total Hours Spent",
+    value: 4200,
+    suffix: "+",
+    planetName: "Jupiter",
+    orbitRadius: 300,
+    highlightColor: "#FFCC80", // Softer Orange/Yellow
+  },
+  {
+    id: 6,
+    label: "Partnerships Formed",
+    value: 12,
+    suffix: "+",
+    planetName: "Saturn",
+    orbitRadius: 340,
+    highlightColor: "#DCE775", // Pale Green/Yellow
+  },
+  {
+    id: 7,
+    label: "Global Reach (Countries)",
+    value: 18,
+    suffix: "+",
+    planetName: "Uranus",
+    orbitRadius: 380, // Farthest
+    highlightColor: "#80DEEA", // Cyan Blue
+  },
+  // If you want Neptune too:
+  // {
+  //   id: 8,
+  //   label: "Future Innovations",
+  //   value: 25,
+  //   suffix: "+",
+  //   planetName: "Neptune",
+  //   orbitRadius: 420, // Even farther
+  //   highlightColor: "#4FC3F7", // Bright Blue
+  // },
 ];
 
 // Sort metrics by orbitRadius so smaller orbits are drawn first (visually behind larger ones)
@@ -195,7 +232,7 @@ export default function AnalyticsOrbit() {
                   hidden: { opacity: 0, scale: 0.2 },
                   visible: (i) => ({
                     opacity: 1,
-                    scale: highlightedPlanet?.id === metric.id ? 1.2 : 1, // Highlight scale
+                    scale: highlightedPlanet?.id === metric.id ? 1.2 : 1,
                     transition: {
                       delay: i * 0.2,
                       duration: 0.8,
@@ -208,15 +245,18 @@ export default function AnalyticsOrbit() {
                   left: `calc(50% + ${x}px)`,
                   transform: `translate(-50%, -50%) rotate(-${
                     (360 / metrics.length) * i
-                  }deg)`, // Counter-rotate for text alignment
+                  }deg)`,
                   width: planetSize,
                   height: planetSize,
-                  backgroundImage: `url(/${metric.planetName.toLowerCase()}.png)`, // Use the generated images
+                  backgroundImage: `url(/images/landing/${metric.planetName.toLowerCase()}.png)`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  borderRadius: "50%",
                   boxShadow:
                     highlightedPlanet?.id === metric.id
-                      ? `0 0 25px 8px ${metric.highlightColor}aa`
-                      : "0 0 10px rgba(0,0,0,0.5)", // Stronger glow
-                  zIndex: highlightedPlanet?.id === metric.id ? 20 : 10, // Bring highlighted planet to front
+                      ? `0 0 25px 10px ${metric.highlightColor}aa, inset 0 0 20px rgba(255,255,255,0.3)`
+                      : `0 0 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.1)`,
+                  zIndex: highlightedPlanet?.id === metric.id ? 20 : 10,
                 }}
                 onClick={() => setHighlightedPlanet(metric)}
                 onMouseEnter={() =>
