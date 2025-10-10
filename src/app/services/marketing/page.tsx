@@ -241,6 +241,8 @@ export default function MarketingDetailPage() {
         buttonAction={() => console.log("Final CTA: Book Marketing Strategy (Placeholder)")}
         colorTheme="pink"
       />
+      
+      <SiteFooter />
     </main>
   );
 }

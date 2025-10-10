@@ -32,38 +32,38 @@ const DEFAULT_ITEMS: CarouselItem[] = [
     title: "Text Animations",
     description: "Cool text animations for your projects.",
     id: 1,
-    icon: <FiFileText className="h-[16px] w-[16px] text-white" />,
+    icon: <FiFileText className='h-[16px] w-[16px] text-white' />,
   },
   {
     title: "Animations",
     description: "Smooth animations for your projects.",
     id: 2,
-    icon: <FiCircle className="h-[16px] w-[16px] text-white" />,
+    icon: <FiCircle className='h-[16px] w-[16px] text-white' />,
   },
   {
     title: "Components",
     description: "Reusable components for your projects.",
     id: 3,
-    icon: <FiLayers className="h-[16px] w-[16px] text-white" />,
+    icon: <FiLayers className='h-[16px] w-[16px] text-white' />,
   },
   {
     title: "Backgrounds",
     description: "Beautiful backgrounds and patterns for your projects.",
     id: 4,
-    icon: <FiLayout className="h-[16px] w-[16px] text-white" />,
+    icon: <FiLayout className='h-[16px] w-[16px] text-white' />,
   },
   {
     title: "Common UI",
     description: "Common UI components are coming soon!",
     id: 5,
-    icon: <FiCode className="h-[16px] w-[16px] text-white" />,
+    icon: <FiCode className='h-[16px] w-[16px] text-white' />,
   },
 ];
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
 const GAP = 16;
-const SPRING_OPTIONS = { type: "spring", stiffness: 300, damping: 30 };
+const SPRING_OPTIONS = { type: "spring" as const, stiffness: 300, damping: 30 };
 
 export default function Carousel({
   items = DEFAULT_ITEMS,
@@ -179,8 +179,8 @@ export default function Carousel({
       }}
     >
       <motion.div
-        className="flex"
-        drag="x"
+        className='flex'
+        drag='x'
         {...dragProps}
         style={{
           width: itemWidth,
@@ -210,7 +210,7 @@ export default function Carousel({
               className={`relative shrink-0 flex flex-col ${
                 round
                   ? "items-center justify-center text-center bg-[#060010] border-0"
-                  : "items-start justify-between bg-[#222] border border-[#222] rounded-[12px]"
+                  : "items-start justify-between bg-[#222] border border-[#e7e5e5] rounded-[12px]"
               } overflow-hidden cursor-grab active:cursor-grabbing`}
               style={{
                 width: itemWidth,
@@ -221,15 +221,15 @@ export default function Carousel({
               transition={effectiveTransition}
             >
               <div className={`${round ? "p-0 m-0" : "mb-4 p-5"}`}>
-                <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]">
+                <span className='flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]'>
                   {item.icon}
                 </span>
               </div>
-              <div className="p-5">
-                <div className="mb-1 font-black text-lg text-white">
+              <div className='p-5'>
+                <div className='mb-1 font-black text-lg text-white'>
                   {item.title}
                 </div>
-                <p className="text-sm text-white">{item.description}</p>
+                <p className='text-sm text-white'>{item.description}</p>
               </div>
             </motion.div>
           );
@@ -240,7 +240,7 @@ export default function Carousel({
           round ? "absolute z-20 bottom-12 left-1/2 -translate-x-1/2" : ""
         }`}
       >
-        <div className="mt-4 flex w-[150px] justify-between px-8">
+        <div className='mt-4 flex w-[150px] justify-between px-8'>
           {items.map((_, index) => (
             <motion.div
               key={index}
@@ -248,10 +248,10 @@ export default function Carousel({
                 currentIndex % items.length === index
                   ? round
                     ? "bg-white"
-                    : "bg-[#333333]"
+                    : "bg-[#757575]"
                   : round
-                  ? "bg-[#555]"
-                  : "bg-[rgba(51,51,51,0.4)]"
+                  ? "bg-[#8a8888]"
+                  : "bg-[rgba(130,127,127,0.4)]"
               }`}
               animate={{
                 scale: currentIndex % items.length === index ? 1.2 : 1,

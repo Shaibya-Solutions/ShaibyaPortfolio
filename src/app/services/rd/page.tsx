@@ -226,6 +226,8 @@ export default function RDDetailPage() {
         buttonAction={() => console.log("Final CTA: Book an R&D Call (Placeholder)")}
         colorTheme="purple"
       />
+      
+      <SiteFooter />
     </main>
   );
 }

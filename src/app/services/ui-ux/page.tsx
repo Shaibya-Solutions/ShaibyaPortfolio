@@ -80,7 +80,7 @@ export default function UIUXDetailPage() {
 
   return (
     <main className="bg-slate-950 text-slate-100">
-      <SiteHeader className="!bg-slate-950 !text-slate-100" />
+      <SiteHeader />
 
       {/* 1. Unique Hero Section - Wireframe vs Finished App UI (Split Screen) */}
       <Section className="mt-16 mb-24">

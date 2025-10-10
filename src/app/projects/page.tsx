@@ -12,6 +12,7 @@ import Image from "next/image";
 import { ArrowDown, Search, Eye, BookOpen } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import Orb from "@/components/Orb";
+import FooterCTA from "@/components/layout/footer/footer-cta";
 
 // Typing Text
 const TypingText = ({ text }: { text: string }) => {
@@ -156,7 +157,7 @@ export default function PortfolioPage() {
       </section>
 
       {/* Search & Filter */}
-      <div className="sticky top-16 z-40 bg-slate-950/80 backdrop-blur-sm py-6">
+      <div className="top-16 z-40 bg-slate-950/80 backdrop-blur-sm py-6">
         <Section className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="relative w-full md:w-1/3">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
@@ -207,6 +208,7 @@ export default function PortfolioPage() {
       </Section>
 
       <AnalyticsOrbit />
+      <FooterCTA />
       <SiteFooter />
     </main>
   );

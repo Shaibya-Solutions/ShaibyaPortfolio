@@ -294,6 +294,8 @@ export default function AIDetailPage() {
         buttonAction={() => console.log("AI CTA: Start AI Journey")}
         colorTheme="cyan"
       />
+      
+      <SiteFooter />
     </main>
   );
 }

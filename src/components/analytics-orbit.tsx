@@ -121,26 +121,26 @@ export default function AnalyticsOrbit() {
   return (
     <section
       ref={ref}
-      className="relative flex flex-col items-center justify-center py-28 overflow-hidden bg-gradient-to-b from-[#0b0f17] to-[#10131c]"
+      className='relative flex flex-col items-center justify-center py-28 overflow-hidden bg-gradient-to-b from-[#0b0f17] to-[#10131c]'
     >
       {/* Soft glow background */}
-      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/10 blur-[120px] rounded-full" />
+      <div className='absolute -bottom-20 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/10 blur-[120px] rounded-full' />
 
       {/* Headline */}
-      <div className="z-10 text-center mb-14">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight">
+      <div className='z-10 text-center mb-32  '>
+        <h2 className='text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight'>
           Numbers that Orbit Us
         </h2>
-        <p className="text-slate-400 text-lg max-w-xl mx-auto drop-shadow-sm">
+        <p className='text-slate-400 text-lg max-w-xl mx-auto drop-shadow-sm'>
           Our journey visualized — data that revolves around creativity.
         </p>
       </div>
 
       {/* Orbit visualization */}
-      <div className="relative w-full max-w-2xl h-[600px] flex items-center justify-center">
+      <div className='relative w-full max-w-2xl h-[600px] flex items-center justify-center'>
         {/* Orbit rings with dynamic highlighting */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
+          className='absolute inset-0 flex items-center justify-center'
           initial={{ opacity: 0 }}
           animate={{ opacity: isInView ? 1 : 0 }}
           transition={{ duration: 0.8 }}
@@ -148,7 +148,7 @@ export default function AnalyticsOrbit() {
           {metrics.map((metric) => (
             <motion.div
               key={`orbit-${metric.id}`}
-              className="absolute rounded-full border-2"
+              className='absolute rounded-full border-2'
               style={{
                 width: metric.orbitRadius * 2,
                 height: metric.orbitRadius * 2,
@@ -173,28 +173,28 @@ export default function AnalyticsOrbit() {
           initial={{ opacity: 0, scale: 0.6 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="z-10 flex flex-col items-center justify-center text-center p-6 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 shadow-lg"
+          className='z-10 flex flex-col items-center justify-center text-center p-6 rounded-xl bg-white/5 backdrop-blur-md border border-white/10 shadow-lg'
           style={{ textShadow: "0 0 8px rgba(255,255,255,0.3)" }}
         >
           {highlightedPlanet ? (
             <>
-              <div className="text-4xl font-extrabold text-white mb-1 drop-shadow-md">
+              <div className='text-4xl font-extrabold text-white mb-1 drop-shadow-md'>
                 {highlightedPlanet.value}
                 {highlightedPlanet.suffix}
               </div>
-              <div className="text-lg text-slate-200 mt-1 drop-shadow-sm">
+              <div className='text-lg text-slate-200 mt-1 drop-shadow-sm'>
                 {highlightedPlanet.label}
               </div>
-              <div className="text-sm text-slate-400 mt-0.5 font-light">
+              <div className='text-sm text-slate-400 mt-0.5 font-light'>
                 ({highlightedPlanet.planetName})
               </div>
             </>
           ) : (
             <>
-              <div className="text-3xl font-semibold text-white/90 drop-shadow-md">
+              <div className='text-3xl font-semibold text-white/90 drop-shadow-md'>
                 Creativity
               </div>
-              <div className="text-base text-slate-400 drop-shadow-sm">
+              <div className='text-base text-slate-400 drop-shadow-sm'>
                 At Our Core
               </div>
             </>
@@ -203,7 +203,7 @@ export default function AnalyticsOrbit() {
 
         {/* Orbiting Container for Planets */}
         <motion.div
-          className="absolute inset-0 flex items-center justify-center"
+          className='absolute inset-0 flex items-center justify-center'
           initial={{ rotate: 0 }}
           animate={{
             rotate: 360,
@@ -224,9 +224,9 @@ export default function AnalyticsOrbit() {
             return (
               <motion.div
                 key={metric.id}
-                className="absolute cursor-pointer rounded-full flex items-center justify-center transition-all duration-300 ease-out bg-cover bg-center"
+                className='absolute cursor-pointer rounded-full flex items-center justify-center transition-all duration-300 ease-out bg-cover bg-center'
                 custom={i}
-                initial="hidden"
+                initial='hidden'
                 animate={controls}
                 variants={{
                   hidden: { opacity: 0, scale: 0.2 },
@@ -268,7 +268,7 @@ export default function AnalyticsOrbit() {
               >
                 {/* Planet name label beside the planet */}
                 <span
-                  className="absolute text-xs text-slate-300 w-[100px] text-center pointer-events-none drop-shadow-sm font-medium"
+                  className='absolute text-xs text-slate-300 w-[100px] text-center pointer-events-none drop-shadow-sm font-medium'
                   style={{
                     transform: `translateY(${planetSize / 2 + 20}px) rotate(${
                       (360 / metrics.length) * i
@@ -315,7 +315,7 @@ function AnimatedCounter({
 
   return (
     <motion.div
-      className="text-2xl md:text-3xl font-bold text-white mb-1"
+      className='text-2xl md:text-3xl font-bold text-white mb-1'
       whileHover={{ scale: 1.08 }}
     >
       {count}

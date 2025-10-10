@@ -8,6 +8,7 @@ import { products, Product } from "@/app/portfolio/data";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowDown, ExternalLink } from "lucide-react";
+import FooterCTA from "@/components/layout/footer/footer-cta";
 
 // Initial number of projects to display on the main page
 const INITIAL_PROJECT_COUNT = 3;
@@ -145,6 +146,7 @@ export default function PortfolioPage() {
           </div>
         )}
       </Section>
+      <FooterCTA />
       <SiteFooter />
     </main>
   );

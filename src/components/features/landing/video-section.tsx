@@ -14,7 +14,7 @@ export default function VideoSection() {
         <div className='relative rounded-2xl overflow-hidden shadow-lg mb-12'>
           <div className='aspect-video w-full'>
             <video
-              src='Business_Growth_Video_Generation.mp4'
+              src='/videos/Business_Growth_Video_Generation.mp4'
               controls
               playsInline
             />

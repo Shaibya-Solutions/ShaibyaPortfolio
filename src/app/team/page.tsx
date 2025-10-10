@@ -7,19 +7,16 @@ import { SiteFooter } from "@/components/layout/footer/site-footer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import {
-  Code,
-  Zap,
-  Palette,
   MapPin,
   Briefcase,
   Moon,
   Link as LinkIcon, // Renamed to avoid conflict with Next.js Link
-  Settings,
-  Shield,
-  Link,
 } from "lucide-react";
 import { useInView } from "react-intersection-observer";
 import { Section } from "@/components/shared/section";
+import { CrewMember, TEAM_MEMBERS } from "@/data/team";
+import Link from "next/link";
+import FooterCTA from "@/components/layout/footer/footer-cta";
 
 const useScrollToRef = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,78 +25,6 @@ const useScrollToRef = () => {
   };
   return [ref, scrollTo] as const;
 };
-
-interface CrewMember {
-  codename: string;
-  dayJob: string;
-  nightSkill: string;
-  location: string;
-  hoverQuote: string;
-  icon: React.ElementType;
-  color: string;
-}
-
-const TEAM_MEMBERS: CrewMember[] = [
-  {
-    codename: "The Backend Alchemist",
-    dayJob: "Backend Developer",
-    nightSkill: "API Sorcery & Data Flow Design",
-    location: "Nagpur, IN",
-    hoverQuote:
-      "Turns raw data into seamless logic. Architect behind every stable system.",
-    icon: Code,
-    color: "#00f6ff",
-  },
-  {
-    codename: "The Python Whisperer",
-    dayJob: "Senior Python Engineer",
-    nightSkill: "Automation, AI, and Backend Craftsmanship",
-    location: "Texas, US",
-    hoverQuote:
-      "Writes code that breathes. Scales systems with precision and Pythonic grace.",
-    icon: Zap,
-    color: "#e400f6",
-  },
-  {
-    codename: "The Cloud Weaver",
-    dayJob: "Salesforce Developer",
-    nightSkill: "CRM Customization & Cloud Logic",
-    location: "Nagpur, IN",
-    hoverQuote:
-      "Knits together businesses and technology. Makes Salesforce dance to data’s rhythm.",
-    icon: LinkIcon,
-    color: "#ffc700",
-  },
-  {
-    codename: "The Firewall Phantom",
-    dayJob: "Senior Penetration Tester",
-    nightSkill: "Ethical Hacking & Threat Simulation",
-    location: "Nagpur, IN",
-    hoverQuote: "Sees the unseen. Breaks systems before the bad guys can.",
-    icon: Shield,
-    color: "#e400f6",
-  },
-  {
-    codename: "The Fullstack Maverick",
-    dayJob: "Senior Fullstack Engineer",
-    nightSkill: "End-to-End System Architecture",
-    location: "Noida, IN",
-    hoverQuote:
-      "Bridges front and back with elegance. Ships products that just work.",
-    icon: Settings,
-    color: "#00f6ff",
-  },
-  {
-    codename: "The 3D Conjurer",
-    dayJob: "3D Specialist Artist",
-    nightSkill: "Visual Storytelling & Motion Design",
-    location: "Nagpur, IN",
-    hoverQuote:
-      "Shapes imagination into pixels. Turns ideas into stunning 3D experiences.",
-    icon: Palette,
-    color: "#ffc700",
-  },
-];
 
 const CodenameCard: React.FC<
   CrewMember & { isActive: boolean; onClick: () => void }
@@ -129,7 +54,7 @@ const CodenameCard: React.FC<
       onClick={onClick}
     >
       <div
-        className="absolute inset-0 opacity-10"
+        className='absolute inset-0 opacity-10'
         style={{
           backgroundImage:
             "radial-gradient(ellipse at bottom, #0a0f1f 0%, #010101 100%)",
@@ -137,14 +62,14 @@ const CodenameCard: React.FC<
         }}
       >
         <div
-          className="star-field absolute inset-0"
+          className='star-field absolute inset-0'
           style={{
             background: `url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')`,
           }}
         ></div>
       </div>
       <motion.div
-        className="absolute inset-0 rounded-xl pointer-events-none"
+        className='absolute inset-0 rounded-xl pointer-events-none'
         initial={{ opacity: 0 }}
         animate={{ opacity: isActive ? 1 : 0 }}
         whileHover={{ opacity: 1 }}
@@ -152,42 +77,42 @@ const CodenameCard: React.FC<
         style={{ boxShadow: `0 0 25px ${color}` }}
       />
       <motion.div
-        className="relative z-10 flex flex-col justify-between h-full"
+        className='relative z-10 flex flex-col justify-between h-full'
         initial={{ opacity: 1, scale: 1, z: 1 }}
         whileHover={{ opacity: 0, scale: 0.9, z: 0 }}
         transition={{ duration: 0.15 }}
       >
-        <div className="flex items-start justify-between">
+        <div className='flex items-start justify-between'>
           <TypedIcon
             style={{ color: color }}
-            className="w-8 h-8 flex-shrink-0"
+            className='w-8 h-8 flex-shrink-0'
           />
-          <p className="text-xs text-[#a8b2d1] flex items-center pt-1">
-            <MapPin className="w-3 h-3 mr-1 text-slate-500" /> {location}
+          <p className='text-xs text-[#a8b2d1] flex items-center pt-1'>
+            <MapPin className='w-3 h-3 mr-1 text-slate-500' /> {location}
           </p>
         </div>
-        <div className="mt-4">
-          <h3 className="text-3xl font-extrabold text-white leading-none mb-1">
+        <div className='mt-4'>
+          <h3 className='text-3xl font-extrabold text-white leading-none mb-1'>
             {codename}
           </h3>
-          <p className="text-sm text-slate-400">
+          <p className='text-sm text-slate-400'>
             Day Job:{" "}
-            <span className="text-[#00f6ff] font-semibold">{dayJob}</span>
+            <span className='text-[#00f6ff] font-semibold'>{dayJob}</span>
           </p>
-          <p className="text-sm text-slate-400">
+          <p className='text-sm text-slate-400'>
             Night Skill:{" "}
-            <span className="text-[#ffc700] font-semibold">{nightSkill}</span>
+            <span className='text-[#ffc700] font-semibold'>{nightSkill}</span>
           </p>
         </div>
       </motion.div>
       <motion.div
-        className="absolute inset-0 p-6 flex items-center justify-center bg-black/95 rounded-xl border-2 border-transparent z-20"
+        className='absolute inset-0 p-6 flex items-center justify-center bg-black/95 rounded-xl border-2 border-transparent z-20'
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
         style={{ border: `2px solid ${color}80` }}
       >
-        <p className="text-xl italic text-center font-medium text-white max-w-[80%]">
+        <p className='text-xl italic text-center font-medium text-white max-w-[80%]'>
           “{hoverQuote}”
         </p>
       </motion.div>
@@ -215,15 +140,15 @@ const ManifestoCarousel = () => {
   return (
     <motion.div
       ref={ref}
-      className="relative h-48 flex items-center justify-center text-center px-4"
+      className='relative h-48 flex items-center justify-center text-center px-4'
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.8 }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode='wait'>
         <motion.p
           key={index}
-          className="text-2xl sm:text-3xl lg:text-4xl italic text-white font-medium max-w-4xl mx-auto absolute"
+          className='text-2xl sm:text-3xl lg:text-4xl italic text-white font-medium max-w-4xl mx-auto absolute'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
@@ -240,9 +165,9 @@ const ManifestoCarousel = () => {
 const AnimatedDivider: React.FC = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.5 });
   return (
-    <div ref={ref} className="hidden lg:block w-px h-full relative">
+    <div ref={ref} className='hidden lg:block w-px h-full relative'>
       <motion.div
-        className="absolute w-full bg-gradient-to-b from-transparent via-[#e400f6]/80 to-transparent"
+        className='absolute w-full bg-gradient-to-b from-transparent via-[#e400f6]/80 to-transparent'
         style={{ height: "30%", top: "0%" }}
         animate={
           inView
@@ -257,7 +182,7 @@ const AnimatedDivider: React.FC = () => {
           ease: "linear",
         }}
       />
-      <div className="absolute inset-0 bg-slate-800/50 w-px h-full" />
+      <div className='absolute inset-0 bg-slate-800/50 w-px h-full' />
     </div>
   );
 };
@@ -281,32 +206,32 @@ export default function NightCrewPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#0a0f1f] text-[#a8b2d1]">
+    <main className='min-h-screen bg-[#0a0f1f] text-[#a8b2d1]'>
       <SiteHeader />
       {/* 1. Hero Section */}
-      <Section className="mt-16 mb-24 text-center relative overflow-hidden">
-        <div className="absolute inset-0 opacity-50 pointer-events-none">
-          <div className="absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-[#e400f6] opacity-5 blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-[#00f6ff] opacity-5 blur-3xl" />
+      <Section className='mt-16 mb-24 text-center relative overflow-hidden'>
+        <div className='absolute inset-0 opacity-50 pointer-events-none'>
+          <div className='absolute top-1/2 left-1/4 w-96 h-96 rounded-full bg-[#e400f6] opacity-5 blur-3xl' />
+          <div className='absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-[#00f6ff] opacity-5 blur-3xl' />
         </div>
         <motion.h1
-          className="relative text-7xl sm:text-8xl lg:text-[10rem] font-extrabold tracking-tighter text-white"
+          className='relative text-7xl sm:text-8xl lg:text-[10rem] font-extrabold tracking-tighter text-white'
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
           style={{ textShadow: "0 0 15px #00f6ff80" }}
         >
-          Meet The <span className="text-[#00f6ff]">Night Crew</span>
+          Meet The <span className='text-[#00f6ff]'>Night Crew</span>
         </motion.h1>
-        <motion.p
-          className="mt-6 text-xl max-w-3xl mx-auto"
+        <motion.div
+          className='mt-6 text-xl max-w-3xl mx-auto'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8 }}
         >
           Builders of dreams between deadlines. We are{" "}
           <span
-            className="font-bold"
+            className='font-bold'
             style={{ color: "#ffc700", textShadow: "0 0 5px #ffc70080" }}
           >
             <Typewriter
@@ -319,24 +244,24 @@ export default function NightCrewPage() {
               ]}
               loop={0}
               cursor
-              cursorStyle="_"
+              cursorStyle='_'
               typeSpeed={70}
               deleteSpeed={50}
               delaySpeed={1000}
             />
           </span>
-        </motion.p>
-        <motion.p
-          className="mt-4 text-lg max-w-4xl mx-auto italic"
+        </motion.div>
+        <motion.div
+          className='mt-4 text-lg max-w-4xl mx-auto italic'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
         >
           <ManifestoCarousel />
-        </motion.p>
+        </motion.div>
         <motion.button
           onClick={scrollToCrewGrid}
-          className="mt-12 px-8 py-3 text-lg font-bold rounded-full bg-cyan-500/10 border border-cyan-500/50 text-white shadow-lg relative overflow-hidden"
+          className='mt-12 px-8 py-3 text-lg font-bold rounded-full bg-cyan-500/10 border border-cyan-500/50 text-white shadow-lg relative overflow-hidden'
           whileHover={{
             scale: 1.05,
             boxShadow: `0 0 25px #00f6ff`,
@@ -349,7 +274,7 @@ export default function NightCrewPage() {
           }}
         >
           <motion.span
-            className="relative z-10"
+            className='relative z-10'
             initial={{ textShadow: "0 0 10px #00f6ff" }}
             animate={{ textShadow: "0 0 20px #00f6ff" }}
             transition={{
@@ -362,19 +287,20 @@ export default function NightCrewPage() {
             See Our Crew
           </motion.span>
           <motion.div
-            className="absolute inset-0 bg-cyan-500/20"
+            className='absolute inset-0 bg-cyan-500/20'
             initial={{ scale: 0 }}
             whileHover={{ scale: 1.5 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
           />
         </motion.button>
       </Section>
+
       {/* 2. Team Grid Section ("Our Crew") */}
-      <Section className="mb-24" ref={crewGridRef}>
-        <h2 className="text-4xl font-bold text-white mb-12 text-center">
+      <Section className='mb-24' ref={crewGridRef}>
+        <h2 className='text-4xl font-bold text-white mb-12 text-center'>
           Our Operatives (Codename Cards)
         </h2>
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className='grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
           <AnimatePresence>
             {TEAM_MEMBERS.map((member, index) => (
               <motion.div
@@ -394,14 +320,14 @@ export default function NightCrewPage() {
         </div>
       </Section>
       {/* 3. "Day vs. Night" Section */}
-      <Section className="mb-24">
-        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-16 items-start">
-          <div className="text-center lg:text-right">
-            <div className="inline-flex items-center text-3xl font-bold text-[#00f6ff] mb-4">
-              <Briefcase className="w-6 h-6 mr-3" /> By Day
+      <Section className='mb-24'>
+        <div className='grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-16 items-start'>
+          <div className='text-center lg:text-right'>
+            <div className='inline-flex items-center text-3xl font-bold text-[#00f6ff] mb-4'>
+              <Briefcase className='w-6 h-6 mr-3' /> By Day
             </div>
-            <h3 className="text-xl text-white mb-4">The Professionals</h3>
-            <p className="text-lg">
+            <h3 className='text-xl text-white mb-4'>The Professionals</h3>
+            <p className='text-lg'>
               We clock in as **Senior Developers, Data Scientists, and
               Engineering Leaders** for top-tier global companies. This is where
               we hone our craft, learn new tech, and master scalable production
@@ -409,12 +335,12 @@ export default function NightCrewPage() {
             </p>
           </div>
           <AnimatedDivider />
-          <div className="text-center lg:text-left">
-            <div className="inline-flex items-center text-3xl font-bold text-[#ffc700] mb-4">
-              <Moon className="w-6 h-6 mr-3" /> By Night
+          <div className='text-center lg:text-left'>
+            <div className='inline-flex items-center text-3xl font-bold text-[#ffc700] mb-4'>
+              <Moon className='w-6 h-6 mr-3' /> By Night
             </div>
-            <h3 className="text-xl text-white mb-4">The Creators</h3>
-            <p className="text-lg">
+            <h3 className='text-xl text-white mb-4'>The Creators</h3>
+            <p className='text-lg'>
               When the 9-to-5 ends, the passion begins. We are **builders,
               creators, and innovators** working on decentralized apps,
               open-source tools, custom prototypes, and our own dream projects.
@@ -423,33 +349,35 @@ export default function NightCrewPage() {
         </div>
       </Section>
       {/* 4. New "Connect & Collaborate" Section */}
-      <Section className="mb-24 relative">
-        <div className="bg-slate-900 border border-slate-700/60 rounded-3xl p-8 lg:p-12 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+      <Section className='mb-24 relative'>
+        <div className='bg-slate-900 border border-slate-700/60 rounded-3xl p-8 lg:p-12 grid lg:grid-cols-2 gap-12 lg:gap-24 items-center'>
           {/* Left Column (Text & Button) */}
-          <div className="text-center lg:text-left">
-            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+          <div className='text-center lg:text-left'>
+            <h2 className='text-4xl lg:text-5xl font-bold text-white mb-4'>
               Connect & Collaborate
             </h2>
-            <p className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 mb-6">
+            <p className='text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 mb-6'>
               Explore our global presence and find a hub near you. We're always
               open to new projects and brilliant minds. Let's build together.
             </p>
             <Link
-              href="/contact" // Update this link to your contact page
-              className="inline-block px-8 py-4 text-lg font-bold rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-400 transition-all duration-300 hover:bg-cyan-500/50 hover:text-white"
+              href='/contact' // Update this link to your contact page
             >
-              Connect with Us →
+              <button className='cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 to-white px-6 py-3 text-lg font-semibold text-slate-950 shadow-lg transition hover:from-cyan-400 hover:to-white/80'>
+                Connect with Us →
+              </button>
             </Link>
           </div>
           {/* Right Column (FlowingMenu) */}
-          <div className="w-full">
-            <h3 className="text-2xl font-bold text-white text-center mb-6 lg:hidden">
+          <div className='w-full h-full'>
+            {/* <h3 className='text-2xl font-bold text-white text-center mb-6 lg:hidden'>
               Meet us At
-            </h3>
+            </h3> */}
             <FlowingMenu items={flowingMenuItems} />
           </div>
         </div>
       </Section>
+      {/* <FooterCTA /> */}
       <SiteFooter />
     </main>
   );

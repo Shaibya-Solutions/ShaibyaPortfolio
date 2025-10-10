@@ -9,7 +9,7 @@ export const projects = [
       { value: "75%", label: "Manpower Reduction (4 → 1)" },
       { value: "500+", label: "Bills Processed Daily" },
     ],
-    image: "/images/coaltrack.jpg",
+    image: "/images/solutions/coal.png",
   },
   {
     title: "FitManage 360 - All-in-One Gym Management App",
@@ -21,7 +21,7 @@ export const projects = [
       { value: "+40%", label: "Revenue Forecast Accuracy" },
       { value: "25%", label: "Increased Membership Renewal Rate" },
     ],
-    image: "/images/fitmanage.jpg",
+    image: "/images/solutions/fitlife.png",
   },
   {
     title: "MediReach Pro - Digital Growth & Appointment System for Hospitals",
@@ -33,20 +33,19 @@ export const projects = [
       { value: "10k+", label: "Monthly Website Visits" },
       { value: "35%", label: "No-show Reduction via Reminders" },
     ],
-    image: "/images/medireach.jpg",
+    image: "/images/solutions/cellcurehub.png",
   },
   {
-    title: "GoldHarvest Pro - Smart Gold Savings & Customer Management",
+    title: "VIMS Hospital Website",
     description:
-      "Date Jewellers managed Gold Harvest Plans manually - maintaining registers, calculating payments, tracking maturity, and updating balances. Led to high manual effort, limited reach, and slow sales growth.\n\nSolution:\nA Digital Gold Harvest Management Platform including secure customer onboarding, monthly payment tracking, automated bills/receipts, dashboards for 1,000+ customers, alerts/reminders, and scalable for multiple branches or schemes.",
+      "Developed a comprehensive website for VIMS Hospital to enhance their online presence and provide essential information to patients. The website features detailed sections on services, departments, doctor profiles, patient testimonials, and contact information. It is designed with a user-friendly interface and optimized for both desktop and mobile devices.",
     stats: [
-      { value: "1,200+", label: "Customers Managed vs 300 earlier" },
-      { value: "85%", label: "Admin Work Reduction" },
-      { value: "3x", label: "Customer Enrollment Growth" },
-      { value: "40%", label: "New Client Reach via Online Presence" },
-      { value: "High", label: "Customer Trust & Transparency" },
+      { value: "5k+", label: "Monthly Visitors" },
+      { value: "150+", label: "Doctors Listed" },
+      { value: "20+", label: "Departments Highlighted" },
+      { value: "4.8/5", label: "Average User Rating" },
     ],
-    image: "/images/goldharvest.jpg",
+    image: "/images/solutions/vims.png",
   },
 ];
 

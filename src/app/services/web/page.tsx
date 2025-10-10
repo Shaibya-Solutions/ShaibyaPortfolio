@@ -328,6 +328,7 @@ apiRouter.get('/users', async (req, res) => {
         }
         colorTheme="yellow"
       />
+      <SiteFooter />
     </main>
   );
 }

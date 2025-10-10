@@ -25,6 +25,7 @@ import {
   BsCode,
 } from "react-icons/bs";
 import SpotlightCard from "@/components/SpotlightCard";
+import FooterCTA from "@/components/layout/footer/footer-cta";
 
 // Internal component for the internship benefits cards
 const InternshipCard = ({
@@ -280,6 +281,7 @@ export default function CareersPage() {
           />
         </div>
       </Section>
+      <FooterCTA />
       <SiteFooter />
     </main>
   );
