@@ -46,7 +46,7 @@ export function AppShowcaseCTA() {
   return (
     <Section
       ref={ref}
-      className='relative overflow-hidden py-20 lg:py-32 bg-gradient-to-br from-slate-900 to-slate-950 rounded-b-3xl shadow-2xl'
+      className='relative overflow-hidden py-20 lg:py-32 rounded-b-3xl shadow-2xl'
     >
       {/* Background Grid/Pattern */}
       <div className='absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5'></div>
@@ -119,7 +119,7 @@ export function AppShowcaseCTA() {
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className='w-full lg:w-1/2 flex justify-center lg:justify-end relative h-[400px] md:h-[500px] lg:h-[600px] mt-12 lg:mt-0'
+          className='w-full lg:w-1/2 flex justify-center relative h-[400px] md:h-[500px] lg:h-[600px] mt-12 lg:mt-0'
         >
           {/* Main (Center) Phone */}
           <motion.div

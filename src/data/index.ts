@@ -1,3 +1,14 @@
+import {
+  FaBullhorn,
+  FaCube,
+  FaLaptopCode,
+  FaLock,
+  FaMobileAlt,
+  FaPalette,
+  FaRobot,
+  FaSitemap,
+} from "react-icons/fa";
+
 export const projects = [
   {
     title: "CoalTrack AI - Smart Billing Automation",
@@ -70,6 +81,58 @@ export const testimonials = [
     text: "Thanks to NuxaAI, we’ve cut our equipment downtime by 90% and saved 40% on maintenance costs. Their predictive maintenance solutions are incredibly accurate and have significantly improved our operations.",
     author: "Emily R.",
     role: "Operations Manager, GlobalTech Industries",
+  },
+];
+
+export const nav = [
+  { href: "/about", label: "About" },
+  { href: "/services", label: "Services", hasDropdown: true },
+  { href: "/projects", label: "Portfolio" },
+  { href: "/portfolio", label: "Solutions" },
+  { href: "/team", label: "Team" },
+  { href: "/careers", label: "Careers" },
+];
+
+export const services = [
+  {
+    href: "/web",
+    label: "Web Development",
+    icon: FaLaptopCode,
+  },
+  {
+    href: "/mobile",
+    label: "Mobile Development",
+    icon: FaMobileAlt,
+  },
+  {
+    href: "/ai",
+    label: "AI Solutions",
+    icon: FaRobot,
+  },
+  {
+    href: "/3d",
+    label: "3D Modeling & Animation",
+    icon: FaCube,
+  },
+  {
+    href: "/cybersecurity",
+    label: "Cybersecurity",
+    icon: FaLock,
+  },
+  {
+    href: "/marketing",
+    label: "Digital Marketing",
+    icon: FaBullhorn,
+  },
+  {
+    href: "/ui-ux",
+    label: "UI/UX Design",
+    icon: FaPalette,
+  },
+  {
+    href: "/rd",
+    label: "R&D and Innovation",
+    icon: FaSitemap,
   },
 ];
 

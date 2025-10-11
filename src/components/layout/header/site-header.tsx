@@ -2,72 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  FaBars,
-  FaBullhorn,
-  FaChevronDown,
-  FaChevronUp, // Added for mobile dropdown icon
-  FaCube,
-  FaLaptopCode,
-  FaLock,
-  FaMobileAlt,
-  FaPalette,
-  FaRobot,
-  FaSitemap,
-  FaTimes,
-} from "react-icons/fa";
-
-const nav = [
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services", hasDropdown: true },
-  { href: "/projects", label: "Portfolio" },
-  { href: "/portfolio", label: "Solutions" },
-  { href: "/team", label: "Team" },
-  { href: "/careers", label: "Careers" },
-];
-
-const services = [
-  {
-    href: "/web",
-    label: "Web Development",
-    icon: <FaLaptopCode className='text-cyan-400' />,
-  },
-  {
-    href: "/mobile",
-    label: "Mobile Development",
-    icon: <FaMobileAlt className='text-cyan-400' />,
-  },
-  {
-    href: "/ai",
-    label: "AI Solutions",
-    icon: <FaRobot className='text-cyan-400' />,
-  },
-  {
-    href: "/3d",
-    label: "3D Modeling & Animation",
-    icon: <FaCube className='text-cyan-400' />,
-  },
-  {
-    href: "/cybersecurity",
-    label: "Cybersecurity",
-    icon: <FaLock className='text-cyan-400' />,
-  },
-  {
-    href: "/marketing",
-    label: "Digital Marketing",
-    icon: <FaBullhorn className='text-cyan-400' />,
-  },
-  {
-    href: "/ui-ux",
-    label: "UI/UX Design",
-    icon: <FaPalette className='text-cyan-400' />,
-  },
-  {
-    href: "/rd",
-    label: "R&D and Innovation",
-    icon: <FaSitemap className='text-cyan-400' />,
-  },
-];
+import { nav, services } from "@/data";
+import { FaBars, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -107,11 +43,11 @@ export function SiteHeader() {
                       {services.map((service) => (
                         <Link
                           key={service.label}
-                          href={service.href}
+                          href={`/services/${service.href}`}
                           className='rounded-lg p-3 transition-colors hover:bg-slate-800'
                         >
                           <div className='flex items-center gap-3'>
-                            {service.icon}
+                            <service.icon className='text-cyan-400' />
                             <div className='flex flex-col'>
                               <p className='font-semibold text-white'>
                                 {service.label}
@@ -166,7 +102,7 @@ export function SiteHeader() {
                           onClick={() => setOpen(false)}
                           className='flex items-center gap-3 rounded px-2 py-2 text-sm text-slate-400 hover:bg-slate-800 hover:text-white'
                         >
-                          {service.icon}
+                          <service.icon className='text-cyan-400' />
                           <span>{service.label}</span>
                         </Link>
                       ))}

@@ -114,6 +114,7 @@ export default function HomePage() {
                 title='Artificial Intelligence'
                 desc='ML models, analytics, and intelligent automation.'
                 image='/images/landing/ai-solution.webp'
+                href='/services/ai'
               />
             </motion.div>
             <motion.div
@@ -125,6 +126,7 @@ export default function HomePage() {
               <FeatureCard
                 title='Full-stack Web'
                 desc='Scalable APIs, realtime, and delightful UX.'
+                href='/services/web'
               />
             </motion.div>
             <motion.div
@@ -138,6 +140,7 @@ export default function HomePage() {
                 title='Desktop & Mobile'
                 desc='Cross-platform apps, native performance.'
                 image='/images/landing/customer-exp.jpg'
+                href='/services/mobile'
               />
             </motion.div>
             <motion.div
@@ -149,6 +152,7 @@ export default function HomePage() {
               <FeatureCard
                 title='Custom R&D'
                 desc='Rapid prototyping and PoC to production.'
+                href='/services/rd'
               />
             </motion.div>
           </div>
