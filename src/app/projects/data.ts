@@ -50,7 +50,7 @@ export const projects: Projects[] = [
   {
     id: 4,
     image: "/images/solutions/memorybox.png",
-    title: "MemoryBox AI",
+    title: "BrainBox AI",
     tagline:
       "An AI-powered MVP platform that helps businesses harness and visualize their data for smarter decisions.",
     category: "AI",
