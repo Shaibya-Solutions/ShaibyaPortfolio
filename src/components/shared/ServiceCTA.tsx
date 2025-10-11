@@ -9,21 +9,33 @@ interface ServiceCTAProps {
   description?: string;
   buttonText?: string;
   buttonAction?: () => void;
-  colorTheme?: "yellow" | "cyan" | "indigo" | "purple" | "green" | "pink" | "rose";
+  colorTheme?:
+    | "yellow"
+    | "cyan"
+    | "indigo"
+    | "purple"
+    | "green"
+    | "pink"
+    | "rose";
 }
 
 export const ServiceCTA: React.FC<ServiceCTAProps> = ({
   title = "Ready to build something amazing?",
   description = "Let's discuss your project and turn your vision into reality.",
   buttonText = "Get Started",
-  buttonAction = () => console.log("CTA Button Clicked"),
+  buttonAction = () =>
+    window.open(
+      "https://wa.me/917498341146?text=Hi!%20I'm%20interested%20in%20your%20services.",
+      "_blank"
+    ),
   colorTheme = "cyan",
 }) => {
   // Color theme configurations
   const themeConfig = {
     yellow: {
       gradient: "from-slate-900 to-slate-950",
-      button: "bg-yellow-600 hover:bg-yellow-500 text-slate-950 shadow-yellow-900/50",
+      button:
+        "bg-yellow-600 hover:bg-yellow-500 text-slate-950 shadow-yellow-900/50",
       border: "border-slate-800/60",
     },
     cyan: {
@@ -33,12 +45,14 @@ export const ServiceCTA: React.FC<ServiceCTAProps> = ({
     },
     indigo: {
       gradient: "from-slate-900 to-slate-950",
-      button: "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-900/50",
+      button:
+        "bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-900/50",
       border: "border-slate-800/60",
     },
     purple: {
       gradient: "from-slate-900 to-slate-950",
-      button: "bg-purple-600 hover:bg-purple-500 text-white shadow-purple-900/50",
+      button:
+        "bg-purple-600 hover:bg-purple-500 text-white shadow-purple-900/50",
       border: "border-slate-800/60",
     },
     green: {

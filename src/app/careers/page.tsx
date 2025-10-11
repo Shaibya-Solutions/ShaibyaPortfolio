@@ -180,7 +180,7 @@ export default function CareersPage() {
             projects.
           </p>
           <Link
-            href="#"
+            href="mailto:shaibyasolutions@gmail.com?cc=shaibyadevs@gmail.com&subject=Internships"
             className="mt-8 inline-block px-8 py-4 bg-cyan-500 text-black font-bold rounded-lg shadow-lg hover:bg-cyan-400 transition transform hover:scale-105"
           >
             Apply Now
@@ -245,7 +245,7 @@ export default function CareersPage() {
             suitable opportunity arises.
           </p>
           <a
-            href="mailto:contact@yourcompany.com" // Update with your email
+            href="mailto:shaibyasolutions@gmail.com?cc=shaibyadevs@gmail.com&subject=Enquiry"
             className="mt-4 inline-block text-lg font-semibold text-cyan-400 hover:text-cyan-500 transition"
           >
             Email Us →
