@@ -36,8 +36,8 @@ export function SiteHeader() {
               </Link>
               {item.hasDropdown && (
                 <>
-                  <div className='absolute left-1/2 top-full hidden w-96 -translate-x-1/2 transform rounded-2xl border border-slate-800 bg-slate-950/80 px-4 pb-4 pt-8 shadow-lg backdrop-blur-lg group-hover:block'>
-                    <div className='grid grid-cols-2 gap-2'>
+                  <div className='absolute left-40 top-5 hidden w-[720px] -translate-x-1/2 transform rounded-2xl border border-slate-800 bg-slate-950/80 px-4 pb-4 pt-8 shadow-lg backdrop-blur-lg group-hover:block'>
+                    <div className='grid grid-cols-4 gap-2'>
                       {services.map((service) => (
                         <Link
                           key={service.label}

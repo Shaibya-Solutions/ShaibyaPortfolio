@@ -131,7 +131,7 @@ export const services = [
   },
   {
     href: "/rd",
-    label: "R&D and Innovation",
+    label: "R&D",
     icon: FaSitemap,
   },
 ];
