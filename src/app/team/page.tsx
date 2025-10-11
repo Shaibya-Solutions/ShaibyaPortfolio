@@ -361,7 +361,7 @@ export default function NightCrewPage() {
               open to new projects and brilliant minds. Let's build together.
             </p>
             <Link
-              href='/contact' // Update this link to your contact page
+              href='https://wa.me/917498341146?text=Hi!%20I%20want%20to%20know%20more%20about%20your%20services.' // Update this link to your contact page
             >
               <button className='cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 to-white px-6 py-3 text-lg font-semibold text-slate-950 shadow-lg transition hover:from-cyan-400 hover:to-white/80'>
                 Connect with Us →

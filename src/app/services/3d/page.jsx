@@ -56,9 +56,9 @@ const ModelViewer = ({ url, width, height }) => {
           "--progress-bar-color": "#06B6D4",
         }} // Cast to assert CSS properties
       >
-        <div slot='progress-bar' className='progress-bar-slot'>
+        {/* <div slot='progress-bar' className='progress-bar-slot'>
           <div className='text-white text-xs p-1'>Loading 3D Model...</div>
-        </div>
+        </div> */}
       </model-viewer>
     </div>
   );
