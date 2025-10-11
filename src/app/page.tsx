@@ -22,19 +22,15 @@ export default function HomePage() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // Only activate animation when hero enters viewport
           if (entry.isIntersecting) {
             setIsHeroInView(true);
           } else {
-            // Deactivate when out of view to save resources
             setIsHeroInView(false);
           }
         });
       },
       {
-        // Trigger when 20% of the hero is visible
         threshold: 0.2,
-        // Add margin to trigger slightly before entering viewport
         rootMargin: "50px",
       }
     );
@@ -53,7 +49,7 @@ export default function HomePage() {
   return (
     <main className='bg-slate-950 text-slate-100 scroll-smooth'>
       <SiteHeader />
-      {/* Hero Section */}
+      {/* Hero Section - Made Responsive */}
       <motion.div
         ref={heroRef}
         initial={{ opacity: 0 }}
@@ -61,7 +57,7 @@ export default function HomePage() {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <section className='relative w-full h-[600px] mt-10 flex flex-col items-center justify-center gap-8 '>
+        <section className='relative w-full h-[500px] sm:h-[600px] mt-6 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:gap-8 px-4'>
           {/* Threads background only renders when hero is in view */}
           {isHeroInView && (
             <Threads
@@ -73,12 +69,12 @@ export default function HomePage() {
             />
           )}
 
-          <div className='relative z-10 flex flex-col items-center justify-center text-center'>
-            <h1 className='text-4xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent md:text-7xl lg:text-8xl'>
+          <div className='relative z-10 flex flex-col items-center justify-center text-center px-4'>
+            <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-bold leading-tight bg-gradient-to-t from-white to-[var(--secondary)] bg-clip-text text-transparent'>
               Ahead of the Curve,
               <br /> Always
             </h1>
-            <p className='mt-4 max-w-prose text-slate-300 max-w-3xl'>
+            <p className='mt-3 sm:mt-4 max-w-[90%] sm:max-w-prose md:max-w-3xl text-sm sm:text-base text-slate-300'>
               We craft AI-powered platforms, robust full-stack web apps, and
               polished desktop/mobile experiences.
             </p>
@@ -91,24 +87,26 @@ export default function HomePage() {
         </section>
       </motion.div>
 
-      {/* What we offer section */}
+      {/* What we offer section - Made Responsive */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <Section className='mt-14 max-w-7xl'>
-          <div className='mb-12 text-center'>
-            <h2 className='text-4xl font-semibold text-white'>What We Offer</h2>
+        <Section className='mt-8 sm:mt-14 max-w-7xl px-4'>
+          <div className='mb-8 sm:mb-12 text-center'>
+            <h2 className='text-3xl sm:text-4xl font-semibold text-white'>
+              What We Offer
+            </h2>
           </div>
-          <div className='sm:mx-20 md:mx-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid-rows-2 justify-center gap-6'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6'>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className='row-span-2'
+              className='sm:row-span-2'
             >
               <FeatureCard
                 title='Artificial Intelligence'
@@ -134,7 +132,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className='row-span-2'
+              className='sm:row-span-2'
             >
               <FeatureCard
                 title='Desktop & Mobile'

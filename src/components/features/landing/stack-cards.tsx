@@ -1,11 +1,7 @@
 "use client";
 import { useRef } from "react";
-// import { motion, useScroll, useTransform } from "framer-motion";
 import { projects } from "@/data";
-// import styled from "styled-components";
-import Image from "next/image";
 import CardSwap from "@/components/CardSwap";
-// import Squares from "@/components/Squares";
 
 export default function StackCaseStudies() {
   const containerRef = useRef(null);
@@ -13,13 +9,13 @@ export default function StackCaseStudies() {
   return (
     <section
       ref={containerRef}
-      className='relative mt-8 mb-24 bg-black text-white'
+      className='relative mt-8 mb-16 sm:mb-32 bg-black text-white px-4'
     >
-      {/* <Squares direction='diagonal' className='absolute inset-0' /> */}
-      <div className='pt-8 min-h-screen flex flex-col items-center justify-center'>
-        <div className='w-full relative '>
-          <div className='relative h-[520px]'>
-            <h2 className='text-4xl my-10 max-w-6xl mx-auto'>
+      <div className='pt-6 sm:pt-8 min-h-screen flex flex-col items-center justify-center'>
+        <div className='w-full relative'>
+          {/* Desktop View */}
+          <div className='hidden lg:block relative h-[560px]'>
+            <h2 className='px-8 text-3xl sm:text-4xl my-8 sm:my-0 lg:my-0 max-w-6xl mx-auto text-center lg:text-start'>
               Our <span className='font-bold'>Projects</span>
             </h2>
             <CardSwap
@@ -31,26 +27,10 @@ export default function StackCaseStudies() {
               height={480}
             >
               {projects.map((project, i) => {
-                // // Slice of scroll for each card
-                // const start = i / projects.length;
-                // const end = (i + 1) / projects.length;
-
-                // const y = useTransform(scrollYProgress, [start, end], [70, 0]);
-                // const opacity = useTransform(
-                //   scrollYProgress,
-                //   [start, end],
-                //   [0, 1]
-                // );
-                // const scale = useTransform(
-                //   scrollYProgress,
-                //   [start, end],
-                //   [0.9, 1]
-                // );
-
                 return (
                   <div
                     key={project.title}
-                    className='absolute inset-0 bg-gradient-to-b from-[#060a35] to-black border-2 border-[#0a1054] rounded-3xl shadow-lg p-12 flex flex-col gap-4 justify-between items-start'
+                    className='absolute top-40 inset-0 bg-gradient-to-b from-[#060a35] to-black border-2 border-[#0a1054] rounded-3xl shadow-lg p-12 flex flex-col gap-4 justify-between items-start'
                   >
                     <h3 className='text-3xl max-w-lg text-start font-semibold'>
                       {project.title}
@@ -79,66 +59,39 @@ export default function StackCaseStudies() {
             </CardSwap>
           </div>
 
-          {/* <motion.div
-            style={{ opacity: useTransform(scrollYProgress, [0, 0.2], [0, 1]) }}
-            className='mt-0 w-full'
-          >
-            <CardSwap easing="elastic" onCardClick={undefined} pauseOnHover={true} delay={3000}>
-              {projects.map((project, i) => (
-                <Image
-                  key={i}
-                  src={project.image}
-                  alt={project.title}
-                  width={600}
-                  height={400}
-                  priority={i === 0}
-                  quality={100}
-                  className='absolute inset-0 top-10 w-full h-full object-cover rounded-3xl'
-                />
-              ))}
-            </CardSwap>
-          </motion.div> */}
-
-          {/* <div className='flex flex-col gap-8 mt-20 w-full items-center'>
+          {/* Mobile View */}
+          <div className='lg:hidden flex flex-col p-2 sm:p-8 gap-6 mt-8 w-full'>
+            <h2 className='text-2xl sm:text-3xl font-bold text-center mb-4'>
+              Our Projects
+            </h2>
             {projects.map((project, i) => (
               <div
                 key={i}
-                className='w-full flex gap-8 flex-col border-2 min-h-[200px] text-start px-8 py-4'
+                className='w-full flex flex-col gap-8 bg-gradient-to-b from-[#060a35] to-black border-2 border-[#0a1054] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-lg'
               >
-                <h3 className='mt-4 text-3xl font-semibold'>{project.title}</h3>
-                <p className='mt-1 text-lg text-slate-300'>
+                <h3 className='text-xl sm:text-2xl font-semibold text-white'>
+                  {project.title}
+                </h3>
+                <p className='text-sm sm:text-base text-slate-300 leading-relaxed'>
                   {project.description}
                 </p>
+                <div className='flex flex-wrap gap-4 mt-2'>
+                  {project.stats.map((stat, idx) => (
+                    <div key={idx} className='flex flex-col'>
+                      <span className='text-2xl sm:text-3xl font-bold text-white'>
+                        {stat.value}
+                      </span>
+                      <span className='text-xs sm:text-sm text-gray-400'>
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
-          </div> */}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
-// const StyledComponent = styled.div`
-//   .stack-cards-back-one {
-//     position: absolute;
-//     top: -20px;
-//     left: 20px;
-//     width: 95%;
-//     height: 100%;
-//     border: 2px solid #0a1054;
-//     background: #060a35;
-//     border-radius: 20px;
-//     z-index: -1;
-//   }
-//   .stack-cards-back-two {
-//     position: absolute;
-//     top: -40px;
-//     left: 40px;
-//     width: 90%;
-//     height: 100%;
-//     background: #060a35;
-//     border: 2px solid #0a1054;
-//     border-radius: 20px;
-//     z-index: -2;
-//   }
-// `;

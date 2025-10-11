@@ -9,7 +9,7 @@ import {
 } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa"; // Ensure react-icons is installed
+import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 import { useRef } from "react";
 import { Section } from "@/components/shared/section";
 
@@ -32,13 +32,11 @@ export function AppShowcaseCTA() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
-  // Parallax scroll for the phones
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"], // Trigger when component enters and leaves viewport
+    offset: ["start end", "end start"],
   });
 
-  // Example: slight rotation and Y movement as you scroll
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [-10, 0, 10]);
   const rotateY = useTransform(scrollYProgress, [0, 0.5, 1], [-5, 0, 5]);
   const translateY = useTransform(scrollYProgress, [0, 0.5, 1], [-50, 0, 50]);
@@ -46,19 +44,19 @@ export function AppShowcaseCTA() {
   return (
     <Section
       ref={ref}
-      className='relative overflow-hidden py-20 lg:py-32 rounded-b-3xl shadow-2xl'
+      className='relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 rounded-b-3xl shadow-2xl px-4'
     >
       {/* Background Grid/Pattern */}
       <div className='absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5'></div>
 
-      <div className='flex flex-col lg:flex-row items-center justify-between gap-12 max-w-7xl mx-auto relative z-10'>
+      <div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 max-w-7xl mx-auto relative z-10'>
         {/* Left Section: Text and Buttons */}
-        <div className='w-full lg:w-1/2 text-center lg:text-left px-4'>
+        <div className='w-full lg:w-1/2 text-center lg:text-left'>
           <motion.h2
             variants={textVariants}
             initial='hidden'
             animate={isInView ? "visible" : "hidden"}
-            className='text-5xl lg:text-6xl font-extrabold text-white mb-6 leading-tight'
+            className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 sm:mb-6 leading-tight'
           >
             <span className='bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-cyan-400'>
               Let's Build Your First App!
@@ -69,7 +67,7 @@ export function AppShowcaseCTA() {
             initial='hidden'
             animate={isInView ? "visible" : "hidden"}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className='text-lg text-slate-300 mb-10 max-w-prose lg:max-w-none mx-auto lg:mx-0'
+            className='text-base sm:text-lg text-slate-300 mb-6 sm:mb-10 max-w-prose mx-auto lg:mx-0'
           >
             If you're looking to create an innovative app for your startup, book
             a free consultation today. Let's design and develop your vision
@@ -80,38 +78,38 @@ export function AppShowcaseCTA() {
             initial='hidden'
             animate={isInView ? "visible" : "hidden"}
             transition={{ staggerChildren: 0.2, delay: 0.4 }}
-            className='flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-5'
+            className='flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 sm:gap-5'
           >
-            <motion.div variants={buttonVariants}>
+            <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
               <Link
-                href='https://wa.me/YOUR_WHATSAPP_NUMBER' // Replace with your WhatsApp number
+                href='https://wa.me/YOUR_WHATSAPP_NUMBER'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='flex items-center gap-3 px-6 py-3 bg-[#25D366] text-white font-bold rounded-lg shadow-md hover:bg-[#1DA851] transition-all duration-300 transform hover:scale-105'
+                className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#25D366] text-white font-bold rounded-lg shadow-md hover:bg-[#1DA851] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
               >
-                <FaWhatsapp size={24} />
-                <span>Message us on WhatsApp</span>
+                <FaWhatsapp size={20} className='sm:w-6 sm:h-6' />
+                <span className='whitespace-nowrap'>Message on WhatsApp</span>
               </Link>
             </motion.div>
-            <motion.div variants={buttonVariants}>
+            <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
               <Link
-                href='https://instagram.com/YOUR_INSTAGRAM_HANDLE' // Replace with your Instagram handle
+                href='https://instagram.com/YOUR_INSTAGRAM_HANDLE'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='flex items-center gap-3 px-6 py-3 bg-[#E1306C] text-white font-bold rounded-lg shadow-md hover:bg-[#B72354] transition-all duration-300 transform hover:scale-105'
+                className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#E1306C] text-white font-bold rounded-lg shadow-md hover:bg-[#B72354] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
               >
-                <FaInstagram size={24} />
-                <span>Message us on Instagram</span>
+                <FaInstagram size={20} className='sm:w-6 sm:h-6' />
+                <span className='whitespace-nowrap'>Message on Instagram</span>
               </Link>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Right Section: Mobile App Showcase */}
+        {/* Right Section: Mobile App Showcase - Hidden on mobile, visible on lg+ */}
         <motion.div
           style={{
-            perspective: "1000px", // Apply perspective to the parent for 3D effect
-            transformStyle: "preserve-3d", // Important for child transforms
+            perspective: "1000px",
+            transformStyle: "preserve-3d",
             rotateX,
             rotateY,
             y: translateY,
@@ -119,7 +117,7 @@ export function AppShowcaseCTA() {
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className='w-full lg:w-1/2 flex justify-center relative h-[400px] md:h-[500px] lg:h-[600px] mt-12 lg:mt-0'
+          className='hidden lg:flex w-full lg:w-1/2 justify-center relative h-[400px] md:h-[500px] lg:h-[600px]'
         >
           {/* Main (Center) Phone */}
           <motion.div
@@ -127,7 +125,7 @@ export function AppShowcaseCTA() {
             style={{ x: 0, y: 0, rotateZ: 0 }}
           >
             <Image
-              src='/images/landing/mobile3.png' // Replace with your main app screenshot
+              src='/images/landing/mobile3.png'
               alt='Main App Screenshot'
               width={300}
               height={600}
@@ -135,13 +133,13 @@ export function AppShowcaseCTA() {
             />
           </motion.div>
 
-          {/* Left Phone (Slightly behind, tilted) */}
+          {/* Left Phone */}
           <motion.div
             className='absolute h-[85%] w-auto z-10'
             style={{ x: "-60%", y: "10%", rotateZ: -10 }}
           >
             <Image
-              src='/images/landing/mobile1.png' // Replace with your left app screenshot
+              src='/images/landing/mobile1.png'
               alt='App Screenshot 2'
               width={250}
               height={500}
@@ -149,13 +147,13 @@ export function AppShowcaseCTA() {
             />
           </motion.div>
 
-          {/* Right Phone (Slightly behind, tilted) */}
+          {/* Right Phone */}
           <motion.div
             className='absolute h-[85%] w-auto z-10'
             style={{ x: "60%", y: "10%", rotateZ: 10 }}
           >
             <Image
-              src='/images/landing/mobile2.png' // Replace with your right app screenshot
+              src='/images/landing/mobile2.png'
               alt='App Screenshot 3'
               width={250}
               height={500}

@@ -10,7 +10,7 @@ const features = [
   "AI-enabled growth that delivers measurable results",
   "Trusted by global clients across multiple industries",
   "End-to-end services – from product design to digital marketing",
-  "Ahead of the curve, always – future-ready solutions for tomorrow’s challenges",
+  "Ahead of the curve, always – future-ready solutions for tomorrow's challenges",
 ];
 
 export default function WhyShaibya() {
@@ -36,7 +36,7 @@ export default function WhyShaibya() {
   };
 
   return (
-    <section className='bg-[#020617] py-20 px-6 md:px-12 lg:px-20 relative overflow-hidden'>
+    <section className='bg-[#020617] py-12 sm:py-16 md:py-20 px-4 sm:px-6 md:px-12 lg:px-20 relative overflow-hidden'>
       {/* Optional futuristic background */}
       <div className='absolute inset-0 bg-gradient-to-tr from-[#0f172a] to-[#1e293b] opacity-20 -z-10'></div>
       <div className='max-w-6xl mx-auto text-center'>
@@ -45,7 +45,7 @@ export default function WhyShaibya() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1 }}
           ref={ref}
-          className='text-4xl md:text-5xl font-bold text-white mb-12'
+          className='text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-8 sm:mb-12'
         >
           🌟 Why Shaibya Solutions?
         </motion.h2>
@@ -54,19 +54,21 @@ export default function WhyShaibya() {
           variants={container}
           initial='hidden'
           animate={inView ? "visible" : "hidden"}
-          className='grid gap-6 md:grid-cols-2'
+          className='grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2'
         >
           {features.map((feature, idx) => (
             <motion.div
               key={idx}
               variants={item}
-              className='flex items-start gap-4 p-6 bg-gradient-to-r from-[#1e293b]/30 to-[#0f172a]/30 rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105'
+              className='flex items-start gap-3 sm:gap-4 p-4 sm:p-6 bg-gradient-to-r from-[#1e293b]/30 to-[#0f172a]/30 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-transform hover:scale-105'
             >
               <BsCheckCircleFill
-                size={28}
-                className='text-yellow-400 mt-1 flex-shrink-0'
+                size={24}
+                className='text-yellow-400 mt-0.5 sm:mt-1 flex-shrink-0'
               />
-              <p className='text-white font-medium text-lg'>{feature}</p>
+              <p className='text-white font-medium text-sm sm:text-base md:text-lg text-left'>
+                {feature}
+              </p>
             </motion.div>
           ))}
         </motion.div>
@@ -82,32 +84,30 @@ interface Dot {
   x: number;
   y: number;
   size: number;
-  vx: number; // velocity x
-  vy: number; // velocity y
+  vx: number;
+  vy: number;
 }
 
 export function FloatingDots() {
   const [dots, setDots] = useState<Dot[]>([]);
   const animationRef = useRef<number | null>(null);
 
-  // Generate dots
   useEffect(() => {
-    const count = 100; // more dots
+    const count = window.innerWidth < 768 ? 50 : 100; // Fewer dots on mobile
     const width = window.innerWidth;
     const height = window.innerHeight;
 
     const newDots: Dot[] = Array.from({ length: count }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 4 + 2, // size 2–6px
-      vx: (Math.random() - 0.5) * 1.5, // speed x
-      vy: (Math.random() - 0.5) * 1.5, // speed y
+      size: Math.random() * 3 + 1.5, // Smaller dots on mobile
+      vx: (Math.random() - 0.5) * 1.5,
+      vy: (Math.random() - 0.5) * 1.5,
     }));
 
     setDots(newDots);
   }, []);
 
-  // Animate dots using requestAnimationFrame
   useEffect(() => {
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -118,7 +118,6 @@ export function FloatingDots() {
           let newX = dot.x + dot.vx;
           let newY = dot.y + dot.vy;
 
-          // bounce off edges
           if (newX < 0 || newX > width) dot.vx *= -1;
           if (newY < 0 || newY > height) dot.vy *= -1;
 
