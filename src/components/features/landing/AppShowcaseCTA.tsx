@@ -44,30 +44,30 @@ export function AppShowcaseCTA() {
   return (
     <Section
       ref={ref}
-      className='relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 rounded-b-3xl shadow-2xl px-4'
+      className="relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 rounded-b-3xl shadow-2xl px-4"
     >
       {/* Background Grid/Pattern */}
-      <div className='absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5'></div>
+      <div className="absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5"></div>
 
-      <div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 max-w-7xl mx-auto relative z-10'>
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 max-w-7xl mx-auto relative z-10">
         {/* Left Section: Text and Buttons */}
-        <div className='w-full lg:w-1/2 text-center lg:text-left'>
+        <div className="w-full lg:w-1/2 text-center lg:text-left">
           <motion.h2
             variants={textVariants}
-            initial='hidden'
+            initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 sm:mb-6 leading-tight'
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 sm:mb-6 leading-tight"
           >
-            <span className='bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-cyan-400'>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-cyan-400">
               Let's Build Your First App!
             </span>
           </motion.h2>
           <motion.p
             variants={textVariants}
-            initial='hidden'
+            initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             transition={{ delay: 0.2, duration: 0.6 }}
-            className='text-base sm:text-lg text-slate-300 mb-6 sm:mb-10 max-w-prose mx-auto lg:mx-0'
+            className="text-base sm:text-lg text-slate-300 mb-6 sm:mb-10 max-w-prose mx-auto lg:mx-0"
           >
             If you're looking to create an innovative app for your startup, book
             a free consultation today. Let's design and develop your vision
@@ -75,31 +75,31 @@ export function AppShowcaseCTA() {
           </motion.p>
 
           <motion.div
-            initial='hidden'
+            initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             transition={{ staggerChildren: 0.2, delay: 0.4 }}
-            className='flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 sm:gap-5'
+            className="flex flex-col sm:flex-row justify-center lg:justify-start items-center gap-4 sm:gap-5"
           >
-            <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
+            <motion.div variants={buttonVariants} className="w-full sm:w-auto">
               <Link
-                href='https://wa.me/YOUR_WHATSAPP_NUMBER'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#25D366] text-white font-bold rounded-lg shadow-md hover:bg-[#1DA851] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
+                href="https://wa.me/917498341146?text=Hi!%20I'm%20interested%20in%20your%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#25D366] text-white font-bold rounded-lg shadow-md hover:bg-[#1DA851] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base"
               >
-                <FaWhatsapp size={20} className='sm:w-6 sm:h-6' />
-                <span className='whitespace-nowrap'>Message on WhatsApp</span>
+                <FaWhatsapp size={20} className="sm:w-6 sm:h-6" />
+                <span className="whitespace-nowrap">Message on WhatsApp</span>
               </Link>
             </motion.div>
-            <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
+            <motion.div variants={buttonVariants} className="w-full sm:w-auto">
               <Link
-                href='https://instagram.com/YOUR_INSTAGRAM_HANDLE'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#E1306C] text-white font-bold rounded-lg shadow-md hover:bg-[#B72354] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
+                href="https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#E1306C] text-white font-bold rounded-lg shadow-md hover:bg-[#B72354] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base"
               >
-                <FaInstagram size={20} className='sm:w-6 sm:h-6' />
-                <span className='whitespace-nowrap'>Message on Instagram</span>
+                <FaInstagram size={20} className="sm:w-6 sm:h-6" />
+                <span className="whitespace-nowrap">Message on Instagram</span>
               </Link>
             </motion.div>
           </motion.div>
@@ -117,47 +117,47 @@ export function AppShowcaseCTA() {
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className='hidden lg:flex w-full lg:w-1/2 justify-center relative h-[400px] md:h-[500px] lg:h-[600px]'
+          className="hidden lg:flex w-full lg:w-1/2 justify-center relative h-[400px] md:h-[500px] lg:h-[600px]"
         >
           {/* Main (Center) Phone */}
           <motion.div
-            className='absolute h-full w-auto z-20'
+            className="absolute h-full w-auto z-20"
             style={{ x: 0, y: 0, rotateZ: 0 }}
           >
             <Image
-              src='/images/landing/mobile3.png'
-              alt='Main App Screenshot'
+              src="/images/landing/mobile3.png"
+              alt="Main App Screenshot"
               width={300}
               height={600}
-              className='rounded-[3rem] shadow-2xl border-4 border-gray-700'
+              className="rounded-[3rem] shadow-2xl border-4 border-gray-700"
             />
           </motion.div>
 
           {/* Left Phone */}
           <motion.div
-            className='absolute h-[85%] w-auto z-10'
+            className="absolute h-[85%] w-auto z-10"
             style={{ x: "-60%", y: "10%", rotateZ: -10 }}
           >
             <Image
-              src='/images/landing/mobile1.png'
-              alt='App Screenshot 2'
+              src="/images/landing/mobile1.png"
+              alt="App Screenshot 2"
               width={250}
               height={500}
-              className='rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80'
+              className="rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80"
             />
           </motion.div>
 
           {/* Right Phone */}
           <motion.div
-            className='absolute h-[85%] w-auto z-10'
+            className="absolute h-[85%] w-auto z-10"
             style={{ x: "60%", y: "10%", rotateZ: 10 }}
           >
             <Image
-              src='/images/landing/mobile2.png'
-              alt='App Screenshot 3'
+              src="/images/landing/mobile2.png"
+              alt="App Screenshot 3"
               width={250}
               height={500}
-              className='rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80'
+              className="rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80"
             />
           </motion.div>
         </motion.div>
