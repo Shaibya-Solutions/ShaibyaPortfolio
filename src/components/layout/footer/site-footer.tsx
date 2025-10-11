@@ -1,7 +1,7 @@
 // components/site-footer.tsx
 "use client";
 import Link from "next/link";
-import { BsTwitterX } from "react-icons/bs";
+// import { BsTwitterX } from "react-icons/bs";
 import {
   FaPhone,
   FaLinkedin,
@@ -12,6 +12,7 @@ import {
 import { IoMail } from "react-icons/io5";
 import { motion, useInView, Variants } from "framer-motion";
 import { useRef } from "react";
+import { services, products } from "@/data";
 
 const footerVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
@@ -40,46 +41,46 @@ export function SiteFooter() {
     <motion.footer
       ref={ref}
       variants={footerVariants}
-      initial="hidden"
+      initial='hidden'
       animate={isInView ? "visible" : "hidden"}
-      className="bg-slate-900 border-t border-slate-700 relative overflow-hidden"
+      className='bg-slate-900 border-t border-slate-700 relative overflow-hidden'
     >
       {/* Main Footer Links & Info */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-12 pt-16 grid grid-cols-2 md:grid-cols-5 gap-y-10 text-gray-400">
+      <div className='relative z-10 max-w-7xl mx-auto px-6 md:px-12 pb-12 pt-16 grid grid-cols-2 md:grid-cols-5 gap-y-10 text-gray-400'>
         {/* Company Identity */}
         <motion.div
           variants={itemVariants}
-          className="col-span-2 md:col-span-1"
+          className='col-span-2 md:col-span-1'
         >
-          <Link href="/" className="text-2xl font-bold text-white mb-4 block">
+          <Link href='/' className='text-2xl font-bold text-white mb-4 block'>
             Shaibya Solutions
           </Link>
-          <p className="text-sm">AI-powered development from Nagpur to USA.</p>
-          <div className="flex space-x-4 mt-4 text-xl">
+          <p className='text-sm'>AI-powered development from Nagpur to USA.</p>
+          <div className='flex space-x-4 mt-4 text-xl'>
             <a
-              href="https://www.linkedin.com/company/shaibyasolutions/about/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition"
-              aria-label="LinkedIn"
+              href='https://www.linkedin.com/company/shaibyasolutions/about/'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='hover:text-cyan-400 transition'
+              aria-label='LinkedIn'
             >
               <FaLinkedin />
             </a>
             <a
-              href="https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition"
-              aria-label="Instagram"
+              href='https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='hover:text-cyan-400 transition'
+              aria-label='Instagram'
             >
               <FaInstagram />
             </a>
             <a
-              href="https://medium.com/@shaibyasolutions"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-cyan-400 transition"
-              aria-label="Medium"
+              href='https://medium.com/@shaibyasolutions'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='hover:text-cyan-400 transition'
+              aria-label='Medium'
             >
               <FaMedium />
             </a>
@@ -88,103 +89,88 @@ export function SiteFooter() {
 
         {/* Products */}
         <motion.div variants={itemVariants}>
-          <h3 className="text-lg font-semibold text-white mb-4">Products</h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                Hologbox
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                Hologbox Mini
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                GlamBOT
-              </Link>
-            </li>
+          <h3 className='text-lg font-semibold text-white mb-4'>Products</h3>
+          <ul className='space-y-3 text-sm'>
+            {products.map((product) => (
+              <li key={product.label}>
+                <Link
+                  href={product.href}
+                  className='hover:text-cyan-400 transition'
+                >
+                  {product.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </motion.div>
 
         {/* Services */}
         <motion.div variants={itemVariants}>
-          <h3 className="text-lg font-semibold text-white mb-4">Services</h3>
-          <ul className="space-y-3 text-sm">
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                Product development
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                CGI & 3D Animation
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                AI Solutions
-              </Link>
-            </li>
-            <li>
-              <Link href="#" className="hover:text-cyan-400 transition">
-                Cybersecurity
-              </Link>
-            </li>
+          <h3 className='text-lg font-semibold text-white mb-4'>Services</h3>
+          <ul className='space-y-3 text-sm'>
+            {services.map((service) => (
+              <li key={service.label}>
+                <Link
+                  href={service.href}
+                  className='hover:text-cyan-400 transition'
+                >
+                  {service.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </motion.div>
 
         {/* Contact */}
         <motion.div variants={itemVariants}>
-          <h3 className="text-lg font-semibold text-white mb-4">Contact</h3>
-          <div className="space-y-3 text-sm">
+          <h3 className='text-lg font-semibold text-white mb-4'>Contact</h3>
+          <div className='space-y-3 text-sm'>
             <a
-              href="tel:+919833704986"
-              className="flex items-center gap-2 hover:text-cyan-400 transition"
+              href='tel:+919833704986'
+              className='flex items-center gap-2 hover:text-cyan-400 transition'
             >
-              <FaPhone className="text-cyan-500/80" /> +91 7498341146
+              <FaPhone className='text-cyan-500/80' /> +91 7498341146
             </a>
             <a
-              href="mailto:shaibyasolutions@gmail.com?cc=shaibyadevs@gmail.com&subject=Enquiry"
-              className="flex items-center gap-2 hover:text-cyan-400 transition"
+              href='mailto:shaibyasolutions@gmail.com?cc=shaibyadevs@gmail.com&subject=Enquiry'
+              className='flex items-center gap-2 hover:text-cyan-400 transition'
             >
-              <IoMail className="text-cyan-500/80" /> shaibyasolutions@gmail.com
+              <IoMail className='text-cyan-500/80' /> shaibyasolutions@gmail.com
             </a>
           </div>
         </motion.div>
 
         {/* Locations */}
         <motion.div variants={itemVariants}>
-          <h3 className="text-lg font-semibold text-white mb-4">Locations</h3>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-cyan-500/80" /> Texas (USA)
+          <h3 className='text-lg font-semibold text-white mb-4'>Locations</h3>
+          <ul className='space-y-3 text-sm'>
+            <li className='flex items-center gap-2'>
+              <FaMapMarkerAlt className='text-cyan-500/80' /> Texas (USA)
             </li>
-            <li className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-cyan-500/80" /> Nagpur (India)
+            <li className='flex items-center gap-2'>
+              <FaMapMarkerAlt className='text-cyan-500/80' /> Nagpur (India)
             </li>
-            <li className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-cyan-500/80" /> Noida (India)
+            <li className='flex items-center gap-2'>
+              <FaMapMarkerAlt className='text-cyan-500/80' /> Noida (India)
             </li>
           </ul>
         </motion.div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-slate-700 py-6 px-6 text-xs text-gray-500">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
+      <div className='border-t border-slate-700 py-6 px-6 text-xs text-gray-500'>
+        <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0'>
           <div>
             © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
           </div>
-          <div className="flex space-x-6">
-            <Link href="#" className="hover:text-white transition">
+          <div className='flex space-x-6'>
+            <Link href='#' className='hover:text-white transition'>
               Blogs
             </Link>
-            <Link href="#" className="hover:text-white transition">
+            <Link href='#' className='hover:text-white transition'>
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-white transition">
+            <Link href='#' className='hover:text-white transition'>
               Terms & Conditions
             </Link>
           </div>

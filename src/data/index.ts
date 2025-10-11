@@ -136,6 +136,19 @@ export const services = [
   },
 ];
 
+export const products = [
+  {
+    href: "/portfolio#blog-coaltrack",
+    label: "CoalTrack AI",
+    icon: FaRobot,
+  },
+  {
+    href: "/portfolio#blog-fitmanage",
+    label: "FitManage 360",
+    icon: FaSitemap,
+  },
+];
+
 // export const trustedCompanies = [
 //   { src: "/logos/amazon-dark.svg", alt: "Amazon" },
 //   { src: "/logos/intel.svg", alt: "Intel" },
