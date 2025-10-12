@@ -3,7 +3,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root { /* Neutral: White */ /* Neutral: Dark Navy (text) */
+:root {
+  /* Neutral: White */ /* Neutral: Dark Navy (text) */
 
   --card: oklch(1 0 0); /* Neutral: White */
   --card-foreground: oklch(0.145 0 0); /* Neutral: Dark Navy */
@@ -24,7 +25,9 @@
   --accent-foreground: oklch(0.205 0 0);
 
   /* Keep palette within 5 colors by reusing existing hues */
-  --destructive: oklch(0.577 0.245 27.325); /* Reuse secondary for errors to avoid extra color */
+  --destructive: oklch(
+    0.577 0.245 27.325
+  ); /* Reuse secondary for errors to avoid extra color */
   --destructive-foreground: #ffffff;
 
   --border: oklch(0.922 0 0); /* Light border for light mode */
@@ -48,7 +51,9 @@
   --sidebar-accent: oklch(0.97 0 0); /* blue */
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0); /* blue */ --background: oklch(1 0 0); --foreground: oklch(0.145 0 0);
+  --sidebar-ring: oklch(0.708 0 0); /* blue */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {
@@ -67,7 +72,9 @@
   --secondary: oklch(0.269 0 0); /* Blue */
   --secondary-foreground: oklch(0.985 0 0);
 
-  --muted: oklch(0.269 0 0); /* Use a slate-like dark for subtle surfaces while staying within neutrals */
+  --muted: oklch(
+    0.269 0 0
+  ); /* Use a slate-like dark for subtle surfaces while staying within neutrals */
   --muted-foreground: oklch(0.708 0 0);
 
   --accent: oklch(0.269 0 0); /* Cyan */
@@ -76,8 +83,12 @@
   --destructive: oklch(0.704 0.191 22.216); /* Reuse secondary */
   --destructive-foreground: #ffffff;
 
-  --border: oklch(1 0 0 / 10%); /* Soft border on dark background (derived from dark navy) */
-  --input: oklch(1 0 0 / 15%); /* Slightly lighter than background for inputs, still within neutrals */
+  --border: oklch(
+    1 0 0 / 10%
+  ); /* Soft border on dark background (derived from dark navy) */
+  --input: oklch(
+    1 0 0 / 15%
+  ); /* Slightly lighter than background for inputs, still within neutrals */
   --ring: oklch(0.556 0 0); /* Cyan ring */
 
   --chart-1: oklch(0.488 0.243 264.376);
@@ -170,7 +181,8 @@ input:focus-visible {
 /* In your globals.css or a dedicated CSS module */
 
 .glowing-headline {
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.6), 0 0 20px rgba(0, 255, 255, 0.4),
+    0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 .glow-text {
@@ -189,3 +201,12 @@ input:focus-visible {
     text-shadow: 0 0 5px rgba(0, 255, 255, 0.8), 0 0 10px rgba(0, 255, 255, 0.6);
   }
 }
+
+/* html,
+body {
+  overflow-x: hidden;
+} */
+
+/* * {
+  outline: 1px solid rgba(255, 0, 0, 0.3);
+} */

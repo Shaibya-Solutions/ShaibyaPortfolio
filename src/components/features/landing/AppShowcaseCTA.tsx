@@ -44,12 +44,9 @@ export function AppShowcaseCTA() {
   return (
     <Section
       ref={ref}
-      className='relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-32 rounded-b-3xl shadow-2xl px-4'
+      className='relative overflow-hidden py-8 sm:py-16 md:py-20 lg:py-32 rounded-b-3xl shadow-2xl'
     >
-      {/* Background Grid/Pattern */}
-      <div className='absolute inset-0 bg-[url(/grid.svg)] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-5'></div>
-
-      <div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 max-w-7xl mx-auto relative z-10'>
+      <div className='flex flex-col lg:flex-row items-center justify-between gap-8 sm:gap-12 max-w-6xl mx-auto relative z-10'>
         {/* Left Section: Text and Buttons */}
         <div className='w-full lg:w-1/2 text-center lg:text-left'>
           <motion.h2
@@ -82,7 +79,7 @@ export function AppShowcaseCTA() {
           >
             <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
               <Link
-                href='https://wa.me/YOUR_WHATSAPP_NUMBER'
+                href='https://wa.me/917498341146?text=Hi!%20I%20want%20to%20know%20more%20about%20your%20services.'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#25D366] text-white font-bold rounded-lg shadow-md hover:bg-[#1DA851] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
@@ -93,7 +90,7 @@ export function AppShowcaseCTA() {
             </motion.div>
             <motion.div variants={buttonVariants} className='w-full sm:w-auto'>
               <Link
-                href='https://instagram.com/YOUR_INSTAGRAM_HANDLE'
+                href='https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 py-3 bg-[#E1306C] text-white font-bold rounded-lg shadow-md hover:bg-[#B72354] transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base'
@@ -105,7 +102,7 @@ export function AppShowcaseCTA() {
           </motion.div>
         </div>
 
-        {/* Right Section: Mobile App Showcase - Hidden on mobile, visible on lg+ */}
+        {/* Right Section: Mobile App Showcase - FIXED OVERFLOW */}
         <motion.div
           style={{
             perspective: "1000px",
@@ -117,49 +114,59 @@ export function AppShowcaseCTA() {
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className='hidden lg:flex w-full lg:w-1/2 justify-center relative h-[400px] md:h-[500px] lg:h-[600px]'
+          className='flex w-full lg:w-1/2 justify-center items-center relative h-[560px] sm:h-[640px] overflow-hidden'
         >
-          {/* Main (Center) Phone */}
-          <motion.div
-            className='absolute h-full w-auto z-20'
-            style={{ x: 0, y: 0, rotateZ: 0 }}
-          >
-            <Image
-              src='/images/landing/mobile3.png'
-              alt='Main App Screenshot'
-              width={300}
-              height={600}
-              className='rounded-[3rem] shadow-2xl border-4 border-gray-700'
-            />
-          </motion.div>
+          <div className='relative w-full max-w-[600px] h-full flex items-center justify-center'>
+            {/* Main (Center) Phone */}
+            <motion.div
+              className='absolute h-[75%] md:h-[85%] w-auto z-20'
+              style={{ x: 0, y: 0, rotateZ: 0 }}
+            >
+              <Image
+                src='/images/landing/mobile3.png'
+                alt='Main App Screenshot'
+                width={300}
+                height={600}
+                className='rounded-[3rem] h-full w-auto shadow-2xl border-4 border-gray-700'
+              />
+            </motion.div>
 
-          {/* Left Phone */}
-          <motion.div
-            className='absolute h-[85%] w-auto z-10'
-            style={{ x: "-60%", y: "10%", rotateZ: -10 }}
-          >
-            <Image
-              src='/images/landing/mobile1.png'
-              alt='App Screenshot 2'
-              width={250}
-              height={500}
-              className='rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80'
-            />
-          </motion.div>
+            {/* Left Phone - FIXED POSITIONING */}
+            <motion.div
+              className='absolute h-[65%] md:h-[75%] w-auto z-10'
+              style={{
+                left: "5%",
+                top: "15%",
+                rotateZ: -10,
+              }}
+            >
+              <Image
+                src='/images/landing/mobile1.png'
+                alt='App Screenshot 2'
+                width={250}
+                height={500}
+                className='rounded-[2.5rem] h-full w-auto shadow-xl border-4 border-gray-800 opacity-80'
+              />
+            </motion.div>
 
-          {/* Right Phone */}
-          <motion.div
-            className='absolute h-[85%] w-auto z-10'
-            style={{ x: "60%", y: "10%", rotateZ: 10 }}
-          >
-            <Image
-              src='/images/landing/mobile2.png'
-              alt='App Screenshot 3'
-              width={250}
-              height={500}
-              className='rounded-[2.5rem] shadow-xl border-4 border-gray-800 opacity-80'
-            />
-          </motion.div>
+            {/* Right Phone - FIXED POSITIONING */}
+            <motion.div
+              className='absolute h-[65%] md:h-[75%] w-auto z-10'
+              style={{
+                right: "5%",
+                top: "15%",
+                rotateZ: 10,
+              }}
+            >
+              <Image
+                src='/images/landing/mobile2.png'
+                alt='App Screenshot 3'
+                width={250}
+                height={500}
+                className='rounded-[2.5rem] h-full w-auto shadow-xl border-4 border-gray-800 opacity-80'
+              />
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </Section>

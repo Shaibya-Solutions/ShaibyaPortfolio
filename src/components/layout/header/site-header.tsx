@@ -14,9 +14,8 @@ export function SiteHeader() {
         <Link href='/' className='font-semibold tracking-tight text-white'>
           <span className='text-slate-200'>Shaibya</span>
           <span className='rounded bg-cyan-500/20 px-2 py-1 text-cyan-300'>
-            {" "}
             Solutions
-          </span>{" "}
+          </span>
         </Link>
 
         <nav className='hidden items-center gap-8 rounded-full py-3 px-6 shadow-md shadow-gray-500 md:flex'>
@@ -41,7 +40,7 @@ export function SiteHeader() {
                       {services.map((service) => (
                         <Link
                           key={service.label}
-                          href={`/services/${service.href}`}
+                          href={`/services${service.href}`}
                           className='rounded-lg p-3 transition-colors hover:bg-slate-800'
                         >
                           <div className='flex items-center gap-3'>
@@ -96,7 +95,7 @@ export function SiteHeader() {
                       {services.map((service) => (
                         <Link
                           key={service.href}
-                          href={service.href}
+                          href={`/services${service.href}`}
                           onClick={() => setOpen(false)}
                           className='flex items-center gap-3 rounded px-2 py-2 text-sm text-slate-400 hover:bg-slate-800 hover:text-white'
                         >
@@ -121,7 +120,7 @@ export function SiteHeader() {
             <Link
               href='/#contact'
               onClick={() => setOpen(false)}
-              className='mt-2 rounded-full bg-cyan-500 px-4 py-2 text-center text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
+              className='hidden sm:block mt-2 rounded-full bg-cyan-500 px-4 py-2 text-center text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
             >
               Get in Touch
             </Link>

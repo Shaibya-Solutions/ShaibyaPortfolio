@@ -123,14 +123,14 @@ export default function MobileDetailPage() {
           </div>
 
           {/* Mockup Placeholder (Centered/Floating in a subtle 3D-like perspective) */}
-          <div className='mt-12 flex justify-center items-end space-x-8'>
-            <div className='w-1/4 h-64 bg-slate-800 rounded-2xl border-4 border-slate-700 shadow-2xl transform rotate-[-5deg] translate-x-4 opacity-70'>
+          <div className='py-8 mt-12 flex justify-center items-end space-x-6 sm:space-x-8'>
+            <div className='sm:w-1/4 h-64 bg-slate-800 rounded-2xl border-4 border-slate-700 shadow-2xl transform rotate-[-5deg] translate-x-4 opacity-70'>
               <FaLaptopCode className='w-full h-full p-8 text-indigo-400/50' />
               <p className='text-xs text-center text-slate-500 mt-2'>
                 Desktop UX
               </p>
             </div>
-            <div className='w-1/4 h-80 bg-slate-800 rounded-3xl border-4 border-white shadow-2xl z-10'>
+            <div className='sm:w-1/4 h-80 bg-slate-800 rounded-3xl border-4 border-white shadow-2xl z-10'>
               <FaMobileAlt className='w-full h-full p-10 text-pink-400' />
               <p className='text-sm text-center text-white mt-2'>
                 Mobile Focus

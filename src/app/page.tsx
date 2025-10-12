@@ -94,9 +94,9 @@ export default function HomePage() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <Section className='mt-8 sm:mt-14 max-w-7xl px-4'>
+        <Section className='mt-8 sm:mt-14 border-2 border-gray-800 rounded-3xl p-6 sm:p-10 lg:p-16 shadow-lg shadow-black/20 bg-gradient-to-b from-slate-900/50 to-slate-900/30 backdrop-blur'>
           <div className='mb-8 sm:mb-12 text-center'>
-            <h2 className='text-3xl sm:text-4xl font-semibold text-white'>
+            <h2 className='text-2xl sm:text-4xl font-semibold text-white'>
               What We Offer
             </h2>
           </div>
@@ -156,6 +156,7 @@ export default function HomePage() {
           </div>
         </Section>
       </motion.section>
+      
       <VideoSection />
       <StackCaseStudies />
       <Testimonials />
