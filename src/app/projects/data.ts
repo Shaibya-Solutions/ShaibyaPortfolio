@@ -26,7 +26,7 @@ export const projects: Projects[] = [
       "A modern responsive website for VIMS Nagpur — integrating healthcare services, patient information, and appointment booking.",
     category: "Web",
     deployedLink: "https://vimsnagpur.com/",
-    blogLink: "/blog/vims-hospital-website",
+    blogLink: "https://medium.com/@shaibyasolutions/digital-growth-appointment-system-for-vims-hospital-84efaf2f8dc1",
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ export const projects: Projects[] = [
       "A tourism and travel platform showcasing luxury Rajasthan experiences, desert safaris, and cultural journeys.",
     category: "Web",
     deployedLink: "https://sonarkillatours.in/",
-    blogLink: "/blog/sonarkilla-tours",
+    blogLink: "https://medium.com/@shaibyasolutions/digital-transformation-for-sonarkilla-tours-bringing-travel-dreams-online-f65e51523e60",
   },
   {
     id: 3,
@@ -45,12 +45,12 @@ export const projects: Projects[] = [
     tagline:
       "A fitness and membership management mobile app that tracks workouts, schedules, and progress for gym members.",
     category: "Mobile",
-    blogLink: "/blog/fitlife-gym-app",
+    blogLink: "https://medium.com/@shaibyasolutions/fitmanage-360-all-in-one-gym-management-app-that-cut-admin-work-by-80-e7f11612fc4a",
   },
   {
     id: 4,
     image: "/images/solutions/memorybox.png",
-    title: "MemoryBox AI",
+    title: "BrainBox AI",
     tagline:
       "An AI-powered MVP platform that helps businesses harness and visualize their data for smarter decisions.",
     category: "AI",

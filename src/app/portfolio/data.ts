@@ -19,7 +19,7 @@ export const products: Product[] = [
     category: "AI",
     image: "/images/solutions/coal.png",
     deployedLink: "https://demo.coaltrack-ai.com",
-    blogLink: "#blog-coaltrack",
+    blogLink: "https://medium.com/@shaibyasolutions/coaltrack-ai-how-i-built-an-ai-tool-that-cut-billing-time-by-95-6e8d992f821f",
   },
   {
     id: 2,
@@ -28,6 +28,6 @@ export const products: Product[] = [
     category: "Mobile",
     image: "/images/solutions/gym.png",
     deployedLink: "https://appstore.fitmanage360.com",
-    blogLink: "#blog-fitmanage",
+    blogLink: "https://medium.com/@shaibyasolutions/fitmanage-360-all-in-one-gym-management-app-that-cut-admin-work-by-80-e7f11612fc4a",
   }
 ];
