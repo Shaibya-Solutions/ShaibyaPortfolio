@@ -62,7 +62,7 @@ export function SiteHeader() {
         </nav>
         <Link
           href='/#contact'
-          className='rounded-full bg-gradient-to-r from-cyan-500 to-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
+          className='hidden sm:block rounded-full bg-gradient-to-r from-cyan-500 to-white px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
         >
           Get in Touch
         </Link>
@@ -120,7 +120,7 @@ export function SiteHeader() {
             <Link
               href='/#contact'
               onClick={() => setOpen(false)}
-              className='hidden sm:block mt-2 rounded-full bg-cyan-500 px-4 py-2 text-center text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
+              className='max-w-[200px] block sm:hidden mt-2 rounded-full bg-cyan-500 px-4 py-2 text-center text-sm font-medium text-slate-950 transition hover:bg-cyan-400'
             >
               Get in Touch
             </Link>
