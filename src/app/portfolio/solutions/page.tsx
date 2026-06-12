@@ -1,0 +1,224 @@
+"use client";
+
+import { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import Image from "next/image";
+import { ArrowUpRight, Check } from "lucide-react";
+import { SiteHeader } from "@/components/layout/header/site-header";
+import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
+import { solutionProjects } from "@/data/projects";
+import type { Project } from "@/data/projects";
+
+/* ── tokens ── */
+const BRAND = "#0ea5e9";
+const TEXT = "#111827";
+const MUTED = "#6B7280";
+const FAINT = "#9CA3AF";
+const BORDER = "#E5E7EB";
+const BG = "#F8FAFB";
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+
+/* ── animated counter ── */
+function Stat({ value, label, active, context }: { value: string; label: string; active: boolean; context?: string }) {
+  const match = value.match(/^[\d.]+/);
+  const num: number | null = match ? parseFloat(match[0]) : null;
+  const suffix = num !== null ? value.slice(match![0].length) : "";
+  const [disp, setDisp] = useState(num ?? 0);
+  const done = useRef(false);
+  useEffect(() => {
+    if (!active || done.current || num === null) return;
+    done.current = true;
+    const target = num; const t0 = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - t0) / 1200);
+      setDisp((1 - Math.pow(1 - t, 3)) * target);
+      if (t < 1) requestAnimationFrame(tick); else setDisp(target);
+    };
+    requestAnimationFrame(tick);
+  }, [active, num]);
+  const fmt = num !== null ? (num % 1 === 0 ? Math.round(disp).toString() : disp.toFixed(1)) : value;
+  return (
+    <div className="flex flex-col gap-1">
+      <span style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(1.75rem,3vw,2.5rem)", fontWeight: 800, lineHeight: 1, color: TEXT, letterSpacing: "-0.03em" }}>
+        {num !== null ? `${fmt}${suffix}` : value}
+      </span>
+      <span style={{ fontSize: 11, color: FAINT, fontFamily: "var(--font-inter)", letterSpacing: "0.04em", textTransform: "uppercase", fontWeight: 600 }}>
+        {label}{context && <span style={{ marginLeft: 4, color: "#D1D5DB", fontWeight: 400 }}>({context})</span>}
+      </span>
+    </div>
+  );
+}
+
+/* ── row ── */
+function Row({ project: p, index }: { project: Project; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.12 });
+  const [hovered, setHovered] = useState(false);
+  const imgLeft = index % 2 === 0;
+  const rowNum = String(index + 1).padStart(2, "0");
+
+  const imgVar = {
+    hidden: { opacity: 0, x: imgLeft ? -60 : 60 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: EASE } },
+  };
+  const txtVar = {
+    hidden: { opacity: 0, x: imgLeft ? 50 : -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.12, ease: EASE } },
+  };
+
+  const ImageHalf = (
+    <motion.div variants={imgVar} initial="hidden" animate={inView ? "visible" : "hidden"}
+      className="relative w-full lg:w-1/2 overflow-hidden"
+      style={{ minHeight: "clamp(300px,46vw,600px)" }}
+      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <Image src={p.thumbnail} alt={p.name} fill sizes="(max-width:1024px) 100vw,50vw"
+        className="object-cover object-top"
+        style={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
+      <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.25 }}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ background: "rgba(17,24,39,0.50)" }}>
+        {p.stats[0] && (
+          <div className="bg-white rounded-2xl px-6 py-4 shadow-2xl text-center">
+            <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.14em", color: FAINT, marginBottom: 4, fontFamily: "var(--font-inter)" }}>Top result</p>
+            <p style={{ fontFamily: "var(--font-syne)", fontSize: 28, fontWeight: 800, color: TEXT, lineHeight: 1 }}>{p.stats[0].value}</p>
+            <p style={{ fontSize: 12, color: MUTED, marginTop: 4, fontFamily: "var(--font-inter)" }}>{p.stats[0].label}</p>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+
+  const TextHalf = (
+    <motion.div variants={txtVar} initial="hidden" animate={inView ? "visible" : "hidden"}
+      className="relative w-full lg:w-1/2 flex flex-col justify-center overflow-hidden"
+      style={{ padding: "clamp(44px,7vw,96px) clamp(32px,5.5vw,80px)", background: "#fff", minHeight: "clamp(300px,46vw,600px)" }}>
+      {/* Ghost number */}
+      <span aria-hidden style={{ position: "absolute", fontFamily: "var(--font-syne)", fontSize: "clamp(110px,16vw,200px)", fontWeight: 900, color: TEXT, opacity: 0.04, lineHeight: 1, top: "50%", transform: "translateY(-50%)", left: imgLeft ? "-0.04em" : "auto", right: imgLeft ? "auto" : "-0.04em", letterSpacing: "-0.06em", userSelect: "none", pointerEvents: "none" }}>
+        {rowNum}
+      </span>
+      <div className="relative z-10 flex flex-col gap-6">
+        {/* Meta row */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span style={{ fontFamily: "var(--font-inter)", fontSize: 12, fontWeight: 700, color: BRAND, letterSpacing: "0.06em" }}>{rowNum}</span>
+            <span style={{ color: BORDER }}>·</span>
+            <span style={{ fontFamily: "var(--font-inter)", fontSize: 11, fontWeight: 700, color: FAINT, textTransform: "uppercase", letterSpacing: "0.16em" }}>{p.industry}</span>
+          </div>
+        </div>
+        {/* Service pill */}
+        <span style={{ display: "inline-flex", alignSelf: "flex-start", fontFamily: "var(--font-inter)", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em", color: BRAND, background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.20)", borderRadius: 9999, padding: "4px 12px" }}>
+          AI &amp; Automation
+        </span>
+        {/* Name */}
+        <h2 style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(2rem,4vw,3.5rem)", fontWeight: 800, lineHeight: 0.95, color: TEXT, letterSpacing: "-0.04em", textTransform: "uppercase", margin: 0 }}>
+          {p.name}
+        </h2>
+        {/* Tagline */}
+        <p style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(14px,1.4vw,17px)", color: MUTED, lineHeight: 1.65, maxWidth: 400, margin: 0 }}>
+          {p.tagline}
+        </p>
+        {/* Problem / Solution */}
+        <div className="grid sm:grid-cols-2 gap-4 max-w-md">
+          <div>
+            <p style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: "#D1D5DB", marginBottom: 6, fontFamily: "var(--font-inter)" }}>Problem</p>
+            <p style={{ fontSize: 12, color: MUTED, lineHeight: 1.65, fontFamily: "var(--font-inter)" }}>{p.problem}</p>
+          </div>
+          <div>
+            <p style={{ fontSize: 9, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.2em", color: BRAND, marginBottom: 6, fontFamily: "var(--font-inter)" }}>Solution</p>
+            <p style={{ fontSize: 12, color: MUTED, lineHeight: 1.65, fontFamily: "var(--font-inter)" }}>{p.solution}</p>
+          </div>
+        </div>
+        {/* Key features */}
+        {p.keyFeatures && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {p.keyFeatures.slice(0, 4).map(f => (
+              <span key={f} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, color: MUTED, border: `1px solid ${BORDER}`, borderRadius: 9999, padding: "3px 10px", fontFamily: "var(--font-inter)" }}>
+                <Check size={8} color={BRAND} />{f}
+              </span>
+            ))}
+          </div>
+        )}
+        {/* Stats */}
+        {p.stats.length > 0 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "clamp(20px,3vw,36px)", paddingTop: 4 }}>
+            {p.stats.slice(0, 3).map(s => <Stat key={s.label} value={s.value} label={s.label} active={inView} context={s.context} />)}
+          </div>
+        )}
+        <div style={{ height: 1, background: BORDER }} />
+        {/* Tech + year */}
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0 8px" }}>
+            {p.techStack.slice(0, 5).map((t, ti) => (
+              <span key={t} style={{ fontSize: 12, color: FAINT, fontFamily: "var(--font-inter)" }}>
+                {t}{ti < Math.min(p.techStack.length, 5) - 1 && <span style={{ margin: "0 6px", color: BORDER }}>·</span>}
+              </span>
+            ))}
+          </div>
+          <span style={{ fontSize: 11, color: FAINT, fontFamily: "var(--font-inter)", letterSpacing: "0.08em" }}>{p.year}</span>
+        </div>
+        {/* Testimonial */}
+        {p.testimonial && (
+          <div style={{ padding: "16px 20px", background: BG, border: `1px solid ${BORDER}`, borderRadius: 12, marginTop: 4 }}>
+            <p style={{ fontSize: 13, color: "#4B5563", fontStyle: "italic", lineHeight: 1.7, margin: "0 0 8px", fontFamily: "var(--font-inter)" }}>&ldquo;{p.testimonial.quote}&rdquo;</p>
+            <p style={{ fontSize: 11, color: FAINT, fontWeight: 600, margin: 0, fontFamily: "var(--font-inter)" }}>— {p.testimonial.name}, {p.testimonial.role}</p>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+
+  return (
+    <div ref={ref}>
+      {index > 0 && <div style={{ height: 1, background: BORDER }} />}
+      <div className="flex flex-col lg:flex-row" style={{ minHeight: "clamp(300px,55vh,600px)" }}>
+        {imgLeft ? <>{ImageHalf}{TextHalf}</> : <>{TextHalf}{ImageHalf}</>}
+      </div>
+    </div>
+  );
+}
+
+/* ── page ── */
+export default function SolutionsPortfolioPage() {
+  return (
+    <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
+      <SiteHeader />
+
+      <section style={{ paddingTop: "clamp(100px,14vw,176px)", paddingBottom: "clamp(40px,5vw,64px)", borderBottom: `1px solid ${BORDER}` }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+            style={{ color: BRAND, fontFamily: "var(--font-inter)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.28em", marginBottom: 20 }}>
+            Portfolio — Solutions
+          </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
+            style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(3.5rem,10vw,7.5rem)", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-0.05em", color: TEXT, textTransform: "uppercase", marginBottom: 28 }}>
+            SYSTEMS
+            <br /><span style={{ color: BRAND }}>THAT WORK.</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
+            style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(15px,1.5vw,18px)", color: MUTED, lineHeight: 1.7, maxWidth: 520 }}>
+            {solutionProjects.length} AI automations, CRM builds, and management platforms. Each one solves a real bottleneck with a measurable outcome.
+          </motion.p>
+        </div>
+      </section>
+
+      <section className="flex-grow" style={{ background: "#fff" }}>
+        {solutionProjects.map((p, i) => <Row key={p.slug} project={p} index={i} />)}
+      </section>
+
+      <section style={{ borderTop: `1px solid ${BORDER}`, background: BG, padding: "clamp(64px,8vw,120px) clamp(24px,4vw,48px)" }}>
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+          <div>
+            <p style={{ fontFamily: "var(--font-inter)", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.26em", color: FAINT, marginBottom: 20 }}>Now Booking</p>
+            <h2 style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(2.4rem,5.5vw,4.5rem)", fontWeight: 800, lineHeight: 0.95, letterSpacing: "-0.04em", textTransform: "uppercase", color: TEXT }}>
+              HAVE A BOTTLENECK<br /><span style={{ color: BRAND }}>WE CAN SOLVE?</span>
+            </h2>
+          </div>
+          <WhatsAppCTA message="Hi, I have a business problem I need a digital solution for." text="Describe your problem" />
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
+  );
+}

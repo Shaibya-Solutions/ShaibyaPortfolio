@@ -1,0 +1,501 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ── Brand — restrained accent usage ── */
+  --brand: #0ea5e9;
+  --brand-hover: #0284c7;
+  --brand-subtle: rgba(14, 165, 233, 0.08);
+
+  /* ── Neutral palette ── */
+  --gray-50: #F8FAFB;
+  --gray-100: #F1F5F9;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+
+  /* ── Dark navy ── */
+  --navy-950: #020817;
+  --navy-900: #0B1120;
+  --navy-800: #111827;
+
+  /* ── Shadcn tokens ── */
+  --background: #ffffff;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #0ea5e9;
+  --primary-foreground: #ffffff;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #111827;
+  --muted: #F1F5F9;
+  --muted-foreground: #6B7280;
+  --accent: #F1F5F9;
+  --accent-foreground: #111827;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: #ffffff;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #0ea5e9;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0B1120;
+  --foreground: #F8FAFB;
+  --card: #111827;
+  --card-foreground: #F8FAFB;
+  --popover: #111827;
+  --popover-foreground: #F8FAFB;
+  --primary: #38bdf8;
+  --primary-foreground: #0B1120;
+  --secondary: #1e293b;
+  --secondary-foreground: #F8FAFB;
+  --muted: #1e293b;
+  --muted-foreground: #9CA3AF;
+  --accent: #1e293b;
+  --accent-foreground: #F8FAFB;
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: #ffffff;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #38bdf8;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-syne), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-syne: var(--font-syne), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ═══════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════ */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-syne), "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.03em;
+    color: var(--gray-900);
+  }
+
+  ::selection {
+    background: rgba(14, 165, 233, 0.2);
+    color: #111827;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   FOCUS
+   ═══════════════════════════════════════════════ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* ═══════════════════════════════════════════════
+   GRADIENT TEXT — use sparingly
+   ═══════════════════════════════════════════════ */
+.heading-gradient {
+  background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════
+   ACCENT LINE
+   ═══════════════════════════════════════════════ */
+.accent-line {
+  height: 3px;
+  background: var(--brand);
+  border-radius: 9999px;
+}
+
+/* ═══════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 0.75rem;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-primary:hover {
+  background: var(--brand-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.3);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--gray-700);
+  background: transparent;
+  border: 1px solid var(--gray-200);
+  border-radius: 0.75rem;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-secondary:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-300);
+  transform: translateY(-1px);
+}
+
+.btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 0.75rem;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-dark:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════
+   SPOTLIGHT CARD (ReactBits CSS)
+   ═══════════════════════════════════════════════ */
+.card-spotlight {
+  position: relative;
+  border-radius: 1.25rem;
+  border: 1px solid var(--gray-200);
+  background: #ffffff;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(14, 165, 233, 0.06);
+  transition: border-color 0.3s, box-shadow 0.4s;
+}
+
+.card-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y),
+      var(--spotlight-color),
+      transparent 40%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+.card-spotlight:hover {
+  border-color: rgba(14, 165, 233, 0.2);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+}
+
+/* ═══════════════════════════════════════════════
+   CARD HOVER — clean & subtle
+   ═══════════════════════════════════════════════ */
+.card-hover {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s, border-color 0.3s;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  border-color: var(--gray-300);
+}
+
+/* ═══════════════════════════════════════════════
+   IMAGE CARD — full bleed with overlay
+   ═══════════════════════════════════════════════ */
+.image-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+}
+
+.image-card img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.image-card:hover img {
+  transform: scale(1.05);
+}
+
+.image-card-overlay {
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      transparent 100%);
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION DIVIDER
+   ═══════════════════════════════════════════════ */
+.section-divider {
+  height: 1px;
+  background: var(--gray-200);
+}
+
+/* ═══════════════════════════════════════════════
+   CONTACT ORBIT SPIN
+   ═══════════════════════════════════════════════ */
+@keyframes contact-orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════ */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ═══════════════════════════════════════════════
+   SHIMMER TEXT (for contact CTA)
+   ═══════════════════════════════════════════════ */
+.shimmer-text {
+  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 40%, #38bdf8 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-move 4s linear infinite;
+}
+
+@keyframes shimmer-move {
+  0% {
+    background-position: 0% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLL INDICATOR
+   ═══════════════════════════════════════════════ */
+@keyframes scroll-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════
+   NODE PULSE (timeline)
+   ═══════════════════════════════════════════════ */
+@keyframes node-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(14, 165, 233, 0);
+  }
+}
+
+.node-pulse {
+  animation: node-pulse 2.5s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR — slim & branded
+   ═══════════════════════════════════════════════ */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand);
+  border-radius: 8px;
+}
+
+/* ═══════════════════════════════════════════════
+   ENCRYPTED TEXT STYLE (DecryptedText)
+   ═══════════════════════════════════════════════ */
+.encrypted-char {
+  color: var(--brand);
+  opacity: 0.4;
+}
+
+/* ═══════════════════════════════════════════════
+   ORBITAL TIMELINE — custom utilities
+   ═══════════════════════════════════════════════ */
+.bg-gradient-orbital {
+  background: linear-gradient(to bottom right, #6366f1, #3b82f6, #14b8a6);
+}
+
+.shadow-orbital {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════
+   MARQUEE
+   ═══════════════════════════════════════════════ */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR HIDE
+   ═══════════════════════════════════════════════ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none !important;
+  }
+}
