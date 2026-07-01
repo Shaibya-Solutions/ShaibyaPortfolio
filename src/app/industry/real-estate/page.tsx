@@ -39,6 +39,13 @@ const data: IndustryPageData = {
     { emoji: "🗂️", title: "Document Management", desc: "All agreements, KYC, and property papers organised digitally. Accessible anywhere, searchable instantly." },
     { emoji: "💰", title: "Commission Dashboard", desc: "Track deals, commissions, and revenue in real-time. Know exactly where your money is at any given moment." },
   ],
+  visualShowcase: {
+    beforeSrc: "/images/real-estate/room-before.png",
+    afterSrc: "/images/real-estate/room-after.png",
+    heading: "First impressions\nclosed the deal.",
+    subheading:
+      "Buyers form opinions in seconds. Professional digital staging and presentation transforms bare listings into aspirational homes — before a single site visit happens.",
+  },
   clients: [
     {
       name: "MG Infra Properties",

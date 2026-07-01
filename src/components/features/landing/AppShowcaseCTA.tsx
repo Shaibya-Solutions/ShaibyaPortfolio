@@ -105,7 +105,7 @@ export function AppShowcaseCTA() {
             </motion.div>
             <motion.div variants={buttonVariants} className="w-full sm:w-auto">
               <Link
-                href="https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243"
+                href="https://www.instagram.com/deepoffduty/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-[#E1306C] to-[#833ab4] text-white font-bold rounded-xl shadow-md hover:opacity-90 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto text-sm sm:text-base"

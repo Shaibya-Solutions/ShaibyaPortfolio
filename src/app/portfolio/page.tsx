@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/layout/header/site-header";
@@ -50,6 +50,163 @@ const typeLabel: Record<string, string> = {
   solution: "AI & Automation",
   rnd: "R&D / MVP",
 };
+
+/* ─────────────────────────────────────────────────────────────
+   SOLAR SYSTEM COMPONENT
+   ───────────────────────────────────────────────────────────── */
+interface OrbitMetric {
+  id: number;
+  label: string;
+  value: number;
+  suffix?: string;
+  planetName: string;
+  orbitRadius: number;
+  highlightColor: string;
+}
+
+const ORBIT_METRICS: OrbitMetric[] = [
+  { id: 1, label: "Website Projects", value: 7, suffix: "+", planetName: "Mercury", orbitRadius: 72, highlightColor: "#E0E0E0" },
+  { id: 2, label: "AI & Automation", value: 6, suffix: "+", planetName: "Venus", orbitRadius: 104, highlightColor: "#FFECB3" },
+  { id: 3, label: "Live Clients", value: 15, suffix: "+", planetName: "Earth", orbitRadius: 136, highlightColor: "#81D4FA" },
+  { id: 4, label: "R&D / MVPs", value: 6, suffix: "+", planetName: "Mars", orbitRadius: 168, highlightColor: "#FF8A65" },
+  { id: 5, label: "Industries Served", value: 8, suffix: "+", planetName: "Jupiter", orbitRadius: 200, highlightColor: "#FFCC80" },
+  { id: 6, label: "Leads Captured", value: 3, suffix: "k+", planetName: "Saturn", orbitRadius: 232, highlightColor: "#DCE775" },
+];
+
+function PortfolioSolarSystem() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const controls = useAnimation();
+  const [hovered, setHovered] = useState<OrbitMetric | null>(null);
+  const [active, setActive] = useState<OrbitMetric | null>(null);
+
+  useEffect(() => {
+    if (isInView) controls.start("visible");
+  }, [isInView, controls]);
+
+  const maxVal = useMemo(() => Math.max(...ORBIT_METRICS.map(m => m.value)), []);
+  const getPlanetSize = (val: number) => 28 + (val / maxVal) * 32; // 28–60px
+
+  const displayed = active ?? hovered;
+
+  return (
+    <div ref={ref} className="relative flex items-center justify-center w-full" style={{ height: 520 }}>
+      {/* Soft radial glow on light bg */}
+      <div className="absolute inset-0 rounded-full pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at 50% 50%, rgba(14,165,233,0.06) 0%, transparent 70%)" }} />
+
+      {/* Orbit rings */}
+      <motion.div className="absolute inset-0 flex items-center justify-center"
+        initial={{ opacity: 0 }} animate={{ opacity: isInView ? 1 : 0 }} transition={{ duration: 1 }}>
+        {ORBIT_METRICS.map(m => (
+          <motion.div key={`ring-${m.id}`}
+            className="absolute rounded-full border"
+            style={{
+              width: m.orbitRadius * 2,
+              height: m.orbitRadius * 2,
+              borderColor: displayed?.id === m.id ? m.highlightColor : "rgba(0,0,0,0.10)",
+              boxShadow: displayed?.id === m.id ? `0 0 12px 2px ${m.highlightColor}55` : "none",
+              transition: "border-color 0.3s, box-shadow 0.3s",
+            }}
+            initial={{ scale: 0.7, opacity: 0 }}
+            animate={isInView ? { scale: 1, opacity: 1 } : {}}
+            transition={{ delay: 0.3, duration: 1, ease: "easeOut" }}
+          />
+        ))}
+      </motion.div>
+
+      {/* Center core */}
+      <motion.div
+        className="z-20 flex flex-col items-center justify-center text-center rounded-2xl border shadow-md"
+        style={{
+          width: 100,
+          height: 100,
+          background: "#ffffff",
+          borderColor: BORDER,
+        }}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={isInView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {displayed ? (
+          <>
+            <div className="text-lg font-extrabold leading-none" style={{ color: BRAND }}>{displayed.value}{displayed.suffix}</div>
+            <div className="text-[10px] mt-1 px-2 leading-tight" style={{ color: MUTED }}>{displayed.label}</div>
+          </>
+        ) : (
+          <>
+            <div className="text-sm font-bold" style={{ color: TEXT }}>19+</div>
+            <div className="text-[10px] mt-0.5" style={{ color: FAINT }}>Projects</div>
+          </>
+        )}
+      </motion.div>
+
+      {/* Rotating planets container */}
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 80, ease: "linear", repeat: Infinity }}
+      >
+        {ORBIT_METRICS.map((m, i) => {
+          const angle = (i / ORBIT_METRICS.length) * 2 * Math.PI;
+          const x = m.orbitRadius * Math.cos(angle);
+          const y = m.orbitRadius * Math.sin(angle);
+          const size = getPlanetSize(m.value);
+          const isHighlighted = displayed?.id === m.id;
+
+          return (
+            <motion.div
+              key={m.id}
+              className="absolute cursor-pointer rounded-full"
+              custom={i}
+              initial="hidden"
+              animate={controls}
+              variants={{
+                hidden: { opacity: 0, scale: 0.2 },
+                visible: (i) => ({
+                  opacity: 1,
+                  scale: isHighlighted ? 1.25 : 1,
+                  transition: { delay: i * 0.15, duration: 0.7, ease: "easeOut" },
+                }),
+              }}
+              style={{
+                width: size,
+                height: size,
+                top: `calc(50% + ${y}px)`,
+                left: `calc(50% + ${x}px)`,
+                transform: `translate(-50%, -50%) rotate(-${(360 / ORBIT_METRICS.length) * i}deg)`,
+                backgroundImage: `url(/images/landing/${m.planetName.toLowerCase()}.png)`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                boxShadow: isHighlighted
+                  ? `0 0 20px 8px ${m.highlightColor}88`
+                  : "0 2px 12px rgba(0,0,0,0.18)",
+                zIndex: isHighlighted ? 30 : 10,
+                transition: "box-shadow 0.3s",
+              }}
+              onMouseEnter={() => { if (!active) setHovered(m); }}
+              onMouseLeave={() => { if (!active) setHovered(null); }}
+              onClick={() => setActive(prev => prev?.id === m.id ? null : m)}
+            >
+              {/* Counter-rotated label */}
+              <span
+                className="absolute text-[10px] w-[80px] text-center pointer-events-none font-semibold leading-tight"
+                style={{
+                  color: FAINT,
+                  transform: `translateY(${size / 2 + 14}px) rotate(${(360 / ORBIT_METRICS.length) * i}deg)`,
+                  left: "50%",
+                  marginLeft: -40,
+                }}
+              >
+                {m.planetName}
+              </span>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────────
    ANIMATED STAT COUNTER
@@ -451,12 +608,16 @@ function CaseStudyRow({
    ───────────────────────────────────────────────────────────── */
 export default function PortfolioPage() {
   const [active, setActive] = useState<FilterValue>("all");
+  const [visibleCount, setVisibleCount] = useState(4);
 
   const filtered: Project[] =
     active === "all" ? allProjects
       : active === "website" ? websiteProjects
         : active === "solution" ? solutionProjects
           : rndProjects;
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <main
@@ -471,75 +632,81 @@ export default function PortfolioPage() {
           paddingTop: "clamp(100px, 14vw, 176px)",
           paddingBottom: "clamp(40px, 5vw, 64px)",
           borderBottom: `1px solid ${BORDER}`,
+          background: BG,
+          overflow: "hidden",
         }}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-0">
 
-          {/* Label */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              color: BRAND,
-              fontFamily: "var(--font-inter)",
-              fontSize: 11,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "0.28em",
-              marginBottom: 20,
-            }}
-          >
-            Portfolio
-          </motion.p>
+            {/* Left — text */}
+            <div className="flex-1 lg:pr-8">
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  color: BRAND,
+                  fontFamily: "var(--font-inter)",
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.28em",
+                  marginBottom: 20,
+                }}
+              >
+                Portfolio
+              </motion.p>
 
-          {/* Display heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.07 }}
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontSize: "clamp(3.5rem, 10vw, 7.5rem)",
-              fontWeight: 800,
-              lineHeight: 0.9,
-              letterSpacing: "-0.05em",
-              color: TEXT,
-              textTransform: "uppercase",
-              marginBottom: 28,
-            }}
-          >
-            SELECTED
-            <br />
-            <span style={{ color: BRAND }}>WORK</span>
-          </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.07 }}
+                style={{
+                  fontFamily: "var(--font-syne)",
+                  fontSize: "clamp(3.5rem, 8vw, 7rem)",
+                  fontWeight: 800,
+                  lineHeight: 0.9,
+                  letterSpacing: "-0.05em",
+                  color: TEXT,
+                  textTransform: "uppercase",
+                  marginBottom: 28,
+                }}
+              >
+                SELECTED
+                <br />
+                <span style={{ color: BRAND }}>WORK</span>
+              </motion.h1>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.14 }}
-            style={{
-              fontFamily: "var(--font-inter)",
-              fontSize: "clamp(15px, 1.5vw, 18px)",
-              color: MUTED,
-              lineHeight: 1.7,
-              maxWidth: 520,
-            }}
-          >
-            Recent websites, platforms, and product experiences
-            built for real clients across India and the US.
-          </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.14 }}
+                style={{
+                  fontFamily: "var(--font-inter)",
+                  fontSize: "clamp(15px, 1.5vw, 18px)",
+                  color: MUTED,
+                  lineHeight: 1.7,
+                  maxWidth: 480,
+                }}
+              >
+                Recent websites, platforms, and product experiences
+                built for real clients across India and the US.
+              </motion.p>
+            </div>
+
+            {/* Right — solar system */}
+            <div className="hidden lg:block w-[520px] shrink-0">
+              <PortfolioSolarSystem />
+            </div>
+
+          </div>
         </div>
       </section>
 
       {/* ── FILTER TABS ── */}
       <div
-        className="sticky z-40"
         style={{
-          top: 64,
-          background: "rgba(248,250,251,0.96)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
+          background: BG,
           borderBottom: `1px solid ${BORDER}`,
         }}
       >
@@ -554,7 +721,7 @@ export default function PortfolioPage() {
                 key={f.value}
                 role="tab"
                 aria-selected={active === f.value}
-                onClick={() => setActive(f.value)}
+                onClick={() => { setActive(f.value); setVisibleCount(4); }}
                 className="relative shrink-0 px-5 py-[18px] transition-colors duration-150"
                 style={{
                   fontFamily: "var(--font-inter)",
@@ -597,12 +764,49 @@ export default function PortfolioPage() {
                 No projects in this category.
               </div>
             ) : (
-              filtered.map((p, i) => (
+              visible.map((p, i) => (
                 <CaseStudyRow key={p.slug} project={p} index={i} />
               ))
             )}
           </motion.div>
         </AnimatePresence>
+
+        {/* View more button */}
+        {hasMore && (
+          <div style={{ display: "flex", justifyContent: "flex-end", padding: "32px clamp(24px,4vw,48px) 40px", borderTop: `1px solid ${BORDER}` }}>
+            <button
+              onClick={() => setVisibleCount(c => c + 4)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                fontFamily: "var(--font-inter)",
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: BRAND,
+                background: "rgba(14,165,233,0.07)",
+                border: `1px solid rgba(14,165,233,0.22)`,
+                borderRadius: 9999,
+                padding: "10px 24px",
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = "rgba(14,165,233,0.14)";
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = "rgba(14,165,233,0.07)";
+              }}
+            >
+              View more
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8m0 0L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
+        )}
       </section>
 
       {/* ── CTA ── */}

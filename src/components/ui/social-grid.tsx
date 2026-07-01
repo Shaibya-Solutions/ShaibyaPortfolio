@@ -9,7 +9,7 @@ const SOCIAL_LINKS = [
     label: "Instagram",
     desc: "Behind-the-scenes, project reveals & team moments",
     cta: "Follow Us",
-    href: "https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243",
+    href: "https://www.instagram.com/deepoffduty/",
     icon: FaInstagram,
     gradient: "from-pink-500 to-rose-600",
     bg: "bg-pink-50",

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 
 const GLHero = dynamic(
   () => import("@/components/features/landing/GLHero"),
@@ -83,6 +83,21 @@ export default function HomePage() {
       <GLContact />
 
       <Footer />
+
+      {/* Instagram FAB */}
+      <a
+        href="https://www.instagram.com/deepoffduty/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Follow on Instagram"
+        className="fixed bottom-6 left-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
+        style={{
+          background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
+          boxShadow: "0 4px 24px rgba(220,39,67,0.4)",
+        }}
+      >
+        <FaInstagram size={26} className="text-white" />
+      </a>
 
       {/* WhatsApp FAB */}
       <a

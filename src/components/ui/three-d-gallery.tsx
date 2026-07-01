@@ -9,6 +9,8 @@ import React, { useMemo, useId } from "react";
 interface ThreeDGalleryProps {
   /** Array of image URLs */
   images?: string[];
+  /** Array of link URLs corresponding to each image (opens in new tab) */
+  links?: string[];
   /** Card width in px  (50–300, default 186) */
   imageWidth?: number;
   /** Card height in px (50–300, default 116) */
@@ -42,6 +44,7 @@ const DEFAULT_IMAGES = [
 
 export default function ThreeDGallery({
   images = DEFAULT_IMAGES,
+  links = [],
   imageWidth = 186,
   imageHeight = 116,
   rotateSpeed = 20,
@@ -145,22 +148,75 @@ export default function ThreeDGallery({
         .tdg-figure-${uid}:hover img {
           transform: scale(1.2);
         }
+
+        .tdg-overlay-${uid} {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(2px);
+          opacity: 0;
+          transition: opacity 0.35s ease;
+          z-index: 2;
+          border-radius: ${br}px;
+          cursor: pointer;
+        }
+
+        .tdg-figure-${uid}:hover .tdg-overlay-${uid} {
+          opacity: 1;
+        }
+
+        .tdg-overlay-${uid} span {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 14px;
+          background: none;
+          color: #fff;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          border-radius: 6px;
+          text-decoration: none;
+          transition: transform 0.2s ease;
+        }
+
+        .tdg-overlay-${uid} span:hover {
+          transform: scale(1.08);
+        }
       `}</style>
 
       <div className={`tdg-wrap-${uid} ${className}`}>
         <div className={`tdg-carousel-${uid}`}>
-          {validImages.map((src, i) => (
-            <figure
-              key={i}
-              className={`tdg-figure-${uid}`}
-              style={{
-                transform: `rotateY(${i * anglePer}deg) translateZ(${tz}px)`,
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt={`Gallery image ${i + 1}`} draggable={false} />
-            </figure>
-          ))}
+          {validImages.map((src, i) => {
+            const link = links[i];
+            return (
+              <figure
+                key={i}
+                className={`tdg-figure-${uid}`}
+                style={{
+                  transform: `rotateY(${i * anglePer}deg) translateZ(${tz}px)`,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Gallery image ${i + 1}`} draggable={false} />
+                {link && (
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`tdg-overlay-${uid}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <span>Visit Site →</span>
+                  </a>
+                )}
+              </figure>
+            );
+          })}
         </div>
       </div>
     </>

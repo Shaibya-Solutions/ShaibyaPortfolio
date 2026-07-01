@@ -74,33 +74,33 @@ export default function ContactPage() {
             className="grid md:grid-cols-5 gap-0 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden"
           >
             {/* Contact Info */}
-            <div className="md:col-span-2 bg-gradient-to-br from-[#0284c7] to-[#0ea5e9] text-white p-10 flex flex-col justify-between">
+            <div className="md:col-span-2 bg-gradient-to-br from-[#bae6fd] via-[#7dd3fc] to-[#38bdf8] text-slate-800 p-10 flex flex-col justify-between">
               <div>
                 <h3 className="text-2xl font-bold mb-6" style={{ fontFamily: "var(--font-syne)" }}>
                   Contact Information
                 </h3>
-                <p className="text-sky-100 mb-10 leading-relaxed">
+                <p className="text-slate-600 mb-10 leading-relaxed">
                   Whether you have a clear project in mind or just want to explore possibilities, we&apos;re here to chat.
                 </p>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
-                    <FaPhone className="text-sky-200 mt-1" size={18} />
+                    <FaPhone className="text-slate-500 mt-1" size={18} />
                     <div>
-                      <div className="font-semibold text-sm text-sky-100 mb-1">Phone / WhatsApp</div>
-                      <a href="tel:+917498341146" className="hover:text-sky-200 transition">+91 7498341146</a>
+                      <div className="font-semibold text-sm text-slate-500 mb-1">Phone / WhatsApp</div>
+                      <a href="tel:+917498341146" className="hover:text-sky-700 transition">+91 7498341146</a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <IoMail className="text-sky-200 mt-1" size={20} />
+                    <IoMail className="text-slate-500 mt-1" size={20} />
                     <div>
-                      <div className="font-semibold text-sm text-sky-100 mb-1">Email</div>
-                      <a href="mailto:shaibyasolutions@gmail.com" className="hover:text-sky-200 transition">shaibyasolutions@gmail.com</a>
+                      <div className="font-semibold text-sm text-slate-500 mb-1">Email</div>
+                      <a href="mailto:shaibyasolutions@gmail.com" className="hover:text-sky-700 transition">shaibyasolutions@gmail.com</a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <FaMapMarkerAlt className="text-sky-200 mt-1" size={18} />
+                    <FaMapMarkerAlt className="text-slate-500 mt-1" size={18} />
                     <div>
-                      <div className="font-semibold text-sm text-sky-100 mb-1">Locations</div>
+                      <div className="font-semibold text-sm text-slate-500 mb-1">Locations</div>
                       <div>Nagpur, India<br />Noida, India<br />Texas, USA</div>
                     </div>
                   </div>
@@ -109,7 +109,7 @@ export default function ContactPage() {
 
               {/* Decorative circle */}
               <div className="mt-10 flex justify-end">
-                <div className="w-28 h-28 rounded-full bg-sky-400/20 border border-sky-300/20" />
+                <div className="w-28 h-28 rounded-full bg-sky-200/40 border border-sky-200/60" />
               </div>
             </div>
 
@@ -164,7 +164,7 @@ export default function ContactPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold py-4 px-6 rounded-xl transition-all hover:shadow-lg hover:shadow-sky-500/20 active:scale-[0.98]"
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bae6fd] via-[#7dd3fc] to-[#38bdf8] hover:brightness-95 text-slate-800 font-bold py-4 px-6 rounded-xl transition-all hover:shadow-lg hover:shadow-sky-300/30 active:scale-[0.98]"
                 >
                   <FaWhatsapp size={20} /> Send via WhatsApp
                 </button>

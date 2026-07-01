@@ -17,7 +17,7 @@ import { IoMail } from "react-icons/io5";
 
 const socials = [
     { href: "https://www.linkedin.com/company/shaibyasolutions/about/", icon: FaLinkedin, label: "LinkedIn" },
-    { href: "https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243", icon: FaInstagram, label: "Instagram" },
+    { href: "https://www.instagram.com/deepoffduty/", icon: FaInstagram, label: "Instagram" },
     { href: "https://medium.com/@shaibyasolutions", icon: FaMedium, label: "Blog" },
     { href: "https://wa.me/917498341146", icon: FaWhatsapp, label: "WhatsApp" },
 ];

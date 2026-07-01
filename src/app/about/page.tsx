@@ -13,6 +13,11 @@ const ThreeDGallery = dynamic(
   { ssr: false }
 );
 
+const IndiaMap = dynamic(
+  () => import("@/components/ui/india-map"),
+  { ssr: false }
+);
+
 /* ───── Client Website Images ───── */
 const clientImages = [
   "/images/screenshots/client-1.png",
@@ -21,6 +26,7 @@ const clientImages = [
   "/images/screenshots/client-4.png",
   "/images/screenshots/client-5.png",
   "/images/screenshots/client-6.png",
+  
 ];
 
 export default function AboutPage() {
@@ -95,6 +101,178 @@ export default function AboutPage() {
                 width={480}
                 height={360}
               />
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ REACH MAP ═══════════ */}
+      <section className="relative py-24 lg:py-36 overflow-hidden bg-white border-t border-[#E5E7EB]">
+        {/* Subtle grid bg */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, #E5E7EB 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+            opacity: 0.45,
+          }}
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* ── Left: headline block ── */}
+            <div className="order-2 lg:order-1">
+              <motion.span
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="inline-block text-xs font-bold uppercase tracking-[0.22em] text-[#0ea5e9] mb-6"
+                style={{ fontFamily: "var(--font-inter)" }}
+              >
+                Our Reach
+              </motion.span>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.08 }}
+                className="font-bold leading-[0.95] mb-6 uppercase"
+                style={{
+                  fontFamily: "var(--font-syne)",
+                  fontSize: "clamp(2.8rem,6.5vw,5.5rem)",
+                  letterSpacing: "-0.04em",
+                  color: "#111827",
+                }}
+              >
+                ENGINEERING
+                <br />
+                IMPACT
+                <br />
+                <span style={{ color: "#0ea5e9" }}>ALL OVER</span>
+                <br />
+                <span style={{ color: "#0ea5e9" }}>INDIA.</span>
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.16 }}
+                className="text-base text-[#6B7280] max-w-md leading-relaxed mb-10"
+                style={{ fontFamily: "var(--font-inter)" }}
+              >
+                From our home base in Nagpur to offices in Noida and Texas — we
+                build systems that work for businesses across every timezone.
+              </motion.p>
+
+              {/* Location pills */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.24 }}
+                className="flex flex-wrap gap-3"
+              >
+                {[
+                  { city: "Nagpur", tag: "HQ", flag: "🇮🇳" },
+                  { city: "Noida", tag: "Office", flag: "🇮🇳" },
+                  { city: "Texas", tag: "USA", flag: "🇺🇸" },
+                ].map((loc) => (
+                  <div
+                    key={loc.city}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-full"
+                    style={{
+                      background: "#F8FAFB",
+                      border: "1px solid #E5E7EB",
+                    }}
+                  >
+                    <span className="text-base">{loc.flag}</span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-inter)",
+                        fontSize: 13,
+                        fontWeight: 700,
+                        color: "#111827",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {loc.city}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-inter)",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        color: "#0ea5e9",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.1em",
+                        background: "rgba(14,165,233,0.08)",
+                        border: "1px solid rgba(14,165,233,0.2)",
+                        borderRadius: 999,
+                        padding: "2px 8px",
+                      }}
+                    >
+                      {loc.tag}
+                    </span>
+                  </div>
+                ))}
+              </motion.div>
+
+              {/* Stats row */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.32 }}
+                className="flex flex-wrap gap-8 mt-10 pt-10 border-t border-[#E5E7EB]"
+              >
+                {[
+                  { value: "19+", label: "Projects delivered" },
+                  { value: "10+", label: "Industries served" },
+                  { value: "3", label: "Countries" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-syne)",
+                        fontSize: "clamp(1.8rem,3vw,2.5rem)",
+                        fontWeight: 800,
+                        color: "#111827",
+                        lineHeight: 1,
+                        letterSpacing: "-0.03em",
+                      }}
+                    >
+                      {s.value}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-inter)",
+                        fontSize: 12,
+                        color: "#9CA3AF",
+                        marginTop: 4,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* ── Right: India map ── */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="order-1 lg:order-2 flex justify-center lg:justify-end"
+            >
+              <IndiaMap className="w-full max-w-[440px]" />
             </motion.div>
           </div>
         </div>

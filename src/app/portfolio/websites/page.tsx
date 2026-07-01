@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
@@ -174,6 +174,10 @@ function Row({ project: p, index }: { project: Project; index: number }) {
 
 /* ── page ── */
 export default function WebsitesPortfolioPage() {
+  const [visibleCount, setVisibleCount] = useState(4);
+  const visible = websiteProjects.slice(0, visibleCount);
+  const hasMore = visibleCount < websiteProjects.length;
+  const remaining = websiteProjects.length - visibleCount;
   return (
     <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
@@ -197,7 +201,18 @@ export default function WebsitesPortfolioPage() {
       </section>
 
       <section className="flex-grow" style={{ background: "#fff" }}>
-        {websiteProjects.map((p, i) => <Row key={p.slug} project={p} index={i} />)}
+        {visible.map((p, i) => <Row key={p.slug} project={p} index={i} />)}
+        {hasMore && (
+          <div style={{ display: "flex", justifyContent: "flex-end", padding: "32px clamp(24px,4vw,48px) 40px", borderTop: `1px solid ${BORDER}` }}>
+            <button
+              onClick={() => setVisibleCount(c => c + 4)}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "var(--font-inter)", fontSize: 13, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: BRAND, background: "rgba(14,165,233,0.07)", border: `1px solid rgba(14,165,233,0.22)`, borderRadius: 9999, padding: "10px 24px", cursor: "pointer" }}
+            >
+              View more{remaining > 0 && ` (${Math.min(remaining, 4)} of ${remaining})`}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8m0 0L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </button>
+          </div>
+        )}
       </section>
 
       <section style={{ borderTop: `1px solid ${BORDER}`, background: BG, padding: "clamp(64px,8vw,120px) clamp(24px,4vw,48px)" }}>

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { SiteFooter } from "@/components/layout/footer/site-footer";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
+import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 export interface IndustryStat {
@@ -65,6 +66,13 @@ export interface IndustryPageData {
     faqs: IndustryFAQ[];
     accentColor: string;         // e.g. "#0ea5e9"
     accentBg: string;            // e.g. "rgba(14,165,233,0.08)"
+    // Optional visual showcase (before/after slider)
+    visualShowcase?: {
+        beforeSrc: string;
+        afterSrc: string;
+        heading: string;
+        subheading: string;
+    };
 }
 
 /* ─── Counter hook ───────────────────────────────────────────────── */
@@ -107,6 +115,339 @@ function TransformBar({
                     style={{ background: `linear-gradient(90deg, ${accent}, ${accent}99)` }}
                 />
             </div>
+        </div>
+    );
+}
+
+/* ─── Pain point bento grid ──────────────────────────────────────── */
+const PAIN_COLORS = [
+    { c: "#5b8def", tint: "rgba(91,141,239,0.12)", border: "rgba(91,141,239,0.28)", label: "Foundational" },
+    { c: "#f2526b", tint: "rgba(242,82,107,0.12)", border: "rgba(242,82,107,0.18)", label: "Urgent" },
+    { c: "#9a85f5", tint: "rgba(154,133,245,0.12)", border: "rgba(154,133,245,0.18)", label: "Systemic" },
+    { c: "#f2a93b", tint: "rgba(242,169,59,0.12)", border: "rgba(242,169,59,0.18)", label: "Operational" },
+    { c: "#3bc7d6", tint: "rgba(59,199,214,0.12)", border: "rgba(59,199,214,0.18)", label: "Recurring" },
+];
+
+function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: string; title: string; desc: string }>; accent: string }) {
+    // Build a grid regardless of how many pain points there are
+    const [p0, p1, p2, p3, p4] = painPoints;
+    const col = (i: number) => PAIN_COLORS[i % PAIN_COLORS.length];
+
+    return (
+        <>
+            {/* ── Desktop bento (lg+) ── */}
+            <div className="hidden lg:grid gap-[22px]" style={{ gridTemplateColumns: "repeat(12, 1fr)" }}>
+
+                {/* Card 1 — large feature, spans 7 cols × 2 rows */}
+                {p0 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0 }}
+                        className="relative rounded-[20px] flex flex-col justify-end overflow-hidden"
+                        style={{
+                            gridColumn: "1 / 8", gridRow: "1 / 3",
+                            padding: "40px",
+                            background: `linear-gradient(160deg, ${col(0).tint}, rgba(91,141,239,0.02) 60%)`,
+                            border: `1px solid ${col(0).border}`,
+                        }}
+                    >
+                        {/* Watermark globe */}
+                        <div className="absolute top-[-30px] right-[-10px] w-[220px] h-[220px] pointer-events-none"
+                            style={{ color: "rgba(91,141,239,0.07)" }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" width="100%" height="100%">
+                                <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z" />
+                            </svg>
+                        </div>
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>01</span>
+                                <span style={{ color: col(0).c }}>Foundational</span>
+                            </div>
+                            <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center mb-5"
+                                style={{ background: "rgba(91,141,239,0.16)", color: col(0).c }}>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={30} height={30}>
+                                    <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z" />
+                                </svg>
+                            </div>
+                            <h3 className="text-[27px] font-semibold leading-snug mb-3 max-w-[480px]" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p0.title}</h3>
+                            <p className="text-[16px] leading-relaxed max-w-[440px]" style={{ color: "#9aa3b8" }}>{p0.desc}</p>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* Card 2 — top-right editorial */}
+                {p1 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
+                        className="flex flex-col pt-[26px]"
+                        style={{ gridColumn: "8 / 13", gridRow: "1 / 2", borderTop: "1px solid #1c2336", paddingLeft: 4, paddingRight: 4 }}
+                    >
+                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                            <span style={{ color: "#5d6680" }}>02</span>
+                            <span style={{ color: col(1).c }}>Urgent</span>
+                        </div>
+                        <div className="w-[38px] h-[38px] rounded-[10px] border border-[#1c2336] flex items-center justify-center mb-4"
+                            style={{ color: col(1).c }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={20} height={20}>
+                                <path d="M4 5h16v11H8l-4 4z" /><path d="M12 8v3.2M12 14h.01" />
+                            </svg>
+                        </div>
+                        <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p1.title}</h3>
+                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p1.desc}</p>
+                    </motion.div>
+                )}
+
+                {/* Card 3 — bottom-right editorial */}
+                {p2 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
+                        className="flex flex-col pt-[26px]"
+                        style={{ gridColumn: "8 / 13", gridRow: "2 / 3", borderTop: "1px solid #1c2336", paddingLeft: 4, paddingRight: 4 }}
+                    >
+                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                            <span style={{ color: "#5d6680" }}>03</span>
+                            <span style={{ color: col(2).c }}>Systemic</span>
+                        </div>
+                        <div className="w-[38px] h-[38px] rounded-[10px] border border-[#1c2336] flex items-center justify-center mb-4"
+                            style={{ color: col(2).c }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={20} height={20}>
+                                <ellipse cx="12" cy="6" rx="7" ry="3" /><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6" /><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
+                            </svg>
+                        </div>
+                        <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p2.title}</h3>
+                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p2.desc}</p>
+                    </motion.div>
+                )}
+
+                {/* Card 4 — bottom-left boxed */}
+                {p3 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
+                        className="rounded-[20px] flex flex-col p-[30px]"
+                        style={{ gridColumn: "1 / 6", gridRow: "3 / 4", marginTop: -26, background: "#0c1120", border: "1px solid #1c2336" }}
+                    >
+                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                            <span style={{ color: "#5d6680" }}>04</span>
+                            <span style={{ color: col(3).c }}>Operational</span>
+                        </div>
+                        <div className="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center mb-5"
+                            style={{ background: col(3).tint, color: col(3).c }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}>
+                                <path d="M4 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 18.5H5.5A1.5 1.5 0 0 1 4 17z" />
+                                <path d="M8 11.5h8M8 14.5h5" />
+                            </svg>
+                        </div>
+                        <h3 className="text-[19px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p3.title}</h3>
+                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p3.desc}</p>
+                    </motion.div>
+                )}
+
+                {/* Card 5 — wide horizontal strip */}
+                {p4 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 }}
+                        className="rounded-[20px] flex flex-row items-center gap-[26px] px-9 py-[30px]"
+                        style={{
+                            gridColumn: "6 / 13", gridRow: "3 / 4",
+                            background: `linear-gradient(100deg, ${col(4).tint}, transparent 70%)`,
+                        }}
+                    >
+                        <div className="shrink-0 w-[52px] h-[52px] rounded-[14px] flex items-center justify-center"
+                            style={{ background: col(4).tint, color: col(4).c }}>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={24} height={24}>
+                                <circle cx="12" cy="13" r="8" /><path d="M12 9v4l3 2" /><path d="M9 2h6" />
+                            </svg>
+                        </div>
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-2 mb-1.5" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>05</span>
+                                <span style={{ color: col(4).c }}>Recurring</span>
+                            </div>
+                            <h3 className="text-[19px] font-semibold mb-1.5 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p4.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed max-w-[420px]" style={{ color: "#9aa3b8" }}>{p4.desc}</p>
+                        </div>
+                    </motion.div>
+                )}
+            </div>
+
+            {/* ── Mobile stack ── */}
+            <div className="lg:hidden flex flex-col gap-4">
+                {painPoints.map((p, i) => {
+                    const clr = PAIN_COLORS[i % PAIN_COLORS.length];
+                    return (
+                        <motion.div key={p.title}
+                            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
+                            className="rounded-[20px] p-7 flex flex-col"
+                            style={{ background: "#0c1120", border: "1px solid #1c2336" }}
+                        >
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>{String(i + 1).padStart(2, "0")}</span>
+                                <span style={{ color: clr.c }}>{clr.label}</span>
+                            </div>
+                            <div className="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center mb-4"
+                                style={{ background: clr.tint, color: clr.c }}>
+                                <span className="text-xl">{p.emoji}</span>
+                            </div>
+                            <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p.desc}</p>
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </>
+    );
+}
+
+/* ─── Solution icon set (maps solution index → SVG) ─────────────── */
+function SolutionIcon({ index, accent }: { index: number; accent: string }) {
+    const icons = [
+        // 0 — house / website
+        <svg key={0} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10v9a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-9" /><path d="M10 20v-6h4v6" />
+        </svg>,
+        // 1 — chat / CRM
+        <svg key={1} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <path d="M4 5h16v11H8l-4 4z" /><path d="M8 9h8M8 12.5h5" />
+        </svg>,
+        // 2 — robot / automation
+        <svg key={2} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <rect x="5" y="9" width="14" height="11" rx="2" /><path d="M12 9V5" /><circle cx="12" cy="4" r="1.2" fill={accent} stroke="none" />
+            <circle cx="9" cy="14.5" r="1.2" fill={accent} stroke="none" /><circle cx="15" cy="14.5" r="1.2" fill={accent} stroke="none" /><path d="M9 18h6" />
+        </svg>,
+        // 3 — calendar / scheduler
+        <svg key={3} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <rect x="4" y="5.5" width="16" height="15" rx="2" /><path d="M4 10h16M8 3.5v3M16 3.5v3" /><path d="M8.5 14l1.5 1.5L13.5 12" />
+        </svg>,
+        // 4 — folder / docs
+        <svg key={4} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <path d="M4 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 18.5H5.5A1.5 1.5 0 0 1 4 17z" />
+        </svg>,
+        // 5 — money / commission
+        <svg key={5} viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width={23} height={23}>
+            <circle cx="12" cy="13" r="7.5" /><path d="M12 9.5v7M9.8 11.3c0-1 1-1.6 2.2-1.6s2.2.6 2.2 1.5c0 2.2-4.4 1.1-4.4 3.3 0 .9 1 1.6 2.2 1.6s2.2-.6 2.2-1.5" /><path d="M10 3.5h4" />
+        </svg>,
+    ];
+    return icons[index % icons.length];
+}
+
+/* ─── Animated node ──────────────────────────────────────────────── */
+function TimelineNode({ index, accent, inView }: { index: number; accent: string; inView: boolean }) {
+    // stagger delay matching the pulse travel: 9s cycle, 6 nodes → ~1.5s apart
+    const delay = index * 1.5;
+    return (
+        <motion.div
+            className="w-[54px] h-[54px] rounded-full border-2 bg-white flex items-center justify-center shrink-0"
+            style={{ borderColor: "#e3e7ee" }}
+            animate={inView ? {
+                borderColor: ["#e3e7ee", accent, "#e3e7ee"],
+                boxShadow: ["0 0 0 0px transparent", `0 0 0 8px ${accent}18`, "0 0 0 0px transparent"],
+                scale: [1, 1.12, 1],
+            } : {}}
+            transition={{
+                duration: 9,
+                delay,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.05, 0.12],
+            }}
+        >
+            <SolutionIcon index={index} accent={accent} />
+        </motion.div>
+    );
+}
+
+/* ─── Desktop horizontal timeline ───────────────────────────────── */
+function SolutionTimeline({ solutions, accent }: { solutions: IndustrySolution[]; accent: string }) {
+    const ref = useRef<HTMLDivElement>(null);
+    const inView = useInView(ref, { once: true, amount: 0.3 });
+
+    return (
+        <div ref={ref} className="relative" style={{ display: "grid", gridTemplateColumns: `repeat(${solutions.length}, 1fr)` }}>
+
+            {/* Track */}
+            <div className="absolute top-1/2 left-0 right-0 h-[2px] -translate-y-1/2 z-0"
+                style={{ background: "#d6dded" }}>
+                {/* Travelling pulse */}
+                {inView && (
+                    <motion.div
+                        className="absolute top-1/2 -translate-y-1/2 w-[9px] h-[9px] rounded-full"
+                        style={{
+                            background: accent,
+                            boxShadow: `0 0 0 4px ${accent}28, 0 0 16px 3px ${accent}66`,
+                        }}
+                        initial={{ left: "0%", opacity: 0 }}
+                        animate={{ left: ["0%", "0%", "100%", "100%"], opacity: [0, 1, 1, 0] }}
+                        transition={{ duration: 9, repeat: Infinity, ease: "linear", times: [0, 0.04, 0.96, 1] }}
+                    />
+                )}
+            </div>
+
+            {/* Stations */}
+            {solutions.map((s, i) => {
+                const isTop = i % 2 === 0; // even → card on top, odd → card on bottom
+                return (
+                    <div key={s.title} className="relative z-10"
+                        style={{ display: "grid", gridTemplateRows: "1fr 64px 1fr" }}>
+
+                        {/* Top slot */}
+                        <div className="relative flex justify-center items-end pb-[26px]"
+                            style={{ borderBottom: "none" }}>
+                            {/* connector line down to node */}
+                            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1.5px] h-[26px]"
+                                style={{ background: "#d6dded" }} />
+                            {isTop && (
+                                <motion.div
+                                    className="w-[88%] max-w-[230px] text-left"
+                                    initial={{ opacity: 0, y: -16 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.12 }}
+                                >
+                                    <p className="text-xs font-bold mb-2.5"
+                                        style={{ color: accent, fontFamily: "var(--font-mono, monospace)", letterSpacing: "0.08em" }}>
+                                        0{i + 1}
+                                    </p>
+                                    <h3 className="text-[17px] font-semibold mb-2 leading-snug"
+                                        style={{ color: "#0c1526" }}>
+                                        {s.title}
+                                    </h3>
+                                    <p className="text-[13.5px] leading-relaxed" style={{ color: "#5b6577" }}>{s.desc}</p>
+                                </motion.div>
+                            )}
+                        </div>
+
+                        {/* Node */}
+                        <div className="flex items-center justify-center">
+                            <TimelineNode index={i} accent={accent} inView={inView} />
+                        </div>
+
+                        {/* Bottom slot */}
+                        <div className="relative flex justify-center items-start pt-[26px]">
+                            {/* connector line up to node */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-[26px]"
+                                style={{ background: "#d6dded" }} />
+                            {!isTop && (
+                                <motion.div
+                                    className="w-[88%] max-w-[230px] text-left"
+                                    initial={{ opacity: 0, y: 16 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: i * 0.12 }}
+                                >
+                                    <p className="text-xs font-bold mb-2.5"
+                                        style={{ color: accent, fontFamily: "var(--font-mono, monospace)", letterSpacing: "0.08em" }}>
+                                        0{i + 1}
+                                    </p>
+                                    <h3 className="text-[17px] font-semibold mb-2 leading-snug"
+                                        style={{ color: "#0c1526" }}>
+                                        {s.title}
+                                    </h3>
+                                    <p className="text-[13.5px] leading-relaxed" style={{ color: "#5b6577" }}>{s.desc}</p>
+                                </motion.div>
+                            )}
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 }
@@ -223,85 +564,168 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
                 </div>
             </section>
 
-            {/* ══ PAIN POINTS ══════════════════════════════════════════════ */}
-            <section className="bg-[#060d1f] py-24 px-6 lg:px-12 relative overflow-hidden">
-                <div className="absolute top-[-80px] right-[-80px] w-[420px] h-[420px] rounded-full pointer-events-none"
-                    style={{ background: `radial-gradient(circle, ${ac}26, transparent 70%)` }} />
-                <div className="max-w-7xl mx-auto relative z-10">
-                    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                        className="mb-14">
-                        <div className="flex items-center gap-3 mb-5">
-                            <div className="h-px w-6 bg-white/20" />
-                            <span className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">The Problems</span>
-                        </div>
-                        <h2 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold text-white leading-tight max-w-2xl"
-                            style={{ fontFamily: "var(--font-syne)" }}>
-                            Five ways deals were dying<br />before they started.
-                        </h2>
+            {/* ══ PAIN POINTS — BENTO GRID ═════════════════════════════════ */}
+            <section className="relative py-28 px-6 lg:px-8 overflow-hidden"
+                style={{
+                    background: `
+                        radial-gradient(900px 500px at 85% 15%, rgba(47,111,242,0.16), transparent 60%),
+                        radial-gradient(700px 400px at 0% 100%, rgba(91,141,239,0.08), transparent 60%),
+                        #080b14
+                    `,
+                    color: "#f3f5f9",
+                }}>
+                <div className="max-w-[1280px] mx-auto relative">
+
+                    {/* Eyebrow */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                        className="flex items-center gap-3 mb-7"
+                        style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 12, fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", color: "#5d6680" }}
+                    >
+                        <div className="w-7 h-[1.5px]" style={{ background: ac }} />
+                        The Problems
                     </motion.div>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
-                        {data.painPoints.map((p, i) => (
-                            <motion.div key={p.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                                className="group p-6 rounded-2xl border border-white/[0.06] bg-white/[0.03] hover:bg-white/[0.07] transition-all duration-300 cursor-default">
-                                <div className="text-3xl mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3 inline-block">
-                                    {p.emoji}
-                                </div>
-                                <h3 className="text-sm font-bold text-white mb-2 leading-snug">{p.title}</h3>
-                                <p className="text-xs text-white/40 leading-relaxed font-light">{p.desc}</p>
-                            </motion.div>
-                        ))}
+                    {/* Headline row */}
+                    <div className="relative mb-16">
+                        {/* Ghost number */}
+                        <span aria-hidden className="absolute top-[-86px] right-[-10px] font-bold leading-none pointer-events-none select-none hidden lg:block"
+                            style={{ fontFamily: "var(--font-syne)", fontSize: 340, color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.06)", zIndex: 0 }}>
+                            {String(data.painPoints.length).padStart(2, "0")}
+                        </span>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+                            className="relative z-10 font-bold leading-[1.1] max-w-3xl"
+                            style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(2.2rem,4.6vw,3.6rem)", letterSpacing: "-0.01em" }}
+                            dangerouslySetInnerHTML={{
+                                __html: data.painPoints.length > 0
+                                    ? `${data.painPoints.length === 5
+                                        ? "Five ways deals were dying"
+                                        : `${data.painPoints.length} problems holding you back`} <span style="color:#9aa3b8">before they started.</span>`
+                                    : "Problems before they started."
+                            }}
+                        />
                     </div>
+
+                    {/* Bento Grid */}
+                    <PainPointBento painPoints={data.painPoints} accent={ac} />
                 </div>
             </section>
 
-            {/* ══ SOLUTION STACK ═══════════════════════════════════════════ */}
-            <section id="solutions" className="py-24 px-6 lg:px-12 border-b border-[#E5E7EB]">
+            {/* ══ SOLUTION STACK — TIMELINE ════════════════════════════════ */}
+            <section id="solutions" className="py-24 px-6 lg:px-12 border-b border-[#E5E7EB] overflow-hidden">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid lg:grid-cols-2 gap-12 mb-16 items-end">
+
+                    {/* Header */}
+                    <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-end mb-20">
                         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-                            <div className="flex items-center gap-3 mb-5">
-                                <div className="h-px w-6" style={{ background: ac }} />
-                                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#9CA3AF]">The Solution</span>
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="h-px w-7" style={{ background: ac }} />
+                                <span className="text-xs font-bold uppercase tracking-[0.22em]"
+                                    style={{ color: "#94a0b4", fontFamily: "var(--font-mono, monospace)" }}>
+                                    The Solution
+                                </span>
                             </div>
-                            <h2 className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold leading-tight text-[#111827]"
-                                style={{ fontFamily: "var(--font-syne)" }}>
-                                Website{" "}
-                                <span className="italic" style={{ color: ac }}>+</span>
-                                {" "}CRM{" "}
-                                <span className="italic" style={{ color: ac }}>+</span>
-                                {" "}Lead Automation
+                            <h2
+                                className="font-bold leading-[1.05] tracking-tight"
+                                style={{
+                                    fontFamily: "var(--font-syne)",
+                                    fontSize: "clamp(2.2rem,4.5vw,4rem)",
+                                    color: "#0c1526",
+                                }}
+                            >
+                                Website<span style={{ color: ac, padding: "0 6px" }}>+</span>CRM
+                                <span style={{ color: ac, padding: "0 6px" }}>+</span>Lead Automation
                             </h2>
                         </motion.div>
-                        <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }} transition={{ delay: 0.1 }}
-                            className="text-[17px] text-[#6B7280] leading-relaxed font-light">
+                            className="text-[17px] leading-relaxed font-light"
+                            style={{ color: "#5b6577" }}
+                        >
                             One integrated system that captures every lead, nurtures them automatically, and hands you a list of warm prospects every morning — instead of a pile of unread messages.
                         </motion.p>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {/* ── DESKTOP TIMELINE ── */}
+                    <div className="hidden lg:block">
+                        <SolutionTimeline solutions={data.solutions} accent={ac} />
+                    </div>
+
+                    {/* ── MOBILE STACK ── */}
+                    <div className="lg:hidden flex flex-col gap-0">
                         {data.solutions.map((s, i) => (
-                            <motion.div key={s.title} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                                className="group relative p-8 rounded-2xl border border-[#E5E7EB] bg-white hover:-translate-y-1.5
-                  shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"
-                                    style={{ background: `linear-gradient(135deg, ${ab}, transparent)` }} />
-                                <div className="relative z-10">
-                                    <span className="text-4xl mb-5 block">{s.emoji}</span>
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.12em] mb-2" style={{ color: ac }}>
+                            <div key={s.title} className="relative flex gap-5 pb-9">
+                                {/* vertical connector */}
+                                {i < data.solutions.length - 1 && (
+                                    <div className="absolute left-[26px] top-[54px] bottom-0 w-[2px]"
+                                        style={{ background: "#d6dded" }} />
+                                )}
+                                {/* node */}
+                                <div className="shrink-0 w-[54px] h-[54px] rounded-full border-2 flex items-center justify-center bg-white"
+                                    style={{ borderColor: ac, boxShadow: `0 0 0 6px ${ac}18` }}>
+                                    <SolutionIcon index={i} accent={ac} />
+                                </div>
+                                {/* card */}
+                                <div className="pt-1">
+                                    <p className="text-xs font-bold mb-2"
+                                        style={{ color: ac, fontFamily: "var(--font-mono, monospace)", letterSpacing: "0.08em" }}>
                                         0{i + 1}
                                     </p>
-                                    <h3 className="text-base font-bold text-[#111827] mb-2">{s.title}</h3>
-                                    <p className="text-sm text-[#6B7280] leading-relaxed font-light">{s.desc}</p>
+                                    <h3 className="text-base font-bold mb-2" style={{ color: "#0c1526" }}>{s.title}</h3>
+                                    <p className="text-[13.5px] leading-relaxed" style={{ color: "#5b6577" }}>{s.desc}</p>
                                 </div>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>
             </section>
+
+            {/* ══ VISUAL SHOWCASE (before/after slider) — optional ════════ */}
+            {data.visualShowcase && (
+                <section className="py-24 px-6 lg:px-12 bg-[#F8FAFB] border-b border-[#E5E7EB]">
+                    <div className="max-w-7xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="mb-10 grid lg:grid-cols-2 gap-8 items-end"
+                        >
+                            <div>
+                                <div className="flex items-center gap-3 mb-5">
+                                    <div className="h-px w-6" style={{ background: ac }} />
+                                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#9CA3AF]">
+                                        Visual Impact
+                                    </span>
+                                </div>
+                                <h2
+                                    className="text-[clamp(1.8rem,3.5vw,2.8rem)] font-bold leading-tight text-[#111827]"
+                                    style={{ fontFamily: "var(--font-syne)" }}
+                                >
+                                    {data.visualShowcase.heading}
+                                </h2>
+                            </div>
+                            <p className="text-[17px] text-[#6B7280] leading-relaxed font-light lg:pb-1">
+                                {data.visualShowcase.subheading}
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 32 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <BeforeAfterSlider
+                                beforeSrc={data.visualShowcase.beforeSrc}
+                                afterSrc={data.visualShowcase.afterSrc}
+                                accentColor={ac}
+                            />
+                        </motion.div>
+                    </div>
+                </section>
+            )}
 
             {/* ══ CLIENT CASE STUDIES ══════════════════════════════════════ */}
             <section className="py-24 px-6 lg:px-12 border-b border-[#E5E7EB]">

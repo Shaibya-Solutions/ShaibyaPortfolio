@@ -31,6 +31,16 @@ const carouselImages = [
   "/images/screenshots/client-6.png",
 ];
 
+/* ───── Matching client website links ───── */
+const carouselLinks = [
+  "https://vimsnagpur.com",                   // client-1 → VIMS Hospital
+  "https://www.sonarkillatours.in",            // client-2 → Sonar Killa Tours
+  "https://www.touchwoodfurnitech.com",        // client-3 → Touchwood Furnitech
+  "https://www.revolutionfitnesss.in",         // client-4 → Revolution Fitness
+  "https://www.mginfraproperties.in",          // client-5 → MG Infra Properties
+  "https://www.snyypit.com",                   // client-6 → Snyppit
+];
+
 /* ───── Process timeline data ───── */
 const processTimelineData = [
   {
@@ -173,6 +183,7 @@ export default function GLAbout() {
           >
             <ThreeDGallery
               images={carouselImages}
+              links={carouselLinks}
               imageWidth={220}
               imageHeight={138}
               rotateSpeed={18}

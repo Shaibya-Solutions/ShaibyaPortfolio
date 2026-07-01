@@ -111,7 +111,7 @@ export function SiteHeader() {
                           exit={{ height: 0, opacity: 0 }}
                           className="ml-4 mt-1 flex flex-col gap-0.5 overflow-hidden border-l border-gray-200 pl-3"
                         >
-                          {item.dropdownItems.map((dropItem) => (
+                          {item.dropdownItems.slice(0, 3).map((dropItem) => (
                             <Link
                               key={dropItem.href}
                               href={dropItem.href}
@@ -124,6 +124,18 @@ export function SiteHeader() {
                               <span>{dropItem.label}</span>
                             </Link>
                           ))}
+                          {item.dropdownItems.length > 3 && (
+                            <Link
+                              href={item.href}
+                              onClick={() => setOpen(false)}
+                              className="flex items-center justify-end gap-1 rounded-lg px-2 py-2 text-xs font-semibold text-[#0ea5e9] hover:bg-[#0ea5e9]/8 transition-colors"
+                            >
+                              View more
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2.5 6h7m0 0L6.5 3m3 3L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                            </Link>
+                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>

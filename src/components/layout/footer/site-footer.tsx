@@ -40,7 +40,7 @@ const socials = [
     color: "hover:text-blue-400",
   },
   {
-    href: "https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243",
+    href: "https://www.instagram.com/deepoffduty/",
     icon: FaInstagram,
     label: "Instagram",
     color: "hover:text-pink-400",
@@ -81,7 +81,7 @@ export function SiteFooter() {
       />
 
       {/* Main footer grid */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 pb-10 sm:pb-14 pt-12 sm:pt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-slate-400">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-10 sm:pb-14 pt-12 sm:pt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-slate-400">
 
         {/* Company Identity */}
         <motion.div
@@ -221,9 +221,33 @@ export function SiteFooter() {
         </motion.div>
       </div>
 
+      {/* Shadowed wordmark */}
+      <div
+        className="w-full overflow-hidden select-none pointer-events-none text-center pt-8"
+        aria-hidden
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-syne)",
+            fontSize: "clamp(4rem, 14vw, 12rem)",
+            fontWeight: 900,
+            lineHeight: 0.9,
+            letterSpacing: "-0.05em",
+            textTransform: "uppercase",
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(148,163,184,0.18)",
+            textShadow:
+              "0 4px 16px rgba(20,184,166,0.10), 0 1px 3px rgba(148,163,184,0.15)",
+            userSelect: "none",
+          }}
+        >
+          SHAIBYA
+        </p>
+      </div>
+
       {/* Bottom bar */}
-      <div className="border-t border-slate-800/80 py-5 px-4 sm:px-6 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
+      <div className="border-t border-slate-800/80 py-5 px-4 sm:px-6 md:px-12 text-xs text-slate-500">
+        <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
           <div>
             © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
           </div>

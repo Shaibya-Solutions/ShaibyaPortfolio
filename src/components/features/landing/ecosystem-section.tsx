@@ -35,7 +35,7 @@ const socialNodes = [
     label: "Instagram",
     desc: "Follow us for updates & case studies",
     icon: FaInstagram,
-    href: "https://www.instagram.com/shaibya.solutions?igsh=emE3dTg4NHVjd243",
+    href: "https://www.instagram.com/deepoffduty/",
     color: "from-pink-500 to-rose-500",
     bgLight: "bg-pink-50",
     textColor: "text-pink-600",

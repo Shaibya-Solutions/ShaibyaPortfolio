@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Five ways deals were dying before they started</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080b14;
+    --bg-2:#0c1120;
+    --ink:#f3f5f9;
+    --ink-soft:#9aa3b8;
+    --ink-faint:#5d6680;
+    --line:#1c2336;
+
+    --c-blue:#5b8def;
+    --c-blue-tint:rgba(91,141,239,0.12);
+    --c-rose:#f2526b;
+    --c-rose-tint:rgba(242,82,107,0.12);
+    --c-violet:#9a85f5;
+    --c-violet-tint:rgba(154,133,245,0.12);
+    --c-amber:#f2a93b;
+    --c-amber-tint:rgba(242,169,59,0.12);
+    --c-cyan:#3bc7d6;
+    --c-cyan-tint:rgba(59,199,214,0.12);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    background:
+      radial-gradient(900px 500px at 85% 15%, rgba(47,111,242,0.16), transparent 60%),
+      radial-gradient(700px 400px at 0% 100%, rgba(91,141,239,0.08), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  .section{
+    max-width:1280px;
+    margin:0 auto;
+    padding:120px 32px 140px;
+    position:relative;
+  }
+
+  .eyebrow{
+    display:flex; align-items:center; gap:12px;
+    color:var(--ink-faint);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase;
+    margin-bottom:26px;
+  }
+  .eyebrow::before{ content:''; width:28px; height:1.5px; background:var(--c-blue); }
+
+  .headline-row{
+    position:relative;
+    margin-bottom:76px;
+  }
+
+  .ghost-num{
+    position:absolute;
+    top:-86px; right:-10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:340px;
+    line-height:1;
+    color:transparent;
+    -webkit-text-stroke:1.5px rgba(255,255,255,0.06);
+    z-index:0;
+    pointer-events:none;
+    user-select:none;
+  }
+
+  h1{
+    position:relative;
+    z-index:1;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(36px, 4.6vw, 58px);
+    line-height:1.1;
+    letter-spacing:-0.01em;
+    max-width:760px;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- BENTO GRID ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:22px;
+  }
+
+  .card{
+    position:relative;
+    border-radius:20px;
+    padding:30px 30px 28px;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.14em;
+    color:var(--card-c);
+    text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .tag .no{ color:var(--ink-faint); }
+
+  .icon-wrap{
+    width:44px; height:44px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--card-tint);
+    color:var(--card-c);
+    margin-bottom:20px;
+    flex:0 0 auto;
+  }
+  .icon-wrap svg{ width:22px; height:22px; }
+
+  h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.25;
+  }
+  p{
+    color:var(--ink-soft);
+    line-height:1.65;
+  }
+
+  /* --- card 1 : large feature --- */
+  .card-1{
+    grid-column:1 / 8;
+    grid-row:1 / 3;
+    background:linear-gradient(160deg, rgba(91,141,239,0.10), rgba(91,141,239,0.02) 60%);
+    border:1px solid rgba(91,141,239,0.28);
+    justify-content:flex-end;
+    padding:40px 40px 40px;
+    overflow:hidden;
+  }
+  .card-1 .watermark{
+    position:absolute;
+    top:-30px; right:-10px;
+    width:220px; height:220px;
+    color:rgba(91,141,239,0.07);
+    pointer-events:none;
+  }
+  .card-1 .watermark svg{ width:100%; height:100%; }
+  .card-1 .icon-wrap{
+    width:60px; height:60px; border-radius:16px;
+    background:rgba(91,141,239,0.16);
+  }
+  .card-1 .icon-wrap svg{ width:30px; height:30px; }
+  .card-1 h3{ font-size:27px; max-width:480px; }
+  .card-1 p{ font-size:16px; max-width:440px; }
+
+  /* --- card 2 & 3 : stacked right, borderless editorial --- */
+  .card-2{ grid-column:8 / 13; grid-row:1 / 2; }
+  .card-3{ grid-column:8 / 13; grid-row:2 / 3; }
+  .card-2, .card-3{
+    border-top:1px solid var(--line);
+    padding:26px 4px 0 4px;
+    justify-content:flex-start;
+  }
+  .card-2 h3, .card-3 h3{ font-size:18px; }
+  .card-2 p, .card-3 p{ font-size:13.5px; }
+  .card-2 .icon-wrap, .card-3 .icon-wrap{
+    width:38px; height:38px; border-radius:10px; margin-bottom:16px; background:transparent;
+    border:1px solid var(--line);
+  }
+
+  /* --- card 4 : boxed, offset up --- */
+  .card-4{
+    grid-column:1 / 6;
+    grid-row:3 / 4;
+    background:var(--bg-2);
+    border:1px solid var(--line);
+    margin-top:-26px;
+  }
+  .card-4 h3{ font-size:19px; }
+  .card-4 p{ font-size:13.5px; }
+
+  /* --- card 5 : wide horizontal strip --- */
+  .card-5{
+    grid-column:6 / 13;
+    grid-row:3 / 4;
+    flex-direction:row;
+    align-items:center;
+    gap:26px;
+    background:linear-gradient(100deg, var(--card-tint), transparent 70%);
+    border:none;
+    padding:30px 36px;
+  }
+  .card-5 .icon-wrap{ margin-bottom:0; width:52px; height:52px; border-radius:14px; }
+  .card-5 .text{ display:flex; flex-direction:column; }
+  .card-5 h3{ font-size:19px; margin-bottom:6px; }
+  .card-5 p{ font-size:13.5px; max-width:420px; }
+  .card-5 .tag{ margin-bottom:6px; }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .ghost-num{ font-size:220px; top:-50px; right:-6px; }
+    .grid{ grid-template-columns:1fr; }
+    .card-1, .card-2, .card-3, .card-4, .card-5{
+      grid-column:1 / 2;
+      grid-row:auto;
+      margin-top:0;
+    }
+    .card-2, .card-3{ border-top:1px solid var(--line); padding:26px 4px 0; }
+    .card-5{ flex-direction:row; }
+    .card-1{ padding:34px; }
+  }
+
+  @media (max-width:560px){
+    .section{ padding:80px 22px 90px; }
+    .ghost-num{ display:none; }
+    h1{ font-size:32px; }
+    .card-5{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<section class="section">
+  <div class="eyebrow">THE PROBLEMS</div>
+
+  <div class="headline-row">
+    <div class="ghost-num">05</div>
+    <h1>Five ways deals were dying <em>before they started.</em></h1>
+  </div>
+
+  <div class="grid">
+
+    <!-- 01 — No Digital Presence -->
+    <div class="card card-1" style="--card-c:var(--c-blue); --card-tint:var(--c-blue-tint);">
+      <div class="watermark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z"/></svg>
+      </div>
+      <div class="tag"><span class="no">01</span> Foundational</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z"/></svg>
+      </div>
+      <h3>No Digital Presence</h3>
+      <p>Buyers search online first — if you're not there, you're invisible. Competitors with basic sites were absorbing every lead before you even knew they existed.</p>
+    </div>
+
+    <!-- 02 — Lost Leads on WhatsApp -->
+    <div class="card card-2" style="--card-c:var(--c-rose); --card-tint:var(--c-rose-tint);">
+      <div class="tag"><span class="no">02</span> Urgent</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/><path d="M12 8v3.2M12 14h.01"/></svg>
+      </div>
+      <h3>Lost Leads on WhatsApp</h3>
+      <p>Leads message at 2 AM. By 9 AM they've already contacted a competitor. No tracking, no follow-up system.</p>
+    </div>
+
+    <!-- 03 — No CRM -->
+    <div class="card card-3" style="--card-c:var(--c-violet); --card-tint:var(--c-violet-tint);">
+      <div class="tag"><span class="no">03</span> Systemic</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+      </div>
+      <h3>No CRM</h3>
+      <p>Client data scattered across registers, phones, and chats. No way to know which leads are hot or where revenue is leaking.</p>
+    </div>
+
+    <!-- 04 — Document Chaos -->
+    <div class="card card-4" style="--card-c:var(--c-amber); --card-tint:var(--c-amber-tint);">
+      <div class="tag"><span class="no">04</span> Operational</div>
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 18.5H5.5A1.5 1.5 0 0 1 4 17z"/><path d="M8 11.5h8M8 14.5h5"/></svg>
+      </div>
+      <h3>Document Chaos</h3>
+      <p>Agreements, KYC, and property papers scattered across WhatsApp groups. Finding one document takes hours.</p>
+    </div>
+
+    <!-- 05 — Manual Follow-ups -->
+    <div class="card card-5" style="--card-c:var(--c-cyan); --card-tint:var(--c-cyan-tint);">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 2h6"/></svg>
+      </div>
+      <div class="text">
+        <div class="tag"><span class="no">05</span> Recurring</div>
+        <h3>Manual Follow-ups</h3>
+        <p>Site visit reminders were manual. Re-engaging old leads was impossible. Good opportunities slipped through every week.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</body>
+</html>
