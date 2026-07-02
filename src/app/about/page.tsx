@@ -4,29 +4,84 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
-import { FaWhatsapp } from "react-icons/fa";
-import { IoMail } from "react-icons/io5";
-import dynamic from "next/dynamic";
+import Link from "next/link";
+import {
+  Building2,
+  Lightbulb,
+  Target,
+  Users,
+  Globe2,
+  Rocket,
+  ChevronRight,
+  Sparkles,
+  Award,
+} from "lucide-react";
 
-const ThreeDGallery = dynamic(
-  () => import("@/components/ui/three-d-gallery"),
-  { ssr: false }
-);
+const BRAND = "#0ea5e9";
+const TEXT = "#111827";
+const MUTED = "#6B7280";
+const FAINT = "#9CA3AF";
+const BORDER = "#E5E7EB";
+const BG = "#ffffff";
+const BG_ALT = "#F8FAFB";
+const DARK = "#060d1f";
 
-const IndiaMap = dynamic(
-  () => import("@/components/ui/india-map"),
-  { ssr: false }
-);
+const timeline = [
+  {
+    year: "The Inception",
+    title: "A Spark of Innovation",
+    description:
+      "Shaibya Solutions was born out of a simple observation: businesses were struggling to bridge the gap between complex technological capabilities and real-world operational needs. Our founders set out to create a consultancy that prioritized practical, scalable solutions.",
+    icon: Lightbulb,
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    year: "Building the Foundation",
+    title: "Assembling the Experts",
+    description:
+      "We started small, focusing on localized impact. By gathering a core team of passionate technologists and strategists, Shaibya established its foundational ethos: delivering uncompromising quality and building lasting partnerships.",
+    icon: Users,
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    year: "Expansion & Growth",
+    title: "Scaling New Heights",
+    description:
+      "As our reputation for excellence grew, so did our footprint. We expanded our service offerings to encompass enterprise digital transformation, cloud architecture, and cutting-edge data analytics.",
+    icon: Rocket,
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    year: "Present Day",
+    title: "A Global Solutions Partner",
+    description:
+      "Today, Shaibya Solutions stands as a beacon of technological empowerment. We continue to drive innovation, helping organizations worldwide navigate the complexities of the digital age with confidence.",
+    icon: Globe2,
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+  },
+];
 
-/* ───── Client Website Images ───── */
-const clientImages = [
-  "/images/screenshots/client-1.png",
-  "/images/screenshots/client-2.png",
-  "/images/screenshots/client-3.png",
-  "/images/screenshots/client-4.png",
-  "/images/screenshots/client-5.png",
-  "/images/screenshots/client-6.png",
-  
+const values = [
+  {
+    title: "Integrity First",
+    description: "We believe in transparent, honest partnerships. Our word is our bond.",
+    icon: Building2,
+  },
+  {
+    title: "Relentless Innovation",
+    description: "We constantly push the boundaries of what is possible, embracing new technologies.",
+    icon: Sparkles,
+  },
+  {
+    title: "Client-Centric",
+    description: "Your success is our success. We measure our impact by the value we create for you.",
+    icon: Target,
+  },
+  {
+    title: "Excellence Delivered",
+    description: "We hold ourselves to the highest standards of quality, ensuring every solution is robust and effective.",
+    icon: Award,
+  },
 ];
 
 export default function AboutPage() {
@@ -34,291 +89,328 @@ export default function AboutPage() {
   const heroInView = useInView(heroRef, { once: true, amount: 0.2 });
 
   return (
-    <main className="bg-white text-[#111827] min-h-screen flex flex-col overflow-x-hidden">
+    <main className="min-h-screen flex flex-col overflow-x-hidden" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
 
-      {/* ═══════════ HERO ═══════════ */}
-      <section
-        ref={heroRef}
-        className="relative pt-36 pb-24 lg:pt-48 lg:pb-32 overflow-hidden bg-white"
-      >
+      {/* ══ HERO ══════════════════════════════════════════════════════ */}
+      <section ref={heroRef} className="relative pt-40 pb-0 overflow-hidden" style={{ background: BG }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-16 items-center">
-            {/* Left */}
-            <div>
-              <motion.span
-                initial={{ opacity: 0, y: 8 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5 }}
-                className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-[#0ea5e9] mb-6"
-              >
-                Our Story
-              </motion.span>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 32 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="text-[clamp(2.8rem,6vw,5rem)] font-bold leading-[1.05] mb-6"
-                style={{ fontFamily: "var(--font-syne)" }}
-              >
-                Ahead of
-                <br />
-                the curve,
-                <br />
-                <span className="heading-gradient italic font-normal">
-                  always.
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={heroInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-sm text-[#6B7280] leading-relaxed max-w-sm"
-              >
-                A technology company born in Nagpur, built for the world. AI,
-                full-stack, mobile — all under one roof.
-              </motion.p>
-            </div>
-
-            {/* Right — 3D Carousel */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="flex items-center justify-center lg:justify-end"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center max-w-4xl mx-auto mb-16"
+          >
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em] mb-6"
+              style={{ color: BRAND, fontFamily: "var(--font-inter)" }}
             >
-              <ThreeDGallery
-                images={clientImages}
-                imageWidth={220}
-                imageHeight={138}
-                rotateSpeed={18}
-                pauseOnHover={true}
-                translateZ={260}
-                borderRadius={12}
-                showBackface={true}
-                width={480}
-                height={360}
-              />
-            </motion.div>
-          </div>
+              Our Story
+            </p>
+            <h1
+              className="font-bold tracking-tight leading-[1.02] mb-8"
+              style={{
+                fontFamily: "var(--font-syne)",
+                fontSize: "clamp(3rem, 8vw, 6.5rem)",
+                letterSpacing: "-0.03em",
+                color: TEXT,
+              }}
+            >
+              Empowering the Future,{" "}
+              <br className="hidden md:block" />
+              <span style={{ fontStyle: "italic", fontWeight: 400, color: MUTED }}>
+                One Solution at a Time.
+              </span>
+            </h1>
+            <p
+              className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto"
+              style={{ color: MUTED, fontFamily: "var(--font-inter)", fontWeight: 300 }}
+            >
+              We are more than just a technology company. Shaibya Solutions is a collective of
+              visionaries, engineers, and strategists dedicated to transforming how businesses
+              operate in the digital era.
+            </p>
+          </motion.div>
+
+          {/* Hero image */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="w-full overflow-hidden"
+            style={{ height: "clamp(280px, 40vw, 560px)", border: `1px solid ${BORDER}` }}
+          >
+            <motion.img
+              initial={{ scale: 1.08 }}
+              animate={heroInView ? { scale: 1 } : {}}
+              transition={{ duration: 1.6, ease: "easeOut" }}
+              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1400"
+              alt="Shaibya Solutions team"
+              className="w-full h-full object-cover grayscale"
+            />
+          </motion.div>
         </div>
       </section>
 
-      {/* ═══════════ REACH MAP ═══════════ */}
-      <section className="relative py-24 lg:py-36 overflow-hidden bg-white border-t border-[#E5E7EB]">
-        {/* Subtle grid bg */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: "radial-gradient(circle, #E5E7EB 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-            opacity: 0.45,
-          }}
-        />
+      {/* ══ WHO WE ARE + VALUES ═══════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 border-y" style={{ borderColor: BORDER, background: BG }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-
-            {/* ── Left: headline block ── */}
-            <div className="order-2 lg:order-1">
-              <motion.span
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="inline-block text-xs font-bold uppercase tracking-[0.22em] text-[#0ea5e9] mb-6"
-                style={{ fontFamily: "var(--font-inter)" }}
+            {/* Left — text */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <p
+                className="text-xs font-bold tracking-[0.2em] uppercase mb-4"
+                style={{ color: FAINT, fontFamily: "var(--font-inter)" }}
               >
-                Our Reach
-              </motion.span>
-
-              <motion.h2
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.08 }}
-                className="font-bold leading-[0.95] mb-6 uppercase"
+                Who We Are
+              </p>
+              <h2
+                className="font-bold mb-8 leading-tight"
                 style={{
                   fontFamily: "var(--font-syne)",
-                  fontSize: "clamp(2.8rem,6.5vw,5.5rem)",
-                  letterSpacing: "-0.04em",
-                  color: "#111827",
+                  fontSize: "clamp(2rem, 4vw, 3.2rem)",
+                  color: TEXT,
                 }}
               >
-                ENGINEERING
-                <br />
-                IMPACT
-                <br />
-                <span style={{ color: "#0ea5e9" }}>ALL OVER</span>
-                <br />
-                <span style={{ color: "#0ea5e9" }}>INDIA.</span>
-              </motion.h2>
-
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.16 }}
-                className="text-base text-[#6B7280] max-w-md leading-relaxed mb-10"
-                style={{ fontFamily: "var(--font-inter)" }}
+                What is Shaibya Solutions?
+              </h2>
+              <div
+                className="space-y-5 text-lg leading-relaxed pl-6"
+                style={{ color: MUTED, fontFamily: "var(--font-inter)", fontWeight: 300, borderLeft: `2px solid ${BORDER}` }}
               >
-                From our home base in Nagpur to offices in Noida and Texas — we
-                build systems that work for businesses across every timezone.
-              </motion.p>
+                <p>
+                  Shaibya Solutions is a premier technology consulting and implementation firm.
+                  We specialize in identifying operational bottlenecks and deploying bespoke,
+                  scalable digital solutions that drive efficiency and growth.
+                </p>
+                <p>
+                  Our name, Shaibya, reflects our commitment to truth, resilience, and unwavering
+                  dedication to our clients&apos; success. We bridge the gap between legacy systems and
+                  forward-looking innovations, ensuring our partners are always a step ahead.
+                </p>
+              </div>
+            </motion.div>
 
-              {/* Location pills */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.24 }}
-                className="flex flex-wrap gap-3"
-              >
-                {[
-                  { city: "Nagpur", tag: "HQ", flag: "🇮🇳" },
-                  { city: "Noida", tag: "Office", flag: "🇮🇳" },
-                  { city: "Texas", tag: "USA", flag: "🇺🇸" },
-                ].map((loc) => (
-                  <div
-                    key={loc.city}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-full"
-                    style={{
-                      background: "#F8FAFB",
-                      border: "1px solid #E5E7EB",
-                    }}
-                  >
-                    <span className="text-base">{loc.flag}</span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-inter)",
-                        fontSize: 13,
-                        fontWeight: 700,
-                        color: "#111827",
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {loc.city}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-inter)",
-                        fontSize: 10,
-                        fontWeight: 700,
-                        color: "#0ea5e9",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.1em",
-                        background: "rgba(14,165,233,0.08)",
-                        border: "1px solid rgba(14,165,233,0.2)",
-                        borderRadius: 999,
-                        padding: "2px 8px",
-                      }}
-                    >
-                      {loc.tag}
-                    </span>
-                  </div>
-                ))}
-              </motion.div>
-
-              {/* Stats row */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.32 }}
-                className="flex flex-wrap gap-8 mt-10 pt-10 border-t border-[#E5E7EB]"
-              >
-                {[
-                  { value: "19+", label: "Projects delivered" },
-                  { value: "10+", label: "Industries served" },
-                  { value: "3", label: "Countries" },
-                ].map((s) => (
-                  <div key={s.label}>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-syne)",
-                        fontSize: "clamp(1.8rem,3vw,2.5rem)",
-                        fontWeight: 800,
-                        color: "#111827",
-                        lineHeight: 1,
-                        letterSpacing: "-0.03em",
-                      }}
-                    >
-                      {s.value}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-inter)",
-                        fontSize: 12,
-                        color: "#9CA3AF",
-                        marginTop: 4,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* ── Right: India map ── */}
+            {/* Right — values hover grid */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="order-1 lg:order-2 flex justify-center lg:justify-end"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-px"
+              style={{ background: BORDER, border: `1px solid ${BORDER}` }}
             >
-              <IndiaMap className="w-full max-w-[440px]" />
+              {values.map((v) => (
+                <div
+                  key={v.title}
+                  className="group p-8 bg-white hover:bg-[#111827] transition-colors duration-300 cursor-default"
+                >
+                  <v.icon className="w-7 h-7 mb-5 text-[#0ea5e9] group-hover:text-[#38bdf8] transition-colors duration-300" />
+                  <h4
+                    className="text-base font-bold mb-2 text-[#111827] group-hover:text-white transition-colors duration-300"
+                    style={{ fontFamily: "var(--font-syne)" }}
+                  >
+                    {v.title}
+                  </h4>
+                  <p
+                    className="text-sm leading-relaxed text-[#6B7280] group-hover:text-white/70 transition-colors duration-300"
+                    style={{ fontFamily: "var(--font-inter)" }}
+                  >
+                    {v.description}
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ═══════════ CTA ═══════════ */}
-      <section className="bg-[#022648] py-16">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-8">
-          <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-[clamp(1.8rem,3.5vw,2.5rem)] font-bold text-white leading-[1.15]"
-            style={{ fontFamily: "var(--font-syne)" }}
-          >
-            Ready to build
-            <br />
-            the future,{" "}
-            <span className="heading-gradient italic font-normal">
-              together?
-            </span>
-          </motion.h2>
+      {/* ══ TIMELINE ═════════════════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 overflow-hidden" style={{ background: DARK, color: "#F3F5F9" }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="flex items-center gap-4"
+          {/* Header */}
+          <div
+            className="text-center max-w-3xl mx-auto mb-20 pb-12"
+            style={{ borderBottom: "1px solid rgba(243,245,249,0.12)" }}
           >
-            <a
-              href="https://wa.me/+917498341146"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0ea5e9] hover:bg-[#0284c7] text-white text-sm font-bold uppercase tracking-widest transition-colors"
+            <p
+              className="text-xs font-bold tracking-[0.2em] uppercase mb-4"
+              style={{ color: "rgba(243,245,249,0.45)", fontFamily: "var(--font-inter)" }}
             >
-              <FaWhatsapp size={18} />
-              WhatsApp Us
-            </a>
-            <a
-              href="mailto:shaibyasolutions@gmail.com"
-              className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-white/20 text-white text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-colors"
+              Our History
+            </p>
+            <h2
+              className="font-bold mb-6 tracking-tight text-white"
+              style={{
+                fontFamily: "var(--font-syne)",
+                fontSize: "clamp(2.8rem, 6vw, 5rem)",
+                letterSpacing: "-0.04em",
+              }}
             >
-              <IoMail size={18} />
-              Send an Email
-            </a>
+              The Shaibya Story
+            </h2>
+            <p
+              className="text-lg italic font-light"
+              style={{ color: "rgba(243,245,249,0.65)", fontFamily: "var(--font-inter)" }}
+            >
+              Every great enterprise starts with a vision. Here is how Shaibya Solutions evolved
+              from a bold idea into a driving force in technology.
+            </p>
+          </div>
+
+          {/* Timeline entries */}
+          <div className="relative">
+            <div
+              className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+              style={{ background: "rgba(243,245,249,0.12)" }}
+            />
+
+            <div className="space-y-16">
+              {timeline.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6 }}
+                  className="relative flex flex-col md:flex-row items-center gap-8"
+                >
+                  {/* Node */}
+                  <div
+                    className="hidden md:flex absolute left-1/2 -translate-x-1/2 w-11 h-11 items-center justify-center z-10"
+                    style={{ background: DARK, border: "1px solid rgba(243,245,249,0.25)" }}
+                  >
+                    <item.icon className="w-4 h-4" style={{ color: BRAND }} />
+                  </div>
+
+                  {/* Left col */}
+                  <div className="w-full md:w-1/2 md:pr-16 md:text-right">
+                    {idx % 2 === 0 ? (
+                      <div className="p-8 border border-white/10 hover:border-[#0ea5e9]/40 bg-white/[0.03] transition-all duration-300">
+                        <span
+                          className="text-xs font-bold tracking-[0.2em] uppercase mb-4 block"
+                          style={{ color: BRAND, fontFamily: "var(--font-inter)" }}
+                        >
+                          {item.year}
+                        </span>
+                        <h4
+                          className="text-2xl font-bold mb-4 text-white"
+                          style={{ fontFamily: "var(--font-syne)" }}
+                        >
+                          {item.title}
+                        </h4>
+                        <p
+                          className="leading-relaxed text-base font-light text-white/70"
+                          style={{ fontFamily: "var(--font-inter)" }}
+                        >
+                          {item.description}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="aspect-video w-full overflow-hidden border border-white/10">
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.6 }}
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right col */}
+                  <div className="w-full md:w-1/2 md:pl-16 md:text-left">
+                    {idx % 2 === 1 ? (
+                      <div className="p-8 border border-white/10 hover:border-[#0ea5e9]/40 bg-white/[0.03] transition-all duration-300">
+                        <span
+                          className="text-xs font-bold tracking-[0.2em] uppercase mb-4 block"
+                          style={{ color: BRAND, fontFamily: "var(--font-inter)" }}
+                        >
+                          {item.year}
+                        </span>
+                        <h4
+                          className="text-2xl font-bold mb-4 text-white"
+                          style={{ fontFamily: "var(--font-syne)" }}
+                        >
+                          {item.title}
+                        </h4>
+                        <p
+                          className="leading-relaxed text-base font-light text-white/70"
+                          style={{ fontFamily: "var(--font-inter)" }}
+                        >
+                          {item.description}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="aspect-video w-full overflow-hidden border border-white/10">
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.6 }}
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover opacity-60 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ CTA ══════════════════════════════════════════════════════ */}
+      <section
+        className="py-32 text-center"
+        style={{ background: BG_ALT, borderBottom: `1px solid ${BORDER}` }}
+      >
+        <div className="max-w-4xl mx-auto px-6 lg:px-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <p
+              className="text-xs font-bold tracking-[0.22em] uppercase mb-6"
+              style={{ color: BRAND, fontFamily: "var(--font-inter)" }}
+            >
+              Join Us
+            </p>
+            <h2
+              className="font-bold tracking-tight mb-8"
+              style={{
+                fontFamily: "var(--font-syne)",
+                fontSize: "clamp(2.5rem, 6vw, 5rem)",
+                letterSpacing: "-0.03em",
+                color: TEXT,
+              }}
+            >
+              Be Part of Our Next Chapter
+            </h2>
+            <p
+              className="text-lg md:text-xl mb-12 max-w-2xl mx-auto italic font-light"
+              style={{ color: MUTED, fontFamily: "var(--font-inter)" }}
+            >
+              Whether you are looking to transform your business or join a team of innovators,
+              Shaibya Solutions is ready to welcome you.
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-3 font-bold text-xs uppercase tracking-[0.2em] px-10 py-5 transition-all duration-200 hover:gap-5"
+              style={{ background: TEXT, color: "#ffffff", border: `1px solid ${TEXT}` }}
+            >
+              Connect With Us <ChevronRight className="w-4 h-4" />
+            </Link>
           </motion.div>
         </div>
       </section>

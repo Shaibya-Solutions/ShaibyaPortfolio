@@ -97,7 +97,7 @@ export const testimonials = [
 ];
 
 export const nav = [
-  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
   {
     href: "#",
     label: "Industries",
