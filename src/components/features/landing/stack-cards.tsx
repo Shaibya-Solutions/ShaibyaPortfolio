@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { projects } from "@/data";
-import CardSwap from "@/components/CardSwap";
+import CardSwap from "@/components/ui/CardSwap";
 import { motion } from "framer-motion";
 
 export default function StackCaseStudies() {

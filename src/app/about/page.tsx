@@ -93,13 +93,38 @@ export default function AboutPage() {
       <SiteHeader />
 
       {/* ══ HERO ══════════════════════════════════════════════════════ */}
-      <section ref={heroRef} className="relative pt-40 pb-0 overflow-hidden" style={{ background: BG }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <section
+        ref={heroRef}
+        className="relative pt-40 pb-24 overflow-hidden"
+      >
+        {/* Background image */}
+        <div className="absolute inset-0 z-0">
+          <motion.img
+            initial={{ scale: 1.08 }}
+            animate={heroInView ? { scale: 1 } : {}}
+            transition={{ duration: 1.6, ease: "easeOut" }}
+            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1400"
+            alt=""
+            aria-hidden
+            className="w-full h-full object-cover grayscale"
+          />
+          {/* Overlay — white fade so dark text stays readable */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.75) 60%, rgba(255,255,255,0.95) 100%)",
+            }}
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={heroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-center max-w-4xl mx-auto mb-16"
+            className="text-center max-w-4xl mx-auto"
           >
             <p
               className="text-xs font-bold uppercase tracking-[0.22em] mb-6"
@@ -130,24 +155,6 @@ export default function AboutPage() {
               visionaries, engineers, and strategists dedicated to transforming how businesses
               operate in the digital era.
             </p>
-          </motion.div>
-
-          {/* Hero image */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-full overflow-hidden"
-            style={{ height: "clamp(280px, 40vw, 560px)", border: `1px solid ${BORDER}` }}
-          >
-            <motion.img
-              initial={{ scale: 1.08 }}
-              animate={heroInView ? { scale: 1 } : {}}
-              transition={{ duration: 1.6, ease: "easeOut" }}
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1400"
-              alt="Shaibya Solutions team"
-              className="w-full h-full object-cover grayscale"
-            />
           </motion.div>
         </div>
       </section>

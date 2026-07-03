@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import DecryptedText from "@/components/reactbits/DecryptedText";
+import DecryptedText from "@/components/ui/DecryptedText";
 import dynamic from "next/dynamic";
 
 const CelestialSphere = dynamic(
