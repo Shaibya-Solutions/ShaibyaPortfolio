@@ -4,7 +4,7 @@ import React from "react";
 
 const Loader = () => {
   return (
-    <div className='fixed inset-0 w-full h-full flex items-center justify-center z-50 bg-slate-950'>
+    <div className='fixed inset-0 w-full h-full flex items-center justify-center z-50 bg-white'>
       <video 
         autoPlay 
         loop 

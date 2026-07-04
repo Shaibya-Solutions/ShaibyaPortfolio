@@ -7,7 +7,7 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const stored = localStorage.getItem("theme-dark")
-    const isDark = stored ? stored === "true" : true
+    const isDark = stored ? stored === "true" : false
     setDark(isDark)
     document.documentElement.classList.toggle("dark", isDark)
   }, [])

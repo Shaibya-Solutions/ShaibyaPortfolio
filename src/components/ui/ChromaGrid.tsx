@@ -72,7 +72,6 @@ export const ChromaGrid = ({
   ease = 'power3.out',
 }: ChromaGridProps) => {
   const rootRef = useRef<HTMLDivElement>(null);
-  const fadeRef = useRef<HTMLDivElement>(null);
   const setX = useRef<gsap.QuickToFunc | null>(null);
   const setY = useRef<gsap.QuickToFunc | null>(null);
   const pos = useRef({ x: 0, y: 0 });
@@ -110,11 +109,9 @@ export const ChromaGrid = ({
   const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const r = rootRef.current!.getBoundingClientRect();
     moveTo(e.clientX - r.left, e.clientY - r.top);
-    gsap.to(fadeRef.current, { opacity: 0, duration: 0.25, overwrite: true });
   };
 
   const handleLeave = () => {
-    gsap.to(fadeRef.current, { opacity: 1, duration: fadeOut, overwrite: true });
   };
 
   const handleCardClick = (index: number, c: ChromaItem) => {
@@ -185,9 +182,6 @@ export const ChromaGrid = ({
           </div>
         </article>
       ))}
-
-      <div className="chroma-overlay" />
-      <div ref={fadeRef} className="chroma-fade" />
     </div>
   );
 };

@@ -32,12 +32,12 @@ export default function SnyppitPage() {
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative py-24 lg:py-36 bg-gradient-to-br from-slate-900 via-[#1a1a2e] to-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} />
-        <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] rounded-full bg-teal-500/8 blur-[150px]" />
+      <section className="relative py-24 lg:py-36 bg-gradient-to-br from-slate-50 via-white to-slate-50 text-slate-900 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} />
+        <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] rounded-full bg-teal-500/10 blur-[150px]" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-extrabold mb-6">The Story Behind the Code</motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-xl text-slate-600 font-light max-w-2xl mx-auto leading-relaxed">
             We didn&apos;t start coding to build the next big social media app. We started because we saw local business owners drowning in manual work that simple technology could eliminate.
           </motion.p>
         </div>
@@ -145,15 +145,15 @@ export default function SnyppitPage() {
       </section>
 
       {/* CTA */}
-      <section ref={ctaRef} className="relative py-28 text-center px-4 overflow-hidden">
-        <motion.div style={{ y: bgY }} className="absolute inset-0 bg-slate-900">
-          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`, backgroundSize: "50px 50px" }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-[400px] bg-teal-500/15 blur-[120px] rounded-full pointer-events-none" />
+      <section ref={ctaRef} className="relative py-28 text-center px-4 overflow-hidden border-t border-slate-200">
+        <motion.div style={{ y: bgY }} className="absolute inset-0 bg-slate-50">
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`, backgroundSize: "50px 50px" }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg h-[400px] bg-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
         </motion.div>
         <div className="relative z-10 max-w-2xl mx-auto">
-          <p className="text-sm font-semibold uppercase tracking-widest text-teal-400 mb-4">Have an Idea?</p>
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Have an idea? Let&apos;s build it.</h2>
-          <p className="text-slate-300 text-lg mb-10">We don&apos;t just work for established companies — we build with founders from day zero.</p>
+          <p className="text-sm font-semibold uppercase tracking-widest text-teal-600 mb-4">Have an Idea?</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Have an idea? Let&apos;s build it.</h2>
+          <p className="text-slate-600 text-lg mb-10">We don&apos;t just work for established companies — we build with founders from day zero.</p>
           <WhatsAppCTA className="text-lg px-8 py-4" message="Hi, I have an idea I'd like to discuss with Shaibya Solutions." />
         </div>
       </section>

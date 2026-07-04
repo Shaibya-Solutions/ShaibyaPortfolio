@@ -49,7 +49,7 @@ const socials = [
     href: "https://medium.com/@shaibyasolutions",
     icon: FaMedium,
     label: "Blog / Medium",
-    color: "hover:text-white",
+    color: "hover:text-slate-900",
   },
   {
     href: "https://wa.me/917498341146",
@@ -69,7 +69,7 @@ export function SiteFooter() {
       variants={footerVariants}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      className="bg-slate-950 border-t border-slate-800 relative overflow-hidden"
+      className="bg-slate-50 border-t border-slate-200 relative overflow-hidden"
     >
       {/* Subtle teal glow top-right */}
       <div
@@ -81,14 +81,14 @@ export function SiteFooter() {
       />
 
       {/* Main footer grid */}
-      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-10 sm:pb-14 pt-12 sm:pt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-slate-400">
+      <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-10 sm:pb-14 pt-12 sm:pt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-slate-600">
         {/* Company Identity */}
         <motion.div
           variants={itemVariants}
           className="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-1"
         >
           <Link href="/" className="mb-4 block">
-            <span className="text-xl font-bold text-white">Shaibya</span>
+            <span className="text-xl font-bold text-slate-900">Shaibya</span>
             <span className="ml-1 rounded-full bg-teal-500/20 px-2 py-0.5 text-sm font-semibold text-teal-400">
               Solutions
             </span>
@@ -109,7 +109,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.label}
-                  className={`flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 text-slate-400 transition-all hover:border-slate-500 hover:scale-110 ${s.color}`}
+                  className={`flex h-9 w-9 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-all hover:border-slate-500 hover:scale-110 ${s.color}`}
                 >
                   <Icon size={15} />
                 </a>
@@ -120,7 +120,7 @@ export function SiteFooter() {
 
         {/* Industries */}
         <motion.div variants={itemVariants}>
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-white mb-4">
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-900 mb-4">
             Industries
           </h3>
           <ul className="space-y-2.5 text-sm">
@@ -258,9 +258,9 @@ export function SiteFooter() {
             lineHeight: 0.95,
             textTransform: "uppercase",
             color: "transparent",
-            WebkitTextStroke: "1.4px rgba(255,255,255,0.32)",
+            WebkitTextStroke: "1.4px rgba(0,0,0,0.1)",
             backgroundImage:
-              "linear-gradient(100deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.95) 40%, rgba(45,212,191,0.95) 46%, rgba(255,255,255,0.95) 52%, rgba(255,255,255,0) 70%)",
+              "linear-gradient(100deg, rgba(15,23,42,0) 22%, rgba(15,23,42,0.6) 40%, rgba(45,212,191,0.6) 46%, rgba(15,23,42,0.6) 52%, rgba(15,23,42,0) 70%)",
             backgroundSize: "320% 100%",
             backgroundPosition: "0% 0",
             WebkitBackgroundClip: "text",
@@ -275,7 +275,7 @@ export function SiteFooter() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-slate-800/80 py-5 px-4 sm:px-6 md:px-12 text-xs text-slate-500">
+      <div className="border-t border-slate-200 py-5 px-4 sm:px-6 md:px-12 text-xs text-slate-500">
         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left">
           <div>
             © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
@@ -289,12 +289,12 @@ export function SiteFooter() {
             >
               Blog
             </a>
-            <Link href="#" className="hover:text-white transition">
+            <Link href="#" className="hover:text-slate-900 transition">
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="hover:text-white transition whitespace-nowrap"
+              className="hover:text-slate-900 transition whitespace-nowrap"
             >
               Terms &amp; Conditions
             </Link>
