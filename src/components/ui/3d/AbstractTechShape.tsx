@@ -45,9 +45,9 @@ function Shape() {
   );
 }
 
-export function AbstractTechShape() {
+export function AbstractTechShape({ className = "w-full h-full absolute inset-0 z-0 pointer-events-none" }: { className?: string }) {
   return (
-    <div className="w-full h-full absolute inset-0 -z-10 pointer-events-none">
+    <div className={className}>
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1.5} color="#E0F5FC" />
