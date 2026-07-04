@@ -2,144 +2,169 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { INDIA_MAP_DATA } from "./india-map-data";
 
-/* ─────────────────────────────────────────────────────────────
-   City coordinates tuned to the SVG viewBox="0 0 650 750"
-   The India outline below is a simplified tracing of the
-   actual geographic outline at that scale.
-   ───────────────────────────────────────────────────────────── */
 const CITIES = [
-    { name: "Nagpur", x: 295, y: 390, primary: true },
-    { name: "Delhi", x: 255, y: 195, primary: false },
-    { name: "Mumbai", x: 200, y: 415, primary: false },
-    { name: "Noida", x: 268, y: 198, primary: false },
-    { name: "Bangalore", x: 262, y: 530, primary: false },
+  { name: "Nagpur", x: 250, y: 410, primary: true, stateId: "mh" },
+  { name: "Delhi", x: 186, y: 210, primary: false, stateId: "dl" },
+  { name: "Mumbai", x: 105, y: 440, primary: false, stateId: "mh" },
+  { name: "Noida", x: 195, y: 212, primary: false, stateId: "up" },
+  { name: "Bangalore", x: 195, y: 560, primary: false, stateId: "ka" },
 ];
 
-interface IndiaMapProps { className?: string }
+interface IndiaMapProps {
+  className?: string;
+  activeCity?: string | null;
+  onCityHover?: (cityName: string | null) => void;
+}
 
-/* ─────────────────────────────────────────────────────────────
-   Simplified India outline — scaled to viewBox 0 0 520 620
-   Derived from Natural Earth public domain data.
-   ───────────────────────────────────────────────────────────── */
-const INDIA_PATH = `
-M 258,8
-L 268,10 L 278,14 L 290,12 L 302,18 L 316,14 L 326,20 L 338,16
-L 348,24 L 356,20 L 364,28 L 374,22 L 382,30 L 390,26 L 400,34
-L 408,30 L 416,40 L 412,50 L 420,56 L 428,50 L 436,58 L 432,68
-L 440,74 L 436,84 L 444,90 L 438,100 L 430,106 L 436,116
-L 424,124 L 428,136 L 418,144 L 412,158 L 400,162 L 394,176
-L 382,178 L 376,192 L 364,198 L 360,214 L 348,222 L 340,238
-L 348,250 L 352,266 L 346,280 L 336,292 L 328,308 L 318,322
-L 308,336 L 302,354 L 296,370 L 290,386 L 284,402 L 278,420
-L 272,436 L 268,452 L 264,468 L 260,484 L 256,500 L 252,516
-L 248,532 L 246,548 L 250,562 L 258,570 L 268,576 L 278,568
-L 286,554 L 282,538 L 278,522 L 272,508 L 268,494 L 264,508
-L 260,524 L 256,538 L 252,552
-L 232,518 L 226,500 L 216,484 L 208,466 L 202,448 L 196,430
-L 190,410 L 184,390 L 178,370 L 172,350 L 166,332 L 162,314
-L 158,296 L 154,276 L 150,258 L 148,240 L 144,222 L 140,204
-L 136,186 L 132,170 L 130,152 L 128,136 L 132,120 L 126,106
-L 120,92 L 116,78 L 122,64 L 116,52 L 122,40 L 130,30
-L 140,24 L 152,18 L 164,14 L 178,10 L 192,8 L 206,6 L 220,4
-L 234,6 Z
-M 394,26 L 406,20 L 418,24 L 426,32 L 432,42 L 436,54 L 426,60
-L 416,52 L 408,44 Z
-M 378,24 L 390,18 L 400,22 L 402,34 L 392,38 L 380,32 Z
-`;
+export default function IndiaMap({ className = "", activeCity = null, onCityHover }: IndiaMapProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
 
-export default function IndiaMap({ className = "" }: IndiaMapProps) {
-    const ref = useRef<HTMLDivElement>(null);
-    const inView = useInView(ref, { once: true, amount: 0.3 });
+  const isTexasActive = activeCity === "Texas";
+  const isAnyActive = activeCity !== null;
 
-    return (
-        <div ref={ref} className={`relative ${className}`}>
-            {/* USA callout badge — off-map */}
-            <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={inView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 1.2 }}
-                style={{
-                    position: "absolute", top: 0, right: 0,
-                    background: "#0ea5e9", color: "#fff",
-                    borderRadius: 8, padding: "6px 12px",
-                    fontSize: 11, fontWeight: 700,
-                    fontFamily: "var(--font-inter)",
-                    letterSpacing: "0.1em", textTransform: "uppercase",
-                    boxShadow: "0 4px 16px rgba(14,165,233,0.35)",
-                    display: "flex", alignItems: "center", gap: 6,
-                    zIndex: 20,
+  return (
+    <div ref={ref} className={`relative ${className}`}>
+      {/* USA callout badge — off-map */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={inView ? { 
+          opacity: !isAnyActive || isTexasActive ? 1 : 0.4, 
+          x: 0, 
+          scale: isTexasActive ? 1.05 : 1 
+        } : {}}
+        transition={{ duration: 0.3 }}
+        onMouseEnter={() => onCityHover?.("Texas")}
+        onMouseLeave={() => onCityHover?.(null)}
+        className="cursor-pointer transition-all duration-300"
+        style={{
+          position: "absolute", top: 10, right: 10,
+          background: "#0ea5e9", color: "#fff",
+          borderRadius: 8, padding: "6px 12px",
+          fontSize: 11, fontWeight: 700,
+          fontFamily: "var(--font-inter)",
+          letterSpacing: "0.1em", textTransform: "uppercase",
+          boxShadow: isTexasActive ? "0 8px 24px rgba(14,165,233,0.5)" : "0 4px 16px rgba(14,165,233,0.25)",
+          display: "flex", alignItems: "center", gap: 6,
+          zIndex: 20,
+        }}
+      >
+        <span style={{ fontSize: 15 }}>🇺🇸</span> Texas, USA
+      </motion.div>
+
+      <svg
+        viewBox="0 0 612 696"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-auto"
+        aria-label="Detailed India Map — Shaibya Solutions footprint"
+      >
+        {/* ── State boundaries ── */}
+        <g>
+          {INDIA_MAP_DATA.map((state) => {
+            const isStateHighlighted = 
+              (state.id === "mh" && (activeCity === "Nagpur" || activeCity === "Mumbai")) ||
+              (state.id === "ka" && activeCity === "Bangalore") ||
+              (state.id === "dl" && activeCity === "Delhi") ||
+              (state.id === "up" && activeCity === "Noida");
+            
+            return (
+              <motion.path
+                key={state.id}
+                d={state.path}
+                fill={isStateHighlighted ? "rgba(249, 115, 22, 0.15)" : "rgba(14, 165, 233, 0.02)"}
+                stroke={isStateHighlighted ? "#f97316" : "rgba(145, 158, 171, 0.2)"}
+                strokeWidth={isStateHighlighted ? 2.2 : 0.8}
+                strokeLinejoin="round"
+                initial={{ opacity: 0 }}
+                animate={inView ? { 
+                  opacity: 1,
+                  fill: isStateHighlighted ? "rgba(249, 115, 22, 0.14)" : "rgba(14, 165, 233, 0.02)",
+                  stroke: isStateHighlighted ? "#f97316" : "rgba(148, 163, 184, 0.25)"
+                } : {}}
+                transition={{ duration: 0.6 }}
+                className="transition-all duration-300 cursor-pointer hover:fill-sky-500/5 hover:stroke-sky-500/30"
+                onMouseEnter={() => {
+                  if (state.id === "mh") onCityHover?.("Nagpur");
+                  else if (state.id === "ka") onCityHover?.("Bangalore");
+                  else if (state.id === "dl") onCityHover?.("Delhi");
+                  else if (state.id === "up") onCityHover?.("Noida");
                 }}
-            >
-                <span style={{ fontSize: 15 }}>🇺🇸</span> Texas, USA
-            </motion.div>
+                onMouseLeave={() => onCityHover?.(null)}
+              />
+            );
+          })}
+        </g>
 
-            <svg
-                viewBox="0 0 520 620"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-auto"
-                aria-label="India map — Shaibya Solutions locations"
+        {/* ── City pins ── */}
+        {CITIES.map((city, i) => {
+          const isHovered = activeCity === city.name;
+          const isAnyHovered = activeCity !== null;
+          const opacity = !isAnyHovered || isHovered ? 1 : 0.35;
+
+          return (
+            <motion.g
+              key={city.name}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={inView ? { opacity, scale: isHovered ? 1.25 : 1 } : {}}
+              transition={{ 
+                opacity: { duration: 0.2 },
+                scale: { type: "spring", stiffness: 300, damping: 15 },
+                delay: inView && !isAnyHovered ? 0.3 + i * 0.08 : 0
+              }}
+              onMouseEnter={() => onCityHover?.(city.name)}
+              onMouseLeave={() => onCityHover?.(null)}
+              className="cursor-pointer"
+              style={{ transformOrigin: `${city.x}px ${city.y}px` }}
             >
-                {/* ── India outline — real simplified path ── */}
-                <motion.path
-                    d={INDIA_PATH}
-                    fill="#0ea5e9"
-                    fillOpacity={0.15}
-                    stroke="#0ea5e9"
-                    strokeWidth={1.8}
-                    strokeLinejoin="round"
-                    initial={{ opacity: 0 }}
-                    animate={inView ? { opacity: 1 } : {}}
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              {/* Pulse ring for Nagpur HQ */}
+              {city.primary && (
+                <motion.circle
+                  cx={city.x} cy={city.y} r={14}
+                  fill="none" stroke="#f97316" strokeWidth={1.5}
+                  animate={{ r: [10, 22, 10], opacity: [0.8, 0, 0.8] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                 />
-
-                {/* ── City pins ── */}
-                {CITIES.map((city, i) => (
-                    <motion.g
-                        key={city.name}
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={inView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ duration: 0.4, delay: 0.6 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-                        style={{ transformOrigin: `${city.x}px ${city.y}px` }}
-                    >
-                        {/* Pulse ring for HQ */}
-                        {city.primary && (
-                            <motion.circle
-                                cx={city.x} cy={city.y} r={14}
-                                fill="none" stroke="#0ea5e9" strokeWidth={1.5}
-                                animate={{ r: [10, 20, 10], opacity: [0.8, 0, 0.8] }}
-                                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                            />
-                        )}
-                        {/* Outer circle */}
-                        <circle
-                            cx={city.x} cy={city.y}
-                            r={city.primary ? 7 : 5}
-                            fill={city.primary ? "#0ea5e9" : "#ffffff"}
-                            stroke="#0ea5e9"
-                            strokeWidth={city.primary ? 0 : 2}
-                        />
-                        {/* Inner dot for secondary */}
-                        {!city.primary && (
-                            <circle cx={city.x} cy={city.y} r={2.5} fill="#0ea5e9" />
-                        )}
-                        {/* Label */}
-                        <text
-                            x={city.x + (city.x > 260 ? 12 : -12)}
-                            y={city.y + 4}
-                            textAnchor={city.x > 260 ? "start" : "end"}
-                            fill="#111827"
-                            fontSize={city.primary ? 11 : 9}
-                            fontWeight={city.primary ? 700 : 500}
-                            fontFamily="var(--font-inter), DM Sans, sans-serif"
-                            letterSpacing="0.04em"
-                        >
-                            {city.name.toUpperCase()}
-                        </text>
-                    </motion.g>
-                ))}
-            </svg>
-        </div>
-    );
+              )}
+              {/* Outer circle */}
+              <circle
+                cx={city.x} cy={city.y}
+                r={city.primary ? 7 : 5.5}
+                fill={city.primary ? "#f97316" : (isHovered ? "#0ea5e9" : "#ffffff")}
+                stroke={city.primary ? "#f97316" : "#0ea5e9"}
+                strokeWidth={city.primary ? 0 : 2}
+                className="transition-colors duration-300"
+              />
+              {/* Inner dot for secondary */}
+              {!city.primary && (
+                <circle 
+                  cx={city.x} 
+                  cy={city.y} 
+                  r={2.2} 
+                  fill={isHovered ? "#ffffff" : "#0ea5e9"} 
+                  className="transition-colors duration-300"
+                />
+              )}
+              {/* Label */}
+              <text
+                x={city.x + (city.x > 260 ? 12 : -12)}
+                y={city.y + 4}
+                textAnchor={city.x > 260 ? "start" : "end"}
+                fill={isHovered ? (city.primary ? "#f97316" : "#0ea5e9") : "#111827"}
+                fontSize={city.primary ? 11 : 9}
+                fontWeight={city.primary || isHovered ? 700 : 500}
+                fontFamily="var(--font-inter), DM Sans, sans-serif"
+                letterSpacing="0.04em"
+                className="transition-colors duration-300 dark:fill-slate-300"
+              >
+                {city.name.toUpperCase()}
+              </text>
+            </motion.g>
+          );
+        })}
+      </svg>
+    </div>
+  );
 }

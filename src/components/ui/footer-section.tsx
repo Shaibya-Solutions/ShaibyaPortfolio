@@ -28,6 +28,7 @@ const footerLinks: FooterSection[] = [
       { title: 'Services', href: '/#services' },
       { title: 'Industries', href: '/#industries' },
       { title: 'Our Team', href: '/#team' },
+      { title: 'Careers', href: '/careers' },
       { title: 'Portfolio', href: '/portfolio/solutions' },
     ],
   },

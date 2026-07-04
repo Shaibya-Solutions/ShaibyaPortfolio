@@ -82,7 +82,6 @@ export function SiteFooter() {
 
       {/* Main footer grid */}
       <div className="relative z-10 w-full px-4 sm:px-6 md:px-12 pb-10 sm:pb-14 pt-12 sm:pt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-slate-400">
-
         {/* Company Identity */}
         <motion.div
           variants={itemVariants}
@@ -126,12 +125,18 @@ export function SiteFooter() {
           </h3>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link href="/industry/real-estate" className="transition hover:text-teal-400">
+              <Link
+                href="/industry/real-estate"
+                className="transition hover:text-teal-400"
+              >
                 Real Estate
               </Link>
             </li>
             <li>
-              <Link href="/industry/fitness" className="transition hover:text-teal-400">
+              <Link
+                href="/industry/fitness"
+                className="transition hover:text-teal-400"
+              >
                 Fitness Studios
               </Link>
             </li>
@@ -145,17 +150,26 @@ export function SiteFooter() {
           </h3>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link href="/portfolio/websites" className="transition hover:text-teal-400">
+              <Link
+                href="/portfolio/websites"
+                className="transition hover:text-teal-400"
+              >
                 Websites
               </Link>
             </li>
             <li>
-              <Link href="/portfolio/solutions" className="transition hover:text-teal-400">
+              <Link
+                href="/portfolio/solutions"
+                className="transition hover:text-teal-400"
+              >
                 Solutions
               </Link>
             </li>
             <li>
-              <Link href="/portfolio/rnd" className="transition hover:text-teal-400">
+              <Link
+                href="/portfolio/rnd"
+                className="transition hover:text-teal-400"
+              >
                 R&D / MVPs
               </Link>
             </li>
@@ -169,7 +183,10 @@ export function SiteFooter() {
           </h3>
           <ul className="space-y-2.5 text-sm">
             <li>
-              <Link href="/snyppit" className="flex items-center gap-2 transition hover:text-teal-400">
+              <Link
+                href="/snyppit"
+                className="flex items-center gap-2 transition hover:text-teal-400"
+              >
                 Our Story (Snyppit)
               </Link>
             </li>
@@ -203,7 +220,10 @@ export function SiteFooter() {
               href="mailto:shaibyasolutions@gmail.com?cc=shaibyadevs@gmail.com&subject=Enquiry"
               className="flex items-start gap-2 hover:text-teal-400 transition break-all"
             >
-              <IoMail className="text-teal-500/80 flex-shrink-0 mt-0.5" size={14} />
+              <IoMail
+                className="text-teal-500/80 flex-shrink-0 mt-0.5"
+                size={14}
+              />
               shaibyasolutions@gmail.com
             </a>
           </div>
@@ -213,7 +233,10 @@ export function SiteFooter() {
           <ul className="space-y-1.5 text-sm">
             {["Nagpur (India)", "Texas (USA)", "Noida (India)"].map((loc) => (
               <li key={loc} className="flex items-center gap-2">
-                <FaMapMarkerAlt className="text-teal-500/70 flex-shrink-0" size={11} />
+                <FaMapMarkerAlt
+                  className="text-teal-500/70 flex-shrink-0"
+                  size={11}
+                />
                 {loc}
               </li>
             ))}
@@ -228,20 +251,26 @@ export function SiteFooter() {
       >
         <p
           style={{
-            fontFamily: "var(--font-syne)",
-            fontSize: "clamp(4rem, 14vw, 12rem)",
-            fontWeight: 900,
-            lineHeight: 0.9,
-            letterSpacing: "-0.05em",
+            fontFamily: "var(--font-fraunces)",
+            fontWeight: 300,
+            fontSize: "clamp(3.2rem, 12vw, 9rem)",
+            letterSpacing: "0.11em",
+            lineHeight: 0.95,
             textTransform: "uppercase",
             color: "transparent",
-            WebkitTextStroke: "1px rgba(148,163,184,0.18)",
-            textShadow:
-              "0 4px 16px rgba(20,184,166,0.10), 0 1px 3px rgba(148,163,184,0.15)",
-            userSelect: "none",
+            WebkitTextStroke: "1.4px rgba(255,255,255,0.32)",
+            backgroundImage:
+              "linear-gradient(100deg, rgba(255,255,255,0) 22%, rgba(255,255,255,0.95) 40%, rgba(45,212,191,0.95) 46%, rgba(255,255,255,0.95) 52%, rgba(255,255,255,0) 70%)",
+            backgroundSize: "320% 100%",
+            backgroundPosition: "0% 0",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            filter:
+              "drop-shadow(0 1px 0 rgba(255,255,255,0.18)) drop-shadow(0 3px 0 rgba(0,0,0,0.55)) drop-shadow(0 6px 24px rgba(45,212,191,0.18))",
+            animation: "shine 4.5s ease-in-out infinite",
           }}
         >
-          SHAIBYA
+          Shaibya
         </p>
       </div>
 
@@ -263,7 +292,10 @@ export function SiteFooter() {
             <Link href="#" className="hover:text-white transition">
               Privacy Policy
             </Link>
-            <Link href="#" className="hover:text-white transition whitespace-nowrap">
+            <Link
+              href="#"
+              className="hover:text-white transition whitespace-nowrap"
+            >
               Terms &amp; Conditions
             </Link>
           </div>

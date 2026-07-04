@@ -5,6 +5,8 @@ import {
   FaPalette,
   FaRobot,
   FaSitemap,
+  FaShieldAlt,
+  FaBullhorn,
 } from "react-icons/fa";
 
 export const projects = [
@@ -100,11 +102,13 @@ export const nav = [
   { href: "/about", label: "About Us" },
   {
     href: "#",
-    label: "Industries",
+    label: "Services",
     hasDropdown: true,
     dropdownItems: [
-      { href: "/industry/real-estate", label: "Real Estate", icon: FaCube },
-      { href: "/industry/fitness", label: "Fitness", icon: FaSitemap },
+      { href: "/services/software-solutions", label: "Software Solutions", icon: FaLaptopCode },
+      { href: "/services/3d-modelling-animations", label: "3D Modelling & Animations", icon: FaCube },
+      { href: "/services/digital-marketing", label: "Digital Marketing", icon: FaBullhorn },
+      { href: "/services/cybersecurity", label: "Cybersecurity", icon: FaShieldAlt },
     ]
   },
   {
@@ -118,6 +122,7 @@ export const nav = [
       { href: "/portfolio/rnd", label: "R&D / MVPs", icon: FaRobot }
     ]
   },
+  { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact" }
 ];
 
