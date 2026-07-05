@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion"
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/layout/header/site-header";
-import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import {
   allProjects,
@@ -868,7 +868,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      <SiteFooter />
+      <Footer />
     </main>
   );
 }

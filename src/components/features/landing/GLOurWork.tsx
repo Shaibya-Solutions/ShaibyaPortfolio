@@ -10,6 +10,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────────
    DESIGN TOKENS  — site theme (globals.css)
@@ -40,20 +44,20 @@ const T = {
 const PROJECTS = [
     {
         serial: "01",
-        title: "CoalTrack AI",
-        client: "Coal Distribution Co.",
-        tagline: "Smart billing automation",
-        tags: ["AI", "AUTOMATION"],
+        title: "VIMS Hospital",
+        client: "VIMS Hospital Nagpur",
+        tagline: "Digital presence & SEO growth",
+        tags: ["WEB", "SEO"],
         stats: [
-            { value: "95%", label: "Faster billing" },
-            { value: "75%", label: "Manpower cut" },
-            { value: "500+", label: "Bills/day" },
+            { value: "2.5×", label: "New patients" },
+            { value: "#13", label: "SEO rank at launch" },
+            { value: "99%", label: "Uptime" },
         ],
-        tech: ["Python", "OCR", "FastAPI"],
+        tech: ["Next.js", "SEO", "Analytics"],
         link: "/portfolio",
         image: "/images/screenshots/client-1.png",
         year: "2024",
-        desc: "Turned a 7-day manual billing process into a 4-hour AI workflow. One photo upload — fully structured data, zero manual entry.",
+        desc: "Zero to full digital presence — online booking, 150+ doctor profiles, and an SEO strategy that moved ranking from 50 to 13.",
     },
     {
         serial: "02",
@@ -67,25 +71,26 @@ const PROJECTS = [
         ],
         tech: ["React Native", "Node.js", "Branding"],
         link: "/portfolio",
-        image: "/images/screenshots/revolution-fitness.png",
+        image: "/images/screenshots/revolution_fitness_desktop.png",
         year: "2024",
         desc: "Full gym management, automated renewals, and a digital brand presence that grew membership 3× in 90 days.",
     },
     {
         serial: "03",
-        title: "VIMS Hospital",
-        client: "VIMS Hospital Nagpur",
-        tagline: "Digital presence & SEO growth",
-        tags: ["WEB", "SEO"],
+        title: "CoalTrack AI",
+        client: "Coal Distribution Co.",
+        tagline: "Smart billing automation",
+        tags: ["AI", "AUTOMATION"],
         stats: [
-            { value: "2.5×", label: "New patients" },
-            { value: "#13", label: "SEO rank at launch" },
+            { value: "95%", label: "Faster billing" },
+            { value: "75%", label: "Manpower cut" },
+            { value: "500+", label: "Bills/day" },
         ],
-        tech: ["Next.js", "SEO", "Analytics"],
+        tech: ["Python", "OCR", "FastAPI"],
         link: "/portfolio",
-        image: "/images/screenshots/vims-hospital.png",
+        image: "/images/solutions/coal.png",
         year: "2024",
-        desc: "Zero to full digital presence — online booking, 150+ doctor profiles, and an SEO strategy that moved ranking from 50 to 13.",
+        desc: "Turned a 7-day manual billing process into a 4-hour AI workflow. One photo upload — fully structured data, zero manual entry.",
     },
     {
         serial: "04",
@@ -99,7 +104,7 @@ const PROJECTS = [
         ],
         tech: ["React", "Node.js", "HRMS"],
         link: "/portfolio",
-        image: "/images/screenshots/mg-infra.png",
+        image: "/images/screenshots/mg_infra_desktop.png",
         year: "2024",
         desc: "Property management suite, lead capture pipeline, and full HRMS — all designed, built, and deployed in 72 hours.",
     },
@@ -137,167 +142,41 @@ const ANIM_DURATION = 700; // ms per project transition
 
 function useScrollEngine() {
     const wrapperRef = useRef<HTMLDivElement>(null);
-
     const [activeIndex, setActiveIndex] = useState(0);
     const [imageProgress, setImageProgress] = useState(0);
 
-    const activeIndexRef = useRef(0);
-    const imageProgressRef = useRef(0);
-    const animatingRef = useRef(false);  // blocks new advances mid-animation
-    const isLockedRef = useRef(false);  // are we currently capturing scroll?
-    const lastTouchYRef = useRef<number | null>(null);
-
-    /* ─── helpers ─────────────────────────────────────────── */
-
-    /** Returns true when the wrapper fully covers the viewport. */
-    const isSectionFullScreen = useCallback((): boolean => {
+    useEffect(() => {
         const el = wrapperRef.current;
-        if (!el) return false;
-        const r = el.getBoundingClientRect();
-        // top must be at or above viewport-top; bottom at or below viewport-bottom
-        return r.top <= 1 && r.bottom >= window.innerHeight - 1;
+        if (!el) return;
+
+        const ctx = gsap.context(() => {
+            ScrollTrigger.create({
+                id: "our-work-trigger",
+                trigger: el,
+                start: "top top",
+                end: `+=${(TOTAL - 1) * 50}%`,
+                pin: true,
+                scrub: 0.5,
+                onUpdate: (self) => {
+                    const rawIndex = self.progress * (TOTAL - 1);
+                    setImageProgress(rawIndex);
+                    
+                    const idx = Math.min(Math.round(rawIndex), TOTAL - 1);
+                    setActiveIndex(idx);
+                }
+            });
+        }, el);
+
+        return () => ctx.revert();
     }, []);
 
-    /* ─── rAF animation ───────────────────────────────────── */
-    const animateTo = useCallback((target: number) => {
-        if (animatingRef.current) return;
-        animatingRef.current = true;
-
-        const start = imageProgressRef.current;
-        const startTime = performance.now();
-        const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-
-        function tick(now: number) {
-            const t = Math.min(1, (now - startTime) / ANIM_DURATION);
-            const current = start + (target - start) * easeOut(t);
-            imageProgressRef.current = current;
-            setImageProgress(current);
-            if (t < 1) {
-                requestAnimationFrame(tick);
-            } else {
-                imageProgressRef.current = target;
-                setImageProgress(target);
-                animatingRef.current = false;
-            }
-        }
-        requestAnimationFrame(tick);
-    }, []);
-
-    /* ─── advance one project step ────────────────────────── */
-    const advance = useCallback((dir: 1 | -1) => {
-        if (animatingRef.current) return;
-        const next = activeIndexRef.current + dir;
-        if (next < 0 || next >= TOTAL) return;
-        activeIndexRef.current = next;
-        setActiveIndex(next);
-        animateTo(next);
-    }, [animateTo]);
-
-    /* ─── dot-nav jump ────────────────────────────────────── */
     const jumpToProject = useCallback((i: number) => {
-        if (animatingRef.current) return;
-        activeIndexRef.current = i;
-        setActiveIndex(i);
-        animateTo(i);
-        wrapperRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, [animateTo]);
-
-    /* ─── wheel handler ───────────────────────────────────── */
-    useEffect(() => {
-        const onWheel = (e: globalThis.WheelEvent) => {
-            const goingDown = e.deltaY > 0;
-            const idx = activeIndexRef.current;
-
-            // ── ENTRY: should we lock? ──────────────────────
-            if (!isLockedRef.current) {
-                // Only lock if the section fully fills the viewport
-                // AND the user is scrolling into it (downward)
-                if (!isSectionFullScreen()) return; // not yet full-screen → let page scroll
-                // Section is full-screen: lock and absorb this first tick
-                isLockedRef.current = true;
-            }
-
-            // ── EXIT: release if at a boundary ─────────────
-            if (goingDown && idx >= TOTAL - 1) {
-                // Last project + scrolling down → unlock, let page scroll
-                isLockedRef.current = false;
-                return; // do NOT preventDefault — browser scrolls page down
-            }
-            if (!goingDown && idx <= 0) {
-                // First project + scrolling up → unlock, let page scroll
-                isLockedRef.current = false;
-                return; // do NOT preventDefault — browser scrolls page up
-            }
-
-            // ── MID-STACK: capture and advance ─────────────
-            e.preventDefault();
-            e.stopPropagation();
-            advance(goingDown ? 1 : -1);
-        };
-
-        window.addEventListener("wheel", onWheel, { passive: false });
-        return () => window.removeEventListener("wheel", onWheel);
-    }, [advance, isSectionFullScreen]);
-
-    /* ─── touch handler ───────────────────────────────────── */
-    useEffect(() => {
-        const SWIPE_THRESHOLD = 40; // px
-
-        const onTouchStart = (e: TouchEvent) => {
-            lastTouchYRef.current = e.touches[0].clientY;
-        };
-
-        const onTouchMove = (e: TouchEvent) => {
-            if (lastTouchYRef.current === null) return;
-
-            const dy = lastTouchYRef.current - e.touches[0].clientY;
-            const goingDown = dy > 0;
-            const idx = activeIndexRef.current;
-
-            // Attempt lock if not already locked
-            if (!isLockedRef.current) {
-                if (!isSectionFullScreen()) return;
-                isLockedRef.current = true;
-            }
-
-            // Exit boundaries
-            if (goingDown && idx >= TOTAL - 1) { isLockedRef.current = false; return; }
-            if (!goingDown && idx <= 0) { isLockedRef.current = false; return; }
-
-            // Only fire once per swipe gesture (threshold guard)
-            if (Math.abs(dy) < SWIPE_THRESHOLD) return;
-
-            e.preventDefault();
-            advance(goingDown ? 1 : -1);
-            lastTouchYRef.current = null; // one swipe → one project
-        };
-
-        const onTouchEnd = () => { lastTouchYRef.current = null; };
-
-        window.addEventListener("touchstart", onTouchStart, { passive: true });
-        window.addEventListener("touchmove", onTouchMove, { passive: false });
-        window.addEventListener("touchend", onTouchEnd, { passive: true });
-        return () => {
-            window.removeEventListener("touchstart", onTouchStart);
-            window.removeEventListener("touchmove", onTouchMove);
-            window.removeEventListener("touchend", onTouchEnd);
-        };
-    }, [advance, isSectionFullScreen]);
-
-    /* ─── Re-lock when user scrolls back into section ─────── */
-    // When the user scrolls back up PAST the section after exiting
-    // and then scrolls back down into it, we need isLockedRef to
-    // reset so it can lock again. We do this by watching scroll
-    // position: if the section is no longer full-screen, clear lock.
-    useEffect(() => {
-        const onScroll = () => {
-            if (isLockedRef.current && !isSectionFullScreen()) {
-                isLockedRef.current = false;
-            }
-        };
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, [isSectionFullScreen]);
+        const st = ScrollTrigger.getById("our-work-trigger");
+        if (st) {
+            const targetScroll = st.start + (i / (TOTAL - 1)) * (st.end - st.start);
+            window.scrollTo({ top: targetScroll, behavior: "smooth" });
+        }
+    }, []);
 
     return { wrapperRef, imageProgress, activeIndex, jumpToProject };
 }
@@ -308,142 +187,176 @@ function useScrollEngine() {
 function InfoCard({
     project: p,
     position,
+    activeIndex,
 }: {
     project: (typeof PROJECTS)[number];
     position: "top-right" | "bottom-left";
+    activeIndex: number;
 }) {
     const isTopRight = position === "top-right";
+    const [isLargeScreen, setIsLargeScreen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsLargeScreen(window.innerWidth >= 1200);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Y destination: opposite corners in y direction
+    const yTranslation = position === "bottom-left"
+        ? (activeIndex % 2 === 0 ? 0 : -220)
+        : (activeIndex % 2 === 0 ? 0 : 220);
+
+    // Responsive positioning coordinates
+    const positionStyles = isLargeScreen
+        ? (isTopRight
+            ? { top: "6%", left: "103%" }      // On the side of the browser window (desktop)
+            : { bottom: "6%", right: "103%" }) // On the side of the browser window (desktop)
+        : (isTopRight
+            ? { top: "-11%", right: "-5%" }    // Overlaying on corners (tablet)
+            : { bottom: "-11%", left: "-5%" });// Overlaying on corners (tablet)
 
     return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={p.serial + position}
-                initial={{ opacity: 0, x: isTopRight ? 20 : -20, y: isTopRight ? -10 : 10 }}
-                animate={{ opacity: 1, x: 0, y: 0 }}
-                exit={{ opacity: 0, x: isTopRight ? 12 : -12, y: isTopRight ? -6 : 6 }}
-                transition={{ type: "spring", stiffness: 200, damping: 28, delay: isTopRight ? 0.08 : 0 }}
-                style={{
-                    position: "absolute",
-                    zIndex: 10,
-                    width: "clamp(190px, 20vw, 270px)",
-                    ...(isTopRight
-                        ? { top: "-11%", right: "-5%" }
-                        : { bottom: "-11%", left: "-5%" }),
-                    background: T.bgCard,
-                    border: `1px solid ${T.border}`,
-                    borderRadius: 14,
-                    padding: "clamp(14px, 1.4vw, 20px)",
-                    boxShadow: `0 4px 24px ${T.shadow}, 0 1px 4px rgba(17,24,39,0.06)`,
-                }}
-            >
-                {/* Header row */}
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
-                    <div>
-                        <div style={{
-                            fontSize: 10, fontWeight: 700, letterSpacing: "0.16em",
-                            textTransform: "uppercase", color: T.accent,
-                            fontFamily: "var(--font-inter)", marginBottom: 3,
-                        }}>
-                            {p.serial} / {p.year}
+        <motion.div
+            animate={{ y: yTranslation }}
+            transition={{
+                type: "spring",
+                stiffness: 85,
+                damping: 18,
+                mass: 1,
+            }}
+            style={{
+                position: "absolute",
+                zIndex: 10,
+                width: isLargeScreen ? "295px" : "clamp(190px, 20vw, 270px)",
+                background: T.bgCard,
+                border: `1px solid ${T.border}`,
+                borderRadius: 14,
+                padding: isLargeScreen ? "16px 18px" : "clamp(14px, 1.4vw, 20px)",
+                boxShadow: `0 10px 30px ${T.shadow}, 0 2px 6px rgba(17,24,39,0.04)`,
+                ...positionStyles,
+            }}
+        >
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={p.serial}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.28, ease: "easeOut" }}
+                >
+                    {/* Header row */}
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+                        <div>
+                            <div style={{
+                                fontSize: 10, fontWeight: 700, letterSpacing: "0.16em",
+                                textTransform: "uppercase", color: T.accent,
+                                fontFamily: "var(--font-inter)", marginBottom: 3,
+                            }}>
+                                {p.serial} / {p.year}
+                            </div>
+                            <div style={{
+                                fontSize: "clamp(14px, 1.2vw, 16px)", fontWeight: 800,
+                                color: T.text, fontFamily: "var(--font-syne)",
+                                letterSpacing: "-0.03em", lineHeight: 1.15,
+                            }}>
+                                {p.title}
+                            </div>
                         </div>
+                        {/* Orange icon pill */}
                         <div style={{
-                            fontSize: "clamp(14px, 1.2vw, 16px)", fontWeight: 800,
-                            color: T.text, fontFamily: "var(--font-syne)",
-                            letterSpacing: "-0.03em", lineHeight: 1.15,
+                            width: 28, height: 28, borderRadius: 7,
+                            background: T.accent, display: "flex",
+                            alignItems: "center", justifyContent: "center",
+                            flexShrink: 0, marginLeft: 10,
                         }}>
-                            {p.title}
+                            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                                <path d="M2 2h4v2H4v6h6V8h2v4H2V2z" fill="white" />
+                                <path d="M8 2h4v4h-2V4.8L5.4 9.4 4 8 8.8 3.2H8V2z" fill="white" />
+                            </svg>
                         </div>
                     </div>
-                    {/* Orange icon pill */}
-                    <div style={{
-                        width: 28, height: 28, borderRadius: 7,
-                        background: T.accent, display: "flex",
-                        alignItems: "center", justifyContent: "center",
-                        flexShrink: 0, marginLeft: 10,
+
+                    {/* Tagline */}
+                    <p style={{
+                        fontSize: 11, color: T.textMuted, fontFamily: "var(--font-inter)",
+                        lineHeight: 1.5, margin: "0 0 10px",
                     }}>
-                        <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-                            <path d="M2 2h4v2H4v6h6V8h2v4H2V2z" fill="white" />
-                            <path d="M8 2h4v4h-2V4.8L5.4 9.4 4 8 8.8 3.2H8V2z" fill="white" />
-                        </svg>
-                    </div>
-                </div>
+                        {p.tagline}
+                    </p>
 
-                {/* Tagline */}
-                <p style={{
-                    fontSize: 11, color: T.textMuted, fontFamily: "var(--font-inter)",
-                    lineHeight: 1.5, margin: "0 0 10px",
-                }}>
-                    {p.tagline}
-                </p>
-
-                {/* Tags */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
-                    {p.tags.map((tag) => (
-                        <span key={tag} style={{
-                            display: "inline-block",
-                            background: "rgba(14,165,233,0.07)",
-                            border: `1px solid rgba(14,165,233,0.22)`,
-                            color: T.brand,
-                            fontFamily: "var(--font-inter)",
-                            borderRadius: 9999, padding: "2px 8px",
-                            fontSize: 10, fontWeight: 600,
-                            letterSpacing: "0.1em", textTransform: "uppercase",
-                        }}>
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-
-                {/* Stats */}
-                <div style={{
-                    display: "flex", gap: 14,
-                    paddingTop: 10,
-                    borderTop: `1px solid ${T.border}`,
-                }}>
-                    {p.stats.slice(0, 2).map((s) => (
-                        <div key={s.label}>
-                            <div style={{
-                                fontSize: "clamp(16px, 1.5vw, 20px)", fontWeight: 800,
-                                color: T.text, fontFamily: "var(--font-syne)", lineHeight: 1,
-                            }}>
-                                {s.value}
-                            </div>
-                            <div style={{
-                                fontSize: 10, color: T.textLight,
-                                fontFamily: "var(--font-inter)", marginTop: 3,
-                            }}>
-                                {s.label}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Tech + link row */}
-                <div style={{
-                    display: "flex", alignItems: "center",
-                    justifyContent: "space-between", marginTop: 10,
-                }}>
-                    <div style={{ display: "flex", gap: 5 }}>
-                        {p.tech.slice(0, 3).map((t, ti) => (
-                            <span key={t} style={{
-                                fontSize: 10, color: T.textLight,
+                    {/* Tags */}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
+                        {p.tags.map((tag) => (
+                            <span key={tag} style={{
+                                display: "inline-block",
+                                background: "rgba(14,165,233,0.07)",
+                                border: `1px solid rgba(14,165,233,0.22)`,
+                                color: T.brand,
                                 fontFamily: "var(--font-inter)",
+                                borderRadius: 9999, padding: "2px 8px",
+                                fontSize: 10, fontWeight: 600,
+                                letterSpacing: "0.1em", textTransform: "uppercase",
                             }}>
-                                {t}{ti < Math.min(p.tech.length, 3) - 1 ? " ·" : ""}
+                                {tag}
                             </span>
                         ))}
                     </div>
-                    <Link href={p.link} style={{
-                        display: "flex", alignItems: "center", gap: 3,
-                        color: T.accent, fontSize: 10, fontWeight: 700,
-                        fontFamily: "var(--font-inter)", letterSpacing: "0.1em",
-                        textTransform: "uppercase", textDecoration: "none",
+
+                    {/* Stats */}
+                    <div style={{
+                        display: "flex", gap: 14,
+                        paddingTop: 10,
+                        borderTop: `1px solid ${T.border}`,
                     }}>
-                        View <ArrowUpRight size={10} />
-                    </Link>
-                </div>
-            </motion.div>
-        </AnimatePresence>
+                        {p.stats.slice(0, 2).map((s) => (
+                            <div key={s.label}>
+                                <div style={{
+                                    fontSize: "clamp(16px, 1.5vw, 20px)", fontWeight: 800,
+                                    color: T.text, fontFamily: "var(--font-syne)", lineHeight: 1,
+                                }}>
+                                    {s.value}
+                                </div>
+                                <div style={{
+                                    fontSize: 10, color: T.textLight,
+                                    fontFamily: "var(--font-inter)", marginTop: 3,
+                                }}>
+                                    {s.label}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Tech + link row */}
+                    <div style={{
+                        display: "flex", alignItems: "center",
+                        justifyContent: "space-between", marginTop: 10,
+                    }}>
+                        <div style={{ display: "flex", gap: 5 }}>
+                            {p.tech.slice(0, 3).map((t, ti) => (
+                                <span key={t} style={{
+                                    fontSize: 10, color: T.textLight,
+                                    fontFamily: "var(--font-inter)",
+                                }}>
+                                    {t}{ti < Math.min(p.tech.length, 3) - 1 ? " ·" : ""}
+                                </span>
+                            ))}
+                        </div>
+                        <Link href={p.link} style={{
+                            display: "flex", alignItems: "center", gap: 3,
+                            color: T.accent, fontSize: 10, fontWeight: 700,
+                            fontFamily: "var(--font-inter)", letterSpacing: "0.1em",
+                            textTransform: "uppercase", textDecoration: "none",
+                        }}>
+                            View <ArrowUpRight size={10} />
+                        </Link>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+        </motion.div>
     );
 }
 
@@ -481,8 +394,8 @@ function BrowserFrame({
             flexShrink: 0,
         }}>
             {/* Floating info cards */}
-            <InfoCard project={proj} position="top-right" />
-            <InfoCard project={proj} position="bottom-left" />
+            <InfoCard project={proj} position="top-right" activeIndex={activeIndex} />
+            <InfoCard project={proj} position="bottom-left" activeIndex={activeIndex} />
 
             {/* ── Browser shell — NEVER moves ── */}
             <div style={{
@@ -536,7 +449,7 @@ function BrowserFrame({
                     width: "100%",
                     aspectRatio: "16 / 9",
                     overflow: "hidden",
-                    background: "#E8E4DF",
+                    background: "#ffffff",
                 }}>
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -547,22 +460,14 @@ function BrowserFrame({
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             style={{ position: "absolute", inset: 0 }}
                         >
-                            {/* ← THE ONLY THING THAT MOVES */}
-                            <div style={{
-                                position: "absolute",
-                                top: 0, left: 0, right: 0,
-                                height: "160%",                         // extra height for scroll room
-                                transform: `translateY(${imageY}%)`,    // driven by imageProgress
-                                willChange: "transform",
-                                // transition matches ANIM_DURATION with ease-out so it feels identical
-                                transition: `transform ${ANIM_DURATION}ms cubic-bezier(0.16,1,0.3,1)`,
-                            }}>
+                            {/* Static image wrapper for smooth cross-fades */}
+                            <div style={{ position: "absolute", inset: 0 }}>
                                 <Image
                                     src={proj.image}
                                     alt={proj.title}
                                     fill
                                     sizes="(max-width: 960px) 100vw, 880px"
-                                    style={{ objectFit: "cover", objectPosition: "top center" }}
+                                    style={{ objectFit: "cover", objectPosition: "top center", background: "#ffffff" }}
                                     priority={activeIndex === 0}
                                 />
                             </div>

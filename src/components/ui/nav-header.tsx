@@ -21,6 +21,16 @@ interface NavHeaderProps {
 function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
   const [position, setPosition] = useState({ left: 0, width: 0, opacity: 0 });
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [animComplete, setAnimComplete] = useState(false);
+
+  // Trigger smooth expanding animation 600ms after load
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsExpanded(true);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Split items around the logo: first half before logo, second half after
   const mid = Math.ceil(items.length / 2);
@@ -34,8 +44,8 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
 
   // Dynamic scaling: 1.0 → 0.92 (gentle shrink)
   const navScale = 1 - scrollProgress * 0.08;
-  // Dynamic logo height: h-14 (56px) → h-11 (46px)
-  const logoHeight = 56 - scrollProgress * 10;
+  // Dynamic logo height: h-20 (80px) → h-15 (60px)
+  const logoHeight = 80 - scrollProgress * 20;
   // Dynamic pill padding: p-2.5 (10px) → p-1.5 (6px)
   const pillPadding = 10 - scrollProgress * 4;
 
@@ -47,67 +57,135 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
         transition: "transform 0.15s ease-out",
       }}
     >
-      <ul
+      <motion.ul
         className="relative mx-auto flex w-fit items-center justify-evenly rounded-full border-2 border-[#0ea5e9] bg-white px-2"
+        animate={{
+          width: isExpanded ? "auto" : "210px",
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 85,
+          damping: 18,
+          mass: 1.1,
+        }}
         style={{
           paddingTop: `${pillPadding}px`,
           paddingBottom: `${pillPadding}px`,
           transition: "padding 0.15s ease-out",
+          overflow: animComplete ? "visible" : "hidden",
+        }}
+        onAnimationComplete={() => {
+          if (isExpanded) {
+            setAnimComplete(true);
+          }
         }}
         onMouseLeave={resetCursor}
       >
-        {/* Left nav items */}
-        {leftItems.map((item, index) => (
-          <Tab
-            key={item.label}
-            setPosition={setPosition}
-            href={item.href}
-            hasDropdown={item.hasDropdown}
-            dropdownItems={item.dropdownItems}
-            isActive={activeIndex === index}
-            onHover={() => setActiveIndex(index)}
-            scrollProgress={scrollProgress}
-          >
-            {item.label}
-          </Tab>
-        ))}
+        {/* Left nav items wrapper with clip/width animation */}
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={{
+            width: isExpanded ? "auto" : 0,
+            opacity: isExpanded ? 1 : 0,
+          }}
+          transition={{
+            width: {
+              type: "spring",
+              stiffness: 85,
+              damping: 18,
+              mass: 1.1,
+            },
+            opacity: { delay: 0.35, duration: 0.55, ease: "easeOut" },
+          }}
+          style={{
+            display: "flex",
+            flexShrink: 0,
+            overflow: animComplete ? "visible" : "hidden",
+          }}
+        >
+          {leftItems.map((item, index) => (
+            <Tab
+              key={item.label}
+              setPosition={setPosition}
+              href={item.href}
+              hasDropdown={item.hasDropdown}
+              dropdownItems={item.dropdownItems}
+              isActive={activeIndex === index}
+              onHover={() => setActiveIndex(index)}
+              scrollProgress={scrollProgress}
+            >
+              {item.label}
+            </Tab>
+          ))}
+        </motion.div>
 
         {/* Logo in the center */}
-        <li className="relative z-10 px-6 md:px-10 flex items-center">
+        <li className="relative z-10 px-6 md:px-10 flex items-center shrink-0">
           <Link href="/" aria-label="Shaibya Solutions Home">
             <Image
-              src="/shaibya-logo-nav.png"
+              src="/images/Screenshot 2026-07-05 011613.png"
               alt="Shaibya Solutions"
-              width={200}
-              height={72}
-              className="w-auto object-contain"
+              width={240}
+              height={88}
+              className="w-auto object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
               style={{
                 height: `${logoHeight}px`,
-                transition: "height 0.15s ease-out",
+                marginTop: `${-(logoHeight - (72 - scrollProgress * 16)) / 2}px`,
+                marginBottom: `${-(logoHeight - (72 - scrollProgress * 16)) / 2}px`,
+                filter: "drop-shadow(0 2px 8px rgba(14,165,233,0.15))",
+                mixBlendMode: "multiply",
+                transition: "all 0.15s ease-out",
               }}
               priority
             />
           </Link>
         </li>
 
-        {/* Right nav items — offset index so cursor positions correctly */}
-        {rightItems.map((item, index) => (
-          <Tab
-            key={item.label}
-            setPosition={setPosition}
-            href={item.href}
-            hasDropdown={item.hasDropdown}
-            dropdownItems={item.dropdownItems}
-            isActive={activeIndex === mid + 1 + index}
-            onHover={() => setActiveIndex(mid + 1 + index)}
-            scrollProgress={scrollProgress}
-          >
-            {item.label}
-          </Tab>
-        ))}
+        {/* Right nav items wrapper with clip/width animation */}
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={{
+            width: isExpanded ? "auto" : 0,
+            opacity: isExpanded ? 1 : 0,
+          }}
+          transition={{
+            width: {
+              type: "spring",
+              stiffness: 85,
+              damping: 18,
+              mass: 1.1,
+            },
+            opacity: { delay: 0.35, duration: 0.55, ease: "easeOut" },
+          }}
+          style={{
+            display: "flex",
+            flexShrink: 0,
+            overflow: animComplete ? "visible" : "hidden",
+          }}
+        >
+          {rightItems.map((item, index) => (
+            <Tab
+              key={item.label}
+              setPosition={setPosition}
+              href={item.href}
+              hasDropdown={item.hasDropdown}
+              dropdownItems={item.dropdownItems}
+              isActive={activeIndex === mid + index}
+              onHover={() => setActiveIndex(mid + index)}
+              scrollProgress={scrollProgress}
+            >
+              {item.label}
+            </Tab>
+          ))}
+        </motion.div>
 
-        <Cursor position={position} scrollProgress={scrollProgress} />
-      </ul>
+        <Cursor
+          position={position}
+          scrollProgress={scrollProgress}
+          logoHeight={logoHeight}
+          pillPadding={pillPadding}
+        />
+      </motion.ul>
     </div>
   );
 }
@@ -152,8 +230,9 @@ const Tab = ({
     >
       <Link
         href={href}
-        className={`flex items-center gap-2 uppercase font-semibold tracking-wide transition-colors duration-200 ${isActive ? "text-white" : "text-black"
-          }`}
+        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap transition-colors duration-200 ${
+          isActive ? "text-white" : "text-black"
+        }`}
         style={{
           fontSize: `${fontSize}px`,
           paddingLeft: `${paddingX}px`,
@@ -169,8 +248,9 @@ const Tab = ({
             width="12"
             height="12"
             viewBox="0 0 10 10"
-            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${isActive ? "text-white" : "text-black"
-              }`}
+            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${
+              isActive ? "text-white" : "text-black"
+            }`}
           >
             <path d="M2 4L5 7L8 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -204,9 +284,19 @@ const Tab = ({
   );
 };
 
-const Cursor = ({ position, scrollProgress = 0 }: { position: { left: number; width: number; opacity: number }; scrollProgress?: number }) => {
-  // Dynamic cursor height: h-16 (64px) → h-10 (40px)
+const Cursor = ({
+  position,
+  scrollProgress = 0,
+  logoHeight = 80,
+  pillPadding = 10,
+}: {
+  position: { left: number; width: number; opacity: number };
+  scrollProgress?: number;
+  logoHeight?: number;
+  pillPadding?: number;
+}) => {
   const cursorHeight = 64 - scrollProgress * 24;
+  const cursorTop = (logoHeight + pillPadding * 2 - cursorHeight) / 2;
 
   return (
     <motion.li
@@ -215,8 +305,9 @@ const Cursor = ({ position, scrollProgress = 0 }: { position: { left: number; wi
       className="absolute z-0 rounded-full pointer-events-none"
       style={{
         height: `${cursorHeight}px`,
+        top: `${cursorTop}px`,
         background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
-        transition: "height 0.15s ease-out",
+        transition: "height 0.15s ease-out, top 0.15s ease-out",
       }}
     />
   );

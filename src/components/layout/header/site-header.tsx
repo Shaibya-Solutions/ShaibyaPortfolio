@@ -54,15 +54,17 @@ export function SiteHeader() {
         <div className="flex w-full items-center justify-between md:hidden">
           <Link href="/" aria-label="Shaibya Solutions Home">
             <Image
-              src="/shaibya-logo-nav.png"
+              src="/images/Screenshot 2026-07-05 011613.png"
               alt="Shaibya Solutions"
-              width={180}
-              height={60}
-              className="h-12 w-auto object-contain"
+              width={200}
+              height={67}
+              className="h-16 w-auto object-contain"
               style={{
                 transform: `scale(${1 - scrollProgress * 0.15})`,
                 transformOrigin: "left center",
-                transition: "transform 0.1s ease-out",
+                filter: "drop-shadow(0 2px 6px rgba(14,165,233,0.15))",
+                mixBlendMode: "multiply",
+                transition: "all 0.1s ease-out",
               }}
               priority
             />

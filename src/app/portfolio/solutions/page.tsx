@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, Check } from "lucide-react";
 import { SiteHeader } from "@/components/layout/header/site-header";
-import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import { solutionProjects } from "@/data/projects";
 import type { Project } from "@/data/projects";
@@ -233,7 +233,7 @@ export default function SolutionsPortfolioPage() {
         </div>
       </section>
 
-      <SiteFooter />
+      <Footer />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useAnimationControls } from "motion/react";
+import { motion, useAnimationControls } from "framer-motion";
 
 export interface TestimonialItem {
   text: string;

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
+import { LenisProvider } from "@/providers/lenis-provider";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -41,9 +42,11 @@ export default function RootLayout({
       className={`${dmSans.variable} ${spaceGrotesk.variable} antialiased`}
     >
       <body className="min-h-dvh bg-white font-sans text-slate-900">
-        <Suspense fallback={<div className="flex h-screen items-center justify-center text-[#0B4E61]">Loading…</div>}>
-          {children}
-        </Suspense>
+        <LenisProvider>
+          <Suspense fallback={<div className="flex h-screen items-center justify-center text-[#0B4E61]">Loading…</div>}>
+            {children}
+          </Suspense>
+        </LenisProvider>
       </body>
     </html>
   );

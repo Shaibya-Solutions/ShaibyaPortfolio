@@ -4,7 +4,7 @@ import IndustryPageTemplate, { type IndustryPageData } from "@/components/featur
 const data: IndustryPageData = {
   slug: "real-estate",
   eyebrow: "Real Estate",
-  heroImage: "/images/screenshots/parmatma-ek.png",
+  heroImage: "/images/real-estate/real_estate_hero.png",
   headline: ["Nagpur's property market", "is booming. Are you?"],
   heroSub:
     "22% sales surge. ₹50,000 crore infrastructure pipeline. MIHAN SEZ. Metro expansion. Local agents desperately need digital systems — not just WhatsApp groups.",
@@ -25,11 +25,11 @@ const data: IndustryPageData = {
       "The market was exploding, but the agents handling it had no systems to capture it.",
   },
   painPoints: [
-    { emoji: "🌐", title: "No Digital Presence", desc: "Buyers search online first — if you're not there, you're invisible. Competitors with basic sites were absorbing every lead." },
-    { emoji: "⏰", title: "Lost Leads on WhatsApp", desc: "Leads message at 2 AM. By 9 AM they've already contacted a competitor. No tracking, no follow-up system." },
-    { emoji: "📊", title: "No CRM", desc: "Client data across registers, phones, and chats. No way to know which leads are hot or where revenue is leaking." },
-    { emoji: "📁", title: "Document Chaos", desc: "Agreements, KYC, and property papers scattered across WhatsApp groups. Finding one document takes hours." },
-    { emoji: "🔔", title: "Manual Follow-ups", desc: "Site visit reminders were manual. Re-engaging old leads was impossible. Good opportunities slipped through every week." },
+    { emoji: "🌐", title: "No Digital Presence", desc: "Buyers search online first — if you're not there, you're invisible. Competitors with basic sites were absorbing every lead.", image: "/images/real-estate/re_pain_1.png" },
+    { emoji: "⏰", title: "Lost Leads on WhatsApp", desc: "Leads message at 2 AM. By 9 AM they've already contacted a competitor. No tracking, no follow-up system.", image: "/images/real-estate/re_pain_2.png" },
+    { emoji: "📊", title: "No CRM", desc: "Client data across registers, phones, and chats. No way to know which leads are hot or where revenue is leaking.", image: "/images/real-estate/re_pain_3.png" },
+    { emoji: "📁", title: "Document Chaos", desc: "Agreements, KYC, and property papers scattered across WhatsApp groups. Finding one document takes hours.", image: "/images/real-estate/re_pain_4.png" },
+    { emoji: "🔔", title: "Manual Follow-ups", desc: "Site visit reminders were manual. Re-engaging old leads was impossible. Good opportunities slipped through every week.", image: "/images/real-estate/re_pain_5.png" },
   ],
   solutions: [
     { emoji: "🏠", title: "SEO-Optimized Website", desc: "Property listing site with search filters, area-wise browsing, and Google ranking for local searches. Buyers find you first." },

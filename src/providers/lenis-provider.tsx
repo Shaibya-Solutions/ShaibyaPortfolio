@@ -1,0 +1,16 @@
+"use client";
+
+import type React from "react";
+import { ReactLenis } from "lenis/react";
+
+interface LenisProviderProps {
+  children: React.ReactNode;
+}
+
+export function LenisProvider({ children }: LenisProviderProps) {
+  return (
+    <ReactLenis root options={{ autoRaf: true }}>
+      {children}
+    </ReactLenis>
+  );
+}

@@ -30,11 +30,6 @@ const GLIndustries = dynamic(
   { ssr: false, loading: () => <div className="h-96 bg-[#f8fbfe]" /> }
 );
 
-const GLTeam = dynamic(
-  () => import("@/components/features/landing/GLTeam"),
-  { ssr: false, loading: () => <div className="h-96 bg-white" /> }
-);
-
 const GLTestimonials = dynamic(
   () => import("@/components/features/landing/GLTestimonials"),
   { ssr: false, loading: () => <div className="h-96 bg-[#022648]" /> }
@@ -50,9 +45,14 @@ const GLContact = dynamic(
   { ssr: false, loading: () => <div className="h-64 bg-white" /> }
 );
 
+const GLInstagram = dynamic(
+  () => import("@/components/features/landing/GLInstagram"),
+  { ssr: false, loading: () => <div className="h-96 bg-[#faf5ef]" /> }
+);
+
 export default function HomePage() {
   return (
-    <main className="bg-white text-slate-900 scroll-smooth overflow-x-hidden min-h-screen flex flex-col">
+    <main className="bg-white text-slate-900 min-h-screen flex flex-col">
       <SiteHeader />
 
       {/* 1. HERO */}
@@ -70,9 +70,6 @@ export default function HomePage() {
       {/* 5. INDUSTRIES */}
       <GLIndustries />
 
-      {/* 7. TEAM */}
-      <GLTeam />
-
       {/* 8. TESTIMONIALS */}
       <GLTestimonials />
 
@@ -81,6 +78,9 @@ export default function HomePage() {
 
       {/* 11. CONTACT CTA */}
       <GLContact />
+
+      {/* 12. INSTAGRAM FEED */}
+      <GLInstagram />
 
       <Footer />
 

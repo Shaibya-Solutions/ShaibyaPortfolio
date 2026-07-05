@@ -25,11 +25,11 @@ const data: IndustryPageData = {
       "Revolution Fitness grew 120 → 350 members. The system is ready for your gym.",
   },
   painPoints: [
-    { emoji: "📓", title: "Pen & Register Attendance", desc: "Manual daily attendance tracking — error-prone, unsearchable, and impossible to act on for retention insights." },
-    { emoji: "💬", title: "WhatsApp Reminders", desc: "Sending individual payment reminders every month is a full-time job. Members ignore them. Revenue leaks silently." },
-    { emoji: "🔮", title: "Zero Churn Prediction", desc: "No idea which members are about to leave until they already have. Re-engagement happens too late, if at all." },
-    { emoji: "📊", title: "No Revenue Visibility", desc: "Monthly revenue is unknown until someone counts receipts at month-end. No dashboard, no forecasting." },
-    { emoji: "🏃", title: "Owner Does Everything", desc: "The owner is the receptionist, accountant, trainer scheduler, and marketer. Growth is impossible under this model." },
+    { emoji: "📓", title: "Pen & Register Attendance", desc: "Manual daily attendance tracking — error-prone, unsearchable, and impossible to act on for retention insights.", image: "/images/fitness/fit_pain_1.png" },
+    { emoji: "💬", title: "WhatsApp Reminders", desc: "Sending individual payment reminders every month is a full-time job. Members ignore them. Revenue leaks silently.", image: "/images/landing/bento_threat_intelligence.png" },
+    { emoji: "🔮", title: "Zero Churn Prediction", desc: "No idea which members are about to leave until they already have. Re-engagement happens too late, if at all.", image: "/images/landing/bento_cloud_security.png" },
+    { emoji: "📊", title: "No Revenue Visibility", desc: "Monthly revenue is unknown until someone counts receipts at month-end. No dashboard, no forecasting.", image: "/images/landing/bento_compliance_audits.png" },
+    { emoji: "🏃", title: "Owner Does Everything", desc: "The owner is the receptionist, accountant, trainer scheduler, and marketer. Growth is impossible under this model.", image: "/images/landing/bento_incident_response.png" },
   ],
   solutions: [
     { emoji: "📱", title: "Digital Check-in System", desc: "QR or phone-based attendance. Real-time tracking, automated logs, and retention analytics built in." },

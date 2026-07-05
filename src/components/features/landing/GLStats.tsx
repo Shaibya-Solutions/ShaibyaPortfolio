@@ -92,7 +92,7 @@ export default function GLStats() {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-[#9CA3AF] mb-8">
+          <p className="text-center text-sm font-bold uppercase tracking-[0.25em] text-[#0ea5e9] mb-8">
             Trusted by
           </p>
           <div
@@ -102,13 +102,13 @@ export default function GLStats() {
               WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
             }}
           >
-            <div className="marquee-track">
+            <div className="marquee-track py-4">
               {collaborators.map((name, i) => (
-                <div key={`${name}-${i}`} className="flex items-center gap-8 px-6">
-                  <span className="text-sm font-semibold text-[#D1D5DB] whitespace-nowrap hover:text-[#9CA3AF] transition-colors duration-300 cursor-default">
+                <div key={`${name}-${i}`} className="flex items-center gap-10 px-8">
+                  <span className="text-3xl sm:text-5xl font-black text-[#db2777] whitespace-nowrap hover:text-[#db2777]/80 transition-colors duration-300 cursor-default tracking-tight">
                     {name}
                   </span>
-                  <span className="w-1 h-1 rounded-full bg-[#E5E7EB]" />
+                  <span className="w-3.5 h-3.5 rounded-full bg-[#db2777]/30 shrink-0" />
                 </div>
               ))}
             </div>

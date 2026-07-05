@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { motion, PanInfo, useMotionValue, useTransform } from "motion/react";
+import { motion, PanInfo, useMotionValue, useTransform } from "framer-motion";
 import React, { JSX } from "react";
 
 // replace icons with your own if needed

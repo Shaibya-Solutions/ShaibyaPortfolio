@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { SiteHeader } from "@/components/layout/header/site-header";
-import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import { rndProjects } from "@/data/projects";
 import type { Project } from "@/data/projects";
@@ -274,7 +274,7 @@ export default function RNDPortfolioPage() {
         </div>
       </section>
 
-      <SiteFooter />
+      <Footer />
     </main>
   );
 }

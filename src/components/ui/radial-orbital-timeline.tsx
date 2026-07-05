@@ -1,9 +1,5 @@
-"use client";
-import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Link as LinkIcon, Zap } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface TimelineItem {
   id: number;
@@ -13,87 +9,56 @@ interface TimelineItem {
   category: string;
   icon: React.ElementType;
   relatedIds: number[];
-  status: "completed" | "in-progress" | "pending";
+  status: 'completed' | 'in-progress' | 'pending';
   energy: number;
 }
 
 interface RadialOrbitalTimelineProps {
   timelineData: TimelineItem[];
   onActiveChange?: (id: number | null) => void;
+  activeId?: number | null;
+  activeStepId?: number;
 }
 
 export default function RadialOrbitalTimeline({
   timelineData,
   onActiveChange,
+  activeId = null,
+  activeStepId = 4,
 }: RadialOrbitalTimelineProps) {
-  const [expandedItems, setExpandedItems] = useState<Record<number, boolean>>(
-    {}
-  );
-  const [viewMode] = useState<"orbital">("orbital");
   const [rotationAngle, setRotationAngle] = useState<number>(0);
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
-  const [pulseEffect, setPulseEffect] = useState<Record<number, boolean>>({});
-  const [centerOffset] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
+  const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
+  
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
-  const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
-  const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === containerRef.current || e.target === orbitRef.current) {
-      setExpandedItems({});
-      setActiveNodeId(null);
-      setPulseEffect({});
-      setAutoRotate(true);
-      onActiveChange?.(null);
-    }
-  };
-
-  const toggleItem = (id: number) => {
-    setExpandedItems((prev) => {
-      const newState = { ...prev };
-      Object.keys(newState).forEach((key) => {
-        if (parseInt(key) !== id) {
-          newState[parseInt(key)] = false;
-        }
-      });
-
-      newState[id] = !prev[id];
-
-      if (!prev[id]) {
-        setActiveNodeId(id);
+  // Sync with activeId prop from parent scroll
+  useEffect(() => {
+    if (activeId !== null) {
+      setActiveNodeId(activeId);
+      if (clickedNodeId !== null) {
         setAutoRotate(false);
-        onActiveChange?.(id);
-
-        const relatedItems = getRelatedItems(id);
-        const newPulseEffect: Record<number, boolean> = {};
-        relatedItems.forEach((relId) => {
-          newPulseEffect[relId] = true;
-        });
-        setPulseEffect(newPulseEffect);
-
-        centerViewOnNode(id);
+        centerViewOnNode(activeId);
       } else {
-        setActiveNodeId(null);
         setAutoRotate(true);
-        setPulseEffect({});
-        onActiveChange?.(null);
       }
+    } else {
+      setActiveNodeId(null);
+      setAutoRotate(true);
+      setClickedNodeId(null);
+    }
+  }, [activeId, timelineData, clickedNodeId]);
 
-      return newState;
-    });
-  };
-
+  // Auto rotation timer when not active/pinned
   useEffect(() => {
     let rotationTimer: NodeJS.Timeout;
 
-    if (autoRotate && viewMode === "orbital") {
+    if (autoRotate) {
       rotationTimer = setInterval(() => {
         setRotationAngle((prev) => {
-          const newAngle = (prev + 0.3) % 360;
+          const newAngle = (prev + 0.35) % 360;
           return Number(newAngle.toFixed(3));
         });
       }, 50);
@@ -104,25 +69,25 @@ export default function RadialOrbitalTimeline({
         clearInterval(rotationTimer);
       }
     };
-  }, [autoRotate, viewMode]);
+  }, [autoRotate]);
 
   const centerViewOnNode = (nodeId: number) => {
-    if (viewMode !== "orbital" || !nodeRefs.current[nodeId]) return;
-
     const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
+    if (nodeIndex === -1) return;
     const totalNodes = timelineData.length;
     const targetAngle = (nodeIndex / totalNodes) * 360;
 
-    setRotationAngle(270 - targetAngle);
+    // Center the target node at 180 degrees (left side, right next to the left column text!)
+    setRotationAngle(180 - targetAngle);
   };
 
   const calculateNodePosition = (index: number, total: number) => {
     const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200;
+    const radius = 200; // restored original radius
     const radian = (angle * Math.PI) / 180;
 
-    const x = radius * Math.cos(radian) + centerOffset.x;
-    const y = radius * Math.sin(radian) + centerOffset.y;
+    const x = radius * Math.cos(radian);
+    const y = radius * Math.sin(radian);
 
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     const opacity = Math.max(
@@ -144,207 +109,233 @@ export default function RadialOrbitalTimeline({
     return relatedItems.includes(itemId);
   };
 
-  const getStatusStyles = (status: TimelineItem["status"]): string => {
-    switch (status) {
-      case "completed":
-        return "text-white bg-emerald-500 border-emerald-400";
-      case "in-progress":
-        return "text-white bg-sky-500 border-sky-400";
-      case "pending":
-        return "text-white/50 bg-white/8 border-white/15";
-      default:
-        return "text-gray-600 bg-gray-100 border-gray-300";
+  const handleNodeClick = (id: number) => {
+    setActiveNodeId(id);
+    setAutoRotate(false);
+    centerViewOnNode(id);
+    onActiveChange?.(id);
+    setClickedNodeId(id);
+  };
+
+  // Determine theme flags based on active step bg color
+  const isStep1 = activeStepId === 1;
+  const isStep2 = activeStepId === 2;
+  const isStep3 = activeStepId === 3;
+  const isStep4 = activeStepId === 4;
+
+  // 1. Orbit ring boundary colors (thickened to border-2)
+  const orbitBorderColor = isStep1
+    ? 'rgba(255, 255, 255, 0.4)'          // White ring for blue bg
+    : isStep2
+    ? 'rgba(255, 255, 255, 0.25)'         // Light white ring for navy bg
+    : isStep3
+    ? 'rgba(2, 38, 72, 0.3)'             // Dark blue ring for white bg
+    : 'rgba(14, 165, 233, 0.3)';          // Sky blue ring for step 4
+
+  // 2. Central sphere styles
+  const centerSphereBg = isStep1
+    ? 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/30'
+    : isStep2
+    ? 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/20'
+    : isStep3
+    ? 'bg-gradient-to-br from-[#022648] via-[#0b3b60] to-[#0f4d7a] shadow-xl shadow-[#022648]/25'
+    : 'bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 shadow-xl shadow-sky-500/30';
+
+  const centerSphereInnerBg = isStep1 
+    ? 'bg-white border-slate-200' 
+    : isStep2
+    ? 'bg-white border-slate-200'
+    : isStep3 
+    ? 'bg-white border-slate-300' 
+    : 'bg-[#111827] border-sky-400/30';
+
+  const centerPingColor = isStep1 
+    ? 'border-white/40' 
+    : isStep2
+    ? 'border-white/30'
+    : isStep3 
+    ? 'border-[#022648]/35' 
+    : 'border-sky-300/30';
+
+  // 3. Node Circle Styling (w-14 h-14 with bold dynamic borders)
+  const inactiveNodeClass = isStep1
+    ? 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40'
+    : isStep2
+    ? 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/25'
+    : isStep3
+    ? 'bg-[#022648]/5 text-[#022648] border-[#022648]/30 hover:bg-[#022648]/12 hover:border-[#022648]/80'
+    : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20';
+
+  const activeNodeClass = isStep1
+    ? 'bg-white text-[#0ea5e9] border-white shadow-xl shadow-white/60 scale-125 font-bold'
+    : isStep2
+    ? 'bg-white text-[#022648] border-white shadow-xl scale-125 font-bold'
+    : isStep3
+    ? 'bg-[#022648] text-white border-[#022648] shadow-xl shadow-[#022648]/30 scale-125 font-bold'
+    : 'bg-sky-500 text-white border-sky-400 shadow-xl shadow-sky-500/50 scale-125 font-bold';
+
+  const relatedNodeClass = isStep1
+    ? 'bg-white/20 text-white border-white/50'
+    : isStep2
+    ? 'bg-white/15 text-white border-white/40'
+    : isStep3
+    ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] border-[#0ea5e9]/50'
+    : 'bg-sky-900/60 text-sky-400 border-sky-500/50';
+
+  // 4. Glow properties
+  const nodeEnergyGlow = isStep1
+    ? 'rgba(255, 255, 255, 0.4)'         // White glow for Step 1
+    : isStep2
+    ? 'rgba(255, 255, 255, 0.3)'         // White glow for Step 2
+    : isStep3
+    ? 'rgba(2, 38, 72, 0.3)'             // Dark blue glow for Step 3
+    : 'rgba(14, 165, 233, 0.4)';          // Sky blue glow for Step 4
+
+  const backdropGlowClass = isStep1
+    ? 'bg-white/10'
+    : isStep2
+    ? 'bg-white/5'
+    : isStep3
+    ? 'bg-[#0ea5e9]/6'
+    : 'bg-sky-500/15';
+
+  // 5. Node label text color
+  const getLabelColor = (isActive: boolean) => {
+    if (isStep1) {
+      return isActive ? 'text-white font-bold scale-110' : 'text-white/60';
     }
+    if (isStep2) {
+      return isActive ? 'text-white font-bold scale-110' : 'text-white/50';
+    }
+    if (isStep3) {
+      return isActive ? 'text-[#022648] font-extrabold scale-110' : 'text-slate-600 font-semibold';
+    }
+    return isActive ? 'text-white font-bold scale-110' : 'text-white/50';
   };
 
   return (
     <div
-      className="w-full h-[700px] flex flex-col items-center justify-center overflow-hidden relative"
-      style={{ background: "#0a1628" }}
+      className="w-full h-[540px] flex items-center justify-center overflow-hidden relative bg-transparent"
       ref={containerRef}
-      onClick={handleContainerClick}
     >
-      <div className="relative w-full max-w-4xl h-full flex items-center justify-center">
+      {/* Outer Backdrop Glow for maximum atmospheric effect */}
+      <div className={`absolute w-80 h-80 rounded-full ${backdropGlowClass} blur-3xl pointer-events-none z-0`} />
+
+      <div className="relative w-full max-w-4xl h-full flex items-center justify-center scale-90 sm:scale-100 z-10">
         <div
           className="absolute w-full h-full flex items-center justify-center"
           ref={orbitRef}
           style={{
-            perspective: "1000px",
-            transform: `translate(${centerOffset.x}px, ${centerOffset.y}px)`,
+            perspective: '1000px',
           }}
         >
-          {/* Center sphere — light theme gradient */}
-          <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 animate-pulse flex items-center justify-center z-10 shadow-lg shadow-sky-300/40">
-            <div className="absolute w-20 h-20 rounded-full border border-sky-300/30 animate-ping opacity-70"></div>
+          {/* Center sphere — dynamic high-contrast theme gradient */}
+          <div className={`absolute w-16 h-16 rounded-full ${centerSphereBg} animate-pulse flex items-center justify-center z-10`}>
+            <div className={`absolute w-20 h-20 rounded-full border ${centerPingColor} animate-ping opacity-70`}></div>
             <div
-              className="absolute w-24 h-24 rounded-full border border-sky-200/20 animate-ping opacity-50"
-              style={{ animationDelay: "0.5s" }}
+              className={`absolute w-24 h-24 rounded-full border ${centerPingColor} animate-ping opacity-50`}
+              style={{ animationDelay: '0.5s' }}
             ></div>
-            <div className="w-8 h-8 rounded-full bg-[#111827] border border-sky-400/30 shadow-inner"></div>
+            <div className={`w-8 h-8 rounded-full ${centerSphereInnerBg} border shadow-inner`}></div>
           </div>
 
-          {/* Orbit ring */}
-          <div className="absolute w-96 h-96 rounded-full border border-white/10"></div>
+          {/* Orbit ring — thickened with border-2 */}
+          <div
+            className="absolute w-96 h-96 rounded-full border-2"
+            style={{ borderColor: orbitBorderColor }}
+          ></div>
 
           {timelineData.map((item, index) => {
             const position = calculateNodePosition(index, timelineData.length);
-            const isExpanded = expandedItems[item.id];
+            const isActive = activeNodeId === item.id;
             const isRelated = isRelatedToActive(item.id);
-            const isPulsing = pulseEffect[item.id];
             const Icon = item.icon;
 
             const nodeStyle = {
               transform: `translate(${position.x}px, ${position.y}px)`,
-              zIndex: isExpanded ? 200 : position.zIndex,
-              opacity: isExpanded ? 1 : position.opacity,
+              zIndex: isActive ? 200 : position.zIndex,
+              opacity: isActive ? 1 : position.opacity,
             };
 
             return (
               <div
                 key={item.id}
-                ref={(el) => {
-                  nodeRefs.current[item.id] = el;
-                }}
                 className="absolute transition-all duration-700 cursor-pointer"
                 style={nodeStyle}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleItem(item.id);
-                }}
+                onClick={() => handleNodeClick(item.id)}
               >
-                {/* Energy glow — light blue for light theme */}
+                {/* Energy glow circles */}
                 <div
-                  className={`absolute rounded-full -inset-1 ${isPulsing ? "animate-pulse duration-1000" : ""
-                    }`}
+                  className="absolute rounded-full -inset-1.5 animate-pulse duration-1000"
                   style={{
-                    background: `radial-gradient(circle, rgba(14,165,233,0.15) 0%, rgba(14,165,233,0) 70%)`,
-                    width: `${item.energy * 0.5 + 40}px`,
-                    height: `${item.energy * 0.5 + 40}px`,
-                    left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
-                    top: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
+                    background: `radial-gradient(circle, ${nodeEnergyGlow} 0%, rgba(14,165,233,0) 70%)`,
+                    width: `${item.energy * 0.5 + 46}px`,
+                    height: `${item.energy * 0.5 + 46}px`,
+                    left: `-${(item.energy * 0.5 + 46 - 56) / 2}px`,
+                    top: `-${(item.energy * 0.5 + 46 - 56) / 2}px`,
                   }}
                 ></div>
 
-                {/* Node circle */}
+                {/* Node circle — size increased to w-14 h-14 */}
                 <div
                   className={`
-                  w-12 h-12 rounded-full flex items-center justify-center
-                  ${isExpanded
-                      ? "bg-sky-500 text-white"
+                    w-14 h-14 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform shadow-md
+                    ${isActive
+                      ? activeNodeClass
                       : isRelated
-                        ? "bg-sky-900/60 text-sky-400"
-                        : "bg-white/8 text-white/70"
+                      ? relatedNodeClass + ' animate-pulse'
+                      : inactiveNodeClass
                     }
-                  border-2 
-                  ${isExpanded
-                      ? "border-sky-400 shadow-lg shadow-sky-500/30"
-                      : isRelated
-                        ? "border-sky-500/50 animate-pulse"
-                        : "border-white/15"
-                    }
-                  transition-all duration-300 transform
-                  ${isExpanded ? "scale-125" : "hover:scale-110"}
-                  shadow-md
-                `}
+                  `}
                 >
-                  <Icon size={18} />
+                  <Icon size={22} />
                 </div>
 
-                {/* Node label — positioned with enough gap to avoid overlap */}
+                {/* Node label */}
                 <div
                   className={`
-                  absolute top-14 left-1/2 -translate-x-1/2 whitespace-nowrap
-                  text-xs font-semibold tracking-wide
-                  transition-all duration-300 pointer-events-none
-                  ${isExpanded ? "text-white scale-110" : "text-white/50"}
-                `}
+                    absolute top-16 left-1/2 -translate-x-1/2 whitespace-nowrap
+                    text-xs tracking-wide
+                    transition-all duration-300 pointer-events-none
+                    ${getLabelColor(isActive)}
+                  `}
                 >
                   {item.title}
                 </div>
 
-                {/* Expanded card */}
-                {isExpanded && (
-                  <Card className="absolute top-24 left-1/2 -translate-x-1/2 w-72 bg-[#0f2040] backdrop-blur-lg border-white/10 shadow-2xl shadow-black/50 overflow-visible z-50">
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-px h-3 bg-sky-400"></div>
-                    <CardHeader className="pb-2 pt-4 px-4">
-                      <div className="flex justify-between items-center">
-                        <Badge
-                          className={`px-2 text-[10px] ${getStatusStyles(
-                            item.status
-                          )}`}
-                        >
-                          {item.status === "completed"
-                            ? "COMPLETE"
-                            : item.status === "in-progress"
-                              ? "IN PROGRESS"
-                              : "PENDING"}
-                        </Badge>
-                        <span className="text-[10px] font-mono text-white/40">
-                          {item.date}
-                        </span>
-                      </div>
-                      <CardTitle className="text-sm mt-2 text-white">
-                        {item.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-xs text-white/60 px-4 pb-4">
-                      <p className="leading-relaxed">{item.content}</p>
+                {/* Popover Card Info Box when active/clicked */}
+                {isActive && clickedNodeId === item.id && (
+                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-64 bg-[#0a1628]/95 backdrop-blur-lg border border-white/10 shadow-2xl p-4 rounded-xl z-50 text-left transition-all duration-300">
+                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a1628] border-t border-l border-white/10 rotate-45"></div>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] font-mono text-white/40">
+                        {item.date}
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
+                        {item.status === 'completed' ? 'COMPLETE' : item.status === 'in-progress' ? 'IN PROGRESS' : 'PENDING'}
+                      </span>
+                    </div>
+                    <h4 className="text-xs font-bold text-white mb-1 uppercase tracking-wider">
+                      {item.title}
+                    </h4>
+                    <p className="text-[10px] text-white/70 leading-relaxed mb-3">
+                      {item.content}
+                    </p>
 
-                      {/* Energy bar */}
-                      <div className="mt-4 pt-3 border-t border-white/10">
-                        <div className="flex justify-between items-center text-[10px] mb-1.5">
-                          <span className="flex items-center text-white/40">
-                            <Zap size={10} className="mr-1 text-sky-500" />
-                            Progress
-                          </span>
-                          <span className="font-mono text-white/40">{item.energy}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full transition-all duration-500"
-                            style={{ width: `${item.energy}%` }}
-                          ></div>
-                        </div>
+                    {/* Progress Bar */}
+                    <div className="pt-2 border-t border-white/5">
+                      <div className="flex justify-between items-center text-[9px] mb-1">
+                        <span className="text-white/40 uppercase font-bold tracking-wider">Progress</span>
+                        <span className="font-mono text-white/50">{item.energy}%</span>
                       </div>
-
-                      {/* Connected nodes */}
-                      {item.relatedIds.length > 0 && (
-                        <div className="mt-4 pt-3 border-t border-white/10">
-                          <div className="flex items-center mb-2">
-                            <LinkIcon size={10} className="text-white/30 mr-1" />
-                            <h4 className="text-[10px] uppercase tracking-wider font-medium text-white/30">
-                              Connected Steps
-                            </h4>
-                          </div>
-                          <div className="flex flex-wrap gap-1">
-                            {item.relatedIds.map((relatedId) => {
-                              const relatedItem = timelineData.find(
-                                (i) => i.id === relatedId
-                              );
-                              return (
-                                <Button
-                                  key={relatedId}
-                                  variant="outline"
-                                  size="sm"
-                                  className="flex items-center h-6 px-2 py-0 text-[10px] rounded-md border-white/15 bg-white/5 hover:bg-sky-900/40 hover:border-sky-500/40 text-white/50 hover:text-sky-400 transition-all"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    toggleItem(relatedId);
-                                  }}
-                                >
-                                  {relatedItem?.title}
-                                  <ArrowRight
-                                    size={8}
-                                    className="ml-1 text-white/30"
-                                  />
-                                </Button>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                      <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"
+                          style={{ width: `${item.energy}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
             );

@@ -1,7 +1,7 @@
 "use client";
 
 import { SiteHeader } from "@/components/layout/header/site-header";
-import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import { TEAM_MEMBERS } from "@/data/team";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -158,7 +158,7 @@ export default function SnyppitPage() {
         </div>
       </section>
 
-      <SiteFooter />
+      <Footer />
     </main>
   );
 }

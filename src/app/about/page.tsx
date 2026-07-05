@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import Link from "next/link";
+
 import {
   Building2,
   Lightbulb,
@@ -16,6 +17,8 @@ import {
   Sparkles,
   Award,
 } from "lucide-react";
+
+import Earth from "@/components/ui/globe";
 
 const BRAND = "#0ea5e9";
 const TEXT = "#111827";
@@ -86,78 +89,224 @@ const values = [
 
 export default function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const heroInView = useInView(heroRef, { once: true, amount: 0.2 });
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [elementTop, setElementTop] = useState(0);
+  const [elementHeight, setElementHeight] = useState(1000);
+  const [windowHeight, setWindowHeight] = useState(800);
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 1024);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (!heroRef.current) return;
+    const updateLayout = () => {
+      if (!heroRef.current) return;
+      const rect = heroRef.current.getBoundingClientRect();
+      setElementTop(rect.top + window.scrollY);
+      setElementHeight(heroRef.current.offsetHeight);
+      setWindowHeight(window.innerHeight);
+    };
+    updateLayout();
+    const t = setInterval(updateLayout, 500);
+    window.addEventListener("resize", updateLayout);
+    return () => {
+      clearInterval(t);
+      window.removeEventListener("resize", updateLayout);
+    };
+  }, [isDesktop]);
+
+  const { scrollY } = useScroll();
+  const stickyScrollLength = elementHeight - windowHeight;
+
+  // Track progress relative to the sticky range
+  const stickyScrollProgress = useTransform(
+    scrollY,
+    [elementTop, elementTop + Math.max(1, stickyScrollLength)],
+    [0, 1]
+  );
+
+  // Cards start centered side-by-side (x=0), then glide apart on scroll.
+  // Phase 1 (0 to 30%): static centered 2x2 grid.
+  // Phase 2 (30% to 75%): columns glide apart, globe fades + scales in.
+  // Phase 3 (75% to 100%): final state held before unsticking.
+  const leftX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "-340px"]);
+  const rightX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "340px"]);
+
+  const globeOpacity = useTransform(stickyScrollProgress, [0.42, 0.75], [0, 1]);
+  const globeScale = useTransform(stickyScrollProgress, [0.42, 0.75], [0.35, 1]);
 
   return (
-    <main className="min-h-screen flex flex-col overflow-x-hidden" style={{ background: BG, color: TEXT }}>
+    <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
 
       {/* ══ HERO ══════════════════════════════════════════════════════ */}
-      <section
-        ref={heroRef}
-        className="relative pt-40 pb-24 overflow-hidden"
-      >
-        {/* Background image */}
-        <div className="absolute inset-0 z-0">
-          <motion.img
-            initial={{ scale: 1.08 }}
-            animate={heroInView ? { scale: 1 } : {}}
-            transition={{ duration: 1.6, ease: "easeOut" }}
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1400"
-            alt=""
-            aria-hidden
-            className="w-full h-full object-cover grayscale"
-          />
-          {/* Overlay — white fade so dark text stays readable */}
+      {isDesktop ? (
+        /* ── DESKTOP: sticky scroll split storytelling ── */
+        <section
+          ref={heroRef}
+          className="relative h-[250vh] bg-white w-full"
+        >
+          {/* Sticky wrapper filling one viewport height */}
           <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.75) 60%, rgba(255,255,255,0.95) 100%)",
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={heroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center max-w-4xl mx-auto"
+            className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+            style={{ paddingTop: "76px" }}
           >
-            <p
-              className="text-xs font-bold uppercase tracking-[0.22em] mb-6"
-              style={{ color: BRAND, fontFamily: "var(--font-inter)" }}
+            {/* Dot grid background */}
+            <div className="absolute inset-0 z-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] bg-[size:20px_20px]" />
+
+            {/* Globe: absolutely centered in the background of the sticky wrapper */}
+            <motion.div
+              style={{ opacity: globeOpacity, scale: globeScale }}
+              className="absolute inset-0 m-auto w-[600px] h-[600px] pointer-events-none z-10 flex items-center justify-center translate-y-12 [filter:drop-shadow(0_0_35px_rgba(14,165,233,0.7))]"
             >
+              <Earth isLightBg={true} />
+            </motion.div>
+
+            <div className="relative z-20 flex flex-col items-center w-full text-center px-8 select-none">
+              {/* Category */}
+              <p className="text-xs font-bold uppercase tracking-[0.22em] mb-3 text-pink-600">
+                Our Story
+              </p>
+
+              {/* Title */}
+              <h1
+                className="text-4xl sm:text-5xl md:text-7xl font-black bg-gradient-to-b from-slate-900 to-slate-700 bg-clip-text text-transparent leading-none tracking-tighter uppercase mb-6"
+                style={{ fontFamily: "'Proxima Nova', sans-serif" }}
+              >
+                Empowering the Future
+              </h1>
+
+              {/* Stage for split animation */}
+              <div
+                className="relative w-full flex items-center justify-center gap-8"
+                style={{ height: "460px" }}
+              >
+                {/* Left column (slides left) */}
+                <motion.div
+                  style={{ x: leftX }}
+                  className="w-[320px] flex flex-col gap-5 text-left shrink-0"
+                >
+                  <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Global Outreach</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
+                      From Nagpur to Noida to Texas - software and automation for businesses worldwide.
+                    </p>
+                  </div>
+                  <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">AI &amp; Automation</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
+                      Replacing manual registers with intelligent CRM and WhatsApp automation engines.
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Right column (slides right) */}
+                <motion.div
+                  style={{ x: rightX }}
+                  className="w-[320px] flex flex-col gap-5 text-left shrink-0"
+                >
+                  <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Systems First</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
+                      Complete digital backbones that optimize operations and scale workflows end-to-end.
+                    </p>
+                  </div>
+                  <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Robust Quality</h3>
+                    <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
+                      High-performance architectures, fast load speeds, and bulletproof security - built-in.
+                    </p>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Subtitle */}
+              <p className="text-xl font-extrabold text-pink-600 italic mt-6">
+                "One Solution at a Time."
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : (
+        /* ── MOBILE/TABLET: vertical stacking flow ── */
+        <section
+          ref={heroRef}
+          className="relative pt-44 pb-20 flex flex-col items-center justify-start bg-white w-full overflow-hidden"
+        >
+          {/* Radial gradient background */}
+          <div className="absolute top-0 left-0 z-0 h-full w-full bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] bg-[size:20px_20px] opacity-80" />
+
+          <div className="relative z-10 flex flex-col items-center max-w-7xl mx-auto px-6 w-full text-center">
+            {/* Label */}
+            <p className="text-xs font-bold uppercase tracking-[0.22em] mb-6 text-pink-600">
               Our Story
             </p>
+
+            {/* Title */}
             <h1
-              className="font-bold tracking-tight leading-[1.02] mb-8"
-              style={{
-                fontFamily: "var(--font-syne)",
-                fontSize: "clamp(3rem, 8vw, 6.5rem)",
-                letterSpacing: "-0.03em",
-                color: TEXT,
-              }}
+              className="text-5xl sm:text-7xl font-black bg-gradient-to-b from-slate-900 to-slate-700 bg-clip-text text-transparent leading-[100%] tracking-tighter uppercase mb-8"
+              style={{ fontFamily: "'Proxima Nova', sans-serif" }}
             >
-              Empowering the Future,{" "}
-              <br className="hidden md:block" />
-              <span style={{ fontStyle: "italic", fontWeight: 400, color: MUTED }}>
-                One Solution at a Time.
-              </span>
+              Empowering the Future
             </h1>
+
+            {/* Globe component */}
+            <div className="w-full max-w-[420px] aspect-square flex items-center justify-center relative mb-8 [filter:drop-shadow(0_0_30px_rgba(14,165,233,0.6))]">
+              <Earth isLightBg={true} />
+            </div>
+
+            {/* Stacking Highlights Grid for Mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl my-8 text-left">
+              <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Global Outreach</h3>
+                <p className="text-slate-600 text-sm font-semibold leading-relaxed">
+                  From Nagpur to Noida to Texas - we build software and automation for businesses worldwide.
+                </p>
+              </div>
+
+              <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">AI &amp; Automation</h3>
+                <p className="text-slate-600 text-sm font-semibold leading-relaxed">
+                  Replacing manual registers with CRM systems and intelligent WhatsApp automated engines.
+                </p>
+              </div>
+
+              <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Systems First</h3>
+                <p className="text-slate-600 text-sm font-semibold leading-relaxed">
+                  We build complete digital backbones that optimize and scale operational workflows.
+                </p>
+              </div>
+
+              <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
+                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Robust Quality</h3>
+                <p className="text-slate-600 text-sm font-semibold leading-relaxed">
+                  Fast page speeds, high-performance architectures, and bulletproof security integrated natively.
+                </p>
+              </div>
+            </div>
+
+            {/* Subtitle */}
+            <p className="text-2xl md:text-3xl font-extrabold text-pink-600 italic mb-8 leading-relaxed">
+              "One Solution at a Time."
+            </p>
+
+            {/* Description */}
             <p
-              className="text-lg md:text-xl leading-relaxed max-w-3xl mx-auto"
-              style={{ color: MUTED, fontFamily: "var(--font-inter)", fontWeight: 300 }}
+              className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl mx-auto font-medium"
+              style={{ fontFamily: "'Proxima Nova', sans-serif" }}
             >
               We are more than just a technology company. Shaibya Solutions is a collective of
               visionaries, engineers, and strategists dedicated to transforming how businesses
               operate in the digital era.
             </p>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       {/* ══ WHO WE ARE + VALUES ═══════════════════════════════════════ */}
       <section className="py-24 lg:py-32 border-y" style={{ borderColor: BORDER, background: BG }}>

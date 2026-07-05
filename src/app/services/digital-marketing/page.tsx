@@ -235,15 +235,22 @@ export default function DigitalMarketingPage() {
               </motion.div>
             </div>
 
-            {/* Right: Chaos-to-Clarity Swirl Component */}
+            {/* Right: Chaos-to-Clarity Swirl Video */}
             <div className="lg:col-span-5 relative w-full flex items-center justify-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1, delay: 0.2 }}
-                className="w-full h-full"
+                className="w-full h-full flex justify-center"
               >
-                <ClarityInChaosDots />
+                <video
+                  src="/videos/social.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full max-w-[480px] h-auto object-contain mix-blend-multiply dark:mix-blend-screen rounded-2xl [clip-path:inset(0px_0px_4px_0px)]"
+                />
               </motion.div>
             </div>
           </div>

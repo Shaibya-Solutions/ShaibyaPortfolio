@@ -3,7 +3,7 @@
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import type { TestimonialItem } from "@/components/ui/testimonials-columns-1";
 import { testimonials as rawTestimonials } from "@/data";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 /* Map existing data → TestimonialsColumn shape, using real Unsplash portraits */
 const portraitImages = [

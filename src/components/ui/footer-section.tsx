@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import type { ComponentProps, ReactNode } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
+import { motion, useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import {
   LinkedinIcon, InstagramIcon, BookOpenIcon, MessageCircleIcon,
@@ -133,54 +133,51 @@ export function Footer() {
 
         {/* Shadowed wordmark */}
         <div
-          className="w-full select-none pointer-events-none mb-4"
+          className="w-full select-none pointer-events-none mb-4 flex justify-center"
           aria-hidden
         >
-          <p
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontSize: "clamp(3.2rem, 11.5vw, 10rem)",
-              fontWeight: 900,
-              lineHeight: 0.9,
-              letterSpacing: "-0.05em",
-              textTransform: "uppercase",
-              color: "transparent",
-              WebkitTextStroke: "1px rgba(100,116,139,0.18)",
-              textShadow:
-                "0 4px 8px rgba(14,165,233,0.08), 0 1px 2px rgba(100,116,139,0.12)",
-              userSelect: "none",
-            }}
-          >
-            {/* S with tilde above it — matching logo */}
-            <span style={{ position: "relative", display: "inline-block", paddingTop: "0.22em" }}>
-              {/* SVG tilde — thin curved stroke matching logo style */}
-              <svg
-                viewBox="0 0 40 14"
+          <div className="relative inline-block" style={{ fontSize: "clamp(3.2rem, 11.5vw, 10rem)" }}>
+            {/* SVG tilde — thin curved stroke positioned exactly over the letter 'S' */}
+            <svg
+              viewBox="0 0 40 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                position: "absolute",
+                top: "-0.16em",
+                left: "0.14em",
+                width: "0.38em",
+                height: "0.18em",
+                overflow: "visible",
+              }}
+              aria-hidden
+            >
+              <path
+                d="M2 10 C8 2, 14 2, 20 7 C26 12, 32 12, 38 4"
+                stroke="#0ea5e9"
+                strokeWidth="2.8"
+                strokeLinecap="round"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{
-                  position: "absolute",
-                  top: "0.02em",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "0.38em",
-                  height: "0.18em",
-                  overflow: "visible",
-                }}
-                aria-hidden
-              >
-                <path
-                  d="M2 10 C8 2, 14 2, 20 7 C26 12, 32 12, 38 4"
-                  stroke="rgba(100,116,139,0.45)"
-                  strokeWidth="2.8"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-              S
-            </span>
-            HAIBYA
-          </p>
+              />
+            </svg>
+            <p
+              className="shaibya-shine"
+              style={{
+                fontFamily: "var(--font-syne)",
+                fontSize: "1em",
+                fontWeight: 900,
+                lineHeight: 0.9,
+                letterSpacing: "-0.05em",
+                textTransform: "uppercase",
+                userSelect: "none",
+                paddingLeft: "0.06em",
+                paddingRight: "0.06em",
+                overflow: "visible",
+              }}
+            >
+              SHAIBYA
+            </p>
+          </div>
         </div>
 
         <p className="text-[11px] text-gray-400 leading-relaxed max-w-2xl mx-auto">

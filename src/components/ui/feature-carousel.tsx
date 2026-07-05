@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useState, useEffect } from "react";
 import {
     Home01Icon,
     Dumbbell01Icon,
 } from "@hugeicons/core-free-icons";
-import { cn } from "@/lib/utils";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const FEATURES = [
@@ -15,143 +14,129 @@ const FEATURES = [
         id: "real-estate",
         label: "Real Estate",
         icon: Home01Icon,
-        image: "/images/screenshots/mg-infra.png",
-        description: "Automated lead capture, WhatsApp bots, and SEO-first property portals.",
+        image: "/images/landing/real_estate_vertical.png",
+        description: "Automated lead capture, WhatsApp bots, and SEO-first property portals. Build Nagpur's premium property listing web experiences.",
         href: "/industry/real-estate",
     },
     {
         id: "fitness",
         label: "Fitness & Gyms",
         icon: Dumbbell01Icon,
-        image: "/images/screenshots/revolution-fitness.png",
-        description: "Membership management, renewals, and multi-branch dashboards.",
+        image: "/images/landing/fitness_vertical.png",
+        description: "Membership management, renewals, and multi-branch dashboards. Automate client check-ins and payment reminders seamlessly.",
         href: "/industry/fitness",
     },
 ];
 
 export function FeatureCarousel() {
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [isMobile, setIsMobile] = useState(false);
 
-    const handleChipClick = (index: number) => {
-        setCurrentIndex(index);
-    };
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     return (
-        <div className="w-full max-w-7xl mx-auto md:p-8">
-            <div className="relative overflow-hidden rounded-[2.5rem] lg:rounded-[4rem] flex flex-col lg:flex-row min-h-[600px] lg:aspect-video border border-border/40">
+        <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
+            <div className="flex flex-col lg:flex-row gap-8 lg:min-h-[600px] max-w-[1340px] mx-auto items-stretch">
+                {FEATURES.map((item, index) => {
+                    const isAnyHovered = hoveredIndex !== null;
+                    const isActive = isAnyHovered ? hoveredIndex === index : false;
+                    const isCollapsed = isAnyHovered ? hoveredIndex !== index : false;
 
-                {/* Left — chip list */}
-                <div className="w-full lg:w-[40%] min-h-[250px] md:min-h-[300px] lg:h-full relative z-30 flex flex-col items-start justify-center overflow-hidden px-8 md:px-16 lg:pl-16 bg-[#0ea5e9]">
-
-                    <div className="relative w-full flex flex-col items-center lg:items-start gap-4 z-20 py-8">
-                        {FEATURES.map((feature, index) => {
-                            const isActive = index === currentIndex;
-
-                            return (
-                                <motion.div
-                                    key={feature.id}
-                                    layout
-                                    transition={{ type: "spring", stiffness: 90, damping: 22, mass: 1 }}
-                                    className="flex items-center justify-start"
-                                >
-                                    <button
-                                        onClick={() => handleChipClick(index)}
-                                        className={cn(
-                                            "relative flex items-center gap-5 px-8 md:px-12 lg:px-10 py-4 md:py-6 lg:py-5 rounded-full transition-all duration-700 text-left group border cursor-pointer",
-                                            isActive
-                                                ? "bg-white text-[#0ea5e9] border-white z-10 scale-105 shadow-lg shadow-black/10"
-                                                : "bg-transparent text-white/60 border-white/20 hover:border-white/40 hover:text-white"
-                                        )}
-                                    >
-                                        <div className={cn("flex items-center justify-center transition-colors duration-500", isActive ? "text-[#0ea5e9]" : "text-white/40")}>
-                                            <HugeiconsIcon icon={feature.icon} size={24} strokeWidth={2} />
-                                        </div>
-                                        <span className="font-bold text-lg md:text-xl lg:text-2xl tracking-tight whitespace-nowrap uppercase">
-                                            {feature.label}
-                                        </span>
-                                    </button>
-                                </motion.div>
-                            );
-                        })}
-                    </div>
-                </div>
-
-                {/* Right — image cards */}
-                <div className="flex-1 min-h-[500px] md:min-h-[600px] lg:h-full relative bg-secondary/30 flex items-center justify-center py-16 md:py-24 lg:py-16 px-6 md:px-12 lg:px-10 overflow-hidden border-t lg:border-t-0 lg:border-l border-border/20">
-                    <div className="relative w-full max-w-[420px] aspect-[4/5] flex items-center justify-center">
-                        {FEATURES.map((feature, index) => {
-                            const isActive = index === currentIndex;
-
-                            return (
-                                <motion.div
-                                    key={feature.id}
-                                    initial={false}
-                                    animate={{
-                                        x: isActive ? 0 : index < currentIndex ? -100 : 100,
-                                        scale: isActive ? 1 : 0.85,
-                                        opacity: isActive ? 1 : 0.4,
-                                        rotate: isActive ? 0 : index < currentIndex ? -3 : 3,
-                                        zIndex: isActive ? 20 : 10,
-                                        pointerEvents: isActive ? "auto" : "none",
-                                    }}
-                                    transition={{ type: "spring", stiffness: 260, damping: 25, mass: 0.8 }}
-                                    className="absolute inset-0 rounded-[2rem] md:rounded-[2.8rem] overflow-hidden border-4 md:border-8 border-background bg-background origin-center"
-                                >
+                    return (
+                        <div
+                            key={item.id}
+                            onMouseEnter={() => !isMobile && setHoveredIndex(index)}
+                            onMouseLeave={() => !isMobile && setHoveredIndex(null)}
+                            onClick={() => isMobile && setHoveredIndex(hoveredIndex === index ? null : index)}
+                            style={{
+                                flex: isMobile ? 1 : (isActive ? 2.8 : (isCollapsed ? 1.2 : 2)),
+                                transition: "all 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
+                            }}
+                            className="bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-[0_30px_70px_rgba(0,0,0,0.06)] border border-slate-200/60 relative overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[600px] w-full cursor-pointer"
+                        >
+                            {/* Image Container — animated width for desktop slide, height for mobile view */}
+                            <div
+                                style={{
+                                    width: isMobile ? "100%" : (isActive ? "50%" : "0%"),
+                                    height: isMobile ? "400px" : "100%",
+                                    transition: "width 0.65s cubic-bezier(0.16, 1, 0.3, 1), height 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
+                                }}
+                                className={`overflow-hidden relative shrink-0 ${
+                                    isMobile ? "block" : "hidden lg:block"
+                                } ${index === 1 ? "lg:order-first" : "lg:order-last"}`}
+                            >
+                                <div className="h-full w-full absolute inset-0">
                                     <img
-                                        src={feature.image}
-                                        alt={feature.label}
-                                        className={cn(
-                                            "w-full h-full object-cover object-top transition-all duration-700",
-                                            isActive ? "grayscale-0 blur-0" : "grayscale blur-[2px] brightness-75"
-                                        )}
+                                        src={item.image}
+                                        alt={item.label}
+                                        className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
                                     />
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+                            </div>
 
-                                    <AnimatePresence>
-                                        {isActive && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: 10 }}
-                                                className="absolute inset-x-0 bottom-0 p-10 pt-32 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end"
-                                            >
-                                                <div className="bg-background text-foreground px-4 py-1.5 rounded-full text-[11px] font-normal uppercase tracking-[0.2em] w-fit shadow-lg mb-3 border border-border/50">
-                                                    {index + 1} • {feature.label}
-                                                </div>
-                                                <p className="text-white font-normal text-xl md:text-2xl leading-tight drop-shadow-md tracking-tight mb-4">
-                                                    {feature.description}
-                                                </p>
-                                                <Link
-                                                    href={feature.href}
-                                                    className="inline-flex items-center gap-2 text-white/90 hover:text-white text-sm font-medium transition-colors group/link"
-                                                >
-                                                    <span className="underline underline-offset-4 decoration-white/40 group-hover/link:decoration-white">
-                                                        View Case Study
-                                                    </span>
-                                                    <svg
-                                                        className="w-4 h-4 transition-transform group-hover/link:translate-x-1"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                    >
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                                    </svg>
-                                                </Link>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-
-                                    <div className={cn("absolute top-8 left-8 flex items-center gap-3 transition-opacity duration-300", isActive ? "opacity-100" : "opacity-0")}>
-                                        <div className="w-2 h-2 rounded-full bg-white shadow-[0_0_10px_white]" />
-                                        <span className="text-white/80 text-[10px] font-normal uppercase tracking-[0.3em] font-mono">
-                                            Live Work
-                                        </span>
+                            {/* Content Container — adjusts automatically to fill the remaining width */}
+                            <div
+                                style={{
+                                    width: isMobile ? "100%" : (isActive ? "50%" : "100%"),
+                                    transition: "width 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
+                                }}
+                                className={`p-10 md:p-14 lg:p-16 flex flex-col justify-center relative z-10 bg-white shrink-0 overflow-hidden lg:order-none min-h-[300px] lg:min-h-0 transition-all duration-500 ${
+                                    isMobile || isActive ? "items-start text-left" : "items-center text-center"
+                                }`}
+                            >
+                                <div className={`w-full flex-1 flex flex-col justify-center ${
+                                    isMobile || isActive ? "items-start text-left" : "items-center text-center"
+                                }`}>
+                                    {/* Icon & Label */}
+                                    <div className={`flex ${isMobile || isActive ? "flex-row items-center text-left" : "flex-col items-center text-center"} gap-5 mb-8`}>
+                                        <div className="w-14 h-14 md:w-16 md:h-16 rounded-[1.25rem] bg-[#0ea5e9]/10 flex items-center justify-center text-[#0ea5e9] shrink-0">
+                                            <HugeiconsIcon icon={item.icon} size={28} strokeWidth={2} />
+                                        </div>
+                                        <div className={`flex flex-col ${isMobile || isActive ? "items-start text-left" : "items-center text-center"}`}>
+                                            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0ea5e9] mb-1">
+                                                Industry Vertical
+                                            </span>
+                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 uppercase leading-none" style={{ fontFamily: "var(--font-syne)" }}>
+                                                {item.label}
+                                            </h3>
+                                        </div>
                                     </div>
-                                </motion.div>
-                            );
-                        })}
-                    </div>
-                </div>
 
+                                    {/* Collapsible Info Section: hides description and CTA when card is collapsed on desktop */}
+                                    <div
+                                        style={{
+                                            opacity: isMobile ? 1 : (isActive ? 1 : 0),
+                                            height: isMobile ? "auto" : (isActive ? "auto" : 0),
+                                            pointerEvents: isMobile ? "auto" : (isActive ? "auto" : "none"),
+                                            transition: "opacity 0.4s ease-out, height 0.4s ease-out",
+                                            overflow: "hidden"
+                                        }}
+                                        className="w-full"
+                                    >
+                                        <p className="text-slate-500 text-base md:text-lg leading-relaxed mb-10 max-w-md">
+                                            {item.description}
+                                        </p>
+                                        
+                                        <div>
+                                            <Link
+                                                href={item.href}
+                                                className="inline-flex w-full sm:w-auto items-center justify-center gap-3 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold py-5 px-10 rounded-[1.25rem] shadow-lg shadow-sky-500/25 transition-all active:scale-95 uppercase tracking-wider text-xs md:text-sm"
+                                            >
+                                                View Case Study
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

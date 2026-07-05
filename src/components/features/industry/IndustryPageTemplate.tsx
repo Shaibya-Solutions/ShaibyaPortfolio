@@ -6,7 +6,7 @@ import { ArrowRight, Check, ChevronDown, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { SiteHeader } from "@/components/layout/header/site-header";
-import { SiteFooter } from "@/components/layout/footer/site-footer";
+import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import { BeforeAfterSlider } from "@/components/ui/before-after-slider";
 
@@ -56,7 +56,7 @@ export interface IndustryPageData {
         paragraphs: string[];
         pullQuote: string;
     };
-    painPoints: Array<{ emoji: string; title: string; desc: string }>;
+    painPoints: Array<{ emoji: string; title: string; desc: string; image?: string }>;
     solutions: IndustrySolution[];
     clients: IndustryClient[];
     transformations: IndustryTransformation[];
@@ -128,7 +128,7 @@ const PAIN_COLORS = [
     { c: "#3bc7d6", tint: "rgba(59,199,214,0.12)", border: "rgba(59,199,214,0.18)", label: "Recurring" },
 ];
 
-function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: string; title: string; desc: string }>; accent: string }) {
+function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: string; title: string; desc: string; image?: string }>; accent: string }) {
     // Build a grid regardless of how many pain points there are
     const [p0, p1, p2, p3, p4] = painPoints;
     const col = (i: number) => PAIN_COLORS[i % PAIN_COLORS.length];
@@ -142,31 +142,27 @@ function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: str
                 {p0 && (
                     <motion.div
                         initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0 }}
-                        className="relative rounded-[20px] flex flex-col justify-end overflow-hidden"
-                        style={{
-                            gridColumn: "1 / 8", gridRow: "1 / 3",
-                            padding: "40px",
-                            background: `linear-gradient(160deg, ${col(0).tint}, rgba(91,141,239,0.02) 60%)`,
-                            border: `1px solid ${col(0).border}`,
-                        }}
+                        className="relative rounded-[24px] flex flex-col justify-end overflow-hidden border border-white/10 shadow-2xl p-10 min-h-[500px] group transition-all duration-500 hover:scale-[1.01]"
+                        style={{ gridColumn: "1 / 8", gridRow: "1 / 3" }}
                     >
-                        {/* Watermark globe */}
-                        <div className="absolute top-[-30px] right-[-10px] w-[220px] h-[220px] pointer-events-none"
-                            style={{ color: "rgba(91,141,239,0.07)" }}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" width="100%" height="100%">
-                                <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z" />
-                            </svg>
-                        </div>
+                        {p0.image && (
+                            <div className="absolute inset-0 z-0">
+                                <Image
+                                    src={p0.image}
+                                    alt={p0.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/80 to-[#080d19]/30 transition-opacity duration-500 group-hover:opacity-90" />
+                            </div>
+                        )}
                         <div className="relative z-10">
                             <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
                                 <span style={{ color: "#5d6680" }}>01</span>
-                                <span style={{ color: col(0).c }}>Foundational</span>
+                                <span style={{ color: col(0).c }}>{col(0).label}</span>
                             </div>
-                            <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center mb-5"
-                                style={{ background: "rgba(91,141,239,0.16)", color: col(0).c }}>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={30} height={30}>
-                                    <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3z" />
-                                </svg>
+                            <div className="w-[60px] h-[60px] rounded-2xl flex items-center justify-center mb-5 bg-white/10 border border-white/10 text-white shadow-lg">
+                                <span className="text-3xl">{p0.emoji}</span>
                             </div>
                             <h3 className="text-[27px] font-semibold leading-snug mb-3 max-w-[480px]" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p0.title}</h3>
                             <p className="text-[16px] leading-relaxed max-w-[440px]" style={{ color: "#9aa3b8" }}>{p0.desc}</p>
@@ -174,47 +170,67 @@ function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: str
                     </motion.div>
                 )}
 
-                {/* Card 2 — top-right editorial */}
+                {/* Card 2 — top-right card */}
                 {p1 && (
                     <motion.div
                         initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                        className="flex flex-col pt-[26px]"
-                        style={{ gridColumn: "8 / 13", gridRow: "1 / 2", borderTop: "1px solid #1c2336", paddingLeft: 4, paddingRight: 4 }}
+                        className="relative rounded-[24px] flex flex-col justify-end overflow-hidden border border-white/10 shadow-2xl p-8 min-h-[240px] group transition-all duration-500 hover:scale-[1.01]"
+                        style={{ gridColumn: "8 / 13", gridRow: "1 / 2" }}
                     >
-                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                            <span style={{ color: "#5d6680" }}>02</span>
-                            <span style={{ color: col(1).c }}>Urgent</span>
+                        {p1.image && (
+                            <div className="absolute inset-0 z-0">
+                                <Image
+                                    src={p1.image}
+                                    alt={p1.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/85 to-[#080d19]/35 transition-opacity duration-500 group-hover:opacity-90" />
+                            </div>
+                        )}
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>02</span>
+                                <span style={{ color: col(1).c }}>{col(1).label}</span>
+                            </div>
+                            <div className="w-[44px] h-[44px] rounded-xl flex items-center justify-center mb-4 bg-white/10 border border-white/10 text-white shadow-lg">
+                                <span className="text-xl">{p1.emoji}</span>
+                            </div>
+                            <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p1.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p1.desc}</p>
                         </div>
-                        <div className="w-[38px] h-[38px] rounded-[10px] border border-[#1c2336] flex items-center justify-center mb-4"
-                            style={{ color: col(1).c }}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={20} height={20}>
-                                <path d="M4 5h16v11H8l-4 4z" /><path d="M12 8v3.2M12 14h.01" />
-                            </svg>
-                        </div>
-                        <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p1.title}</h3>
-                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p1.desc}</p>
                     </motion.div>
                 )}
 
-                {/* Card 3 — bottom-right editorial */}
+                {/* Card 3 — bottom-right card */}
                 {p2 && (
                     <motion.div
                         initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.15 }}
-                        className="flex flex-col pt-[26px]"
-                        style={{ gridColumn: "8 / 13", gridRow: "2 / 3", borderTop: "1px solid #1c2336", paddingLeft: 4, paddingRight: 4 }}
+                        className="relative rounded-[24px] flex flex-col justify-end overflow-hidden border border-white/10 shadow-2xl p-8 min-h-[240px] group transition-all duration-500 hover:scale-[1.01]"
+                        style={{ gridColumn: "8 / 13", gridRow: "2 / 3" }}
                     >
-                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                            <span style={{ color: "#5d6680" }}>03</span>
-                            <span style={{ color: col(2).c }}>Systemic</span>
+                        {p2.image && (
+                            <div className="absolute inset-0 z-0">
+                                <Image
+                                    src={p2.image}
+                                    alt={p2.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/85 to-[#080d19]/35 transition-opacity duration-500 group-hover:opacity-90" />
+                            </div>
+                        )}
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>03</span>
+                                <span style={{ color: col(2).c }}>{col(2).label}</span>
+                            </div>
+                            <div className="w-[44px] h-[44px] rounded-xl flex items-center justify-center mb-4 bg-white/10 border border-white/10 text-white shadow-lg">
+                                <span className="text-xl">{p2.emoji}</span>
+                            </div>
+                            <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p2.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p2.desc}</p>
                         </div>
-                        <div className="w-[38px] h-[38px] rounded-[10px] border border-[#1c2336] flex items-center justify-center mb-4"
-                            style={{ color: col(2).c }}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={20} height={20}>
-                                <ellipse cx="12" cy="6" rx="7" ry="3" /><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6" /><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6" />
-                            </svg>
-                        </div>
-                        <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p2.title}</h3>
-                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p2.desc}</p>
                     </motion.div>
                 )}
 
@@ -222,22 +238,31 @@ function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: str
                 {p3 && (
                     <motion.div
                         initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
-                        className="rounded-[20px] flex flex-col p-[30px]"
-                        style={{ gridColumn: "1 / 6", gridRow: "3 / 4", marginTop: -26, background: "#0c1120", border: "1px solid #1c2336" }}
+                        className="relative rounded-[24px] flex flex-col justify-end overflow-hidden border border-white/10 shadow-2xl p-8 min-h-[260px] group transition-all duration-500 hover:scale-[1.01]"
+                        style={{ gridColumn: "1 / 6", gridRow: "3 / 4", marginTop: -26 }}
                     >
-                        <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                            <span style={{ color: "#5d6680" }}>04</span>
-                            <span style={{ color: col(3).c }}>Operational</span>
+                        {p3.image && (
+                            <div className="absolute inset-0 z-0">
+                                <Image
+                                    src={p3.image}
+                                    alt={p3.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/85 to-[#080d19]/35 transition-opacity duration-500 group-hover:opacity-90" />
+                            </div>
+                        )}
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>04</span>
+                                <span style={{ color: col(3).c }}>{col(3).label}</span>
+                            </div>
+                            <div className="w-[44px] h-[44px] rounded-xl flex items-center justify-center mb-5 bg-white/10 border border-white/10 text-white shadow-lg">
+                                <span className="text-xl">{p3.emoji}</span>
+                            </div>
+                            <h3 className="text-[19px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p3.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p3.desc}</p>
                         </div>
-                        <div className="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center mb-5"
-                            style={{ background: col(3).tint, color: col(3).c }}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={22} height={22}>
-                                <path d="M4 7a1.5 1.5 0 0 1 1.5-1.5h4l1.5 2H19a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 18.5H5.5A1.5 1.5 0 0 1 4 17z" />
-                                <path d="M8 11.5h8M8 14.5h5" />
-                            </svg>
-                        </div>
-                        <h3 className="text-[19px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p3.title}</h3>
-                        <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p3.desc}</p>
                     </motion.div>
                 )}
 
@@ -245,25 +270,30 @@ function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: str
                 {p4 && (
                     <motion.div
                         initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.25 }}
-                        className="rounded-[20px] flex flex-row items-center gap-[26px] px-9 py-[30px]"
-                        style={{
-                            gridColumn: "6 / 13", gridRow: "3 / 4",
-                            background: `linear-gradient(100deg, ${col(4).tint}, transparent 70%)`,
-                        }}
+                        className="relative rounded-[24px] flex flex-col justify-end overflow-hidden border border-white/10 shadow-2xl p-8 min-h-[260px] group transition-all duration-500 hover:scale-[1.01]"
+                        style={{ gridColumn: "6 / 13", gridRow: "3 / 4", marginTop: -26 }}
                     >
-                        <div className="shrink-0 w-[52px] h-[52px] rounded-[14px] flex items-center justify-center"
-                            style={{ background: col(4).tint, color: col(4).c }}>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width={24} height={24}>
-                                <circle cx="12" cy="13" r="8" /><path d="M12 9v4l3 2" /><path d="M9 2h6" />
-                            </svg>
-                        </div>
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-2 mb-1.5" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                                <span style={{ color: "#5d6680" }}>05</span>
-                                <span style={{ color: col(4).c }}>Recurring</span>
+                        {p4.image && (
+                            <div className="absolute inset-0 z-0">
+                                <Image
+                                    src={p4.image}
+                                    alt={p4.title}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/85 to-[#080d19]/35 transition-opacity duration-500 group-hover:opacity-90" />
                             </div>
-                            <h3 className="text-[19px] font-semibold mb-1.5 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p4.title}</h3>
-                            <p className="text-[13.5px] leading-relaxed max-w-[420px]" style={{ color: "#9aa3b8" }}>{p4.desc}</p>
+                        )}
+                        <div className="relative z-10 flex flex-col">
+                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                <span style={{ color: "#5d6680" }}>05</span>
+                                <span style={{ color: col(4).c }}>{col(4).label}</span>
+                            </div>
+                            <div className="w-[44px] h-[44px] rounded-xl flex items-center justify-center mb-5 bg-white/10 border border-white/10 text-white shadow-lg">
+                                <span className="text-xl">{p4.emoji}</span>
+                            </div>
+                            <h3 className="text-[19px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p4.title}</h3>
+                            <p className="text-[13.5px] leading-relaxed max-w-[560px]" style={{ color: "#9aa3b8" }}>{p4.desc}</p>
                         </div>
                     </motion.div>
                 )}
@@ -276,19 +306,31 @@ function PainPointBento({ painPoints, accent }: { painPoints: Array<{ emoji: str
                     return (
                         <motion.div key={p.title}
                             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                            className="rounded-[20px] p-7 flex flex-col"
+                            className="relative rounded-[20px] p-7 flex flex-col overflow-hidden min-h-[240px] justify-end"
                             style={{ background: "#0c1120", border: "1px solid #1c2336" }}
                         >
-                            <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-                                <span style={{ color: "#5d6680" }}>{String(i + 1).padStart(2, "0")}</span>
-                                <span style={{ color: clr.c }}>{clr.label}</span>
+                            {p.image && (
+                                <div className="absolute inset-0 z-0">
+                                    <Image
+                                        src={p.image}
+                                        alt={p.title}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#080d19] via-[#080d19]/85 to-[#080d19]/40" />
+                                </div>
+                            )}
+                            <div className="relative z-10">
+                                <div className="flex items-center gap-2 mb-4" style={{ fontFamily: "var(--font-mono, monospace)", fontSize: 11, fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+                                    <span style={{ color: "#5d6680" }}>{String(i + 1).padStart(2, "0")}</span>
+                                    <span style={{ color: clr.c }}>{clr.label}</span>
+                                </div>
+                                <div className="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center mb-4 bg-white/10 border border-white/10 text-white shadow-lg">
+                                    <span className="text-xl">{p.emoji}</span>
+                                </div>
+                                <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p.title}</h3>
+                                <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p.desc}</p>
                             </div>
-                            <div className="w-[44px] h-[44px] rounded-[12px] flex items-center justify-center mb-4"
-                                style={{ background: clr.tint, color: clr.c }}>
-                                <span className="text-xl">{p.emoji}</span>
-                            </div>
-                            <h3 className="text-[18px] font-semibold mb-2 leading-snug" style={{ fontFamily: "var(--font-syne)", color: "#f3f5f9" }}>{p.title}</h3>
-                            <p className="text-[13.5px] leading-relaxed" style={{ color: "#9aa3b8" }}>{p.desc}</p>
                         </motion.div>
                     );
                 })}
@@ -473,63 +515,94 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
             <SiteHeader />
 
             {/* ══ HERO ══════════════════════════════════════════════════════ */}
-            <section ref={heroRef} className="relative min-h-[80vh] flex items-end overflow-hidden">
-                <motion.div style={{ y: heroImgY }} className="absolute inset-0 z-0">
-                    <Image src={data.heroImage} alt={data.eyebrow} fill className="object-cover" priority />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#060d1f] via-[#060d1f]/65 to-[#060d1f]/15" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#060d1f]/60 to-transparent" />
-                </motion.div>
+            <section ref={heroRef} className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#060a13] pt-32 pb-20">
+                {/* Decorative background grid and glow */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+                <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full blur-[130px] opacity-40 pointer-events-none"
+                    style={{ background: `radial-gradient(circle, ${ac}40, transparent 70%)` }} />
+                <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[350px] h-[350px] rounded-full blur-[100px] opacity-15 pointer-events-none bg-indigo-500/20" />
 
-                <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full pb-20 pt-40">
-                    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                        <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: ac }} />
-                        <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
-                            Industry — {data.eyebrow}
-                        </span>
-                    </motion.div>
+                <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    
+                    {/* Left Column: Content */}
+                    <div className="lg:col-span-7 flex flex-col justify-center">
+                        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                            className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm self-start">
+                            <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: ac }} />
+                            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+                                Industry Vertical — {data.eyebrow}
+                            </span>
+                        </motion.div>
 
-                    <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                        className="text-[clamp(2.5rem,6vw,5rem)] font-bold leading-[1.05] text-white mb-6"
-                        style={{ fontFamily: "var(--font-syne)" }}>
-                        {data.headline.map((line, i) =>
-                            i === data.headline.length - 1
-                                ? <span key={i} className="heading-gradient block">{line}</span>
-                                : <span key={i} className="block">{line}</span>
-                        )}
-                    </motion.h1>
+                        <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                            className="text-[clamp(2.5rem,5.5vw,4.5rem)] font-black leading-[1.05] text-white mb-6 uppercase tracking-tight"
+                            style={{ fontFamily: "var(--font-syne)" }}>
+                            {data.headline.map((line, i) =>
+                                i === data.headline.length - 1
+                                    ? <span key={i} className="heading-gradient block">{line}</span>
+                                    : <span key={i} className="block">{line}</span>
+                            )}
+                        </motion.h1>
 
-                    <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                        className="text-[#94a3b8] text-lg max-w-xl leading-relaxed mb-10">
-                        {data.heroSub}
-                    </motion.p>
+                        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                            className="text-[#94a3b8] text-base md:text-lg max-w-xl leading-relaxed mb-10 font-medium">
+                            {data.heroSub}
+                        </motion.p>
 
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                        className="flex flex-wrap gap-4">
-                        <WhatsAppCTA message={data.ctaMessage} text="Book a free audit" />
-                        <Link href="#solutions"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/10 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] transition-all">
-                            See our solutions <ArrowRight size={14} />
-                        </Link>
-                    </motion.div>
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                            className="flex flex-wrap gap-4 mb-12">
+                            <WhatsAppCTA message={data.ctaMessage} text="Book a free audit" />
+                            <Link href="#solutions"
+                                className="inline-flex items-center gap-2 px-6 py-4 rounded-xl border border-white/10 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/[0.08] transition-all">
+                                See our solutions <ArrowRight size={14} />
+                            </Link>
+                        </motion.div>
+                    </div>
+
+                    {/* Right Column: Hero Image Showcase in Premium Card mockups */}
+                    <div className="lg:col-span-5 relative w-full flex justify-center">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            transition={{ type: "spring", stiffness: 60, damping: 15, delay: 0.25 }}
+                            className="relative w-full max-w-[480px] aspect-[4/3] sm:aspect-[16/11] rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-3 shadow-2xl shadow-black/80"
+                        >
+                            {/* Inner image container */}
+                            <div className="relative w-full h-full rounded-[1.5rem] overflow-hidden group">
+                                <Image
+                                    src={data.heroImage}
+                                    alt={data.eyebrow}
+                                    fill
+                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                    priority
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                            </div>
+                            {/* Floating decorative elements */}
+                            <div className="absolute -bottom-6 -left-6 bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl flex items-center gap-3">
+                                <div className="w-3 h-3 rounded-full animate-ping" style={{ background: ac }} />
+                                <span className="text-[11px] font-bold text-white uppercase tracking-wider">Live System Active</span>
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
             </section>
 
             {/* ══ HERO STATS STRIP ══════════════════════════════════════════ */}
-            <section ref={statsRef} className="py-10 border-y border-[#E5E7EB] bg-[#F8FAFB]">
-                <div className="max-w-5xl mx-auto px-6 lg:px-12 flex flex-wrap justify-center gap-10 lg:gap-16">
+            <section ref={statsRef} className="py-12 border-y border-slate-200/60 bg-slate-50 relative z-10">
+                <div className="max-w-6xl mx-auto px-6 lg:px-12 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 justify-center">
                     {data.heroStats.map((st, i) => {
                         const isNumeric = /^\d/.test(st.value);
                         const displayVal = isNumeric && i < 2
                             ? st.value.replace(/\d+/, String(counterValues[i]))
                             : st.value;
                         return (
-                            <div key={st.label} className="text-center">
-                                <div className="text-3xl font-bold mb-1"
+                            <div key={st.label} className="text-center flex flex-col items-center justify-center">
+                                <div className="text-4xl md:text-5xl font-black mb-2 leading-none"
                                     style={{ fontFamily: "var(--font-syne)", color: ac }}>
                                     {displayVal}
                                 </div>
-                                <div className="text-xs text-[#6B7280] font-medium">{st.label}</div>
+                                <div className="text-xs md:text-sm text-[#475569] font-bold uppercase tracking-wider">{st.label}</div>
                             </div>
                         );
                     })}
@@ -537,27 +610,26 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
             </section>
 
             {/* ══ CONTEXT CHAPTER ══════════════════════════════════════════ */}
-            <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28
-        grid lg:grid-cols-[260px_1fr] gap-16 border-b border-[#E5E7EB]">
+            <section className="max-w-7xl mx-auto px-6 lg:px-12 py-24 lg:py-32
+        grid lg:grid-cols-[280px_1fr] gap-16 border-b border-slate-200">
                 <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-[#9CA3AF] mb-2">
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#94a3b8] mb-3">
                         Chapter 01
                     </p>
-                    <p className="text-3xl font-bold text-[#111827] leading-tight"
+                    <p className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight uppercase"
                         style={{ fontFamily: "var(--font-syne)" }}>
                         {data.contextChapter.label}
                     </p>
                 </div>
                 <div>
                     {data.contextChapter.paragraphs.map((p, i) => (
-                        <p key={i} className="text-[17px] text-[#4B5563] leading-relaxed font-light mb-5"
+                        <p key={i} className="text-lg text-slate-600 leading-relaxed font-normal mb-6"
                             dangerouslySetInnerHTML={{ __html: p }} />
                     ))}
                     {/* Pull quote */}
-                    <div className="relative my-10 bg-[#060d1f] rounded-2xl px-10 py-9 overflow-hidden">
-                        <div className="absolute top-0 left-4 text-[120px] leading-none font-serif pointer-events-none select-none"
-                            style={{ color: ac, opacity: 0.35 }}>&ldquo;</div>
-                        <p className="relative text-2xl font-light italic text-white leading-snug">
+                    <div className="relative my-10 bg-[#060a13] rounded-3xl px-10 py-8 overflow-hidden shadow-xl border border-white/5">
+                        <div className="absolute top-0 left-4 text-[120px] leading-none font-serif pointer-events-none select-none text-[#0ea5e9]/10">&ldquo;</div>
+                        <p className="relative z-10 text-xl md:text-2xl font-semibold italic text-white leading-snug">
                             {data.contextChapter.pullQuote}
                         </p>
                     </div>
@@ -934,7 +1006,7 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
                 </div>
             </section>
 
-            <SiteFooter />
+            <Footer />
         </main>
     );
 }
