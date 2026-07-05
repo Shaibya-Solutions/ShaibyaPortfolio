@@ -100,6 +100,8 @@ export const testimonials = [
 
 export const nav = [
   { href: "/about", label: "About Us" },
+  { href: "/careers", label: "Careers" },
+  { href: "/community", label: "Community" },
   {
     href: "#",
     label: "Services",
@@ -122,7 +124,6 @@ export const nav = [
       { href: "/portfolio/rnd", label: "R&D / MVPs", icon: FaRobot }
     ]
   },
-  { href: "/careers", label: "Careers" },
   { href: "/contact", label: "Contact" }
 ];
 
