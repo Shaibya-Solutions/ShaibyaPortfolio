@@ -174,6 +174,7 @@ export function Footer() {
                 paddingLeft: "0.06em",
                 paddingRight: "0.06em",
                 overflow: "visible",
+                filter: "drop-shadow(0 0 18px rgba(14, 165, 233, 0.55)) drop-shadow(0 0 40px rgba(14, 165, 233, 0.25))",
               }}
             >
               SHAIBYA

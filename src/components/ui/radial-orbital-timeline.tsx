@@ -30,7 +30,7 @@ export default function RadialOrbitalTimeline({
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
   const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
 
@@ -117,100 +117,75 @@ export default function RadialOrbitalTimeline({
     setClickedNodeId(id);
   };
 
-  // Determine theme flags based on active step bg color
-  const isStep1 = activeStepId === 1;
-  const isStep2 = activeStepId === 2;
-  const isStep3 = activeStepId === 3;
-  const isStep4 = activeStepId === 4;
+  // Determine theme based on the background of the current slide
+  // Step 1,4 → blue bg  |  Step 2,5 → light bg  |  Step 3,6 → dark navy bg
+  const isLightBg = activeStepId === 2 || activeStepId === 5;
+  const isDarkNavy = activeStepId === 3 || activeStepId === 6;
+  const isBlueBg = activeStepId === 1 || activeStepId === 4;
 
-  // 1. Orbit ring boundary colors (thickened to border-2)
-  const orbitBorderColor = isStep1
-    ? 'rgba(255, 255, 255, 0.4)'          // White ring for blue bg
-    : isStep2
-    ? 'rgba(255, 255, 255, 0.25)'         // Light white ring for navy bg
-    : isStep3
-    ? 'rgba(2, 38, 72, 0.3)'             // Dark blue ring for white bg
-    : 'rgba(14, 165, 233, 0.3)';          // Sky blue ring for step 4
+  const orbitBorderColor = isLightBg
+    ? 'rgba(14, 165, 233, 0.35)'
+    : isDarkNavy
+      ? 'rgba(56, 189, 248, 0.3)'
+      : 'rgba(255, 255, 255, 0.4)';
 
-  // 2. Central sphere styles
-  const centerSphereBg = isStep1
-    ? 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/30'
-    : isStep2
-    ? 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/20'
-    : isStep3
-    ? 'bg-gradient-to-br from-[#022648] via-[#0b3b60] to-[#0f4d7a] shadow-xl shadow-[#022648]/25'
-    : 'bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 shadow-xl shadow-sky-500/30';
+  const centerSphereBg = isLightBg
+    ? 'bg-gradient-to-br from-[#0ea5e9] via-sky-400 to-blue-500 shadow-xl shadow-sky-400/30'
+    : isDarkNavy
+      ? 'bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 shadow-xl shadow-sky-500/30'
+      : 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/30';
 
-  const centerSphereInnerBg = isStep1 
-    ? 'bg-white border-slate-200' 
-    : isStep2
-    ? 'bg-white border-slate-200'
-    : isStep3 
-    ? 'bg-white border-slate-300' 
-    : 'bg-[#111827] border-sky-400/30';
+  const centerSphereInnerBg = isLightBg
+    ? 'bg-white border-sky-200'
+    : isDarkNavy
+      ? 'bg-[#111827] border-sky-400/30'
+      : 'bg-white border-slate-200';
 
-  const centerPingColor = isStep1 
-    ? 'border-white/40' 
-    : isStep2
-    ? 'border-white/30'
-    : isStep3 
-    ? 'border-[#022648]/35' 
-    : 'border-sky-300/30';
+  const centerPingColor = isLightBg
+    ? 'border-sky-400/40'
+    : isDarkNavy
+      ? 'border-sky-300/30'
+      : 'border-white/40';
 
-  // 3. Node Circle Styling (w-14 h-14 with bold dynamic borders)
-  const inactiveNodeClass = isStep1
-    ? 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40'
-    : isStep2
-    ? 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/25'
-    : isStep3
-    ? 'bg-[#022648]/5 text-[#022648] border-[#022648]/30 hover:bg-[#022648]/12 hover:border-[#022648]/80'
-    : 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20';
+  const inactiveNodeClass = isLightBg
+    ? 'bg-white text-[#0ea5e9] border-[#0ea5e9]/30 hover:bg-sky-50 hover:border-[#0ea5e9]/60'
+    : isDarkNavy
+      ? 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20'
+      : 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40';
 
-  const activeNodeClass = isStep1
-    ? 'bg-white text-[#0ea5e9] border-white shadow-xl shadow-white/60 scale-125 font-bold'
-    : isStep2
-    ? 'bg-white text-[#022648] border-white shadow-xl scale-125 font-bold'
-    : isStep3
-    ? 'bg-[#022648] text-white border-[#022648] shadow-xl shadow-[#022648]/30 scale-125 font-bold'
-    : 'bg-sky-500 text-white border-sky-400 shadow-xl shadow-sky-500/50 scale-125 font-bold';
+  const activeNodeClass = isLightBg
+    ? 'bg-[#0ea5e9] text-white border-[#0ea5e9] shadow-xl shadow-sky-400/40 scale-125 font-bold'
+    : isDarkNavy
+      ? 'bg-sky-500 text-white border-sky-400 shadow-xl shadow-sky-500/50 scale-125 font-bold'
+      : 'bg-white text-[#0ea5e9] border-white shadow-xl shadow-white/60 scale-125 font-bold';
 
-  const relatedNodeClass = isStep1
-    ? 'bg-white/20 text-white border-white/50'
-    : isStep2
-    ? 'bg-white/15 text-white border-white/40'
-    : isStep3
-    ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] border-[#0ea5e9]/50'
-    : 'bg-sky-900/60 text-sky-400 border-sky-500/50';
+  const relatedNodeClass = isLightBg
+    ? 'bg-sky-50 text-[#0ea5e9] border-[#0ea5e9]/50'
+    : isDarkNavy
+      ? 'bg-sky-900/60 text-sky-400 border-sky-500/50'
+      : 'bg-white/20 text-white border-white/50';
 
-  // 4. Glow properties
-  const nodeEnergyGlow = isStep1
-    ? 'rgba(255, 255, 255, 0.4)'         // White glow for Step 1
-    : isStep2
-    ? 'rgba(255, 255, 255, 0.3)'         // White glow for Step 2
-    : isStep3
-    ? 'rgba(2, 38, 72, 0.3)'             // Dark blue glow for Step 3
-    : 'rgba(14, 165, 233, 0.4)';          // Sky blue glow for Step 4
+  const nodeEnergyGlow = isLightBg
+    ? 'rgba(14, 165, 233, 0.25)'
+    : isDarkNavy
+      ? 'rgba(56, 189, 248, 0.35)'
+      : 'rgba(255, 255, 255, 0.4)';
 
-  const backdropGlowClass = isStep1
-    ? 'bg-white/10'
-    : isStep2
-    ? 'bg-white/5'
-    : isStep3
-    ? 'bg-[#0ea5e9]/6'
-    : 'bg-sky-500/15';
+  const backdropGlowClass = isLightBg
+    ? 'bg-sky-400/10'
+    : isDarkNavy
+      ? 'bg-sky-500/15'
+      : 'bg-white/10';
 
-  // 5. Node label text color
   const getLabelColor = (isActive: boolean) => {
-    if (isStep1) {
-      return isActive ? 'text-white font-bold scale-110' : 'text-white/60';
+    if (isLightBg) {
+      return isActive ? 'text-[#0ea5e9] font-bold scale-110' : 'text-slate-500';
     }
-    if (isStep2) {
+    if (isDarkNavy) {
       return isActive ? 'text-white font-bold scale-110' : 'text-white/50';
     }
-    if (isStep3) {
-      return isActive ? 'text-[#022648] font-extrabold scale-110' : 'text-slate-600 font-semibold';
-    }
-    return isActive ? 'text-white font-bold scale-110' : 'text-white/50';
+    // blue bg
+    return isActive ? 'text-white font-bold scale-110' : 'text-white/60';
   };
 
   return (
@@ -283,8 +258,8 @@ export default function RadialOrbitalTimeline({
                     ${isActive
                       ? activeNodeClass
                       : isRelated
-                      ? relatedNodeClass + ' animate-pulse'
-                      : inactiveNodeClass
+                        ? relatedNodeClass + ' animate-pulse'
+                        : inactiveNodeClass
                     }
                   `}
                 >

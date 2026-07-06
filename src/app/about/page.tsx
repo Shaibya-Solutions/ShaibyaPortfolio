@@ -139,6 +139,10 @@ export default function AboutPage() {
   const globeOpacity = useTransform(stickyScrollProgress, [0.42, 0.75], [0, 1]);
   const globeScale = useTransform(stickyScrollProgress, [0.42, 0.75], [0.35, 1]);
 
+  // Title + label slide up as boxes spread apart, clearing room for the globe
+  const titleY = useTransform(stickyScrollProgress, [0.25, 0.70], ["0px", "-120px"]);
+  const titleOpacity = useTransform(stickyScrollProgress, [0.25, 0.65], [1, 0]);
+
   return (
     <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
@@ -152,8 +156,8 @@ export default function AboutPage() {
         >
           {/* Sticky wrapper filling one viewport height */}
           <div
-            className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden"
-            style={{ paddingTop: "76px" }}
+            className="sticky top-0 h-screen w-full flex flex-col items-center justify-start overflow-hidden"
+            style={{ paddingTop: "clamp(180px, 22vh, 260px)" }}
           >
             {/* Dot grid background */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] bg-[size:20px_20px]" />
@@ -161,29 +165,35 @@ export default function AboutPage() {
             {/* Globe: absolutely centered in the background of the sticky wrapper */}
             <motion.div
               style={{ opacity: globeOpacity, scale: globeScale }}
-              className="absolute inset-0 m-auto w-[600px] h-[600px] pointer-events-none z-10 flex items-center justify-center translate-y-12 [filter:drop-shadow(0_0_35px_rgba(14,165,233,0.7))]"
+              className="absolute inset-0 m-auto w-[600px] h-[600px] pointer-events-none z-10 flex items-center justify-center translate-y-12 [filter:drop-shadow(0_0_60px_rgba(236,72,153,0.8))]"
             >
               <Earth isLightBg={true} />
             </motion.div>
 
             <div className="relative z-20 flex flex-col items-center w-full text-center px-8 select-none">
-              {/* Category */}
-              <p className="text-xs font-bold uppercase tracking-[0.22em] mb-3 text-pink-600">
-                Our Story
-              </p>
-
-              {/* Title */}
-              <h1
-                className="text-4xl sm:text-5xl md:text-7xl font-black bg-gradient-to-b from-slate-900 to-slate-700 bg-clip-text text-transparent leading-none tracking-tighter uppercase mb-6"
-                style={{ fontFamily: "'Proxima Nova', sans-serif" }}
+              {/* Category + Title: slide up and fade out as boxes spread */}
+              <motion.div
+                style={{ y: titleY, opacity: titleOpacity }}
+                className="flex flex-col items-center"
               >
-                Empowering the Future
-              </h1>
+                {/* Category */}
+                <p className="text-xs font-bold uppercase tracking-[0.22em] mb-3 text-[#0ea5e9]">
+                  Our Story
+                </p>
+
+                {/* Title */}
+                <h1
+                  className="text-4xl sm:text-5xl md:text-7xl font-black bg-gradient-to-b from-slate-900 to-slate-700 bg-clip-text text-transparent leading-none tracking-tighter uppercase mb-6"
+                  style={{ fontFamily: "'Proxima Nova', sans-serif" }}
+                >
+                  Empowering the Future
+                </h1>
+              </motion.div>
 
               {/* Stage for split animation */}
               <div
                 className="relative w-full flex items-center justify-center gap-8"
-                style={{ height: "460px" }}
+                style={{ height: "300px" }}
               >
                 {/* Left column (slides left) */}
                 <motion.div
@@ -191,13 +201,13 @@ export default function AboutPage() {
                   className="w-[320px] flex flex-col gap-5 text-left shrink-0"
                 >
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Global Outreach</h3>
+                    <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">Global Outreach</h3>
                     <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
                       From Nagpur to Noida to Texas - software and automation for businesses worldwide.
                     </p>
                   </div>
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">AI &amp; Automation</h3>
+                    <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">AI &amp; Automation</h3>
                     <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
                       Replacing manual registers with intelligent CRM and WhatsApp automation engines.
                     </p>
@@ -210,13 +220,13 @@ export default function AboutPage() {
                   className="w-[320px] flex flex-col gap-5 text-left shrink-0"
                 >
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Systems First</h3>
+                    <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">Systems First</h3>
                     <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
                       Complete digital backbones that optimize operations and scale workflows end-to-end.
                     </p>
                   </div>
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                    <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wide">Robust Quality</h3>
+                    <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">Robust Quality</h3>
                     <p className="text-slate-600 text-sm leading-relaxed mt-2 font-medium">
                       High-performance architectures, fast load speeds, and bulletproof security - built-in.
                     </p>
@@ -225,7 +235,7 @@ export default function AboutPage() {
               </div>
 
               {/* Subtitle */}
-              <p className="text-xl font-extrabold text-pink-600 italic mt-6">
+              <p className="text-xl font-extrabold text-[#0ea5e9] italic mt-16">
                 "One Solution at a Time."
               </p>
             </div>
@@ -242,7 +252,7 @@ export default function AboutPage() {
 
           <div className="relative z-10 flex flex-col items-center max-w-7xl mx-auto px-6 w-full text-center">
             {/* Label */}
-            <p className="text-xs font-bold uppercase tracking-[0.22em] mb-6 text-pink-600">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] mb-6 text-[#0ea5e9]">
               Our Story
             </p>
 
@@ -262,28 +272,28 @@ export default function AboutPage() {
             {/* Stacking Highlights Grid for Mobile */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl my-8 text-left">
               <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Global Outreach</h3>
+                <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wider mb-2">Global Outreach</h3>
                 <p className="text-slate-600 text-sm font-semibold leading-relaxed">
                   From Nagpur to Noida to Texas - we build software and automation for businesses worldwide.
                 </p>
               </div>
 
               <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">AI &amp; Automation</h3>
+                <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wider mb-2">AI &amp; Automation</h3>
                 <p className="text-slate-600 text-sm font-semibold leading-relaxed">
                   Replacing manual registers with CRM systems and intelligent WhatsApp automated engines.
                 </p>
               </div>
 
               <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Systems First</h3>
+                <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wider mb-2">Systems First</h3>
                 <p className="text-slate-600 text-sm font-semibold leading-relaxed">
                   We build complete digital backbones that optimize and scale operational workflows.
                 </p>
               </div>
 
               <div className="p-6 border border-sky-300/80 rounded-2xl bg-white/95 shadow-md hover:shadow-lg hover:shadow-sky-500/5">
-                <h3 className="text-2xl font-black text-pink-600 uppercase tracking-wider mb-2">Robust Quality</h3>
+                <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wider mb-2">Robust Quality</h3>
                 <p className="text-slate-600 text-sm font-semibold leading-relaxed">
                   Fast page speeds, high-performance architectures, and bulletproof security integrated natively.
                 </p>
@@ -291,7 +301,7 @@ export default function AboutPage() {
             </div>
 
             {/* Subtitle */}
-            <p className="text-2xl md:text-3xl font-extrabold text-pink-600 italic mb-8 leading-relaxed">
+            <p className="text-2xl md:text-3xl font-extrabold text-[#0ea5e9] italic mb-8 leading-relaxed">
               "One Solution at a Time."
             </p>
 

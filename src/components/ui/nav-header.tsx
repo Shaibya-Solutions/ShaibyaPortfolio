@@ -44,10 +44,10 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
 
   // Dynamic scaling: 1.0 → 0.92 (gentle shrink)
   const navScale = 1 - scrollProgress * 0.08;
-  // Dynamic logo height: h-20 (80px) → h-15 (60px)
-  const logoHeight = 80 - scrollProgress * 20;
-  // Dynamic pill padding: p-2.5 (10px) → p-1.5 (6px)
-  const pillPadding = 10 - scrollProgress * 4;
+  // Dynamic logo height: 140px → 90px
+  const logoHeight = 140 - scrollProgress * 50;
+  // Dynamic pill padding: 12px → 6px
+  const pillPadding = 12 - scrollProgress * 6;
 
   return (
     <div
@@ -123,7 +123,7 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
         <li className="relative z-10 px-6 md:px-10 flex items-center shrink-0">
           <Link href="/" aria-label="Shaibya Solutions Home">
             <Image
-              src="/images/Screenshot 2026-07-05 011613.png"
+              src="/shaibya-logo-nav.png"
               alt="Shaibya Solutions"
               width={240}
               height={88}
@@ -182,8 +182,6 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
         <Cursor
           position={position}
           scrollProgress={scrollProgress}
-          logoHeight={logoHeight}
-          pillPadding={pillPadding}
         />
       </motion.ul>
     </div>
@@ -211,11 +209,11 @@ const Tab = ({
 }) => {
   const ref = useRef<HTMLLIElement>(null);
 
-  // Dynamic text sizing: text-base (16px) → ~14.5px
-  const fontSize = 16 - scrollProgress * 1.5;
-  // Dynamic padding: px-8 py-4 → px-6 py-3
-  const paddingX = 32 - scrollProgress * 8;
-  const paddingY = 16 - scrollProgress * 4;
+  // Dynamic text sizing: 20px → 15px
+  const fontSize = 20 - scrollProgress * 5;
+  // Dynamic padding: px-6 py-5 → px-4 py-3
+  const paddingX = 22 - scrollProgress * 6;
+  const paddingY = 20 - scrollProgress * 8;
 
   return (
     <li
@@ -230,9 +228,8 @@ const Tab = ({
     >
       <Link
         href={href}
-        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap transition-colors duration-200 ${
-          isActive ? "text-white" : "text-black"
-        }`}
+        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap transition-colors duration-200 ${isActive ? "text-white" : "text-black"
+          }`}
         style={{
           fontSize: `${fontSize}px`,
           paddingLeft: `${paddingX}px`,
@@ -248,9 +245,8 @@ const Tab = ({
             width="12"
             height="12"
             viewBox="0 0 10 10"
-            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${
-              isActive ? "text-white" : "text-black"
-            }`}
+            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${isActive ? "text-white" : "text-black"
+              }`}
           >
             <path d="M2 4L5 7L8 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -287,16 +283,14 @@ const Tab = ({
 const Cursor = ({
   position,
   scrollProgress = 0,
-  logoHeight = 80,
-  pillPadding = 10,
 }: {
   position: { left: number; width: number; opacity: number };
   scrollProgress?: number;
-  logoHeight?: number;
-  pillPadding?: number;
 }) => {
-  const cursorHeight = 64 - scrollProgress * 24;
-  const cursorTop = (logoHeight + pillPadding * 2 - cursorHeight) / 2;
+  // Match exactly the tab content height: paddingY*2 + fontSize
+  const paddingY = 20 - scrollProgress * 8;
+  const fontSize = 20 - scrollProgress * 5;
+  const cursorHeight = paddingY * 2 + fontSize;
 
   return (
     <motion.li
@@ -305,9 +299,10 @@ const Cursor = ({
       className="absolute z-0 rounded-full pointer-events-none"
       style={{
         height: `${cursorHeight}px`,
-        top: `${cursorTop}px`,
+        top: "50%",
+        transform: "translateY(-50%)",
         background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
-        transition: "height 0.15s ease-out, top 0.15s ease-out",
+        transition: "height 0.15s ease-out",
       }}
     />
   );

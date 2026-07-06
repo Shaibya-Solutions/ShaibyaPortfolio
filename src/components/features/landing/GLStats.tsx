@@ -105,10 +105,10 @@ export default function GLStats() {
             <div className="marquee-track py-4">
               {collaborators.map((name, i) => (
                 <div key={`${name}-${i}`} className="flex items-center gap-10 px-8">
-                  <span className="text-3xl sm:text-5xl font-black text-[#db2777] whitespace-nowrap hover:text-[#db2777]/80 transition-colors duration-300 cursor-default tracking-tight">
+                  <span className="text-xl sm:text-2xl font-bold text-[#94a3b8] whitespace-nowrap hover:text-[#64748b] transition-colors duration-300 cursor-default tracking-tight">
                     {name}
                   </span>
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#db2777]/30 shrink-0" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#94a3b8]/40 shrink-0" />
                 </div>
               ))}
             </div>

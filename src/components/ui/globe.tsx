@@ -8,42 +8,42 @@ import { useEffect, useRef } from 'react';
    Each entry: [[lngStart, lngEnd], …]
    ───────────────────────────────────────────────────────── */
 const LAND: [number, number][][] = [
-  /* 87.5°N */ [[-100,-60],[40,180]],
-  /* 82.5°N */ [[-130,-55],[20,180]],
-  /* 77.5°N */ [[-170,-55],[15,180]],
-  /* 72.5°N */ [[-170,-55],[10,180]],
-  /* 67.5°N */ [[-170,-55],[-5,180]],
-  /* 62.5°N */ [[-170,-55],[-10,50],[55,180]],
-  /* 57.5°N */ [[-140,-52],[-10,50],[55,180]],
-  /* 52.5°N */ [[-135,-52],[-10,145]],
-  /* 47.5°N */ [[-130,-52],[-10,145]],
-  /* 42.5°N */ [[-125,-65],[-10,145]],
-  /* 37.5°N */ [[-125,-75],[-10,145]],
-  /* 32.5°N */ [[-120,-78],[-5,130]],
-  /* 27.5°N */ [[-115,-80],[25,125]],
-  /* 22.5°N */ [[-110,-80],[-17,55],[68,120]],
-  /* 17.5°N */ [[-105,-85],[-17,50],[72,115]],
-  /* 12.5°N */ [[-87,-83],[-17,50],[75,125]],
-  /*  7.5°N */ [[-83,-77],[-12,45],[78,130]],
-  /*  2.5°N */ [[-80,-77],[-8,42],[95,140]],
-  /*  2.5°S */ [[-80,-75],[-8,42],[98,140]],
-  /*  7.5°S */ [[-78,-35],[-8,42],[100,140]],
-  /* 12.5°S */ [[-77,-35],[10,45],[115,150]],
-  /* 17.5°S */ [[-75,-40],[12,42],[120,148]],
-  /* 22.5°S */ [[-70,-40],[14,38],[115,155]],
-  /* 27.5°S */ [[-60,-45],[16,35],[114,155]],
-  /* 32.5°S */ [[-72,-50],[17,33],[115,153]],
-  /* 37.5°S */ [[-73,-60],[18,28],[140,150]],
-  /* 42.5°S */ [[-75,-63],[145,148]],
-  /* 47.5°S */ [[-76,-65]],
-  /* 52.5°S */ [[-75,-68]],
-  /* 57.5°S */ [[-70,-65]],
-  /* 62.5°S */ [],
-  /* 67.5°S */ [[-65,-55],[60,70],[100,170]],
-  /* 72.5°S */ [[-70,-55],[40,170]],
-  /* 77.5°S */ [[-130,170]],
-  /* 82.5°S */ [[-180,180]],
-  /* 87.5°S */ [[-180,180]],
+  /* 87.5°N */[[-100, -60], [40, 180]],
+  /* 82.5°N */[[-130, -55], [20, 180]],
+  /* 77.5°N */[[-170, -55], [15, 180]],
+  /* 72.5°N */[[-170, -55], [10, 180]],
+  /* 67.5°N */[[-170, -55], [-5, 180]],
+  /* 62.5°N */[[-170, -55], [-10, 50], [55, 180]],
+  /* 57.5°N */[[-140, -52], [-10, 50], [55, 180]],
+  /* 52.5°N */[[-135, -52], [-10, 145]],
+  /* 47.5°N */[[-130, -52], [-10, 145]],
+  /* 42.5°N */[[-125, -65], [-10, 145]],
+  /* 37.5°N */[[-125, -75], [-10, 145]],
+  /* 32.5°N */[[-120, -78], [-5, 130]],
+  /* 27.5°N */[[-115, -80], [25, 125]],
+  /* 22.5°N */[[-110, -80], [-17, 55], [68, 120]],
+  /* 17.5°N */[[-105, -85], [-17, 50], [72, 115]],
+  /* 12.5°N */[[-87, -83], [-17, 50], [75, 125]],
+  /*  7.5°N */[[-83, -77], [-12, 45], [78, 130]],
+  /*  2.5°N */[[-80, -77], [-8, 42], [95, 140]],
+  /*  2.5°S */[[-80, -75], [-8, 42], [98, 140]],
+  /*  7.5°S */[[-78, -35], [-8, 42], [100, 140]],
+  /* 12.5°S */[[-77, -35], [10, 45], [115, 150]],
+  /* 17.5°S */[[-75, -40], [12, 42], [120, 148]],
+  /* 22.5°S */[[-70, -40], [14, 38], [115, 155]],
+  /* 27.5°S */[[-60, -45], [16, 35], [114, 155]],
+  /* 32.5°S */[[-72, -50], [17, 33], [115, 153]],
+  /* 37.5°S */[[-73, -60], [18, 28], [140, 150]],
+  /* 42.5°S */[[-75, -63], [145, 148]],
+  /* 47.5°S */[[-76, -65]],
+  /* 52.5°S */[[-75, -68]],
+  /* 57.5°S */[[-70, -65]],
+  /* 62.5°S */[],
+  /* 67.5°S */[[-65, -55], [60, 70], [100, 170]],
+  /* 72.5°S */[[-70, -55], [40, 170]],
+  /* 77.5°S */[[-130, 170]],
+  /* 82.5°S */[[-180, 180]],
+  /* 87.5°S */[[-180, 180]],
 ];
 
 function isLand(lat: number, lng: number): boolean {
@@ -96,12 +96,12 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
       ctx!.clearRect(0, 0, SIZE, SIZE);
 
       /* ── Outer atmospheric glow ── */
-      const glow = ctx!.createRadialGradient(CX, CY, R * 0.85, CX, CY, R * 1.35);
+      const glow = ctx!.createRadialGradient(CX, CY, R * 0.85, CX, CY, R * 1.45);
       if (isLightBg) {
-        // Bright brand blue atmospheric glow
-        glow.addColorStop(0, 'rgba(14, 165, 233, 0.42)');
-        glow.addColorStop(0.5, 'rgba(14, 165, 233, 0.16)');
-        glow.addColorStop(1, 'rgba(14, 165, 233, 0)');
+        glow.addColorStop(0, 'rgba(236, 72, 153, 0.55)');
+        glow.addColorStop(0.4, 'rgba(236, 72, 153, 0.25)');
+        glow.addColorStop(0.75, 'rgba(236, 72, 153, 0.08)');
+        glow.addColorStop(1, 'rgba(236, 72, 153, 0)');
       } else {
         glow.addColorStop(0, 'rgba(56, 139, 255, 0.08)');
         glow.addColorStop(0.5, 'rgba(56, 139, 255, 0.04)');
@@ -118,9 +118,9 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
         CX, CY, R
       );
       if (isLightBg) {
-        // Medium pink gradient for the body (pink-200 to pink-400)
-        bodyGrad.addColorStop(0, '#fbcfe8');
-        bodyGrad.addColorStop(1, '#f472b6');
+        // Dark navy body matching the reference
+        bodyGrad.addColorStop(0, 'rgba(15, 30, 65, 0.97)');
+        bodyGrad.addColorStop(1, 'rgba(2, 8, 30, 0.99)');
       } else {
         bodyGrad.addColorStop(0, 'rgba(15, 30, 60, 0.95)');
         bodyGrad.addColorStop(1, 'rgba(2, 8, 23, 0.98)');
@@ -129,7 +129,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
       ctx!.fill();
 
       /* ── Grid lines (latitude) ── */
-      ctx!.strokeStyle = isLightBg ? 'rgba(14, 165, 233, 0.16)' : 'rgba(56, 139, 255, 0.06)';
+      ctx!.strokeStyle = isLightBg ? 'rgba(236, 72, 153, 0.12)' : 'rgba(56, 139, 255, 0.06)';
       ctx!.lineWidth = 0.5;
       for (let lat = -60; lat <= 60; lat += 30) {
         const latRad = (lat * Math.PI) / 180;
@@ -160,10 +160,10 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
           const dotSize = 1.8 + z3d * 1.5;
           ctx!.beginPath();
           ctx!.arc(px, py, dotSize, 0, Math.PI * 2);
-          
+
           if (isLightBg) {
-            // White land dots for contrast on pink body
-            ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+            // Pink/magenta land dots matching the reference
+            ctx!.fillStyle = `rgba(236, 72, 153, ${alpha})`;
           } else {
             ctx!.fillStyle = `rgba(100, 180, 255, ${alpha})`;
           }
@@ -174,8 +174,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
             ctx!.beginPath();
             ctx!.arc(px, py, 0.5, 0, Math.PI * 2);
             if (isLightBg) {
-              // Faint dark blue ocean dots for contrast
-              ctx!.fillStyle = `rgba(15, 37, 84, ${z3d * 0.08})`;
+              ctx!.fillStyle = `rgba(236, 72, 153, ${z3d * 0.06})`;
             } else {
               ctx!.fillStyle = `rgba(56, 100, 180, ${z3d * 0.08})`;
             }
@@ -187,7 +186,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
       /* ── Highlight edge ring ── */
       ctx!.beginPath();
       ctx!.arc(CX, CY, R, 0, Math.PI * 2);
-      ctx!.strokeStyle = isLightBg ? 'rgba(14, 165, 233, 0.45)' : 'rgba(80, 160, 255, 0.2)';
+      ctx!.strokeStyle = isLightBg ? 'rgba(236, 72, 153, 0.5)' : 'rgba(80, 160, 255, 0.2)';
       ctx!.lineWidth = 2.0;
       ctx!.stroke();
 
@@ -197,7 +196,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
         CX - R * 0.3, CY - R * 0.3, R * 0.6
       );
       if (isLightBg) {
-        spec.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+        spec.addColorStop(0, 'rgba(255, 255, 255, 0.08)');
         spec.addColorStop(1, 'rgba(255, 255, 255, 0)');
       } else {
         spec.addColorStop(0, 'rgba(130, 200, 255, 0.06)');

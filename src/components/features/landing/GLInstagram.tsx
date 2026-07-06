@@ -38,18 +38,21 @@ export default function GLInstagram() {
     <section className="bg-[#faf5ef] py-16 md:py-24 overflow-hidden border-t border-slate-200/50">
       <div className="max-w-7xl mx-auto px-6 text-center mb-12">
         {/* Giant bold pink title */}
-        <h2 
-          className="text-6xl sm:text-7xl md:text-8xl font-black text-[#e11d48] tracking-tighter uppercase leading-none select-none animate-fade-in"
-          style={{ fontFamily: "var(--font-syne)" }}
+        <h2
+          className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-none select-none animate-fade-in"
+          style={{ fontFamily: "var(--font-syne)", color: "#0ea5e9" }}
         >
           Follow Us
         </h2>
-        {/* Pink handle linked to instagram */}
-        <a 
+        {/* Handle linked to instagram */}
+        <a
           href={instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-4 text-base sm:text-lg font-bold text-[#e11d48]/80 hover:text-[#e11d48] hover:underline tracking-wide transition-all"
+          className="inline-block mt-4 text-base sm:text-lg font-bold hover:underline tracking-wide transition-all"
+          style={{ color: "rgba(14,165,233,0.75)" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#0ea5e9")}
+          onMouseLeave={e => (e.currentTarget.style.color = "rgba(14,165,233,0.75)")}
         >
           @shaibya.solutions
         </a>
@@ -79,7 +82,7 @@ export default function GLInstagram() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
-              
+
               {/* Translucent play icon overlay */}
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-slate-800 transform transition-transform duration-300 group-hover:scale-110">
@@ -105,7 +108,7 @@ export default function GLInstagram() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
-              
+
               {/* Translucent play icon overlay */}
               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-slate-800 transform transition-transform duration-300 group-hover:scale-110">
