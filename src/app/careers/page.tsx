@@ -21,6 +21,12 @@ import {
   Heart,
   ChevronRight,
 } from "lucide-react";
+import {
+  RemotePerkCard,
+  TimePerkCard,
+  GrowthPerkCard,
+  FounderPerkCard
+} from "@/components/features/careers/InteractivePerks";
 
 // Themes and layout colors matching globals.css
 const BRAND = "#0ea5e9";
@@ -478,34 +484,10 @@ export default function CareersPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {PERKS.map((perk, idx) => {
-              const Icon = perk.icon;
-              return (
-                <motion.div
-                  key={perk.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className="bg-white dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800/80 rounded-3xl p-8 hover:shadow-xl hover:border-sky-500/20 dark:hover:border-sky-500/10 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div>
-                    <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110"
-                      style={{ backgroundColor: `${perk.color}12` }}
-                    >
-                      <Icon className="w-6 h-6" style={{ color: perk.color }} />
-                    </div>
-                    <h3 className="text-lg font-bold font-heading text-slate-900 dark:text-white mb-2">
-                      {perk.title}
-                    </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-                      {perk.description}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            <RemotePerkCard />
+            <TimePerkCard />
+            <GrowthPerkCard />
+            <FounderPerkCard />
           </div>
         </div>
       </section>
