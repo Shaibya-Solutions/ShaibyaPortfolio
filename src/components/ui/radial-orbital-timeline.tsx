@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface TimelineItem {
   id: number;
@@ -38,18 +39,14 @@ export default function RadialOrbitalTimeline({
   useEffect(() => {
     if (activeId !== null) {
       setActiveNodeId(activeId);
-      if (clickedNodeId !== null) {
-        setAutoRotate(false);
-        centerViewOnNode(activeId);
-      } else {
-        setAutoRotate(true);
-      }
+      setAutoRotate(false);
+      centerViewOnNode(activeId);
     } else {
       setActiveNodeId(null);
       setAutoRotate(true);
       setClickedNodeId(null);
     }
-  }, [activeId, timelineData, clickedNodeId]);
+  }, [activeId, timelineData]);
 
   // Auto rotation timer when not active/pinned
   useEffect(() => {
@@ -190,7 +187,7 @@ export default function RadialOrbitalTimeline({
 
   return (
     <div
-      className="w-full h-[540px] flex items-center justify-center overflow-hidden relative bg-transparent"
+      className="w-full h-[580px] flex items-center justify-center overflow-visible relative bg-transparent"
       ref={containerRef}
     >
       {/* Outer Backdrop Glow for maximum atmospheric effect */}
@@ -232,10 +229,12 @@ export default function RadialOrbitalTimeline({
               opacity: isActive ? 1 : position.opacity,
             };
 
+            const transitionClass = autoRotate ? '' : 'transition-all duration-700 ease-out';
+
             return (
               <div
                 key={item.id}
-                className="absolute transition-all duration-700 cursor-pointer"
+                className={`absolute cursor-pointer ${transitionClass}`}
                 style={nodeStyle}
                 onClick={() => handleNodeClick(item.id)}
               >
@@ -279,39 +278,59 @@ export default function RadialOrbitalTimeline({
                 </div>
 
                 {/* Popover Card Info Box when active/clicked */}
-                {isActive && clickedNodeId === item.id && (
-                  <div className="absolute top-24 left-1/2 -translate-x-1/2 w-64 bg-[#0a1628]/95 backdrop-blur-lg border border-white/10 shadow-2xl p-4 rounded-xl z-50 text-left transition-all duration-300">
-                    <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a1628] border-t border-l border-white/10 rotate-45"></div>
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[10px] font-mono text-white/40">
-                        {item.date}
-                      </span>
-                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
-                        {item.status === 'completed' ? 'COMPLETE' : item.status === 'in-progress' ? 'IN PROGRESS' : 'PENDING'}
-                      </span>
-                    </div>
-                    <h4 className="text-xs font-bold text-white mb-1 uppercase tracking-wider">
-                      {item.title}
-                    </h4>
-                    <p className="text-[10px] text-white/70 leading-relaxed mb-3">
-                      {item.content}
-                    </p>
+                <AnimatePresence mode="wait">
+                  {isActive && (() => {
+                    const showAbove = position.y > 0;
+                    return (
+                      <motion.div 
+                        initial={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
+                        transition={{ duration: 0.25, ease: "easeOut" }}
+                        className="absolute left-1/2 -translate-x-1/2 w-64 bg-[#0a1628]/95 backdrop-blur-lg border border-white/10 shadow-2xl p-4 rounded-xl z-50 text-left"
+                        style={{
+                          bottom: showAbove ? "80px" : "auto",
+                          top: showAbove ? "auto" : "80px"
+                        }}
+                      >
+                        {/* Arrow */}
+                        <div className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a1628] rotate-45 ${
+                          showAbove 
+                            ? '-bottom-1.5 border-b border-r border-white/10' 
+                            : '-top-1.5 border-t border-l border-white/10'
+                        }`} />
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-[10px] font-mono text-white/40">
+                            {item.date}
+                          </span>
+                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
+                            {item.status === 'completed' ? 'COMPLETE' : item.status === 'in-progress' ? 'IN PROGRESS' : 'PENDING'}
+                          </span>
+                        </div>
+                        <h4 className="text-xs font-bold text-white mb-1 uppercase tracking-wider">
+                          {item.title}
+                        </h4>
+                        <p className="text-[10px] text-white/70 leading-relaxed mb-3">
+                          {item.content}
+                        </p>
 
-                    {/* Progress Bar */}
-                    <div className="pt-2 border-t border-white/5">
-                      <div className="flex justify-between items-center text-[9px] mb-1">
-                        <span className="text-white/40 uppercase font-bold tracking-wider">Progress</span>
-                        <span className="font-mono text-white/50">{item.energy}%</span>
-                      </div>
-                      <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"
-                          style={{ width: `${item.energy}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                        {/* Progress Bar */}
+                        <div className="pt-2 border-t border-white/5">
+                          <div className="flex justify-between items-center text-[9px] mb-1">
+                            <span className="text-white/40 uppercase font-bold tracking-wider">Progress</span>
+                            <span className="font-mono text-white/50">{item.energy}%</span>
+                          </div>
+                          <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"
+                              style={{ width: `${item.energy}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })()}
+                </AnimatePresence>
               </div>
             );
           })}

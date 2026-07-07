@@ -98,10 +98,10 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
       /* ── Outer atmospheric glow ── */
       const glow = ctx!.createRadialGradient(CX, CY, R * 0.85, CX, CY, R * 1.45);
       if (isLightBg) {
-        glow.addColorStop(0, 'rgba(236, 72, 153, 0.55)');
-        glow.addColorStop(0.4, 'rgba(236, 72, 153, 0.25)');
-        glow.addColorStop(0.75, 'rgba(236, 72, 153, 0.08)');
-        glow.addColorStop(1, 'rgba(236, 72, 153, 0)');
+        glow.addColorStop(0, 'rgba(14, 165, 233, 0.45)');
+        glow.addColorStop(0.4, 'rgba(14, 165, 233, 0.22)');
+        glow.addColorStop(0.75, 'rgba(14, 165, 233, 0.07)');
+        glow.addColorStop(1, 'rgba(14, 165, 233, 0)');
       } else {
         glow.addColorStop(0, 'rgba(56, 139, 255, 0.08)');
         glow.addColorStop(0.5, 'rgba(56, 139, 255, 0.04)');
@@ -129,7 +129,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
       ctx!.fill();
 
       /* ── Grid lines (latitude) ── */
-      ctx!.strokeStyle = isLightBg ? 'rgba(236, 72, 153, 0.12)' : 'rgba(56, 139, 255, 0.06)';
+      ctx!.strokeStyle = isLightBg ? 'rgba(14, 165, 233, 0.15)' : 'rgba(56, 139, 255, 0.06)';
       ctx!.lineWidth = 0.5;
       for (let lat = -60; lat <= 60; lat += 30) {
         const latRad = (lat * Math.PI) / 180;
@@ -162,8 +162,8 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
           ctx!.arc(px, py, dotSize, 0, Math.PI * 2);
 
           if (isLightBg) {
-            // Pink/magenta land dots matching the reference
-            ctx!.fillStyle = `rgba(236, 72, 153, ${alpha})`;
+            // White land dots as requested
+            ctx!.fillStyle = `rgba(255, 255, 255, ${alpha})`;
           } else {
             ctx!.fillStyle = `rgba(100, 180, 255, ${alpha})`;
           }
@@ -174,7 +174,7 @@ const Earth: React.FC<EarthProps> = ({ className, isLightBg = false }) => {
             ctx!.beginPath();
             ctx!.arc(px, py, 0.5, 0, Math.PI * 2);
             if (isLightBg) {
-              ctx!.fillStyle = `rgba(236, 72, 153, ${z3d * 0.06})`;
+              ctx!.fillStyle = `rgba(14, 165, 233, ${z3d * 0.08})`;
             } else {
               ctx!.fillStyle = `rgba(56, 100, 180, ${z3d * 0.08})`;
             }
