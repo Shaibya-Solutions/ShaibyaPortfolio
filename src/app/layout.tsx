@@ -20,14 +20,27 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Shaibya Solutions — Engineering Impact",
+  metadataBase: new URL("https://shaibya.solutions"),
+  title: {
+    default: "Shaibya Solutions — Engineering Impact",
+    template: "%s | Shaibya Solutions",
+  },
   description:
     "We build digital systems that eliminate manual work and drive measurable growth. From Nagpur to the world.",
   generator: "Shaibya Solutions",
+  applicationName: "Shaibya Solutions",
+  category: "technology",
+  keywords: ["Software Development", "Process Automation", "WhatsApp CRM Systems", "Nagpur", "Noida", "Texas"],
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Shaibya Solutions — Engineering Impact",
     description: "Digital engineering studio building systems that actually work.",
     type: "website",
+    siteName: "Shaibya Solutions",
+    locale: "en_US",
   },
 };
 

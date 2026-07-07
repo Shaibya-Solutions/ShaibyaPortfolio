@@ -75,7 +75,13 @@ export default function GLHero() {
                 className="text-[clamp(3rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-white"
                 style={{ fontFamily: "var(--font-syne)" }}
               >
-                {mounted && (
+                {!mounted ? (
+                  <>
+                    We Engineer
+                    <br />
+                    <span className="text-[#38bdf8]">Digital Impact.</span>
+                  </>
+                ) : (
                   <>
                     <DecryptedText
                       text="We Engineer"

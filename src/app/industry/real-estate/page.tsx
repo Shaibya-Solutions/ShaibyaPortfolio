@@ -1,51 +1,58 @@
-"use client";
+import type { Metadata } from "next";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Real Estate CRM & Property Listing Websites | Shaibya Solutions",
+  description: "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations. Discover how MG Infra tripled lead capture.",
+  alternates: {
+    canonical: "https://shaibya.solutions/industry/real-estate",
+  },
+  openGraph: {
+    title: "Real Estate CRM & Property Listing Websites | Shaibya Solutions",
+    description: "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations.",
+    url: "https://shaibya.solutions/industry/real-estate",
+    type: "website",
+  },
+};
 
 const data: IndustryPageData = {
   slug: "real-estate",
   eyebrow: "Real Estate",
-  heroImage: "/images/real-estate/real_estate_hero.png",
-  headline: ["Nagpur's property market", "is booming. Are you?"],
+  heroImage: "/images/screenshots/mg-infra.png",
+  headline: ["From WhatsApp groups to", "a digitized sales funnel."],
   heroSub:
-    "22% sales surge. ₹50,000 crore infrastructure pipeline. MIHAN SEZ. Metro expansion. Local agents desperately need digital systems — not just WhatsApp groups.",
+    "How we transformed MG Infra Properties — a top residential developer in Nagpur — replacing messy WhatsApp groups with automated lead pipelines, boosting listing visibility, and tripling lead capture rates.",
   heroStats: [
-    { value: "22%", label: "Sales Surge in Nagpur" },
-    { value: "3", label: "Live Clients" },
-    { value: "₹50,000 Cr", label: "Infrastructure Pipeline" },
-    { value: "70%", label: "Faster Lead Response" },
+    { value: "Nagpur", label: "Client Location" },
+    { value: "3×", label: "Lead Capture Rate" },
+    { value: "0", label: "Missed Inquiries" },
+    { value: "70%", label: "Faster Response" },
   ],
   contextChapter: {
-    label: "The Market",
+    label: "The Problem",
     paragraphs: [
-      "Nagpur is having a moment. With <strong>MIHAN SEZ, metro expansion, and a ₹50,000 crore infrastructure pipeline</strong>, property inquiries are flooding in from Pune, Mumbai, and Hyderabad.",
-      "And yet, local agents were managing it all on WhatsApp. Leads disappearing. Site visits forgotten. Agreements buried in group chats. The <strong>22% sales surge</strong> was creating more chaos than opportunity.",
-      "That's where we came in. Not to build a fancy website. To build the <strong>infrastructure that turns inquiries into income.</strong>",
+      "Real estate agents and developers in Nagpur are some of the most dynamic business minds in the city. They manage multi-crore transactions, coordinate client visits, and close deals — <strong>all on WhatsApp groups.</strong>",
+      "Listing files are scattered across chats, payment schedules are stored in random notes, and half the inquiries get buried in inbox noise. By the time someone replies, the lead has already contacted a competitor.",
+      "That was the reality before we stepped in. <strong>We built a system that lets them manage scale without losing control.</strong>",
     ],
     pullQuote:
-      "The market was exploding, but the agents handling it had no systems to capture it.",
+      "Bringing structured digital systems to Nagpur's real estate market, capturing every single lead.",
   },
   painPoints: [
-    { emoji: "🌐", title: "No Digital Presence", desc: "Buyers search online first — if you're not there, you're invisible. Competitors with basic sites were absorbing every lead.", image: "/images/real-estate/re_pain_1.png" },
-    { emoji: "⏰", title: "Lost Leads on WhatsApp", desc: "Leads message at 2 AM. By 9 AM they've already contacted a competitor. No tracking, no follow-up system.", image: "/images/real-estate/re_pain_2.png" },
-    { emoji: "📊", title: "No CRM", desc: "Client data across registers, phones, and chats. No way to know which leads are hot or where revenue is leaking.", image: "/images/real-estate/re_pain_3.png" },
-    { emoji: "📁", title: "Document Chaos", desc: "Agreements, KYC, and property papers scattered across WhatsApp groups. Finding one document takes hours.", image: "/images/real-estate/re_pain_4.png" },
-    { emoji: "🔔", title: "Manual Follow-ups", desc: "Site visit reminders were manual. Re-engaging old leads was impossible. Good opportunities slipped through every week.", image: "/images/real-estate/re_pain_5.png" },
+    { emoji: "📱", title: "Buried WhatsApp Leads", desc: "Leads arriving in WhatsApp chats and getting buried in chat noise — leading to missed follow-ups.", image: "/images/landing/bento_threat_intelligence.png" },
+    { emoji: "📁", title: "Scattered Listing Data", desc: "Property documents, layout maps, and pricing details spread across multiple phones and chat groups." },
+    { emoji: "⏰", title: "Slow Response Times", desc: "Taking hours or days to answer basic questions about availability or pricing, losing buyers to competitors." },
+    { emoji: "📑", title: "RERA Compliance Friction", desc: "Ensuring all marketing material, disclosures, and registration details match regulatory standards manually." },
+    { emoji: "📊", title: "Zero Lead Tracking", desc: "No central database of buyers, pending visits, or agent performance. No forecastable pipeline." },
   ],
   solutions: [
-    { emoji: "🏠", title: "SEO-Optimized Website", desc: "Property listing site with search filters, area-wise browsing, and Google ranking for local searches. Buyers find you first." },
-    { emoji: "💬", title: "Lead Capture → CRM", desc: "Every inquiry from website, WhatsApp, or social media automatically enters a CRM pipeline. Zero missed inquiries." },
-    { emoji: "🤖", title: "Follow-up Automation", desc: "Automated WhatsApp/email follow-ups. No lead falls through the cracks. Re-engagement for cold leads built in." },
-    { emoji: "📅", title: "Site Visit Scheduler", desc: "Clients book site visits directly. Confirmation and reminder messages sent automatically to both parties." },
-    { emoji: "🗂️", title: "Document Management", desc: "All agreements, KYC, and property papers organised digitally. Accessible anywhere, searchable instantly." },
-    { emoji: "💰", title: "Commission Dashboard", desc: "Track deals, commissions, and revenue in real-time. Know exactly where your money is at any given moment." },
+    { emoji: "🖥️", title: "Property Listing Website", desc: "Professional listing portal with category filters, location maps, and interactive layouts." },
+    { emoji: "📅", title: "Lead Management CRM", desc: "Unified database for client details, requirements, site visits, and agent assignments." },
+    { emoji: "🚀", title: "WhatsApp CRM Integration", desc: "Automated responses, property detail shares, and site-visit confirmation alerts." },
+    { emoji: "⚖️", title: "RERA Compliance Layer", desc: "Built-in fields for registration disclosures and compliant layout structures across listings." },
+    { emoji: "📂", title: "Centralized Document Hub", desc: "One cloud repository for layout maps, brochures, and legal disclosures — shareable in 1 click." },
+    { emoji: "📈", title: "Agent Analytics", desc: "Track lead distribution, call response rates, and monthly conversion metrics in one dashboard." },
   ],
-  visualShowcase: {
-    beforeSrc: "/images/real-estate/room-before.png",
-    afterSrc: "/images/real-estate/room-after.png",
-    heading: "First impressions\nclosed the deal.",
-    subheading:
-      "Buyers form opinions in seconds. Professional digital staging and presentation transforms bare listings into aspirational homes — before a single site visit happens.",
-  },
   clients: [
     {
       name: "MG Infra Properties",
@@ -88,11 +95,53 @@ const data: IndustryPageData = {
   ],
   ctaTitle: "Ready to stop losing leads to WhatsApp noise?",
   ctaSub: "The audit takes 30 minutes. The results show up within 30 days. Book yours before we hit capacity for this quarter.",
-  ctaMessage: "Hi, I am a real estate agent in Nagpur and I'd like a free 30-min digital audit.",
+  ctaMessage: "Hi, I run a real estate agency and I'd like to discuss a digital lead system.",
   accentColor: "#0ea5e9",
   accentBg: "rgba(14,165,233,0.06)",
 };
 
 export default function RealEstatePage() {
-  return <IndustryPageTemplate data={data} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://shaibya.solutions/industry/real-estate/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shaibya.solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Real Estate",
+            "item": "https://shaibya.solutions/industry/real-estate"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://shaibya.solutions/industry/real-estate/#service",
+        "name": "Real Estate CRM & Compliant Website Engineering",
+        "description": "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Shaibya Solutions"
+        }
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustryPageTemplate data={data} />
+    </>
+  );
 }

@@ -12,8 +12,16 @@ interface Carousel3DProps {
   className?: string;
 }
 
+const demoImages = [
+  { src: "/images/screenshots/mg-infra.png", alt: "MG Infra Properties" },
+  { src: "/images/screenshots/bridgestone-nagpur.png", alt: "Bridgestone Nagpur Showroom" },
+  { src: "/images/screenshots/vims-hospital.png", alt: "VIMS Hospital Portal" },
+  { src: "/images/screenshots/sonar-killa.png", alt: "Sonar Killa Heritage Hotel" },
+  { src: "/images/screenshots/revolution-fitness.png", alt: "Revolution Fitness Gym System" }
+];
+
 export default function Carousel3D({
-  images,
+  images = demoImages,
   autoPlayInterval = 3000,
   width = 320,
   height = 220,
@@ -23,7 +31,9 @@ export default function Carousel3D({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const count = images.length;
+  
+  const activeImages = images && images.length > 0 ? images : demoImages;
+  const count = activeImages.length;
   const angleStep = 360 / count;
   const radius = Math.round(width / (2 * Math.tan(Math.PI / count)));
 
@@ -75,7 +85,7 @@ export default function Carousel3D({
           transition: "transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
         }}
       >
-        {images.map((image, index) => {
+        {activeImages.map((image, index) => {
           const angle = index * angleStep;
           return (
             <div
@@ -125,7 +135,7 @@ export default function Carousel3D({
 
       {/* Dot indicators */}
       <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-        {images.map((_, i) => (
+        {activeImages.map((_, i) => (
           <button
             key={i}
             onClick={() => setCurrentIndex(i)}

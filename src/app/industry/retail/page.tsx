@@ -1,52 +1,65 @@
-"use client";
+import type { Metadata } from "next";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Retail & E-commerce Operations Systems | Shaibya Solutions",
+  description: "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions. Discover how Bridgestone Nagpur expanded their reach.",
+  alternates: {
+    canonical: "https://shaibya.solutions/industry/retail",
+  },
+  openGraph: {
+    title: "Retail & E-commerce Operations Systems | Shaibya Solutions",
+    description: "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions.",
+    url: "https://shaibya.solutions/industry/retail",
+    type: "website",
+  },
+};
 
 const data: IndustryPageData = {
   slug: "retail",
-  eyebrow: "Retail & FMCG",
-  heroImage: "/images/screenshots/touchwood.png",
-  headline: ["From registers to", "real-time visibility."],
+  eyebrow: "Retail",
+  heroImage: "/images/screenshots/bridgestone-nagpur.png",
+  headline: ["From local showrooms to", "an online catalog."],
   heroSub:
-    "How we brought Nagpur retail businesses into the digital age — paper-based billing to smart POS, beautiful digital catalogs, and complete stock visibility across every SKU.",
+    "How we transformed Bridgestone Nagpur — the leading tire dealer in the region — replacing offline-only catalogs with a digital product showroom, expanding customer reach, and boosting inquiries.",
   heroStats: [
-    { value: "3+", label: "Retail Clients" },
+    { value: "Nagpur", label: "Client Location" },
+    { value: "5×", label: "Reach Beyond City" },
     { value: "40%", label: "More Inquiries" },
-    { value: "5×", label: "Geographic Reach" },
-    { value: "50%", label: "Faster Billing" },
+    { value: "Live", label: "Catalog Status" },
   ],
   contextChapter: {
-    label: "The Gap",
+    label: "The Problem",
     paragraphs: [
-      "Nagpur has incredible retail businesses — premium furniture makers, FMCG distributors, and specialty shops with decades of craftsmanship and reputation. But their <strong>operations ran entirely on paper.</strong>",
-      "The catalog existed only in the showroom. The inventory was on a register that nobody trusted. Billing was a manual calculator, a carbon-copy receipt, and a hope that the math was right.",
-      "Customers five kilometers away didn't know they existed. And customers standing in the showroom left without buying because the item they wanted was &ldquo;out of stock&rdquo; — except it wasn't, it was just <strong>invisible in the system.</strong>",
+      "Retail showrooms in Nagpur have a massive selection of inventory. They stock major global brands, different sizes, models, specs, and price points.",
+      "But their customer reach is limited to walk-in traffic and word-of-mouth. <strong>They have no digital showroom,</strong> meaning customers have to visit in person just to see if a model is in stock or ask for a price quote.",
+      "We built a digital catalog that brings the entire showroom to the customer's phone screen, making discovery frictionless.",
     ],
     pullQuote:
-      "Touchwood Furnitech went from Nagpur-only to 5× geographic reach — without opening a single new location.",
+      "Bringing Nagpur's leading tire dealer online, connecting inventory directly to buyer inquiries.",
   },
   painPoints: [
-    { emoji: "🖼️", title: "Showroom-Only Catalog", desc: "Products only visible in person. No way for customers to browse, shortlist, or share before visiting." },
-    { emoji: "📋", title: "Inventory on Paper", desc: "Stock levels guessed, never known. Over-ordering, stockouts, and missed sales every week." },
-    { emoji: "🧮", title: "Manual Calculator Billing", desc: "Slow, error-prone billing with no GST automation. Every invoice is a risk of a calculation mistake." },
-    { emoji: "📍", title: "Local Walk-ins Only", desc: "Business limited to whoever already knows you. No digital funnel to reach customers across Nagpur and beyond." },
-    { emoji: "💬", title: "Payment Disputes", desc: "Manual records meant disputes over what was paid, what was owed, and what was returned. Time-consuming and damaging to trust." },
+    { emoji: "🏪", title: "Walk-in Only Traffic", desc: "Showroom reach is limited to physical visitors and nearby areas. Out-of-city buyers are ignored." },
+    { emoji: "📞", title: "Manual Inquiry Clog", desc: "Answering repetitive phone questions about tyre availability, size specs, and brand options." },
+    { emoji: "📓", title: "No Digital Showroom", desc: "No way for customers to browse the inventory or see product specifications online before visiting." },
+    { emoji: "🔍", title: "Invisible to Search", desc: "Nagpur car owners searching online for 'Bridgestone tyres Nagpur' couldn't find the showroom on page 1." },
+    { emoji: "📊", title: "Scattered Stock Records", desc: "Product updates and new stock arrivals not synced to the sales team's marketing channels instantly." },
   ],
   solutions: [
-    { emoji: "🛋️", title: "Digital Product Catalog", desc: "Beautiful online catalog with category filters, high-res images, and WhatsApp inquiry buttons on every product." },
-    { emoji: "📦", title: "Real-Time Inventory", desc: "Live stock levels across all SKUs. Automated low-stock alerts. No more guessing what's available." },
-    { emoji: "🧾", title: "GST-Compliant POS", desc: "Automated GST calculation, instant invoicing, digital receipts, and a complete billing history. Zero manual errors." },
-    { emoji: "🌍", title: "WhatsApp Commerce", desc: "Product inquiries, price quotes, and order confirmations via WhatsApp — extending reach far beyond the showroom." },
-    { emoji: "📊", title: "Sales Analytics", desc: "Top-selling products, seasonal trends, revenue by category, and customer purchase history. Data you can act on." },
-    { emoji: "🔄", title: "Returns & Dispute Management", desc: "Complete transaction history with digital proof. Resolve disputes in seconds, not hours." },
+    { emoji: "🖥️", title: "Digital Product Catalog", desc: "Clean, responsive portal with brand filtering, spec searches, and direct enquiry forms." },
+    { emoji: "🚀", title: "Showroom SEO Package", desc: "Google Business and local search keyword optimization to rank for auto queries in Nagpur." },
+    { emoji: "💬", title: "WhatsApp Inquiry Flow", desc: "Customers browse the catalog, click a product, and enquire directly on WhatsApp with the spec attached." },
+    { emoji: "📂", title: "Dynamic Inventory CMS", desc: "Let non-tech showroom staff add new arrivals, update specs, and change pricing in a couple of clicks." },
+    { emoji: "📄", title: "Digital Quote Sheets", desc: "Generate PDF quotes and spec sheets directly from the catalog to share with corporate accounts." },
+    { emoji: "📈", title: "Showroom Analytics", desc: "Track page views, top searched tire sizes, and monthly WhatsApp inquiry rates to forecast stock." },
   ],
   clients: [
     {
-      name: "Touchwood Furnitech",
-      site: "touchwoodfurnitech.com",
+      name: "Bridgestone Nagpur",
       tag: "Featured",
-      role: "Premium Digital Showroom",
-      desc: "A premium furniture manufacturer with stunning work and <strong>zero online presence beyond a phone number.</strong> We built an elegant digital showroom with high-resolution product galleries, category filtering, and WhatsApp inquiry flows for every piece. Within 90 days, 40% more inquiries — and 5× the geographic reach beyond Nagpur city limits.",
-      image: "/images/screenshots/touchwood.png",
+      role: "Digital showroom",
+      desc: "The leading tire dealer in the region. We built a <strong>responsive digital catalog</strong> showcasing Bridgestone's product lineup with filter specs (width, aspect ratio, rim size). Customers browse on mobile, select tires, and submit inquiries directly. Within 90 days, customer reach expanded 5× beyond Nagpur city limits.",
+      image: "/images/screenshots/bridgestone-nagpur.png",
       stats: [{ v: "40%", l: "More Inquiries" }, { v: "5×", l: "Reach Beyond Nagpur" }, { v: "90 days", l: "To Results" }],
     },
     {
@@ -86,5 +99,47 @@ const data: IndustryPageData = {
 };
 
 export default function RetailPage() {
-  return <IndustryPageTemplate data={data} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://shaibya.solutions/industry/retail/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shaibya.solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Retail",
+            "item": "https://shaibya.solutions/industry/retail"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://shaibya.solutions/industry/retail/#service",
+        "name": "Retail POS Systems & Online Digital Catalogues",
+        "description": "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Shaibya Solutions"
+        }
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustryPageTemplate data={data} />
+    </>
+  );
 }

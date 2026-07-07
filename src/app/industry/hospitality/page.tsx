@@ -1,52 +1,65 @@
-"use client";
+import type { Metadata } from "next";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Hospitality & Boutique Hotel Direct Booking Systems | Shaibya Solutions",
+  description: "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals. Discover how Sonar Killa tripled direct bookings.",
+  alternates: {
+    canonical: "https://shaibya.solutions/industry/hospitality",
+  },
+  openGraph: {
+    title: "Hospitality & Boutique Hotel Direct Booking Systems | Shaibya Solutions",
+    description: "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals.",
+    url: "https://shaibya.solutions/industry/hospitality",
+    type: "website",
+  },
+};
 
 const data: IndustryPageData = {
   slug: "hospitality",
   eyebrow: "Hospitality",
-  heroImage: "/images/solutions/sonarkilla.png",
-  headline: ["From phone calls to", "online bookings."],
+  heroImage: "/images/screenshots/sonar-killa.png",
+  headline: ["From phone inquiries to", "direct guest bookings."],
   heroSub:
-    "A Jaisalmer heritage hotel had zero online presence. We built a stunning booking platform that put them on Google Page 1 and tripled their online bookings within 60 days.",
+    "How we transformed Sonar Killa — a premium boutique heritage hotel in Jaisalmer — replacing booking commissions with direct online reservations and tripling online bookings.",
   heroStats: [
+    { value: "Jaisalmer", label: "Client Location" },
     { value: "3×", label: "Online Bookings" },
-    { value: "60%", label: "Fewer Phone Calls" },
-    { value: "Page 1", label: "Google Ranking" },
-    { value: "60 days", label: "Time to Results" },
+    { value: "60%", label: "Less Booking Friction" },
+    { value: "₹0", label: "OTA Commission" },
   ],
   contextChapter: {
-    label: "The Story",
+    label: "The Context",
     paragraphs: [
-      "Sonar Killa Tours had an incredible product — a boutique heritage property right by Jaisalmer Fort, with loyal returning guests and glowing word-of-mouth reviews. But <strong>every single booking happened over phone.</strong>",
-      "Travelers searching &ldquo;heritage hotel Jaisalmer&rdquo; on Google found nothing. Booking.com and MakeMyTrip weren't the right fit — they wanted to tell their own story, own their guest relationships, and avoid the 15–25% commission cut.",
-      "They needed a <strong>direct booking platform that matched the hotel's character.</strong> Something that made you feel the sand and the fort through a screen.",
+      "Sonar Killa Jaisalmer is a beautiful heritage property built inside the golden fort city. It's rich in history, character, and royal hospitality.",
+      "But their booking flow was manual and heavily dependent on third-party OTAs charging 15–20% commission on every stay. <strong>They had no direct booking engine,</strong> and guests had to call or email to confirm rooms.",
+      "We built a direct booking portal that showcases their royal heritage and captures reservations instantly — with zero commission.",
     ],
     pullQuote:
-      "3× online bookings, Page 1 Google ranking, and 60% fewer phone calls — all in 60 days.",
+      "Helping boutique hotels capture direct bookings and keep 100% of their revenue.",
   },
   painPoints: [
-    { emoji: "📵", title: "Phone-Only Bookings", desc: "100% of reservations over phone. Miss a call — miss a booking. No way to capture after-hours inquiries." },
-    { emoji: "🌐", title: "Zero Online Visibility", desc: "No website, no Google Business profile. Travelers searching online found competitors instead." },
-    { emoji: "🖼️", title: "No Visual Storytelling", desc: "The property's beauty was invisible online. No photo galleries, no virtual tours, no atmosphere conveyed." },
-    { emoji: "💸", title: "OTA Commission Drain", desc: "Third-party platforms eat 15–25% per booking. The hotel needed a direct channel to protect margin." },
-    { emoji: "⭐", title: "Unmanaged Reviews", desc: "Positive guest experiences weren't being captured as reviews. No systematic way to build trust online." },
+    { emoji: "🏨", title: "Heavy OTA Commission", desc: "Paying high commission percentages to OTAs on every guest booking — losing significant profit margin." },
+    { emoji: "📞", title: "Manual Booking Flow", desc: "Confirming bookings manually via phone and email. Time-consuming, error-prone, and prone to double bookings." },
+    { emoji: "💻", title: "No Direct Checkout", desc: "No online booking engine. Guests couldn't check availability or book rooms directly on the website." },
+    { emoji: "🔍", title: "Low Local Search", desc: "Heritage travelers searching for Jaisalmer heritage stays couldn't find the property on search page 1." },
+    { emoji: "📊", title: "No Reservation Calendar", desc: "No central reservation dashboard. Managing room allocations on paper or basic spreadsheets." },
   ],
   solutions: [
-    { emoji: "🏰", title: "Visual Booking Website", desc: "Immersive website with room showcases, rich photo galleries, and a direct booking flow built for heritage properties." },
-    { emoji: "🔍", title: "Local SEO", desc: "Optimised for 'heritage hotel Jaisalmer', 'boutique hotel near Jaisalmer Fort', and 20+ related queries. Page 1 in 60 days." },
-    { emoji: "💬", title: "WhatsApp Booking Flow", desc: "Instant booking confirmation and pre-arrival information via WhatsApp. Guests love the personal touch." },
-    { emoji: "📸", title: "Rich Media Galleries", desc: "Professional photography integration, virtual walkthroughs, and room comparison pages that convert browsers to bookers." },
-    { emoji: "⭐", title: "Review Management", desc: "Automated post-stay review requests via WhatsApp and email. Systematic trust building across Google, TripAdvisor." },
-    { emoji: "📊", title: "Booking Analytics", desc: "See where your guests come from, which room types convert best, and track direct-vs-OTA revenue split in real-time." },
+    { emoji: "🖥️", title: "Bespoke Hotel Website", desc: "Clean, media-rich website showcasing fort views, rooms, dining, and heritage tours." },
+    { emoji: "📅", title: "Direct Booking Engine", desc: "Guest checkout flow with real-time availability, secure room reservations, and instant confirmations." },
+    { emoji: "🚀", title: "Hospitality SEO", desc: "Google Business optimization and local keywords to rank for boutique stay queries in Rajasthan." },
+    { emoji: "💳", title: "Secure Payment Gateway", desc: "UPI, cards, and international wallets integrated directly into the booking checkout flow." },
+    { emoji: "🔔", title: "Automated Guest Alerts", desc: "Reservation details, check-in instructions, and billing invoices sent directly to the guest's WhatsApp/email." },
+    { emoji: "📊", title: "Central Room Dashboard", desc: "Manage room inventory, block occupied dates, and track monthly booking analytics in one dashboard." },
   ],
   clients: [
     {
-      name: "Sonar Killa Tours",
-      site: "sonarkilla.com",
+      name: "Sonar Killa Jaisalmer",
       tag: "Featured",
-      role: "Boutique Heritage Hotel Platform",
-      desc: "Phone-only bookings to a <strong>fully self-serve online experience.</strong> We built an immersive heritage hotel website with room-by-room photography, an integrated direct booking system, WhatsApp confirmation flow, and local SEO targeting every high-intent Jaisalmer search. The result: 3× online bookings, 60% fewer inbound calls, and a Page 1 Google ranking — in 60 days.",
-      image: "/images/solutions/sonarkilla.png",
+      role: "Boutique hotel transformation",
+      desc: "A boutique heritage hotel in Jaisalmer fort. We designed and built a <strong>direct booking website</strong> with high-resolution room galleries, real-time availability calendar, secure payment checkout, and reservation automation. Within 60 days, online bookings tripled and OTA booking commissions dropped significantly.",
+      image: "/images/screenshots/sonar-killa.png",
       stats: [{ v: "3×", l: "Online Bookings" }, { v: "60%", l: "Less Phone Calls" }, { v: "Page 1", l: "Google" }],
     },
     {
@@ -78,5 +91,47 @@ const data: IndustryPageData = {
 };
 
 export default function HospitalityPage() {
-  return <IndustryPageTemplate data={data} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://shaibya.solutions/industry/hospitality/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shaibya.solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Hospitality",
+            "item": "https://shaibya.solutions/industry/hospitality"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://shaibya.solutions/industry/hospitality/#service",
+        "name": "Hospitality Booking Platforms & Custom Hotel Website Engineering",
+        "description": "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Shaibya Solutions"
+        }
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustryPageTemplate data={data} />
+    </>
+  );
 }

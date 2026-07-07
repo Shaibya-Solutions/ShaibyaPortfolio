@@ -1,5 +1,19 @@
-"use client";
+import type { Metadata } from "next";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Fashion-Tech Software & MVP Solutions | Shaibya Solutions",
+  description: "Learn how we build fashion tech platforms and MVPs from scratch in 4 weeks. Scalable digital solutions for retail and startup founders.",
+  alternates: {
+    canonical: "https://shaibya.solutions/industry/fashion-tech",
+  },
+  openGraph: {
+    title: "Fashion-Tech Software & MVP Solutions | Shaibya Solutions",
+    description: "Learn how we build fashion tech platforms and MVPs from scratch in 4 weeks. Scalable digital solutions for retail and startup founders.",
+    url: "https://shaibya.solutions/industry/fashion-tech",
+    type: "website",
+  },
+};
 
 const data: IndustryPageData = {
   slug: "fashion-tech",
@@ -85,5 +99,47 @@ const data: IndustryPageData = {
 };
 
 export default function FashionTechPage() {
-  return <IndustryPageTemplate data={data} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://shaibya.solutions/industry/fashion-tech/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shaibya.solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Fashion Tech",
+            "item": "https://shaibya.solutions/industry/fashion-tech"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://shaibya.solutions/industry/fashion-tech/#service",
+        "name": "Fashion Tech MVP & Startup Software Engineering",
+        "description": "Rapid prototyping and production engineering for fashion technology startups. Go from phone note sketch to live platform in 4 weeks.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Shaibya Solutions"
+        }
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustryPageTemplate data={data} />
+    </>
+  );
 }

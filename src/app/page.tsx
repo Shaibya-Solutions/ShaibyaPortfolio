@@ -1,58 +1,97 @@
-"use client";
-
-import dynamic from "next/dynamic";
+import type { Metadata } from "next";
+import GLHero from "@/components/features/landing/GLHero";
+import GLAbout from "@/components/features/landing/GLAbout";
+import GLStats from "@/components/features/landing/GLStats";
+import GLOurWork from "@/components/features/landing/GLOurWork";
+import GLIndustries from "@/components/features/landing/GLIndustries";
+import GLTestimonials from "@/components/features/landing/GLTestimonials";
+import GLFAQ from "@/components/features/landing/GLFAQ";
+import GLContact from "@/components/features/landing/GLContact";
+import GLInstagram from "@/components/features/landing/GLInstagram";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 
-const GLHero = dynamic(
-  () => import("@/components/features/landing/GLHero"),
-  { ssr: false, loading: () => <div className="min-h-screen bg-gradient-to-br from-[#E0F5FC] to-white" /> }
-);
-
-const GLAbout = dynamic(
-  () => import("@/components/features/landing/GLAbout"),
-  { ssr: false, loading: () => <div className="h-64 bg-white" /> }
-);
-
-const GLStats = dynamic(
-  () => import("@/components/features/landing/GLStats"),
-  { ssr: false, loading: () => <div className="h-64 bg-[#022648]" /> }
-);
-
-const GLOurWork = dynamic(
-  () => import("@/components/features/landing/GLOurWork"),
-  { ssr: false, loading: () => <div className="h-screen bg-[#FAF7F2]" /> }
-);
-
-const GLIndustries = dynamic(
-  () => import("@/components/features/landing/GLIndustries"),
-  { ssr: false, loading: () => <div className="h-96 bg-[#f8fbfe]" /> }
-);
-
-const GLTestimonials = dynamic(
-  () => import("@/components/features/landing/GLTestimonials"),
-  { ssr: false, loading: () => <div className="h-96 bg-[#022648]" /> }
-);
-
-const GLFAQ = dynamic(
-  () => import("@/components/features/landing/GLFAQ"),
-  { ssr: false, loading: () => <div className="h-96 bg-[#f8fbfe]" /> }
-);
-
-const GLContact = dynamic(
-  () => import("@/components/features/landing/GLContact"),
-  { ssr: false, loading: () => <div className="h-64 bg-white" /> }
-);
-
-const GLInstagram = dynamic(
-  () => import("@/components/features/landing/GLInstagram"),
-  { ssr: false, loading: () => <div className="h-96 bg-[#faf5ef]" /> }
-);
+export const metadata: Metadata = {
+  title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
+  description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
+  alternates: {
+    canonical: "https://shaibya.solutions",
+  },
+  openGraph: {
+    title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
+    description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
+    url: "https://shaibya.solutions",
+    siteName: "Shaibya Solutions",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
+    description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
+  },
+};
 
 export default function HomePage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://shaibya.solutions/#organization",
+        "name": "Shaibya Solutions",
+        "url": "https://shaibya.solutions",
+        "logo": {
+          "@type": "ImageObject",
+          "@id": "https://shaibya.solutions/#logo",
+          "url": "https://shaibya.solutions/logo.png",
+          "caption": "Shaibya Solutions Logo"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/company/shaibyasolutions/about/",
+          "https://www.instagram.com/deepoffduty/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://shaibya.solutions/#website",
+        "url": "https://shaibya.solutions",
+        "name": "Shaibya Solutions",
+        "publisher": {
+          "@id": "https://shaibya.solutions/#organization"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://shaibya.solutions/#localbusiness",
+        "name": "Shaibya Solutions",
+        "image": "https://shaibya.solutions/logo.png",
+        "url": "https://shaibya.solutions",
+        "telephone": "+917498341146",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Nagpur",
+          "addressLocality": "Nagpur",
+          "addressRegion": "Maharashtra",
+          "postalCode": "440001",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "21.1458",
+          "longitude": "79.0882"
+        }
+      }
+    ]
+  };
+
   return (
     <main className="bg-white text-slate-900 min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <SiteHeader />
 
       {/* 1. HERO */}

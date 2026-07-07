@@ -1,52 +1,66 @@
-"use client";
+import type { Metadata } from "next";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
+
+export const metadata: Metadata = {
+  title: "Healthcare Website & Patient Booking Solutions | Shaibya Solutions",
+  description: "Learn how we build compliant hospital websites, medical portals, and clinic booking systems. Discover how VIMS Hospital digitized their patient intake.",
+  alternates: {
+    canonical: "https://shaibya.solutions/industry/healthcare",
+  },
+  openGraph: {
+    title: "Healthcare Website & Patient Booking Solutions | Shaibya Solutions",
+    description: "Learn how we build compliant hospital websites, medical portals, and clinic booking systems.",
+    url: "https://shaibya.solutions/industry/healthcare",
+    type: "website",
+  },
+};
 
 const data: IndustryPageData = {
   slug: "healthcare",
   eyebrow: "Healthcare",
   heroImage: "/images/screenshots/vims-hospital.png",
-  headline: ["From invisible to", "the first page."],
+  headline: ["From manual bookings to", "a digitized hospital."],
   heroSub:
-    "How we gave VIMS Hospital a complete digital identity — from zero online presence to 10k+ monthly visitors, online appointments, and a 2.5× increase in new patients.",
+    "How we transformed VIMS Hospital — Nagpur's premier multispecialty hospital — replacing manual appointment logs with integrated booking, boosting online traffic, and scaling patient outreach.",
   heroStats: [
-    { value: "10k+", label: "Monthly Website Visits" },
-    { value: "2", label: "Healthcare Clients" },
-    { value: "2.5×", label: "New Patient Growth" },
-    { value: "70%", label: "Less Call-Center Load" },
+    { value: "Nagpur", label: "Client Location" },
+    { value: "10,000+", label: "Monthly Web Visits" },
+    { value: "70%", label: "Less Booking Friction" },
+    { value: "2.5×", label: "Patient Inquiries" },
   ],
   contextChapter: {
-    label: "The Reality",
+    label: "The Context",
     paragraphs: [
-      "VIMS Hospital had over 150 doctors across 30+ departments — but <strong>zero digital presence.</strong> Patients found them through word-of-mouth or by physically walking in. New patients in the city? They went to whichever hospital showed up on Google.",
-      "Appointment booking was entirely over phone. The call center was overwhelmed. Patients with urgent queries waited on hold. Doctors had no online profiles. The hospital's expertise was invisible to anyone who didn't already know them.",
-      "We didn't just build a website. We built a <strong>patient acquisition engine.</strong>",
+      "VIMS Hospital is one of the most respected healthcare institutions in Nagpur. They have a team of world-class doctors, state-of-the-art ICU facilities, and a legacy of serving patients with empathy.",
+      "But their digital presence didn't match their physical standards. <strong>Patients couldn't find doc lists easily, online booking wasn't unified,</strong> and phone lines were clogged with basic questions about doctor availability.",
+      "We built a digital ecosystem that matches their clinical standards. <strong>We made the hospital accessible from a phone screen.</strong>",
     ],
     pullQuote:
-      "Zero to 10,000 monthly visitors — and a 2.5× jump in new patient inquiries within the first quarter.",
+      "Digitizing Nagpur's leading hospital, bringing patient care to the digital era.",
   },
   painPoints: [
-    { emoji: "🌐", title: "Zero Online Presence", desc: "No website, no Google listing, no social media. Patients searching online found competitors instead." },
-    { emoji: "📞", title: "Overwhelmed Call Center", desc: "100% of appointment bookings happened over phone. Wait times were long, staff were stretched, and patients got frustrated." },
-    { emoji: "👨‍⚕️", title: "Invisible Doctors", desc: "150+ doctors with no online profiles. Patients couldn't find specializations or book with specific physicians." },
-    { emoji: "📅", title: "No Online Booking", desc: "Walk-in and phone only. No reminders meant high no-show rates. No digital confirmation for patients." },
-    { emoji: "📉", title: "Losing to Smaller Clinics", desc: "Smaller clinics with basic websites were capturing online searches. A full hospital was being outranked by solo practitioners." },
+    { emoji: "🏥", title: "Outdated Digital Brand", desc: "A prestigious hospital with a basic, static website that didn't showcase departments or doctors correctly." },
+    { emoji: "📞", title: "Clogged Call Center", desc: "Receiving hundreds of phone calls daily just to ask for doctor schedules, OPD timings, and fee structures." },
+    { emoji: "📅", title: "No Direct Booking", desc: "No online appointment system. Patients had to call, wait on hold, or visit in person to book a slot." },
+    { emoji: "🔍", title: "Invisible to Local Search", desc: "Nagpur residents searching for 'best cardiologist' or 'OPD timing Nagpur' couldn't find VIMS on page 1." },
+    { emoji: "📃", title: "Manual Intake Logs", desc: "Patient details collected on paper during check-in, causing long lines at the reception desk." },
   ],
   solutions: [
-    { emoji: "🏥", title: "SEO-Optimized Hospital Website", desc: "Department pages, doctor profiles, and treatment explainers optimized for local search queries in Nagpur." },
-    { emoji: "📅", title: "Online Appointment Booking", desc: "Patients book with specific doctors by department, date, and time. Automated confirmation + reminders sent instantly." },
-    { emoji: "👨‍⚕️", title: "Doctor Profile Pages", desc: "Individual pages for all 150+ doctors with credentials, specializations, and patient reviews. Fully SEO-optimized." },
-    { emoji: "📱", title: "WhatsApp Integration", desc: "Patients can book, enquire, and receive appointment reminders via WhatsApp — the channel they actually use." },
-    { emoji: "📊", title: "Patient Management Dashboard", desc: "Track appointments, no-shows, re-bookings, and department load in real-time. Full visibility for admin staff." },
-    { emoji: "📣", title: "Social Media Strategy", desc: "Health education content, doctor spotlights, and patient success stories driving organic trust and reach." },
+    { emoji: "🖥️", title: "Dynamic Hospital Website", desc: "Clean, responsive portal with interactive doctor profiles, department details, and facility tours." },
+    { emoji: "📅", title: "Direct Appointment Booking", desc: "Self-service scheduling for patients. Pick doctor, choose slot, receive instant confirmation." },
+    { emoji: "🚀", title: "Local SEO Optimisation", desc: "Google Business and keyword optimization to rank for local healthcare queries in Nagpur." },
+    { emoji: "💬", title: "WhatsApp Alert Integration", desc: "Confirmations, reminder alerts, and prescription links sent directly to the patient's WhatsApp." },
+    { emoji: "📄", title: "Online Patient Intake", desc: "Let patients fill out registration details online before arriving, cutting check-in queues by 50%." },
+    { emoji: "📊", title: "Admin Portal dashboard", desc: "Manage doctor schedules, block off-duty days, and track booking analytics from one central screen." },
   ],
   clients: [
     {
       name: "VIMS Hospital",
       tag: "Featured",
-      role: "Full Digital Transformation",
-      desc: "<strong>Zero to 10,000+ monthly website visitors</strong> in under 90 days. We built a complete hospital website with 150+ doctor profiles, department pages, online booking for all specialities, and a social media strategy. The call center load dropped 70%. New patient inquiries grew 2.5×. VIMS now ranks on Page 1 for 30+ local healthcare searches.",
-      image: "/images/solutions/vims.png",
-      stats: [{ v: "10k+", l: "Monthly Visits" }, { v: "2.5×", l: "New Patients" }, { v: "70%", l: "Less Call Volume" }],
+      role: "Digital transformation",
+      desc: "Nagpur's premier multispecialty hospital. We designed and built a <strong>complete digital presence:</strong> a responsive hospital website with department catalogs, dynamic doctor search, interactive maps, and integrated appointment scheduling. Within 90 days, web traffic grew to 10k+ monthly visits and patient booking friction dropped by 70%.",
+      image: "/images/screenshots/vims-hospital.png",
+      stats: [{ v: "10,000+", l: "Monthly Visits" }, { v: "70%", l: "Friction Cut" }, { v: "Live", l: "Status" }],
     },
     {
       name: "CellCureHub",
@@ -85,5 +99,47 @@ const data: IndustryPageData = {
 };
 
 export default function HealthcarePage() {
-  return <IndustryPageTemplate data={data} />;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://shaibya.solutions/industry/healthcare/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shaibya.solutions"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Healthcare",
+            "item": "https://shaibya.solutions/industry/healthcare"
+          }
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://shaibya.solutions/industry/healthcare/#service",
+        "name": "Healthcare Digital Transformation & Clinic Booking Software",
+        "description": "Learn how we build compliant hospital websites, medical portals, and clinic booking systems.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Shaibya Solutions"
+        }
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <IndustryPageTemplate data={data} />
+    </>
+  );
 }
