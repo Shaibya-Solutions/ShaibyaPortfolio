@@ -165,7 +165,7 @@ export default function AboutPage() {
             {/* Globe: absolutely centered in the background of the sticky wrapper */}
             <motion.div
               style={{ opacity: globeOpacity, scale: globeScale }}
-              className="absolute inset-0 m-auto w-[600px] h-[600px] pointer-events-none z-10 flex items-center justify-center translate-y-12 [filter:drop-shadow(0_0_60px_rgba(14,165,233,0.5))]"
+              className="absolute inset-0 m-auto w-[600px] h-[600px] pointer-events-none z-10 flex items-center justify-center translate-y-12"
             >
               <Earth isLightBg={true} />
             </motion.div>
@@ -265,7 +265,7 @@ export default function AboutPage() {
             </h1>
 
             {/* Globe component */}
-            <div className="w-full max-w-[420px] aspect-square flex items-center justify-center relative mb-8 [filter:drop-shadow(0_0_30px_rgba(14,165,233,0.6))]">
+            <div className="w-full max-w-[420px] aspect-square flex items-center justify-center relative mb-8">
               <Earth isLightBg={true} />
             </div>
 
