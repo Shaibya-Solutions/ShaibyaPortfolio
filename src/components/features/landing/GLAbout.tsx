@@ -19,7 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
 const processTimelineData = [
   {
     id: 1, title: "Discovery", date: "Week 1",
-    content: "A 30-minute WhatsApp conversation to understand your business, pain points, and what success looks like for you. We identify quick wins and long-term goals.",
+    content: "Every successful partnership begins with understanding. In a 30-minute WhatsApp call, we take the time to learn about your business, the challenges you face, and the outcomes you want to achieve. No presentations or sales pitches—just a focused conversation to explore how we can create meaningful value together.",
     category: "Planning", icon: MessageCircle, relatedIds: [2], status: "completed" as const, energy: 100,
   },
   {
@@ -29,7 +29,7 @@ const processTimelineData = [
   },
   {
     id: 3, title: "Build", date: "Week 2–4",
-    content: "Agile sprints with regular check-ins. You're never in the dark — we ship incrementally, gather your feedback, and iterate fast.",
+    content: "We execute in focused sprints with complete transparency, delivering working software incrementally and refining it through continuous feedback. Every release is backed by rigorous engineering standards, thorough testing, and uncompromising quality assurance.",
     category: "Development", icon: Code2, relatedIds: [2, 4], status: "in-progress" as const, energy: 70,
   },
   {
@@ -39,12 +39,12 @@ const processTimelineData = [
   },
   {
     id: 5, title: "Support", date: "Ongoing",
-    content: "30 days of free post-launch support included. We monitor performance, fix issues, and provide training for your team.",
+    content: "WE DON'T DISAPPEAR AFTER LAUNCH. 30 days of free post-launch support included with every project. We monitor performance, fix issues fast, and provide hands-on training so your team is fully self-sufficient.",
     category: "Support", icon: HeadphonesIcon, relatedIds: [4, 6], status: "pending" as const, energy: 30,
   },
   {
     id: 6, title: "Optimize", date: "Ongoing",
-    content: "Analytics-driven improvements. We track what's working, automate more workflows, and help you scale — from lead capture to full CRM integration.",
+    content: "Launch is only the beginning. We use data and analytics to identify opportunities for continuous improvement, streamline workflows, and enhance performance. As your business evolves, we help scale your technology—from process automation to seamless CRM integration.",
     category: "Growth", icon: BarChart3, relatedIds: [5, 1], status: "pending" as const, energy: 15,
   },
 ];
@@ -59,8 +59,8 @@ const stepData = [
     accentDot: "rgba(255,255,255,0.5)",
     label: "01 — Discovery",
     right: "Our Core Process",
-    heading: "START WITH A CONVERSATION.",
-    body: "A 30-minute WhatsApp call is all it takes. We listen first — understanding your business, your pain points, and what success looks like. No decks, no pitches. Just an honest conversation.",
+    heading: "UNDERSTANDING FIRST.",
+    body: "Every successful partnership begins with understanding. In a 30-minute WhatsApp call, we take the time to learn about your business, the challenges you face, and the outcomes you want to achieve. No presentations or sales pitches—just a focused conversation to explore how we can create meaningful value together.",
     cards: [
       { label: "Free Audit", desc: "Zero-commitment discovery call to map your workflow." },
       { label: "30 mins", desc: "That's all it takes to get a clear picture." },
@@ -93,8 +93,8 @@ const stepData = [
     accentDot: "#38bdf8",
     label: "03 — Build",
     right: "Agile Sprints",
-    heading: "BUILT FAST. BUILT RIGHT.",
-    body: "Agile sprints with regular check-ins. You're never in the dark — we ship incrementally, gather your feedback, and iterate fast. Code reviews, testing, and quality gates at every step.",
+    heading: "BUILD.",
+    body: "We execute in focused sprints with complete transparency, delivering working software incrementally and refining it through continuous feedback. Every release is backed by rigorous engineering standards, thorough testing, and uncompromising quality assurance.",
     cards: [
       { label: "2–4 Weeks", desc: "Most projects built and ready for review in under a month." },
       { label: "Agile", desc: "Weekly demos so you always know the exact progress." },
@@ -144,8 +144,8 @@ const stepData = [
     accentDot: "#38bdf8",
     label: "06 — Optimize",
     right: "Continuous Growth",
-    heading: "ALWAYS OPTIMIZING.",
-    body: "Analytics-driven improvements after every launch. We track what's working, automate more workflows, and help you scale — from lead capture to full CRM integration. Growth never stops.",
+    heading: "OPTIMIZE.",
+    body: "Launch is only the beginning. We use data and analytics to identify opportunities for continuous improvement, streamline workflows, and enhance performance. As your business evolves, we help scale your technology—from process automation to seamless CRM integration.",
     cards: [
       { label: "Analytics", desc: "Every system tracked and measured from day one." },
       { label: "Automation", desc: "We keep adding automation layers post-launch." },

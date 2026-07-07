@@ -6,37 +6,21 @@ import { Plus, Minus } from "lucide-react";
 
 const faqs = [
   {
-    q: "How long does a typical project take?",
-    a: "It depends on scope. A custom website takes 2–4 weeks. A full automation system or MVP typically takes 4–8 weeks. We always give you a clear timeline before we start.",
+    q: "How long does it take to build a website?",
+    a: "Project timelines vary based on complexity. Most business websites are delivered within 2–4 weeks, while more advanced platforms—such as CRM systems, booking platforms, or custom web applications—typically take 4–8 weeks. Following our initial consultation, we'll provide a detailed project roadmap with clear milestones and delivery timelines."
   },
   {
-    q: "Do you work with early-stage startups?",
-    a: "Absolutely. Some of our best work has been with founders who had nothing but an idea. We help validate, design, and build — and we're comfortable with ambiguity.",
+    q: "Can you handle RERA requirements for real estate?",
+    a: "Yes. We build real estate platforms with RERA compliance considerations, including required disclosures, project registration details, and compliant advertisement formats. Our solutions are designed to help you present property information accurately while meeting industry requirements."
   },
   {
-    q: "What industries do you specialize in?",
-    a: "We have deep experience in real estate, fitness, healthcare, and startups. But our systems approach works across industries — if there's manual work to eliminate, we can help.",
+    q: "Do you provide ongoing support after launch?",
+    a: "Absolutely. Every project includes 30 days of complimentary post-launch support to ensure a smooth transition. Beyond that, we offer flexible maintenance plans tailored to your needs. Many clients continue working with us long-term as we help optimize, maintain, and continuously improve their systems."
   },
   {
-    q: "How do you handle post-launch support?",
-    a: "Every project includes 30 days of post-launch support. After that, we offer flexible maintenance plans. We don't disappear after delivery.",
-  },
-  {
-    q: "Can you integrate with our existing tools?",
-    a: "Yes. We've integrated with Salesforce, WhatsApp Business API, Google Workspace, various CRMs, and custom databases. If it has an API, we can connect it.",
-  },
-  {
-    q: "What's your pricing model?",
-    a: "We work on fixed-scope projects with clear deliverables and pricing. No hourly billing surprises. We discuss scope, agree on price, and deliver.",
-  },
-  {
-    q: "Do you offer WhatsApp automation?",
-    a: "Yes — WhatsApp bots are one of our most popular services. We build automated flows for lead capture, appointment booking, reminders, and customer support.",
-  },
-  {
-    q: "How do we get started?",
-    a: "Just reach out via WhatsApp or the contact form. We'll schedule a 30-minute discovery call, understand your needs, and send you a proposal within 48 hours.",
-  },
+    q: "I'm not tech-savvy. Can I still use your systems?",
+    a: "Absolutely. Our solutions are designed for business owners and teams—not just technical users. We focus on creating simple, intuitive experiences that are easy to adopt. If you can use everyday tools like WhatsApp, you can confidently use our systems. We also provide hands-on training to help your team get started."
+  }
 ];
 
 export default function GLFAQ() {

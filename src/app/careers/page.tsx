@@ -36,15 +36,15 @@ const BRAND_ORANGE = "#f97316";
 const MANIFESTO_ITEMS = [
   {
     title: "People-First Culture",
-    description: "We don't manage clock-ins or story points; we empower people. Your growth, health, and personal ventures are our priority. When builders feel trusted, they build exceptional things."
+    description: "We believe great products are built by people who feel trusted, supported, and empowered. Instead of measuring success by hours worked or tasks completed, we focus on ownership, continuous learning, and personal growth. We encourage our team members to pursue their ambitions while building impactful technology."
   },
   {
-    title: "Detail & Craftsmanship",
-    description: "We care about the margins, the latency, and the clean architecture. Simplicity is hard work, but we believe that elegant, polished engineering is the only way to build trust."
+    title: "Excellence in Craftsmanship",
+    description: "Quality is never an afterthought. We value clean architecture, intuitive user experiences, scalable systems, and high-performance engineering. We believe that simplicity requires discipline, and thoughtful craftsmanship is what transforms good software into exceptional products."
   },
   {
-    title: "Leverage over Bureaucracy",
-    description: "We reject corporate red tape. A single determined intern with modern AI tools and a first-principles mindset can deliver more business impact than an entire legacy IT team."
+    title: "Innovation Through Leverage",
+    description: "We embrace modern tools, first-principles thinking, and efficient execution over unnecessary bureaucracy. By removing traditional barriers and enabling individuals to take ownership, small, highly capable teams can create solutions that deliver significant business impact."
   }
 ];
 
@@ -336,18 +336,17 @@ export default function CareersPage() {
                 Our Philosophy
               </span>
               <h2 className="text-4xl md:text-5xl font-bold font-heading mb-8 tracking-tight leading-tight text-white dark:text-white">
-                Here's to looking at opportunities differently.
+                Building the Future, Together
               </h2>
-              <div className="space-y-6 text-slate-300 dark:text-slate-300 font-light text-lg md:text-xl leading-relaxed">
+              <div className="space-y-6 text-slate-300 dark:text-slate-300 font-light text-base md:text-lg leading-relaxed">
                 <p>
-                  Most companies see student interns as temporary, cheap labor to handle backlog tickets or read documentations. 
-                  <strong className="text-white dark:text-white font-medium"> We see them as the future creators of modern tech.</strong>
+                  At our company, we believe internships are more than temporary roles—they are opportunities to develop the next generation of exceptional engineers and innovators. Rather than assigning routine tasks or maintenance work, we empower interns to contribute meaningfully to products, solve real business challenges, and grow alongside experienced professionals.
                 </p>
                 <p>
-                  We look at software not as a set of features, but as maximum leverage. We obsess over the details—the design, the user transitions, and the database index paths. We believe that when you combine absolute trust with high accountability, borders and hierarchy dissolve.
+                  We view software as a force multiplier for businesses, not simply a collection of features. Every design decision, user interaction, system architecture, and performance optimization matters because exceptional products are built through thoughtful attention to detail.
                 </p>
                 <p>
-                  We build side-by-side with business partners to engineer solutions that cut manual work. That's why we break the rules of traditional corporate thinking: to deliver out-of-the-box software that makes a real, tangible difference.
+                  Our culture is built on trust, ownership, and collaboration. By working closely with our clients and business partners, we create practical software solutions that eliminate manual processes, improve efficiency, and deliver measurable business value.
                 </p>
               </div>
             </motion.div>

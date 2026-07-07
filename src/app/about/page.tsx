@@ -31,34 +31,34 @@ const DARK = "#060d1f";
 
 const timeline = [
   {
-    year: "The Inception",
-    title: "A Spark of Innovation",
+    year: "The Beginning",
+    title: "A Vision for Innovation",
     description:
-      "Shaibya Solutions was born out of a simple observation: businesses were struggling to bridge the gap between complex technological capabilities and real-world operational needs. Our founders set out to create a consultancy that prioritized practical, scalable solutions.",
+      "Shaibya Solutions was established to bridge the gap between evolving technologies and practical business needs. Our founders envisioned a company that delivers scalable, impactful, and future-ready solutions while building long-term client relationships.",
     icon: Lightbulb,
     image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
   },
   {
     year: "Building the Foundation",
-    title: "Assembling the Experts",
+    title: "Bringing Together Expertise",
     description:
-      "We started small, focusing on localized impact. By gathering a core team of passionate technologists and strategists, Shaibya established its foundational ethos: delivering uncompromising quality and building lasting partnerships.",
+      "With a dedicated team of skilled professionals, we laid the foundation for a culture rooted in innovation, collaboration, and excellence. From the very beginning, our focus has been on delivering exceptional quality and creating lasting value for our clients.",
     icon: Users,
     image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800",
   },
   {
-    year: "Expansion & Growth",
-    title: "Scaling New Heights",
+    year: "Growth & Expansion",
+    title: "Advancing with Technology",
     description:
-      "As our reputation for excellence grew, so did our footprint. We expanded our service offerings to encompass enterprise digital transformation, cloud architecture, and cutting-edge data analytics.",
+      "As our expertise and client network expanded, so did our capabilities. We broadened our portfolio to include enterprise digital transformation, cloud solutions, data analytics, and modern software development, enabling organizations to thrive in an increasingly digital world.",
     icon: Rocket,
     image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800",
   },
   {
-    year: "Present Day",
-    title: "A Global Solutions Partner",
+    year: "Today & Beyond",
+    title: "Empowering Businesses Globally",
     description:
-      "Today, Shaibya Solutions stands as a beacon of technological empowerment. We continue to drive innovation, helping organizations worldwide navigate the complexities of the digital age with confidence.",
+      "Today, Shaibya Solutions is a trusted technology partner, helping organizations navigate digital transformation with confidence. We remain committed to innovation, excellence, and delivering solutions that empower businesses to achieve lasting success in a rapidly evolving technological landscape.",
     icon: Globe2,
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
   },
@@ -67,22 +67,22 @@ const timeline = [
 const values = [
   {
     title: "Integrity First",
-    description: "We believe in transparent, honest partnerships. Our word is our bond.",
+    description: "We foster trust through transparency, honesty, and accountability, building lasting relationships with clients and partners.",
     icon: Building2,
   },
   {
     title: "Relentless Innovation",
-    description: "We constantly push the boundaries of what is possible, embracing new technologies.",
+    description: "We embrace emerging technologies and continuous improvement to deliver forward-thinking solutions that drive meaningful results.",
     icon: Sparkles,
   },
   {
-    title: "Client-Centric",
-    description: "Your success is our success. We measure our impact by the value we create for you.",
+    title: "Client-Centric Approach",
+    description: "Our clients are at the heart of everything we do. We focus on understanding their goals and delivering solutions that create measurable value.",
     icon: Target,
   },
   {
-    title: "Excellence Delivered",
-    description: "We hold ourselves to the highest standards of quality, ensuring every solution is robust and effective.",
+    title: "Excellence in Delivery",
+    description: "We are committed to the highest standards of quality, ensuring every solution is reliable, scalable, and engineered for long-term success.",
     icon: Award,
   },
 ];
@@ -351,14 +351,10 @@ export default function AboutPage() {
                 style={{ color: MUTED, fontFamily: "var(--font-inter)", fontWeight: 300, borderLeft: `2px solid ${BORDER}` }}
               >
                 <p>
-                  Shaibya Solutions is a premier technology consulting and implementation firm.
-                  We specialize in identifying operational bottlenecks and deploying bespoke,
-                  scalable digital solutions that drive efficiency and growth.
+                  Shaibya Solutions is a leading technology consulting and implementation firm dedicated to helping organizations streamline operations and accelerate digital transformation. We specialize in identifying operational inefficiencies and delivering tailored, scalable technology solutions that enhance productivity, optimize workflows, and drive sustainable business growth.
                 </p>
                 <p>
-                  Our name, Shaibya, reflects our commitment to truth, resilience, and unwavering
-                  dedication to our clients&apos; success. We bridge the gap between legacy systems and
-                  forward-looking innovations, ensuring our partners are always a step ahead.
+                  Our name, Shaibya, embodies the values of integrity, resilience, and an unwavering commitment to client success. By bridging the gap between legacy systems and modern digital innovation, we empower businesses to adapt, evolve, and stay ahead in an ever-changing technological landscape. Through strategic consulting, seamless implementation, and long-term partnership, we deliver solutions that create measurable value and lasting impact.
                 </p>
               </div>
             </motion.div>
@@ -420,14 +416,13 @@ export default function AboutPage() {
                 letterSpacing: "-0.04em",
               }}
             >
-              The Shaibya Story
+              The Shaibya Journey
             </h2>
             <p
               className="text-lg italic font-light"
               style={{ color: "rgba(243,245,249,0.65)", fontFamily: "var(--font-inter)" }}
             >
-              Every great enterprise starts with a vision. Here is how Shaibya Solutions evolved
-              from a bold idea into a driving force in technology.
+              Every successful organization begins with a vision. Shaibya Solutions was founded with a commitment to helping businesses harness technology to solve real-world challenges, driving innovation, efficiency, and sustainable growth.
             </p>
           </div>
 
@@ -561,14 +556,13 @@ export default function AboutPage() {
                 color: TEXT,
               }}
             >
-              Be Part of Our Next Chapter
+              Join Us in Shaping the Future
             </h2>
             <p
               className="text-lg md:text-xl mb-12 max-w-2xl mx-auto italic font-light"
               style={{ color: MUTED, fontFamily: "var(--font-inter)" }}
             >
-              Whether you are looking to transform your business or join a team of innovators,
-              Shaibya Solutions is ready to welcome you.
+              At Shaibya Solutions, we believe great achievements are built through collaboration and innovation. Whether you're seeking a trusted technology partner or an opportunity to grow with a dynamic team, we're here to help you achieve your goals and create lasting impact.
             </p>
             <Link
               href="/contact"
