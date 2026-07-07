@@ -6,7 +6,6 @@ import { INDIA_MAP_DATA } from "./india-map-data";
 
 const CITIES = [
   { name: "Nagpur", x: 250, y: 410, primary: true, stateId: "mh" },
-  { name: "Delhi", x: 186, y: 210, primary: false, stateId: "dl" },
   { name: "Mumbai", x: 105, y: 440, primary: false, stateId: "mh" },
   { name: "Noida", x: 195, y: 212, primary: false, stateId: "up" },
   { name: "Bangalore", x: 195, y: 560, primary: false, stateId: "ka" },
@@ -67,7 +66,6 @@ export default function IndiaMap({ className = "", activeCity = null, onCityHove
             const isStateHighlighted = 
               (state.id === "mh" && (activeCity === "Nagpur" || activeCity === "Mumbai")) ||
               (state.id === "ka" && activeCity === "Bangalore") ||
-              (state.id === "dl" && activeCity === "Delhi") ||
               (state.id === "up" && activeCity === "Noida");
             
             return (
@@ -89,7 +87,6 @@ export default function IndiaMap({ className = "", activeCity = null, onCityHove
                 onMouseEnter={() => {
                   if (state.id === "mh") onCityHover?.("Nagpur");
                   else if (state.id === "ka") onCityHover?.("Bangalore");
-                  else if (state.id === "dl") onCityHover?.("Delhi");
                   else if (state.id === "up") onCityHover?.("Noida");
                 }}
                 onMouseLeave={() => onCityHover?.(null)}

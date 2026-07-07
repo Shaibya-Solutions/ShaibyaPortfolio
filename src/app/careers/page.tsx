@@ -148,15 +148,6 @@ const IMPACT_LOCATIONS = [
     badge: "Center of Dev Excellence",
   },
   {
-    id: "Delhi",
-    name: "Delhi",
-    role: "Enterprise Strategy",
-    description:
-      "Interfacing with scale operations. We coordinate strategic enterprise rollouts and plan digital products that help regional giants optimize their systems and scale smoothly.",
-    details: "Focuses on strategic alignment with corporate leadership and government integrations.",
-    badge: "Scale Operations",
-  },
-  {
     id: "Noida",
     name: "Noida",
     role: "Corporate Collaborations",

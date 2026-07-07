@@ -155,42 +155,11 @@ const stepData = [
   },
 ];
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.12,
-    },
-  },
-};
-
-const wordVariants = {
-  hidden: { x: -800, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 85,
-      damping: 14,
-      mass: 0.9,
-    },
-  },
-};
-
 /* ───── Main section ───── */
 export default function GLAbout() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.01 });
   const [activeStepId, setActiveStepId] = useState<number>(1);
   const storySectionRef = useRef<HTMLDivElement>(null);
-
-  // Track scroll position targeting the top block
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "center center"],
-  });
-  const textX = useTransform(scrollYProgress, [0, 1], ["-180px", "180px"]);
 
   useGSAP(() => {
     if (!storySectionRef.current) return;
@@ -220,74 +189,8 @@ export default function GLAbout() {
 
   const step = stepData[activeStepId - 1];
 
-  const words = ["'AHEAD", "OF", "THE", "CURVE'"];
-
   return (
     <section ref={ref} id="about" className="relative bg-[#020817]">
-
-      {/* ─── Intro ─── */}
-      <div className="w-full py-32 lg:py-48 relative">
-        {/* Badge wrapper (centered) */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-center mb-6 relative z-10">
-          <motion.span
-            initial={{ opacity: 0, y: 8 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0ea5e9]"
-          >
-            Our Story
-          </motion.span>
-        </div>
-
-        {/* Full-width overflow-hidden container for sliding text */}
-        <div className="w-full flex flex-col items-center py-10 relative z-10 overflow-hidden">
-          <div className="absolute top-0 left-0 z-0 h-full w-full bg-[radial-gradient(#38bdf80d_1px,#020817_1px)] bg-size-[20px_20px] opacity-60" />
-          <motion.h2
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className="text-5xl sm:text-7xl md:text-[6.5rem] font-black leading-[100%] tracking-tighter uppercase mb-8 whitespace-nowrap flex items-center justify-center gap-[0.22em] relative z-10"
-            style={{ x: textX, fontFamily: "var(--font-syne)" }}
-          >
-            {words.map((word, idx) => (
-              <motion.span
-                key={idx}
-                variants={wordVariants}
-                className="inline-block bg-gradient-to-b from-[#ffffff] via-[#93c5fd] to-[#020817] bg-clip-text text-transparent pb-2"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </motion.h2>
-        </div>
-
-        {/* Description & CTA wrapper (centered) */}
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
-          <div className="flex flex-col items-center gap-6 mt-4 w-full border-t border-slate-800/60 pt-8 max-w-4xl mx-auto text-center">
-            <p className="text-slate-300 text-sm md:text-base leading-relaxed max-w-xl">
-              A technology company born in Nagpur, built for the world.
-              AI, full-stack, mobile — all under one roof.
-            </p>
-            <Link
-              href="/portfolio"
-              className="inline-flex items-center px-8 py-4 bg-[#0ea5e9] text-white font-bold rounded-full shadow-lg shadow-sky-500/25 hover:bg-[#0284c7] hover:scale-105 transition-all duration-500 text-sm sm:text-base group relative overflow-hidden shrink-0"
-            >
-              {/* Left Arrow (Visible by default, slides out/shrinks on hover) */}
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-[#0ea5e9] mr-3 transition-all duration-500 ease-out group-hover:w-0 group-hover:mr-0 group-hover:opacity-0 group-hover:scale-50 shrink-0">
-                <ArrowRight size={14} className="transition-transform duration-500" />
-              </span>
-
-              {/* Button Text */}
-              <span className="transition-all duration-500">View all work</span>
-
-              {/* Right Arrow (Slides in/expands on hover) */}
-              <span className="flex items-center justify-center w-0 h-6 rounded-full bg-white text-[#0ea5e9] ml-0 opacity-0 scale-50 transition-all duration-500 ease-out group-hover:w-6 group-hover:ml-3 group-hover:opacity-100 group-hover:scale-100 shrink-0">
-                <ArrowRight size={14} />
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
 
       {/* ─── Pinned scroll section ─── */}
       <section
