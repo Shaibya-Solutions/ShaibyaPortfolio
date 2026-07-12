@@ -1,9 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -199,7 +197,7 @@ export default function GLAbout() {
         style={{ backgroundColor: step.bg, transition: "background-color 0.8s ease" }}
       >
         <div
-          className="sticky top-0 h-screen w-full flex flex-col justify-between px-[4vw] pt-[clamp(2rem,4vw,4vw)] pb-[4vw] overflow-hidden"
+          className="sticky top-0 h-screen w-full flex flex-col justify-between px-[4vw] pt-[clamp(4.5rem,7vw,5.5rem)] pb-[4vw] overflow-hidden"
           style={{ color: step.dark ? "#ffffff" : "#111827", transition: "color 0.8s ease" }}
         >
           {/* Top bar */}
@@ -245,17 +243,17 @@ export default function GLAbout() {
                 {step.body}
               </p>
 
-              <div className="flex flex-wrap gap-3 w-full max-w-md">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 w-full max-w-md">
                 {step.cards.map((card, idx) => (
                   <div
                     key={idx}
-                    className="min-w-[100px] flex-1 border p-3 rounded-xl"
+                    className="sm:min-w-[100px] sm:flex-1 border p-3 rounded-xl"
                     style={{
                       borderColor: step.dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.1)",
                       backgroundColor: step.dark ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.04)",
                     }}
                   >
-                    <p className="mb-1 text-sm font-bold uppercase tracking-wider"
+                    <p className="mb-1 text-xs sm:text-sm font-bold uppercase tracking-wider leading-tight"
                       style={{ color: step.accentLabel }}>{card.label}</p>
                     <p
                       className="text-xs leading-relaxed"
@@ -269,7 +267,7 @@ export default function GLAbout() {
             </div>
 
             {/* Right — orbital */}
-            <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden w-full">
+            <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden w-full min-h-[380px] sm:min-h-0">
               <RadialOrbitalTimeline
                 timelineData={processTimelineData}
                 activeId={step.orbitalId}

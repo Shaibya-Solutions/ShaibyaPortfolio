@@ -133,8 +133,9 @@ export default function AboutPage() {
   // Phase 1 (0 to 30%): static centered 2x2 grid.
   // Phase 2 (30% to 75%): columns glide apart, globe fades + scales in.
   // Phase 3 (75% to 100%): final state held before unsticking.
-  const leftX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "-340px"]);
-  const rightX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "340px"]);
+  // Use viewport-relative values so cards stay visible on all screen sizes
+  const leftX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "-24vw"]);
+  const rightX = useTransform(stickyScrollProgress, [0.30, 0.75], ["0px", "24vw"]);
 
   const globeOpacity = useTransform(stickyScrollProgress, [0.42, 0.75], [0, 1]);
   const globeScale = useTransform(stickyScrollProgress, [0.42, 0.75], [0.35, 1]);
@@ -198,7 +199,7 @@ export default function AboutPage() {
                 {/* Left column (slides left) */}
                 <motion.div
                   style={{ x: leftX }}
-                  className="w-[320px] flex flex-col gap-5 text-left shrink-0"
+                  className="w-[min(320px,28vw)] flex flex-col gap-5 text-left shrink-0"
                 >
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
                     <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">Global Outreach</h3>
@@ -217,7 +218,7 @@ export default function AboutPage() {
                 {/* Right column (slides right) */}
                 <motion.div
                   style={{ x: rightX }}
-                  className="w-[320px] flex flex-col gap-5 text-left shrink-0"
+                  className="w-[min(320px,28vw)] flex flex-col gap-5 text-left shrink-0"
                 >
                   <div className="p-5 border border-sky-300/80 rounded-2xl bg-white/80 hover:border-sky-500 transition-all duration-300 backdrop-blur-md shadow-md hover:shadow-lg hover:shadow-sky-500/5">
                     <h3 className="text-2xl font-black text-[#0ea5e9] uppercase tracking-wide">Systems First</h3>

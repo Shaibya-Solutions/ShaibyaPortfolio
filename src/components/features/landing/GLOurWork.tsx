@@ -160,7 +160,7 @@ function useScrollEngine() {
                 onUpdate: (self) => {
                     const rawIndex = self.progress * (TOTAL - 1);
                     setImageProgress(rawIndex);
-                    
+
                     const idx = Math.min(Math.round(rawIndex), TOTAL - 1);
                     setActiveIndex(idx);
                 }
@@ -213,11 +213,11 @@ function InfoCard({
     // Responsive positioning coordinates
     const positionStyles = isLargeScreen
         ? (isTopRight
-            ? { top: "6%", left: "103%" }      // On the side of the browser window (desktop)
-            : { bottom: "6%", right: "103%" }) // On the side of the browser window (desktop)
+            ? { top: "8%", left: "calc(100% + 14px)" }
+            : { bottom: "8%", right: "calc(100% + 14px)" })
         : (isTopRight
-            ? { top: "-11%", right: "-5%" }    // Overlaying on corners (tablet)
-            : { bottom: "-11%", left: "-5%" });// Overlaying on corners (tablet)
+            ? { top: "5%", left: "calc(100% + 10px)" }
+            : { bottom: "5%", right: "calc(100% + 10px)" });
 
     return (
         <motion.div
@@ -231,11 +231,11 @@ function InfoCard({
             style={{
                 position: "absolute",
                 zIndex: 10,
-                width: isLargeScreen ? "295px" : "clamp(190px, 20vw, 270px)",
+                width: isLargeScreen ? "240px" : "clamp(155px, 16vw, 215px)",
                 background: T.bgCard,
                 border: `1px solid ${T.border}`,
                 borderRadius: 14,
-                padding: isLargeScreen ? "16px 18px" : "clamp(14px, 1.4vw, 20px)",
+                padding: isLargeScreen ? "13px 15px" : "clamp(10px, 1.1vw, 14px)",
                 boxShadow: `0 10px 30px ${T.shadow}, 0 2px 6px rgba(17,24,39,0.04)`,
                 ...positionStyles,
             }}
@@ -249,31 +249,31 @@ function InfoCard({
                     transition={{ duration: 0.28, ease: "easeOut" }}
                 >
                     {/* Header row */}
-                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 10 }}>
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 8 }}>
                         <div>
                             <div style={{
-                                fontSize: 10, fontWeight: 700, letterSpacing: "0.16em",
+                                fontSize: 9, fontWeight: 700, letterSpacing: "0.16em",
                                 textTransform: "uppercase", color: T.accent,
                                 fontFamily: "var(--font-inter)", marginBottom: 3,
                             }}>
                                 {p.serial} / {p.year}
                             </div>
                             <div style={{
-                                fontSize: "clamp(14px, 1.2vw, 16px)", fontWeight: 800,
+                                fontSize: "clamp(12px, 1vw, 14px)", fontWeight: 800,
                                 color: T.text, fontFamily: "var(--font-syne)",
                                 letterSpacing: "-0.03em", lineHeight: 1.15,
                             }}>
                                 {p.title}
                             </div>
                         </div>
-                        {/* Orange icon pill */}
+                        {/* Icon pill */}
                         <div style={{
-                            width: 28, height: 28, borderRadius: 7,
+                            width: 24, height: 24, borderRadius: 6,
                             background: T.accent, display: "flex",
                             alignItems: "center", justifyContent: "center",
-                            flexShrink: 0, marginLeft: 10,
+                            flexShrink: 0, marginLeft: 8,
                         }}>
-                            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                            <svg width="11" height="11" viewBox="0 0 14 14" fill="none">
                                 <path d="M2 2h4v2H4v6h6V8h2v4H2V2z" fill="white" />
                                 <path d="M8 2h4v4h-2V4.8L5.4 9.4 4 8 8.8 3.2H8V2z" fill="white" />
                             </svg>
@@ -282,14 +282,14 @@ function InfoCard({
 
                     {/* Tagline */}
                     <p style={{
-                        fontSize: 11, color: T.textMuted, fontFamily: "var(--font-inter)",
-                        lineHeight: 1.5, margin: "0 0 10px",
+                        fontSize: 10, color: T.textMuted, fontFamily: "var(--font-inter)",
+                        lineHeight: 1.5, margin: "0 0 8px",
                     }}>
                         {p.tagline}
                     </p>
 
                     {/* Tags */}
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 12 }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 10 }}>
                         {p.tags.map((tag) => (
                             <span key={tag} style={{
                                 display: "inline-block",
@@ -297,8 +297,8 @@ function InfoCard({
                                 border: `1px solid rgba(14,165,233,0.22)`,
                                 color: T.brand,
                                 fontFamily: "var(--font-inter)",
-                                borderRadius: 9999, padding: "2px 8px",
-                                fontSize: 10, fontWeight: 600,
+                                borderRadius: 9999, padding: "2px 7px",
+                                fontSize: 9, fontWeight: 600,
                                 letterSpacing: "0.1em", textTransform: "uppercase",
                             }}>
                                 {tag}
@@ -308,20 +308,20 @@ function InfoCard({
 
                     {/* Stats */}
                     <div style={{
-                        display: "flex", gap: 14,
-                        paddingTop: 10,
+                        display: "flex", gap: 12,
+                        paddingTop: 8,
                         borderTop: `1px solid ${T.border}`,
                     }}>
                         {p.stats.slice(0, 2).map((s) => (
                             <div key={s.label}>
                                 <div style={{
-                                    fontSize: "clamp(16px, 1.5vw, 20px)", fontWeight: 800,
+                                    fontSize: "clamp(13px, 1.2vw, 17px)", fontWeight: 800,
                                     color: T.text, fontFamily: "var(--font-syne)", lineHeight: 1,
                                 }}>
                                     {s.value}
                                 </div>
                                 <div style={{
-                                    fontSize: 10, color: T.textLight,
+                                    fontSize: 9, color: T.textLight,
                                     fontFamily: "var(--font-inter)", marginTop: 3,
                                 }}>
                                     {s.label}
@@ -333,7 +333,7 @@ function InfoCard({
                     {/* Tech + link row */}
                     <div style={{
                         display: "flex", alignItems: "center",
-                        justifyContent: "space-between", marginTop: 10,
+                        justifyContent: "space-between", marginTop: 8,
                     }}>
                         <div style={{ display: "flex", gap: 5 }}>
                             {p.tech.slice(0, 3).map((t, ti) => (

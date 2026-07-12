@@ -105,7 +105,7 @@ const Gallery4 = ({
             },
           }}
         >
-          <CarouselContent className="ml-[max(1.5rem,calc(50vw-42rem))] mr-[max(1.5rem,calc(50vw-42rem))]">
+          <CarouselContent className="ml-[max(1.5rem,min(calc(50vw-42rem),4rem))] mr-[max(1.5rem,min(calc(50vw-42rem),4rem))]">
             {items.map((item) => (
               <CarouselItem
                 key={item.id}

@@ -185,15 +185,25 @@ export default function RadialOrbitalTimeline({
     return isActive ? 'text-white font-bold scale-110' : 'text-white/60';
   };
 
+  // Find the active item for the lifted popup
+  const activeItem = activeNodeId !== null
+    ? timelineData.find((item) => item.id === activeNodeId) ?? null
+    : null;
+
+  // Get the active node's position
+  const activeNodeIndex = activeItem
+    ? timelineData.findIndex((item) => item.id === activeItem.id)
+    : -1;
+
   return (
     <div
-      className="w-full h-[580px] flex items-center justify-center overflow-visible relative bg-transparent"
+      className="w-full h-[380px] sm:h-[580px] flex items-center justify-center overflow-hidden sm:overflow-visible relative bg-transparent"
       ref={containerRef}
     >
       {/* Outer Backdrop Glow for maximum atmospheric effect */}
       <div className={`absolute w-80 h-80 rounded-full ${backdropGlowClass} blur-3xl pointer-events-none z-0`} />
 
-      <div className="relative w-full max-w-4xl h-full flex items-center justify-center scale-90 sm:scale-100 z-10">
+      <div className="relative w-full max-w-4xl h-full flex items-center justify-center scale-[0.52] xs:scale-[0.62] sm:scale-90 md:scale-100 z-10">
         <div
           className="absolute w-full h-full flex items-center justify-center"
           ref={orbitRef}
@@ -276,64 +286,11 @@ export default function RadialOrbitalTimeline({
                 >
                   {item.title}
                 </div>
-
-                {/* Popover Card Info Box when active/clicked */}
-                <AnimatePresence mode="wait">
-                  {isActive && (() => {
-                    const showAbove = position.y > 0;
-                    return (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="absolute left-1/2 -translate-x-1/2 w-64 bg-[#0a1628]/95 backdrop-blur-lg border border-white/10 shadow-2xl p-4 rounded-xl z-50 text-left"
-                        style={{
-                          bottom: showAbove ? "80px" : "auto",
-                          top: showAbove ? "auto" : "80px"
-                        }}
-                      >
-                        {/* Arrow */}
-                        <div className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a1628] rotate-45 ${
-                          showAbove 
-                            ? '-bottom-1.5 border-b border-r border-white/10' 
-                            : '-top-1.5 border-t border-l border-white/10'
-                        }`} />
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-[10px] font-mono text-white/40">
-                            {item.date}
-                          </span>
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
-                            {item.status === 'completed' ? 'COMPLETE' : item.status === 'in-progress' ? 'IN PROGRESS' : 'PENDING'}
-                          </span>
-                        </div>
-                        <h4 className="text-xs font-bold text-white mb-1 uppercase tracking-wider">
-                          {item.title}
-                        </h4>
-                        <p className="text-[10px] text-white/70 leading-relaxed mb-3">
-                          {item.content}
-                        </p>
-
-                        {/* Progress Bar */}
-                        <div className="pt-2 border-t border-white/5">
-                          <div className="flex justify-between items-center text-[9px] mb-1">
-                            <span className="text-white/40 uppercase font-bold tracking-wider">Progress</span>
-                            <span className="font-mono text-white/50">{item.energy}%</span>
-                          </div>
-                          <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"
-                              style={{ width: `${item.energy}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })()}
-                </AnimatePresence>
               </div>
             );
           })}
+
+          {/* ── Popup is now rendered by the parent (GLAbout) outside overflow-hidden ── */}
         </div>
       </div>
     </div>

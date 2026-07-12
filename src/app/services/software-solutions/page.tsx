@@ -6,20 +6,33 @@ import Squares from "@/components/ui/Squares";
 import DecryptedText from "@/components/ui/DecryptedText";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import Carousel3D from "@/components/ui/carousel-3d";
-import { AbstractTechShape } from "@/components/ui/3d/AbstractTechShape";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import { 
-  Globe, 
-  Cpu, 
-  Smartphone, 
-  Sparkles, 
-  ArrowRight, 
-  Zap, 
-  Layout, 
+import {
+  Globe,
+  Cpu,
+  Smartphone,
+  Sparkles,
+  ArrowRight,
+  Zap,
+  Layout,
   Layers,
   ArrowUpRight
 } from "lucide-react";
 import Link from "next/link";
+
+// WebGL component — must be dynamically imported with ssr:false to avoid hydration errors
+const AbstractTechShape = dynamic(
+  () => import("@/components/ui/3d/AbstractTechShape").then(m => ({ default: m.AbstractTechShape })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="w-32 h-32 rounded-full border border-sky-200/40 animate-pulse bg-sky-500/5" />
+      </div>
+    ),
+  }
+);
 
 const SOLUTIONS = [
   {
@@ -92,11 +105,11 @@ export default function SoftwareSolutionsPage() {
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF9F6] text-slate-800 dark:bg-slate-950 dark:text-slate-100 overflow-x-hidden font-sans">
       <SiteHeader />
-      
+
       {/* ══ HERO SECTION (Light theme, animated canvas grid, interactive 3D WebGL shape) ════════════════ */}
       <section className="relative min-h-[95vh] flex items-center pt-32 pb-20 border-b border-slate-100 dark:border-slate-900 bg-white dark:bg-slate-950">
         <div className="absolute inset-0 z-0">
-          <Squares 
+          <Squares
             direction="diagonal"
             speed={0.25}
             borderColor="rgba(15, 23, 42, 0.03)"
@@ -110,11 +123,12 @@ export default function SoftwareSolutionsPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Copy */}
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-7 w-full">
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                style={{ willChange: "opacity, transform" }}
               >
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-900/30 text-xs font-bold uppercase tracking-[0.2em] text-[#0ea5e9] mb-8">
                   <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Services // Software
@@ -124,7 +138,7 @@ export default function SoftwareSolutionsPage() {
                   <span className="text-slate-400 dark:text-slate-500 block text-2xl md:text-3xl font-light tracking-wide uppercase mb-3">
                     Engineering Custom Systems
                   </span>
-                  <DecryptedText 
+                  <DecryptedText
                     text="OUT OF THE BOX"
                     animateOn="view"
                     sequential={true}
@@ -138,8 +152,8 @@ export default function SoftwareSolutionsPage() {
                 </h1>
 
                 <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 font-light leading-relaxed max-w-2xl mb-12">
-                  We reject clunky legacy software and rigid templates. We engineer bespoke websites, 
-                  scalable custom applications, and automated AI pipelines designed to streamline your business 
+                  We reject clunky legacy software and rigid templates. We engineer bespoke websites,
+                  scalable custom applications, and automated AI pipelines designed to streamline your business
                   operations, eliminate manual bottlenecks, and accelerate your growth.
                 </p>
 
@@ -161,7 +175,7 @@ export default function SoftwareSolutionsPage() {
             </div>
 
             {/* Right 3D Interactive Component */}
-            <div className="lg:col-span-5 relative h-[380px] lg:h-[480px] w-full flex items-center justify-center">
+            <div className="lg:col-span-5 relative h-[300px] md:h-[380px] lg:h-[480px] w-full flex items-center justify-center">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -170,7 +184,7 @@ export default function SoftwareSolutionsPage() {
               >
                 {/* 3D WebGL Shape floating next to the copy */}
                 <AbstractTechShape />
-                
+
                 {/* Orbit decoration */}
                 <div className="absolute inset-0 rounded-full border border-sky-500/10 pointer-events-none scale-75 animate-[spin_40s_linear_infinite]" />
                 <div className="absolute inset-0 rounded-full border border-orange-500/5 pointer-events-none scale-90 animate-[spin_60s_linear_infinite_reverse]" />
@@ -196,7 +210,7 @@ export default function SoftwareSolutionsPage() {
               <p className="text-slate-500 dark:text-slate-400 font-light leading-relaxed mb-8">
                 Drag, hover, and rotate our shipped digital products. We build real web systems, custom apps, and automated billing software live in production.
               </p>
-              
+
               <div className="space-y-4">
                 {[
                   "CoalTrack AI — automated OCR data-entry pipelines.",
@@ -217,7 +231,7 @@ export default function SoftwareSolutionsPage() {
 
             {/* 3D Drum Carousel Component */}
             <div className="lg:col-span-7 flex items-center justify-center relative overflow-visible py-8 bg-white/40 dark:bg-slate-900/10 border border-slate-100 dark:border-slate-900/20 rounded-4xl">
-              <Carousel3D 
+              <Carousel3D
                 images={CAROUSEL_IMAGES}
                 autoPlayInterval={3500}
                 width={300}
@@ -262,7 +276,7 @@ export default function SoftwareSolutionsPage() {
                   >
                     <div>
                       {/* Icon */}
-                      <div 
+                      <div
                         className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-slate-100 dark:border-slate-850"
                         style={{ background: `linear-gradient(135deg, rgba(248, 250, 252, 0.8), ${sol.color})` }}
                       >
@@ -272,7 +286,7 @@ export default function SoftwareSolutionsPage() {
                       <h3 className="text-2xl font-bold font-heading text-slate-900 dark:text-white mb-4">
                         {sol.title}
                       </h3>
-                      
+
                       <p className="text-slate-500 dark:text-slate-400 font-light text-base leading-relaxed mb-8">
                         {sol.description}
                       </p>
@@ -308,7 +322,7 @@ export default function SoftwareSolutionsPage() {
                 How We Approach Code & Design
               </h2>
               <p className="text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-                We believe that software should be beautiful, clean, and highly useful. 
+                We believe that software should be beautiful, clean, and highly useful.
                 We combine technical precision with visual craftsmanship to build systems that last.
               </p>
             </div>
@@ -367,9 +381,9 @@ export default function SoftwareSolutionsPage() {
             <h2 className="text-3xl md:text-5xl font-bold font-heading text-slate-900 dark:text-white mb-6 tracking-tight animate-pulse">
               Ready to automate and scale?
             </h2>
-            
+
             <p className="text-slate-500 dark:text-slate-400 font-light text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10">
-              Tell us about your manual operations or the product you want to create. 
+              Tell us about your manual operations or the product you want to create.
               Our developers will scope the architecture and build an out-of-the-box solution customized for your business.
             </p>
 
