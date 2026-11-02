@@ -24,7 +24,7 @@ export function ProcessSliderSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-slate-600 max-w-2xl mx-auto text-lg"
           >
-            Drag the slider to see how our meticulous modeling process transforms a raw structural wireframe into a breathtaking, photorealistic final render.
+            Scroll to watch the room move from structural wireframe to a fully lit interior. Drag the divider, swipe, or use the arrow keys to explore the details at your own pace.
           </motion.p>
         </div>
 
@@ -35,13 +35,18 @@ export function ProcessSliderSection() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="rounded-3xl p-2 bg-white border border-slate-200 shadow-2xl"
         >
-          {/* Using placeholder images for demonstration purposes */}
           <BeforeAfterSlider 
-            beforeSrc="https://images.unsplash.com/photo-1618365908648-e71bd5716cba?q=80&w=2070&auto=format&fit=crop" 
-            afterSrc="https://images.unsplash.com/photo-1618365908648-e71bd5716cba?q=80&w=2070&auto=format&fit=crop&sat=-100" 
+            beforeSrc="/images/3d/living-room-wireframe.webp"
+            afterSrc="/images/3d/living-room-render.webp"
+            beforeAlt="Wireframe modelling view of a contemporary living room"
+            afterAlt="Photorealistic concept render of the same living room"
+            beforeLabel="Wireframe"
+            afterLabel="Final render"
+            revealOnScroll
             accentColor="#a855f7" 
           />
         </motion.div>
+        <p className="text-xs text-slate-500 text-center mt-5">Illustrative architectural concept · The same room, camera, and composition in both views.</p>
       </div>
     </section>
   );

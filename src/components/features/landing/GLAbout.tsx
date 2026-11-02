@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { useLenis } from "lenis/react";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
 import {
   MessageCircle, PenTool, Code2, Rocket,
@@ -157,124 +157,122 @@ const stepData = [
 
 /* ───── Main section ───── */
 export default function GLAbout() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [activeStepId, setActiveStepId] = useState<number>(1);
-  const storySectionRef = useRef<HTMLDivElement>(null);
+  const [activeStepId, setActiveStepId] = useState(1);
+  const [largeViewport, setLargeViewport] = useState(false);
+  const reduceMotion = useReducedMotion();
+  const lenis = useLenis();
+  const immersive = largeViewport && !reduceMotion;
+  const storySectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1280px) and (min-height: 800px)");
+    const update = () => setLargeViewport(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
 
   useGSAP(() => {
-    if (!storySectionRef.current) return;
-    ScrollTrigger.refresh();
-
+    if (!immersive || !storySectionRef.current) return;
     const trigger = ScrollTrigger.create({
+      id: "homepage-process",
       trigger: storySectionRef.current,
       start: "top top",
       end: "bottom bottom",
-      scrub: true,
-      onUpdate: (self) => {
-        const p = self.progress;
-        let id = 1;
-        if (p < 0.17) id = 1;
-        else if (p < 0.34) id = 2;
-        else if (p < 0.50) id = 3;
-        else if (p < 0.67) id = 4;
-        else if (p < 0.84) id = 5;
-        else id = 6;
-        setActiveStepId(id);
-      },
+      onUpdate: (self) => setActiveStepId(Math.min(6, Math.floor(self.progress * 6) + 1)),
     });
+    const refresh = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => { cancelAnimationFrame(refresh); trigger.kill(); };
+  }, { scope: storySectionRef, dependencies: [immersive], revertOnUpdate: true });
 
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
-    return () => { trigger.kill(); clearTimeout(timer); };
-  }, { scope: storySectionRef });
+  const selectStep = (id: number | null) => {
+    if (id === null) return;
+    setActiveStepId(id);
+    const element = storySectionRef.current;
+    if (immersive && element) {
+      const trigger = ScrollTrigger.getById("homepage-process");
+      trigger?.refresh();
+      const start = trigger?.start ?? element.getBoundingClientRect().top + window.scrollY;
+      const distance = trigger ? trigger.end - trigger.start : element.offsetHeight - window.innerHeight;
+      const destination = start + ((id - 0.5) / stepData.length) * distance;
+      if (lenis) lenis.scrollTo(destination, { duration: 0.6 });
+      else window.scrollTo({ top: destination, behavior: "smooth" });
+    }
+  };
 
   const step = stepData[activeStepId - 1];
 
   return (
-    <section ref={ref} id="about" className="relative bg-[#020817]">
-
-      {/* ─── Pinned scroll section ─── */}
+    <section id="about" className="relative bg-[#020817]">
       <section
         ref={storySectionRef}
-        className="relative h-[600vh] w-full"
-        style={{ backgroundColor: step.bg, transition: "background-color 0.8s ease" }}
+        data-process-section
+        data-process-layout={immersive ? "immersive" : "compact"}
+        className={immersive ? "relative h-[600svh] w-full" : "relative w-full"}
+        style={{ backgroundColor: step.bg, transition: "background-color 0.6s ease" }}
       >
         <div
-          className="sticky top-0 h-screen w-full flex flex-col justify-between px-[4vw] pt-[clamp(2rem,4vw,4vw)] pb-[4vw] overflow-hidden"
-          style={{ color: step.dark ? "#ffffff" : "#111827", transition: "color 0.8s ease" }}
+          data-process-panel
+          className={immersive
+            ? "sticky top-0 h-[100svh] w-full flex flex-col px-[4vw] pt-36 pb-8"
+            : "w-full px-6 lg:px-12 py-16 lg:py-20"}
+          style={{ color: step.dark ? "#ffffff" : "#111827" }}
         >
-          {/* Top bar */}
-          <div className="flex items-center justify-between shrink-0 mb-4">
-            <p
-              className="text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-500"
-              style={{ color: step.dark ? "#ffffff" : "#0ea5e9" }}
-            >
-              {step.label}
-            </p>
-            <p
-              className="text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-500"
-              style={{ color: step.dark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)" }}
-            >
-              {step.right}
-            </p>
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4 mb-5 shrink-0" style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)" }}>
+            <p className="text-xs font-bold uppercase tracking-[0.2em]">{step.label}</p>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-70">{step.right}</p>
           </div>
-          <hr
-            className="border-t shrink-0 transition-colors duration-500"
-            style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.1)" }}
-          />
+          <nav aria-label="Our process stages" className="flex flex-wrap gap-2 mb-5 shrink-0">
+            {processTimelineData.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => selectStep(item.id)}
+                aria-pressed={activeStepId === item.id}
+                className="rounded-full border px-3 py-2 text-xs font-semibold transition-colors"
+                style={{ color: activeStepId === item.id ? "#0a1628" : "inherit", background: activeStepId === item.id ? "#ffffff" : "transparent", borderColor: step.dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.2)" }}
+              >
+                {item.title}
+              </button>
+            ))}
+          </nav>
 
-          {/* Split */}
-          <div className="flex flex-col lg:flex-row flex-1 min-h-0 items-center justify-center gap-8 lg:gap-16">
-
-            {/* Left */}
-            <div className="lg:w-1/2 flex flex-col justify-center pr-0 lg:pr-12 shrink-0 w-full">
+          <div className={`grid lg:grid-cols-2 items-center gap-8 lg:gap-10 ${immersive ? "flex-1 min-h-0" : ""}`}>
+            <div data-process-copy className="min-w-0">
               <motion.h2
                 key={activeStepId}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.45, ease: "easeOut" }}
-                className="font-bold leading-[0.92] uppercase tracking-tight mb-4"
-                style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(2rem, 4vw, 3.8rem)", color: step.dark ? "#ffffff" : "#111827" }}
+                transition={{ duration: reduceMotion ? 0 : 0.25 }}
+                className="font-bold leading-[0.98] uppercase tracking-tight mb-5"
+                style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(1.8rem, 3.4vw, 3.5rem)", color: step.dark ? "#ffffff" : "#111827" }}
               >
                 {step.heading}
               </motion.h2>
-
-              <p
-                className="max-w-[48ch] leading-relaxed mb-6 font-medium"
-                style={{ fontSize: "clamp(0.9rem, 1.3vw, 1.15rem)", color: step.dark ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.7)" }}
-              >
-                {step.body}
-              </p>
-
-              <div className="flex flex-wrap gap-3 w-full max-w-md">
-                {step.cards.map((card, idx) => (
-                  <div
-                    key={idx}
-                    className="min-w-[100px] flex-1 border p-3 rounded-xl"
-                    style={{
-                      borderColor: step.dark ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.1)",
-                      backgroundColor: step.dark ? "rgba(0,0,0,0.15)" : "rgba(0,0,0,0.04)",
-                    }}
-                  >
-                    <p className="mb-1 text-sm font-bold uppercase tracking-wider"
-                      style={{ color: step.accentLabel }}>{card.label}</p>
-                    <p
-                      className="text-xs leading-relaxed"
-                      style={{ color: step.dark ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)" }}
-                    >
-                      {card.desc}
-                    </p>
+              <p className="max-w-[48ch] text-sm xl:text-base leading-relaxed mb-6 font-medium opacity-90">{step.body}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                {step.cards.map((card) => (
+                  <div key={card.label} className="border p-3 rounded-xl" style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)", background: step.dark ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.03)" }}>
+                    <p className="mb-1 text-xs font-bold uppercase tracking-wider" style={{ color: step.accentLabel }}>{card.label}</p>
+                    <p className="text-xs leading-relaxed opacity-75">{card.desc}</p>
                   </div>
                 ))}
               </div>
+              <a
+                href={`https://wa.me/917498341146?text=${encodeURIComponent(`Hi Shaibya Solutions, I'd like to discuss the ${processTimelineData[activeStepId - 1].title.toLowerCase()} stage of a project.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+              >
+                Discuss your project <ArrowRight size={15} aria-hidden="true" />
+              </a>
             </div>
-
-            {/* Right — orbital */}
-            <div className="flex-1 min-h-0 flex items-center justify-center overflow-hidden w-full">
+            <div className={immersive ? "h-full min-h-0 min-w-0" : "h-[480px] sm:h-[500px] lg:h-[clamp(400px,calc(100svh_-_240px),500px)] min-w-0"}>
               <RadialOrbitalTimeline
                 timelineData={processTimelineData}
                 activeId={step.orbitalId}
                 activeStepId={activeStepId}
-                onActiveChange={() => { }}
+                onActiveChange={selectStep}
               />
             </div>
           </div>

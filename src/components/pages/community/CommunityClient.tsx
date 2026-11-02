@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import {
@@ -24,7 +24,7 @@ const TEXT_MAIN = "#1d1d1f";
 const TEXT_MUTED = "#86868b";
 
 interface AppleCardProps {
-  icon: React.ElementType;
+  icon: React.ComponentType<{ size?: number | string; className?: string }>;
   tag: string;
   title: string;
   subtitle: string;
@@ -115,7 +115,7 @@ export default function CommunityClient() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
@@ -247,7 +247,7 @@ export default function CommunityClient() {
                   "Fair, sprint-based profit-sharing structures for active team components."
                 ]}
                 ctaText="Join LinkedIn Circle"
-                ctaHref="https://www.linkedin.com/company/shaibyasolutions/about/"
+                ctaHref="https://www.linkedin.com/company/108785057/"
                 accentColor="#10b981"
               />
             </motion.div>
@@ -361,7 +361,7 @@ export default function CommunityClient() {
               <FaWhatsapp size={16} /> Join WhatsApp Hub
             </a>
             <a
-              href="https://www.linkedin.com/company/shaibyasolutions/about/"
+              href="https://www.linkedin.com/company/108785057/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 rounded-full px-10 py-4 font-bold text-xs uppercase tracking-wider text-slate-700 border border-slate-200 bg-white hover:bg-slate-50 transition-colors"

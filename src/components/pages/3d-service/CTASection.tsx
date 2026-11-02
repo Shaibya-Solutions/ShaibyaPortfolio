@@ -38,10 +38,15 @@ export function CTASection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <button className="group relative px-10 py-5 bg-slate-900 text-white font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 text-lg shadow-xl">
+          <a
+            href={`https://wa.me/917498341146?text=${encodeURIComponent("Hi Shaibya Solutions, I'd like to discuss a 3D modelling or animation project.")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex group relative px-10 py-5 bg-slate-900 text-white font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 text-lg shadow-xl"
+          >
             <span className="relative z-10">Start Your Project</span>
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-30 transition-opacity duration-300" />
-          </button>
+          </a>
         </motion.div>
       </div>
 

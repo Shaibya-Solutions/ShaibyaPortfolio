@@ -32,7 +32,7 @@ const INSTAGRAM_POSTS = [
 ];
 
 export default function GLInstagram() {
-  const instagramUrl = "https://www.instagram.com/shaibya.solutions/";
+  const instagramUrl = "https://www.instagram.com/deepoffduty/";
 
   return (
     <section className="bg-[#faf5ef] py-16 md:py-24 overflow-hidden border-t border-slate-200/50">
@@ -54,7 +54,7 @@ export default function GLInstagram() {
           onMouseEnter={e => (e.currentTarget.style.color = "#0ea5e9")}
           onMouseLeave={e => (e.currentTarget.style.color = "rgba(14,165,233,0.75)")}
         >
-          @shaibya.solutions
+          @deepoffduty
         </a>
       </div>
 

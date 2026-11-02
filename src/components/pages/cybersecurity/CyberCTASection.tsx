@@ -86,7 +86,7 @@ export function CyberCTASection() {
           </p>
 
           <Magnet magnetStrength={2}>
-            <button className="group relative px-12 py-5 bg-[#10b981] text-black font-bold text-lg rounded-none uppercase tracking-widest overflow-hidden">
+            <a href="https://wa.me/917498341146?text=Hi%20Shaibya%20Solutions%2C%20I%27d%20like%20to%20discuss%20security%20for%20my%20business." target="_blank" rel="noopener noreferrer" className="inline-flex group relative px-12 py-5 bg-[#10b981] text-black font-bold text-lg rounded-none uppercase tracking-widest overflow-hidden">
               {/* Glitch hover effect overlay */}
               <div className="absolute inset-0 w-full h-full bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
               <div className="absolute top-0 left-[-100%] w-1/2 h-full bg-gradient-to-r from-transparent via-white to-transparent skew-x-12 opacity-50 group-hover:animate-[slide_1s_ease-in-out_infinite]" />
@@ -94,7 +94,7 @@ export function CyberCTASection() {
               <span className="relative z-10 flex items-center gap-3">
                 Deploy Defense <ShieldIcon />
               </span>
-            </button>
+            </a>
           </Magnet>
         </motion.div>
       </div>

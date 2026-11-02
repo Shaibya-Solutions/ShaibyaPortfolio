@@ -34,7 +34,7 @@ export const itemVariants: Variants = {
 
 const socials = [
   {
-    href: "https://www.linkedin.com/company/shaibyasolutions/about/",
+    href: "https://www.linkedin.com/company/108785057/",
     icon: FaLinkedin,
     label: "LinkedIn",
     color: "hover:text-blue-400",
@@ -289,7 +289,7 @@ export function SiteFooter() {
             >
               Blog
             </a>
-            <Link href="#" className="hover:text-slate-900 transition">
+            <Link href="/privacy-policy" className="hover:text-slate-900 transition">
               Privacy Policy
             </Link>
             <Link

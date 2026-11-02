@@ -1,6 +1,8 @@
-'use client';
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
 
 interface TimelineItem {
   id: number;
@@ -8,9 +10,9 @@ interface TimelineItem {
   date: string;
   content: string;
   category: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   relatedIds: number[];
-  status: 'completed' | 'in-progress' | 'pending';
+  status: "completed" | "in-progress" | "pending";
   energy: number;
 }
 
@@ -27,315 +29,99 @@ export default function RadialOrbitalTimeline({
   activeId = null,
   activeStepId = 4,
 }: RadialOrbitalTimelineProps) {
-  const [rotationAngle, setRotationAngle] = useState<number>(0);
-  const [autoRotate, setAutoRotate] = useState<boolean>(true);
-  const [activeNodeId, setActiveNodeId] = useState<number | null>(null);
-  const [clickedNodeId, setClickedNodeId] = useState<number | null>(null);
+  const diagramRef = useRef<HTMLDivElement>(null);
+  const [radius, setRadius] = useState(100);
+  const [rotation, setRotation] = useState(0);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
+  const currentId = activeId ?? selectedId ?? timelineData[0]?.id;
+  const current = timelineData.find((item) => item.id === currentId);
+  const selectedIndex = timelineData.findIndex((item) => item.id === currentId);
+  const controlled = activeId !== null || selectedId !== null;
+  const angleOffset = controlled ? 180 - (selectedIndex / timelineData.length) * 360 : rotation;
+  const isLight = activeStepId === 2 || activeStepId === 5;
+  const accent = isLight ? "#0ea5e9" : activeStepId === 3 || activeStepId === 6 ? "#38bdf8" : "#ffffff";
 
-  const containerRef = useRef<HTMLDivElement>(null);
-  const orbitRef = useRef<HTMLDivElement>(null);
-
-  // Sync with activeId prop from parent scroll
   useEffect(() => {
-    if (activeId !== null) {
-      setActiveNodeId(activeId);
-      setAutoRotate(false);
-      centerViewOnNode(activeId);
-    } else {
-      setActiveNodeId(null);
-      setAutoRotate(true);
-      setClickedNodeId(null);
-    }
-  }, [activeId, timelineData]);
+    const element = diagramRef.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      // Reserve room for every node, label, and focus ring on all four sides.
+      const available = Math.min(entry.contentRect.width, entry.contentRect.height);
+      setRadius(Math.max(36, Math.min(190, (available - 112) / 2)));
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
-  // Auto rotation timer when not active/pinned
   useEffect(() => {
-    let rotationTimer: NodeJS.Timeout;
+    if (controlled || reduceMotion) return;
+    const timer = setInterval(() => setRotation((value) => (value + 0.35) % 360), 50);
+    return () => clearInterval(timer);
+  }, [controlled, reduceMotion]);
 
-    if (autoRotate) {
-      rotationTimer = setInterval(() => {
-        setRotationAngle((prev) => {
-          const newAngle = (prev + 0.35) % 360;
-          return Number(newAngle.toFixed(3));
-        });
-      }, 50);
-    }
-
-    return () => {
-      if (rotationTimer) {
-        clearInterval(rotationTimer);
-      }
-    };
-  }, [autoRotate]);
-
-  const centerViewOnNode = (nodeId: number) => {
-    const nodeIndex = timelineData.findIndex((item) => item.id === nodeId);
-    if (nodeIndex === -1) return;
-    const totalNodes = timelineData.length;
-    const targetAngle = (nodeIndex / totalNodes) * 360;
-
-    // Center the target node at 180 degrees (left side, right next to the left column text!)
-    setRotationAngle(180 - targetAngle);
-  };
-
-  const calculateNodePosition = (index: number, total: number) => {
-    const angle = ((index / total) * 360 + rotationAngle) % 360;
-    const radius = 200; // restored original radius
-    const radian = (angle * Math.PI) / 180;
-
-    const x = radius * Math.cos(radian);
-    const y = radius * Math.sin(radian);
-
-    const zIndex = Math.round(100 + 50 * Math.cos(radian));
-    const opacity = Math.max(
-      0.4,
-      Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2))
-    );
-
-    return { x, y, angle, zIndex, opacity };
-  };
-
-  const getRelatedItems = (itemId: number): number[] => {
-    const currentItem = timelineData.find((item) => item.id === itemId);
-    return currentItem ? currentItem.relatedIds : [];
-  };
-
-  const isRelatedToActive = (itemId: number): boolean => {
-    if (!activeNodeId) return false;
-    const relatedItems = getRelatedItems(activeNodeId);
-    return relatedItems.includes(itemId);
-  };
-
-  const handleNodeClick = (id: number) => {
-    setActiveNodeId(id);
-    setAutoRotate(false);
-    centerViewOnNode(id);
+  const select = (id: number) => {
+    if (activeId === null) setSelectedId(id);
     onActiveChange?.(id);
-    setClickedNodeId(id);
-  };
-
-  // Determine theme based on the background of the current slide
-  // Step 1,4 → blue bg  |  Step 2,5 → light bg  |  Step 3,6 → dark navy bg
-  const isLightBg = activeStepId === 2 || activeStepId === 5;
-  const isDarkNavy = activeStepId === 3 || activeStepId === 6;
-  const isBlueBg = activeStepId === 1 || activeStepId === 4;
-
-  const orbitBorderColor = isLightBg
-    ? 'rgba(14, 165, 233, 0.35)'
-    : isDarkNavy
-      ? 'rgba(56, 189, 248, 0.3)'
-      : 'rgba(255, 255, 255, 0.4)';
-
-  const centerSphereBg = isLightBg
-    ? 'bg-gradient-to-br from-[#0ea5e9] via-sky-400 to-blue-500 shadow-xl shadow-sky-400/30'
-    : isDarkNavy
-      ? 'bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-500 shadow-xl shadow-sky-500/30'
-      : 'bg-gradient-to-br from-white via-slate-100 to-slate-200 shadow-xl shadow-white/30';
-
-  const centerSphereInnerBg = isLightBg
-    ? 'bg-white border-sky-200'
-    : isDarkNavy
-      ? 'bg-[#111827] border-sky-400/30'
-      : 'bg-white border-slate-200';
-
-  const centerPingColor = isLightBg
-    ? 'border-sky-400/40'
-    : isDarkNavy
-      ? 'border-sky-300/30'
-      : 'border-white/40';
-
-  const inactiveNodeClass = isLightBg
-    ? 'bg-white text-[#0ea5e9] border-[#0ea5e9]/30 hover:bg-sky-50 hover:border-[#0ea5e9]/60'
-    : isDarkNavy
-      ? 'bg-white/5 text-white/70 border-white/10 hover:bg-white/10 hover:border-white/20'
-      : 'bg-white/10 text-white border-white/20 hover:bg-white/20 hover:border-white/40';
-
-  const activeNodeClass = isLightBg
-    ? 'bg-[#0ea5e9] text-white border-[#0ea5e9] shadow-xl shadow-sky-400/40 scale-125 font-bold'
-    : isDarkNavy
-      ? 'bg-sky-500 text-white border-sky-400 shadow-xl shadow-sky-500/50 scale-125 font-bold'
-      : 'bg-white text-[#0ea5e9] border-white shadow-xl shadow-white/60 scale-125 font-bold';
-
-  const relatedNodeClass = isLightBg
-    ? 'bg-sky-50 text-[#0ea5e9] border-[#0ea5e9]/50'
-    : isDarkNavy
-      ? 'bg-sky-900/60 text-sky-400 border-sky-500/50'
-      : 'bg-white/20 text-white border-white/50';
-
-  const nodeEnergyGlow = isLightBg
-    ? 'rgba(14, 165, 233, 0.25)'
-    : isDarkNavy
-      ? 'rgba(56, 189, 248, 0.35)'
-      : 'rgba(255, 255, 255, 0.4)';
-
-  const backdropGlowClass = isLightBg
-    ? 'bg-sky-400/10'
-    : isDarkNavy
-      ? 'bg-sky-500/15'
-      : 'bg-white/10';
-
-  const getLabelColor = (isActive: boolean) => {
-    if (isLightBg) {
-      return isActive ? 'text-[#0ea5e9] font-bold scale-110' : 'text-slate-500';
-    }
-    if (isDarkNavy) {
-      return isActive ? 'text-white font-bold scale-110' : 'text-white/50';
-    }
-    // blue bg
-    return isActive ? 'text-white font-bold scale-110' : 'text-white/60';
   };
 
   return (
-    <div
-      className="w-full h-[580px] flex items-center justify-center overflow-visible relative bg-transparent"
-      ref={containerRef}
-    >
-      {/* Outer Backdrop Glow for maximum atmospheric effect */}
-      <div className={`absolute w-80 h-80 rounded-full ${backdropGlowClass} blur-3xl pointer-events-none z-0`} />
-
-      <div className="relative w-full max-w-4xl h-full flex items-center justify-center scale-90 sm:scale-100 z-10">
-        <div
-          className="absolute w-full h-full flex items-center justify-center"
-          ref={orbitRef}
-          style={{
-            perspective: '1000px',
-          }}
-        >
-          {/* Center sphere — dynamic high-contrast theme gradient */}
-          <div className={`absolute w-16 h-16 rounded-full ${centerSphereBg} animate-pulse flex items-center justify-center z-10`}>
-            <div className={`absolute w-20 h-20 rounded-full border ${centerPingColor} animate-ping opacity-70`}></div>
-            <div
-              className={`absolute w-24 h-24 rounded-full border ${centerPingColor} animate-ping opacity-50`}
-              style={{ animationDelay: '0.5s' }}
-            ></div>
-            <div className={`w-8 h-8 rounded-full ${centerSphereInnerBg} border shadow-inner`}></div>
-          </div>
-
-          {/* Orbit ring — thickened with border-2 */}
-          <div
-            className="absolute w-96 h-96 rounded-full border-2"
-            style={{ borderColor: orbitBorderColor }}
-          ></div>
-
-          {timelineData.map((item, index) => {
-            const position = calculateNodePosition(index, timelineData.length);
-            const isActive = activeNodeId === item.id;
-            const isRelated = isRelatedToActive(item.id);
-            const Icon = item.icon;
-
-            const nodeStyle = {
-              transform: `translate(${position.x}px, ${position.y}px)`,
-              zIndex: isActive ? 200 : position.zIndex,
-              opacity: isActive ? 1 : position.opacity,
-            };
-
-            const transitionClass = autoRotate ? '' : 'transition-all duration-700 ease-out';
-
-            return (
-              <div
-                key={item.id}
-                className={`absolute cursor-pointer ${transitionClass}`}
-                style={nodeStyle}
-                onClick={() => handleNodeClick(item.id)}
-              >
-                {/* Energy glow circles */}
-                <div
-                  className="absolute rounded-full -inset-1.5 animate-pulse duration-1000"
-                  style={{
-                    background: `radial-gradient(circle, ${nodeEnergyGlow} 0%, rgba(14,165,233,0) 70%)`,
-                    width: `${item.energy * 0.5 + 46}px`,
-                    height: `${item.energy * 0.5 + 46}px`,
-                    left: `-${(item.energy * 0.5 + 46 - 56) / 2}px`,
-                    top: `-${(item.energy * 0.5 + 46 - 56) / 2}px`,
-                  }}
-                ></div>
-
-                {/* Node circle — size increased to w-14 h-14 */}
-                <div
-                  className={`
-                    w-14 h-14 rounded-full flex items-center justify-center border-2 transition-all duration-300 transform shadow-md
-                    ${isActive
-                      ? activeNodeClass
-                      : isRelated
-                        ? relatedNodeClass + ' animate-pulse'
-                        : inactiveNodeClass
-                    }
-                  `}
-                >
-                  <Icon size={22} />
-                </div>
-
-                {/* Node label */}
-                <div
-                  className={`
-                    absolute top-16 left-1/2 -translate-x-1/2 whitespace-nowrap
-                    text-xs tracking-wide
-                    transition-all duration-300 pointer-events-none
-                    ${getLabelColor(isActive)}
-                  `}
-                >
-                  {item.title}
-                </div>
-
-                {/* Popover Card Info Box when active/clicked */}
-                <AnimatePresence mode="wait">
-                  {isActive && (() => {
-                    const showAbove = position.y > 0;
-                    return (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: showAbove ? 8 : -8 }}
-                        transition={{ duration: 0.25, ease: "easeOut" }}
-                        className="absolute left-1/2 -translate-x-1/2 w-64 bg-[#0a1628]/95 backdrop-blur-lg border border-white/10 shadow-2xl p-4 rounded-xl z-50 text-left"
-                        style={{
-                          bottom: showAbove ? "80px" : "auto",
-                          top: showAbove ? "auto" : "80px"
-                        }}
-                      >
-                        {/* Arrow */}
-                        <div className={`absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[#0a1628] rotate-45 ${
-                          showAbove 
-                            ? '-bottom-1.5 border-b border-r border-white/10' 
-                            : '-top-1.5 border-t border-l border-white/10'
-                        }`} />
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="text-[10px] font-mono text-white/40">
-                            {item.date}
-                          </span>
-                          <span className="px-1.5 py-0.5 rounded text-[9px] font-bold tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/30 uppercase">
-                            {item.status === 'completed' ? 'COMPLETE' : item.status === 'in-progress' ? 'IN PROGRESS' : 'PENDING'}
-                          </span>
-                        </div>
-                        <h4 className="text-xs font-bold text-white mb-1 uppercase tracking-wider">
-                          {item.title}
-                        </h4>
-                        <p className="text-[10px] text-white/70 leading-relaxed mb-3">
-                          {item.content}
-                        </p>
-
-                        {/* Progress Bar */}
-                        <div className="pt-2 border-t border-white/5">
-                          <div className="flex justify-between items-center text-[9px] mb-1">
-                            <span className="text-white/40 uppercase font-bold tracking-wider">Progress</span>
-                            <span className="font-mono text-white/50">{item.energy}%</span>
-                          </div>
-                          <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-gradient-to-r from-sky-400 to-blue-500 rounded-full"
-                              style={{ width: `${item.energy}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })()}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+    <div data-orbital-timeline className="grid h-full min-h-0 w-full grid-rows-[minmax(160px,1fr)_auto] gap-3">
+      <div ref={diagramRef} data-orbit-diagram className="relative flex min-h-0 w-full items-center justify-center">
+        <div className="absolute h-48 w-48 rounded-full blur-3xl pointer-events-none" style={{ background: accent, opacity: 0.08 }} />
+        <div className="absolute rounded-full border-2" style={{ width: radius * 2, height: radius * 2, borderColor: accent, opacity: 0.35 }} />
+        <div className="absolute flex h-16 w-16 items-center justify-center rounded-full shadow-xl" style={{ background: isLight ? "#0ea5e9" : "#ffffff" }}>
+          <div className="h-8 w-8 rounded-full border" style={{ borderColor: isLight ? "#bae6fd" : "#e2e8f0", background: isLight ? "#ffffff" : "#e0f2fe" }} />
         </div>
+        {timelineData.map((item, index) => {
+          const angle = ((index / timelineData.length) * 360 + angleOffset) * Math.PI / 180;
+          const x = radius * Math.cos(angle);
+          const y = radius * Math.sin(angle);
+          const active = item.id === currentId;
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.id}
+              className="absolute left-1/2 top-1/2"
+              style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`, transition: reduceMotion || !controlled ? "none" : "transform 600ms ease", zIndex: active ? 2 : 1 }}
+            >
+              <button
+                type="button"
+                onClick={() => select(item.id)}
+                aria-label={`View ${item.title} stage`}
+                aria-pressed={active}
+                className="relative flex h-12 w-12 items-center justify-center rounded-full border-2 shadow-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                style={{ color: active ? "#0ea5e9" : accent, background: active ? "#ffffff" : isLight ? "#ffffff" : "rgba(255,255,255,0.08)", borderColor: active ? "#ffffff" : accent, outlineColor: accent }}
+              >
+                <Icon size={21} aria-hidden="true" />
+                <span className="absolute left-1/2 top-14 -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold" style={{ color: accent }}>{item.title}</span>
+              </button>
+            </div>
+          );
+        })}
       </div>
+      <AnimatePresence mode="wait" initial={false}>
+        {current && (
+          <motion.div
+            key={current.id}
+            data-process-detail
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.15 }}
+            className="relative mx-auto w-full max-w-[440px] rounded-2xl border border-white/10 bg-[#0a1628]/95 p-4 sm:p-5 shadow-xl"
+          >
+            <div className="flex flex-wrap items-center justify-between gap-2 mb-2 text-[10px] font-semibold uppercase tracking-wider text-sky-300">
+              <span>{current.date}</span><span>{current.category}</span>
+            </div>
+            <h3 className="text-sm font-bold font-heading uppercase tracking-wider text-white mb-2">{current.title}</h3>
+            <p className="text-xs text-white/75 leading-relaxed">{current.content}</p>
+            <div className="mt-3 h-1 rounded-full bg-white/10 overflow-hidden" aria-hidden="true">
+              <div className="h-full rounded-full bg-gradient-to-r from-sky-400 to-blue-500" style={{ width: `${current.energy}%` }} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,10 +1,11 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Environment } from "@react-three/drei";
-import { useRef, Suspense } from "react";
+import { Float } from "@react-three/drei";
+import { useRef } from "react";
 import * as THREE from "three";
 import { useInView } from "react-intersection-observer";
+import { GeometricPreview, SceneBoundary } from "@/components/shared/SceneBoundary";
 
 function Scene() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -19,8 +20,8 @@ function Scene() {
     
     if (groupRef.current) {
       // Subtly follow mouse
-      const targetX = (state.mouse.x * Math.PI) / 10;
-      const targetY = (state.mouse.y * Math.PI) / 10;
+      const targetX = (state.pointer.x * Math.PI) / 10;
+      const targetY = (state.pointer.y * Math.PI) / 10;
       
       groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetX, 0.1);
       groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, -targetY, 0.1);
@@ -35,7 +36,7 @@ function Scene() {
           <meshStandardMaterial 
             color="#ff007f" 
             roughness={0.2} 
-            metalness={0.8}
+            metalness={0.25}
             wireframe={true}
           />
         </mesh>
@@ -46,7 +47,7 @@ function Scene() {
           <meshStandardMaterial 
             color="#ffffff" 
             roughness={0.4} 
-            metalness={0.6}
+            metalness={0.25}
           />
         </mesh>
       </Float>
@@ -61,27 +62,23 @@ export function Hero3DScene() {
   });
 
   return (
-    <div ref={ref} className="w-full h-full absolute inset-0 pointer-events-none">
-      {/* frameloop="demand" pauses the render loop automatically unless state changes, 
-          but with useFrame we need it to be "always". Switching to "demand" when not in view
-          pauses the useFrame loops, saving immense battery and CPU on mobile. */}
-      <Canvas 
-        frameloop={inView ? "always" : "demand"} 
-        camera={{ position: [0, 0, 6], fov: 45 }} 
-        dpr={[1, 1.5]}
-        className="pointer-events-auto"
-      >
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
+    <div ref={ref} className="w-full h-full absolute inset-0" data-scene="3d-hero">
+      {/* Pause continuous rendering while the hero is off screen. */}
+      <SceneBoundary fallback={<GeometricPreview accent="#a855f7" />}>
+        <Canvas
+          fallback={<GeometricPreview accent="#a855f7" />}
+          frameloop={inView ? "always" : "demand"}
+          camera={{ position: [0, 0, 8], fov: 45 }}
+          dpr={[1, 1.5]}
+          className="pointer-events-auto"
+        >
+          <ambientLight intensity={0.9} />
+          <hemisphereLight args={["#e0f2fe", "#64748b", 1.8]} />
           <directionalLight position={[10, 10, 10]} intensity={1} color="#00d2ff" />
           <directionalLight position={[-10, -10, -10]} intensity={1} color="#ff007f" />
-          
-          {/* Only render scene if in view for extra safety, though frameloop handles most of it */}
           {inView && <Scene />}
-          
-          <Environment preset="city" />
-        </Suspense>
-      </Canvas>
+        </Canvas>
+      </SceneBoundary>
     </div>
   );
 }

@@ -4,6 +4,10 @@ import createGlobe from 'cobe';
 import type React from 'react';
 import { useEffect, useRef } from 'react';
 
+const DEFAULT_BASE_COLOR: [number, number, number] = [0.4, 0.6509, 1];
+const DEFAULT_MARKER_COLOR: [number, number, number] = [1, 0, 0];
+const DEFAULT_GLOW_COLOR: [number, number, number] = [0.2745, 0.5765, 0.898];
+
 interface EarthProps {
   className?: string;
   theta?: number;
@@ -24,16 +28,19 @@ const Earth: React.FC<EarthProps> = ({
   diffuse = 1.2,
   mapSamples = 40000,
   mapBrightness = 6,
-  baseColor = [0.4, 0.6509, 1],
-  markerColor = [1, 0, 0],
-  glowColor = [0.2745, 0.5765, 0.898],
+  baseColor = DEFAULT_BASE_COLOR,
+  markerColor = DEFAULT_MARKER_COLOR,
+  glowColor = DEFAULT_GLOW_COLOR,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
     let phi = 0;
+    let animationFrame: number;
 
-    const globe = createGlobe(canvasRef.current!, {
+    const globe = createGlobe(canvas, {
       devicePixelRatio: 2,
       width: 600 * 2,
       height: 600 * 2,
@@ -50,16 +57,21 @@ const Earth: React.FC<EarthProps> = ({
       opacity: 1,
       offset: [0, 0],
       markers: [],
-      onRender: (state: Record<string, any>) => {
-        state.phi = phi;
-        phi += 0.003;
-      },
     });
 
+    // COBE v2 exposes update() rather than the old onRender callback.
+    const rotate = () => {
+      globe.update({ phi });
+      phi += 0.003;
+      animationFrame = requestAnimationFrame(rotate);
+    };
+    animationFrame = requestAnimationFrame(rotate);
+
     return () => {
+      cancelAnimationFrame(animationFrame);
       globe.destroy();
     };
-  }, []);
+  }, [theta, dark, scale, diffuse, mapSamples, mapBrightness, baseColor, markerColor, glowColor]);
 
   return (
     <div

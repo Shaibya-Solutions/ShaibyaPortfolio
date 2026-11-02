@@ -47,7 +47,7 @@ const socialNodes = [
     label: "LinkedIn",
     desc: "Connect with our team & company news",
     icon: FaLinkedin,
-    href: "https://www.linkedin.com/company/shaibyasolutions/about/",
+    href: "https://www.linkedin.com/company/108785057/",
     color: "from-blue-600 to-blue-700",
     bgLight: "bg-blue-50",
     textColor: "text-blue-700",

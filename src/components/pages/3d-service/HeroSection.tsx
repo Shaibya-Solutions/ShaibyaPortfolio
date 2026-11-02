@@ -1,8 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
-import { Hero3DScene } from "./Hero3DScene";
+import { ArrowDown } from "lucide-react";
+import dynamic from "next/dynamic";
+import { GeometricPreview } from "@/components/shared/SceneBoundary";
+
+const Hero3DScene = dynamic(() => import("./Hero3DScene").then((mod) => mod.Hero3DScene), {
+  ssr: false,
+  loading: () => <GeometricPreview accent="#a855f7" />,
+});
 
 export function HeroSection() {
   return (
@@ -40,7 +46,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
             className="text-lg md:text-xl text-slate-600 font-light max-w-lg mb-10 leading-relaxed"
           >
-            We sculpt hyper-realistic 3D assets, craft cinematic motion graphics, and build immersive visualizations that elevate your brand's digital presence.
+            Walkthrough videos, product animation, and interior visualisation — including architectural renderings — designed to make your spaces and products easier to understand.
           </motion.p>
 
           <motion.div 
@@ -49,22 +55,22 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
             className="flex flex-wrap gap-4"
           >
-            <button className="group relative px-8 py-4 bg-slate-900 text-white font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl">
+            <a href="#featured-work" className="group relative px-8 py-4 bg-slate-900 text-white font-semibold rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95 shadow-xl">
               <span className="relative z-10 flex items-center gap-2">
-                <Play className="w-4 h-4 fill-white text-white" />
-                View Showreel
+                <ArrowDown className="w-4 h-4 text-white" aria-hidden="true" />
+                Explore Examples
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-            </button>
+            </a>
             
-            <button className="px-8 py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-900 font-semibold rounded-full shadow-sm transition-all hover:scale-105 active:scale-95">
+            <a href="#3d-services" className="px-8 py-4 bg-white border border-slate-200 hover:bg-slate-50 text-slate-900 font-semibold rounded-full shadow-sm transition-all hover:scale-105 active:scale-95">
               Explore Services
-            </button>
+            </a>
           </motion.div>
         </div>
 
         {/* Right Column - 3D Canvas */}
-        <div className="relative h-[50vh] lg:h-[80vh] w-full rounded-3xl overflow-hidden pointer-events-none">
+        <div className="relative h-[50vh] lg:h-[80vh] w-full rounded-3xl overflow-hidden">
           <Hero3DScene />
         </div>
 

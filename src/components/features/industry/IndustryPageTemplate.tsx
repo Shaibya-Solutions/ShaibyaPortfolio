@@ -940,7 +940,7 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
             </section>
 
             {/* ══ FAQ ══════════════════════════════════════════════════════ */}
-            <section className="py-24 px-6 lg:px-12 border-b border-[#E5E7EB]">
+            <section id="faq" className="py-24 px-6 lg:px-12 border-b border-[#E5E7EB]">
                 <div className="max-w-3xl mx-auto">
                     <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                         className="text-center mb-12">

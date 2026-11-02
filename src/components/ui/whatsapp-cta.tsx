@@ -12,7 +12,7 @@ export function WhatsAppCTA({
   className = "",
   message = "Hi, I am interested in your digital solutions.",
 }: WhatsAppCTAProps) {
-  const phoneNumber = "+919876543210"; // Placeholder, to be updated
+  const phoneNumber = "917498341146";
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 

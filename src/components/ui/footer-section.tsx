@@ -25,9 +25,9 @@ const footerLinks: FooterSection[] = [
     label: 'Navigation',
     links: [
       { title: 'Overview', href: '/' },
-      { title: 'Services', href: '/#services' },
+      { title: 'Services', href: '/services/software-solutions' },
       { title: 'Industries', href: '/#industries' },
-      { title: 'Our Team', href: '/#team' },
+      { title: 'Our Team', href: '/about#team' },
       { title: 'Careers', href: '/careers' },
       { title: 'Community', href: '/community' },
       { title: 'Portfolio', href: '/portfolio/solutions' },
@@ -38,7 +38,7 @@ const footerLinks: FooterSection[] = [
     links: [
       { title: 'FAQ', href: '/#faq' },
       { title: 'Contact', href: '/contact' },
-      { title: 'Privacy Policy', href: '#' },
+      { title: 'Privacy Policy', href: '/privacy-policy' },
       { title: 'Our Story', href: '/snyppit' },
     ],
   },
@@ -48,13 +48,13 @@ const footerLinks: FooterSection[] = [
       { title: '+91 74983 41146', href: 'tel:+917498341146', icon: PhoneIcon },
       { title: 'Email us', href: 'mailto:shaibyasolutions@gmail.com', icon: MailIcon },
       { title: 'WhatsApp us', href: 'https://wa.me/917498341146', icon: MessageCircleIcon, external: true },
-      { title: 'Nagpur · Noida · Texas', href: '#', icon: MapPinIcon },
+      { title: 'Nagpur · Noida · Texas', href: '/contact#contact-form', icon: MapPinIcon },
     ],
   },
   {
     label: 'Social Links',
     links: [
-      { title: 'LinkedIn', href: 'https://www.linkedin.com/company/shaibyasolutions/about/', icon: LinkedinIcon, external: true },
+      { title: 'LinkedIn', href: 'https://www.linkedin.com/company/108785057/', icon: LinkedinIcon, external: true },
       { title: 'Instagram', href: 'https://www.instagram.com/deepoffduty/', icon: InstagramIcon, external: true },
       { title: 'Blog', href: 'https://medium.com/@shaibyasolutions', icon: BookOpenIcon, external: true },
       { title: 'WhatsApp', href: 'https://wa.me/917498341146', icon: MessageCircleIcon, external: true },
@@ -204,16 +204,12 @@ type ViewAnimationProps = {
 function AnimatedContainer({ className, delay = 0.1, children }: ViewAnimationProps) {
   const shouldReduceMotion = useReducedMotion();
 
-  if (shouldReduceMotion) {
-    return children;
-  }
-
   return (
     <motion.div
       initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
       whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.8 }}
+      transition={{ delay: shouldReduceMotion ? 0 : delay, duration: shouldReduceMotion ? 0 : 0.8 }}
       className={className}
     >
       {children}

@@ -4,12 +4,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Carousel,
-  CarouselApi,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import useEmblaCarousel from "embla-carousel-react";
 
 export interface Gallery4Item {
   id: string;
@@ -33,10 +28,15 @@ const Gallery4 = ({
   items,
   accent = "#0ea5e9",
 }: Gallery4Props) => {
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>();
+  const [carouselRef, carouselApi] = useEmblaCarousel({
+    breakpoints: {
+      "(max-width: 768px)": { dragFree: true },
+    },
+  });
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
 
   useEffect(() => {
     if (!carouselApi) return;
@@ -44,11 +44,14 @@ const Gallery4 = ({
       setCanScrollPrev(carouselApi.canScrollPrev());
       setCanScrollNext(carouselApi.canScrollNext());
       setCurrentSlide(carouselApi.selectedScrollSnap());
+      setScrollSnaps(carouselApi.scrollSnapList());
     };
     updateSelection();
     carouselApi.on("select", updateSelection);
+    carouselApi.on("reInit", updateSelection);
     return () => {
       carouselApi.off("select", updateSelection);
+      carouselApi.off("reInit", updateSelection);
     };
   }, [carouselApi]);
 
@@ -74,6 +77,7 @@ const Gallery4 = ({
             <Button
               size="icon"
               variant="ghost"
+              aria-label="Previous project"
               onClick={() => carouselApi?.scrollPrev()}
               disabled={!canScrollPrev}
               className="disabled:pointer-events-auto rounded-full border border-[#e5e7eb] hover:border-current transition-colors"
@@ -84,6 +88,7 @@ const Gallery4 = ({
             <Button
               size="icon"
               variant="ghost"
+              aria-label="Next project"
               onClick={() => carouselApi?.scrollNext()}
               disabled={!canScrollNext}
               className="disabled:pointer-events-auto rounded-full border border-[#e5e7eb] hover:border-current transition-colors"
@@ -97,19 +102,29 @@ const Gallery4 = ({
 
       {/* Carousel — full bleed */}
       <div className="w-full">
-        <Carousel
-          setApi={setCarouselApi}
-          opts={{
-            breakpoints: {
-              "(max-width: 768px)": { dragFree: true },
-            },
+        <div
+          ref={carouselRef}
+          className="overflow-hidden"
+          role="region"
+          aria-roledescription="carousel"
+          aria-label={title}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              carouselApi?.scrollPrev();
+            } else if (event.key === "ArrowRight") {
+              event.preventDefault();
+              carouselApi?.scrollNext();
+            }
           }}
         >
-          <CarouselContent className="ml-[max(1.5rem,calc(50vw-42rem))] mr-[max(1.5rem,calc(50vw-42rem))]">
+          <div className="flex touch-pan-y touch-pinch-zoom ml-[max(1.5rem,calc(50vw-42rem))] mr-[max(1.5rem,calc(50vw-42rem))]">
             {items.map((item) => (
-              <CarouselItem
+              <div
                 key={item.id}
-                className="max-w-[300px] pl-[16px] lg:max-w-[340px]"
+                role="group"
+                aria-roledescription="slide"
+                className="min-w-0 shrink-0 grow-0 basis-full max-w-[300px] pl-[16px] lg:max-w-[340px]"
               >
                 <a href={item.href} className="group block rounded-2xl">
                   {/* Card */}
@@ -159,18 +174,19 @@ const Gallery4 = ({
                     </div>
                   </div>
                 </a>
-              </CarouselItem>
+              </div>
             ))}
-          </CarouselContent>
-        </Carousel>
+          </div>
+        </div>
 
         {/* Dot indicators */}
         <div className="mt-6 flex justify-center gap-2">
-          {items.map((_, index) => (
+          {scrollSnaps.map((_, index) => (
             <button
               key={index}
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Go to slide ${index + 1}`}
+              aria-current={currentSlide === index ? "true" : undefined}
               className="h-1.5 rounded-full transition-all duration-300"
               style={{
                 width: currentSlide === index ? "1.5rem" : "0.5rem",

@@ -33,6 +33,8 @@ export interface Project {
 
   // Visual
   thumbnail: string;
+  thumbnailAlt?: string;
+  imageCaption?: string;
   screenshots?: string[];
   brandColor?: string;
 
@@ -421,7 +423,9 @@ export const rndProjects: Project[] = [
       { value: "500+", label: "Daily Queries Handled" },
       { value: "60%", label: "HR Ticket Reduction" },
     ],
-    thumbnail: "/images/solutions/coal.png",
+    thumbnail: "/images/solutions/hrms-bot.webp",
+    thumbnailAlt: "Illustration of an HR self-service portal and employee assistant chat on a laptop and phone",
+    imageCaption: "Illustrative visual · Client interface not shown",
     servicesDelivered: ["AI Development", "WhatsApp Automation", "R&D"],
     tags: ["hr", "enterprise", "chatbot", "automation"],
   },
@@ -445,7 +449,9 @@ export const rndProjects: Project[] = [
       { value: "99%", label: "Inventory Accuracy", context: "Up from ~70%" },
       { value: "50%", label: "Less Distribution Delays" },
     ],
-    thumbnail: "/images/solutions/coal.png",
+    thumbnail: "/images/solutions/biscuit-management.webp",
+    thumbnailAlt: "Illustration of biscuit batch, inventory, and dispatch management in a food production setting",
+    imageCaption: "Illustrative visual · Client interface not shown",
     servicesDelivered: ["Product Development", "Consulting"],
     tags: ["manufacturing", "fmcg", "inventory", "production"],
   },

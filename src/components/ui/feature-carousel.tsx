@@ -48,11 +48,14 @@ export function FeatureCarousel() {
                     const isCollapsed = isAnyHovered ? hoveredIndex !== index : false;
 
                     return (
-                        <div
+                        <Link
                             key={item.id}
+                            href={item.href}
+                            aria-label={`Explore ${item.label} case studies`}
+                            onFocus={() => !isMobile && setHoveredIndex(index)}
+                            onBlur={() => setHoveredIndex(null)}
                             onMouseEnter={() => !isMobile && setHoveredIndex(index)}
                             onMouseLeave={() => !isMobile && setHoveredIndex(null)}
-                            onClick={() => isMobile && setHoveredIndex(hoveredIndex === index ? null : index)}
                             style={{
                                 flex: isMobile ? 1 : (isActive ? 2.8 : (isCollapsed ? 1.2 : 2)),
                                 transition: "all 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
@@ -124,17 +127,16 @@ export function FeatureCarousel() {
                                         </p>
                                         
                                         <div>
-                                            <Link
-                                                href={item.href}
+                                            <span
                                                 className="inline-flex w-full sm:w-auto items-center justify-center gap-3 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold py-5 px-10 rounded-[1.25rem] shadow-lg shadow-sky-500/25 transition-all active:scale-95 uppercase tracking-wider text-xs md:text-sm"
                                             >
                                                 View Case Study
-                                            </Link>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     );
                 })}
             </div>

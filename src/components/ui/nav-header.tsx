@@ -10,7 +10,7 @@ export interface NavItem {
   href: string;
   label: string;
   hasDropdown?: boolean;
-  dropdownItems?: { href: string; label: string; icon?: React.ElementType }[];
+  dropdownItems?: { href: string; label: string; icon?: React.ComponentType<{ size?: number | string; className?: string }> }[];
 }
 
 interface NavHeaderProps {
@@ -202,7 +202,7 @@ const Tab = ({
   setPosition: React.Dispatch<React.SetStateAction<{ left: number; width: number; opacity: number }>>;
   href: string;
   hasDropdown?: boolean;
-  dropdownItems?: { href: string; label: string; icon?: React.ElementType }[];
+  dropdownItems?: NavItem["dropdownItems"];
   isActive: boolean;
   onHover: () => void;
   scrollProgress?: number;
@@ -255,7 +255,7 @@ const Tab = ({
 
       {/* Dropdown */}
       {hasDropdown && dropdownItems && (
-        <div className="absolute left-1/2 top-full hidden w-[240px] -translate-x-1/2 pt-3 group-hover/tab:block z-50">
+        <div className="absolute left-1/2 top-full hidden w-[240px] -translate-x-1/2 pt-3 group-hover/tab:block group-focus-within/tab:block z-50">
           <div className="rounded-2xl p-1.5 shadow-2xl border border-gray-200 bg-white">
             {dropdownItems.map((item) => (
               <Link

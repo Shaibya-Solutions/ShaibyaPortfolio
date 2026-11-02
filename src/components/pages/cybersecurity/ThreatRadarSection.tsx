@@ -36,7 +36,7 @@ export function ThreatRadarSection() {
   }, [isInView, controls]);
 
   return (
-    <section ref={ref} className="relative flex flex-col items-center justify-center py-32 overflow-hidden bg-white border-b border-slate-200">
+    <section id="threat-map" ref={ref} className="relative flex flex-col items-center justify-center py-32 overflow-hidden bg-white border-b border-slate-200">
       {/* Radar scanning background */}
       <div className="absolute inset-0 z-0 opacity-40 pointer-events-none flex items-center justify-center">
         {/* Radar Base Rings */}

@@ -5,12 +5,13 @@ import { useEffect, useState, useRef } from "react";
 import DecryptedText from "@/components/ui/DecryptedText";
 import { motion } from "framer-motion";
 import { ShieldAlert, Lock, Activity } from "lucide-react";
+import type { GlobeMethods } from "react-globe.gl";
 
 // Dynamically import react-globe.gl to prevent SSR issues
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
 
 export function CyberHeroSection() {
-  const globeEl = useRef<any>();
+  const globeEl = useRef<GlobeMethods | undefined>(undefined);
   const [arcsData, setArcsData] = useState<any[]>([]);
   const [countries, setCountries] = useState<any[]>([]);
 
@@ -110,14 +111,14 @@ export function CyberHeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-wrap gap-4"
           >
-            <button className="px-8 py-4 bg-[#10b981] text-black font-semibold rounded-lg hover:bg-[#34d399] transition-colors flex items-center gap-2">
+            <a href="https://wa.me/917498341146?text=Hi%20Shaibya%20Solutions%2C%20I%27d%20like%20to%20discuss%20a%20cybersecurity%20consultation." target="_blank" rel="noopener noreferrer" className="px-8 py-4 bg-[#10b981] text-black font-semibold rounded-lg hover:bg-[#34d399] transition-colors flex items-center gap-2">
               <Lock className="w-5 h-5" />
               Secure Your Assets
-            </button>
-            <button className="px-8 py-4 bg-transparent border border-[#10b981]/30 text-[#10b981] font-semibold rounded-lg hover:bg-[#10b981]/10 transition-colors flex items-center gap-2">
+            </a>
+            <a href="#threat-map" className="px-8 py-4 bg-transparent border border-[#10b981]/30 text-[#10b981] font-semibold rounded-lg hover:bg-[#10b981]/10 transition-colors flex items-center gap-2">
               <Activity className="w-5 h-5" />
-              View Live Map
-            </button>
+              Explore Threat Radar
+            </a>
           </motion.div>
         </div>
 

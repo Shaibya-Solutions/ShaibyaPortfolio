@@ -7,6 +7,7 @@ import { Footer } from "@/components/ui/footer-section";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import Earth from "@/components/ui/globe";
+import TeamSection from "@/components/features/about/TeamSection";
 
 import {
   Lightbulb,
@@ -390,6 +391,8 @@ export default function AboutClient() {
           </div>
         </div>
       </section>
+
+      <TeamSection />
 
       {/* ══ TIMELINE ═════════════════════════════════════════════════ */}
       <section className="py-24 lg:py-32 overflow-hidden" style={{ background: DARK, color: "#F3F5F9" }}>

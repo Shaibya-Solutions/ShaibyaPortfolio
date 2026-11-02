@@ -16,7 +16,7 @@ import {
 import { IoMail } from "react-icons/io5";
 
 const socials = [
-    { href: "https://www.linkedin.com/company/shaibyasolutions/about/", icon: FaLinkedin, label: "LinkedIn" },
+    { href: "https://www.linkedin.com/company/108785057/", icon: FaLinkedin, label: "LinkedIn" },
     { href: "https://www.instagram.com/deepoffduty/", icon: FaInstagram, label: "Instagram" },
     { href: "https://medium.com/@shaibyasolutions", icon: FaMedium, label: "Blog" },
     { href: "https://wa.me/917498341146", icon: FaWhatsapp, label: "WhatsApp" },
@@ -24,16 +24,16 @@ const socials = [
 
 const navLinks = [
     { label: "Overview", href: "/" },
-    { label: "Services", href: "/#services" },
+    { label: "Services", href: "/services/software-solutions" },
     { label: "Industries", href: "/#industries" },
-    { label: "Our Team", href: "/#team" },
+    { label: "Our Team", href: "/about#team" },
     { label: "Portfolio", href: "/portfolio/solutions" },
 ];
 
 const infoLinks = [
     { label: "FAQ", href: "/#faq" },
     { label: "Contact", href: "/contact" },
-    { label: "Privacy Policy", href: "#" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
     { label: "Our Story", href: "/snyppit" },
 ];
 
@@ -225,7 +225,7 @@ export function ProfitFooter() {
                         We do not provide legal, financial, or regulatory advice.
                     </p>
                     <div className="flex gap-5">
-                        <Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
                         <Link href="#" className="hover:text-white transition-colors">Terms</Link>
                         <a href="https://medium.com/@shaibyasolutions" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Blog</a>
                     </div>

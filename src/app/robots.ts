@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { allowIndexing, site } from "@/config/site";
 
 export const dynamic = "force-static";
 
@@ -6,9 +7,10 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
-      disallow: ["/_next/", "/api/"],
+      allow: allowIndexing ? "/" : undefined,
+      disallow: allowIndexing ? ["/admin", "/api", "/dashboard", "/account", "/login", "/preview"] : "/",
     },
-    sitemap: "https://shaibya.solutions/sitemap.xml",
+    sitemap: `${site.url}/sitemap.xml`,
+    host: site.url,
   };
 }

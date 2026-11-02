@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import { pageSeo } from "@/data/seo/pages";
+import JsonLd from "@/components/seo/JsonLd";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
 
-export const metadata: Metadata = {
-  title: "Retail & E-commerce Operations Systems | Shaibya Solutions",
-  description: "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions. Discover how Bridgestone Nagpur expanded their reach.",
-  alternates: {
-    canonical: "https://shaibya.solutions/industry/retail",
-  },
-  openGraph: {
-    title: "Retail & E-commerce Operations Systems | Shaibya Solutions",
-    description: "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions.",
-    url: "https://shaibya.solutions/industry/retail",
-    type: "website",
-  },
-};
+export const metadata = metadataFor("/industry/retail");
 
 const data: IndustryPageData = {
   slug: "retail",
@@ -99,46 +90,9 @@ const data: IndustryPageData = {
 };
 
 export default function RetailPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://shaibya.solutions/industry/retail/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://shaibya.solutions"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Retail",
-            "item": "https://shaibya.solutions/industry/retail"
-          }
-        ]
-      },
-      {
-        "@type": "Service",
-        "@id": "https://shaibya.solutions/industry/retail/#service",
-        "name": "Retail POS Systems & Online Digital Catalogues",
-        "description": "Learn how we build digital showrooms, GST-compliant POS systems, and retail inventory management solutions.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Shaibya Solutions"
-        }
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/industry/retail", { service: { name: pageSeo["/industry/retail"].title, serviceType: pageSeo["/industry/retail"].title }, faqs: data.faqs })} />
       <IndustryPageTemplate data={data} />
     </>
   );

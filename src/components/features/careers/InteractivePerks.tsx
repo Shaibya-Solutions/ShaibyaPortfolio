@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useMotionValue, useMotionTemplate, AnimatePresence } from "framer-motion";
-import { Globe, Clock, BookOpen, Sparkles, Rocket, Sun, Moon } from "lucide-react";
+import { motion, useMotionValue, useMotionTemplate } from "framer-motion";
+import { Globe, Clock, BookOpen, Sparkles, Sun, Moon } from "lucide-react";
 
 // ──────────────────────────────────────────────────────────────────────
 // SPOTLIGHT WRAPPER CARD
@@ -74,10 +74,10 @@ export function RemotePerkCard() {
             <Globe className="w-6 h-6 text-[#0ea5e9]" />
           </div>
           <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">
-            100% Remote & Borderless
+            Connected Collaboration
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-            Work from your college dorm, a quiet cafe in Nagpur, or anywhere else globally. We hire for ambition, not location.
+            Clear communication keeps work moving across roles and locations. We discuss collaboration and work arrangements for each opportunity.
           </p>
         </div>
 
@@ -230,10 +230,10 @@ export function TimePerkCard() {
             <Clock className="w-6 h-6 text-[#f97316]" />
           </div>
           <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">
-            Fully Flexible Time
+            Thoughtful Planning
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-            No rigid timetables or micromanagement. You own your schedule and work hours. As long as you deliver impact, you are free.
+            Good work needs focus and coordination. Agree on priorities, communicate availability, and keep project commitments visible.
           </p>
         </div>
 
@@ -360,7 +360,7 @@ export function GrowthPerkCard() {
             Real-World Growth
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-            Forget theoretical tutorials and video courses. We offer growth in perspective—learning through hands-on deployment and business strategy.
+            Develop your skills through practical work, useful feedback, and an understanding of the business problems behind each brief.
           </p>
         </div>
 
@@ -428,10 +428,10 @@ export function GrowthPerkCard() {
 
             {/* Labels overlay */}
             <div className="absolute left-1 top-12 text-[8px] font-mono text-slate-400">
-              Tutorial Hell
+              Build Skills
             </div>
             <div className="absolute right-1 top-2 text-[8px] font-mono text-emerald-500 font-bold">
-              Prod Release (100% Impact)
+              Apply What You Learn
             </div>
           </div>
 
@@ -457,67 +457,10 @@ export function GrowthPerkCard() {
 }
 
 // ──────────────────────────────────────────────────────────────────────
-// CARD 4: FUTURE FOUNDER TRACK CARD
-// Features a launch countdown, rocket takeoff simulation, and a valuation ticking up.
+// CARD 4: SHARED OWNERSHIP CARD
+// Reuses the spotlight treatment and motion used by the other culture cards.
 // ──────────────────────────────────────────────────────────────────────
-export function FounderPerkCard() {
-  const [launchState, setLaunchState] = useState<"idle" | "countdown" | "launched">("idle");
-  const [countdown, setCountdown] = useState(3);
-  const [valuation, setValuation] = useState(0);
-
-  const startLaunch = () => {
-    if (launchState !== "idle") return;
-    setLaunchState("countdown");
-    setCountdown(3);
-  };
-
-  // Countdown timer effect
-  useEffect(() => {
-    if (launchState !== "countdown") return;
-
-    if (countdown > 1) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 700);
-      return () => clearTimeout(timer);
-    } else {
-      const timer = setTimeout(() => {
-        setLaunchState("launched");
-        setValuation(0);
-      }, 700);
-      return () => clearTimeout(timer);
-    }
-  }, [countdown, launchState]);
-
-  // Valuation counter animation effect
-  useEffect(() => {
-    if (launchState !== "launched") return;
-
-    const interval = setInterval(() => {
-      setValuation((prev) => {
-        if (prev >= 1250000) {
-          clearInterval(interval);
-          return 1250000;
-        }
-        // Increment exponentially
-        return prev + Math.floor((1250000 - prev) * 0.15) + 5000;
-      });
-    }, 40);
-
-    return () => clearInterval(interval);
-  }, [launchState]);
-
-  const resetLauncher = () => {
-    setLaunchState("idle");
-    setValuation(0);
-  };
-
-  const formatValuation = (val: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(val);
-  };
-
+export function OwnershipPerkCard() {
   return (
     <SpotlightCard
       className="h-[540px] flex flex-col justify-between p-8"
@@ -532,115 +475,34 @@ export function FounderPerkCard() {
             <Sparkles className="w-6 h-6 text-[#ec4899]" />
           </div>
           <h3 className="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">
-            Future Founder Track
+            Shared Ownership
           </h3>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed">
-            Learn client scoping, engineering economics, and how to launch MVPs. We actively support interns who want to build their own startups.
+            Understand the brief, ask questions, and take responsibility for your part.
+            Thoughtful handovers help the whole team deliver work with care.
           </p>
         </div>
-
-        {/* Launch Pad Simulation Canvas */}
-        <div className="h-56 w-full relative overflow-hidden rounded-2xl bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-900/50 mt-6 flex flex-col items-center justify-between p-4">
-          <AnimatePresence mode="wait">
-            {launchState === "idle" && (
-              <motion.div
-                key="launch-idle"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col items-center justify-center h-full w-full"
-              >
-                <div className="mb-4">
-                  <Rocket className="w-10 h-10 text-slate-300 dark:text-slate-700 animate-bounce" />
-                </div>
-                <button
-                  onClick={startLaunch}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold text-xs font-mono tracking-wider shadow-lg hover:shadow-pink-500/20 active:scale-95 transition-all duration-300 cursor-pointer"
-                >
-                  LAUNCH STARTUP MVP
-                </button>
-              </motion.div>
-            )}
-
-            {launchState === "countdown" && (
-              <motion.div
-                key="launch-countdown"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 1.5, opacity: 0 }}
-                className="flex flex-col items-center justify-center h-full w-full"
-              >
-                <span className="text-[10px] font-mono text-slate-400 mb-1 uppercase tracking-widest">
-                  T-MINUS
-                </span>
-                <span className="text-5xl font-mono font-black text-rose-500 animate-pulse">
-                  {countdown}
-                </span>
-              </motion.div>
-            )}
-
-            {launchState === "launched" && (
-              <motion.div
-                key="launch-active"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="relative flex flex-col items-center justify-center h-full w-full overflow-hidden"
-              >
-                {/* Shake simulation backdrop */}
-                <motion.div
-                  className="absolute inset-0 bg-rose-500/5 pointer-events-none"
-                  animate={{
-                    x: valuation < 1250000 ? [-1, 1, -1, 1, 0] : 0,
-                    y: valuation < 1250000 ? [1, -1, 1, -1, 0] : 0,
-                  }}
-                  transition={{ repeat: Infinity, duration: 0.1 }}
-                />
-
-                {/* Vertical Rocket Launch */}
-                <div className="absolute h-full w-full flex justify-center items-start pointer-events-none">
-                  <motion.div
-                    initial={{ y: 120, scale: 0.8 }}
-                    animate={{
-                      y: [-20, -180],
-                      scale: [0.8, 1, 0.6],
-                    }}
-                    transition={{
-                      duration: 3,
-                      times: [0, 1],
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "linear",
-                    }}
-                    className="flex flex-col items-center"
-                  >
-                    <Rocket className="w-8 h-8 text-pink-500 fill-pink-500 rotate-0" />
-                    {/* Fire engine plume */}
-                    <div className="w-1.5 h-6 bg-gradient-to-b from-orange-500 to-yellow-300 rounded-full animate-pulse mt-0.5" />
-                  </motion.div>
-                </div>
-
-                {/* Telemetry output */}
-                <div className="z-10 bg-slate-900/90 text-white border border-white/10 px-4 py-3 rounded-xl shadow-2xl flex flex-col items-center">
-                  <span className="text-[8px] font-mono text-pink-400 uppercase tracking-widest font-bold">
-                    Startup Valuation
-                  </span>
-                  <span className="text-xl font-mono font-bold tracking-tight text-white mt-1">
-                    {formatValuation(valuation)}
-                  </span>
-                  {valuation >= 1250000 && (
-                    <motion.button
-                      initial={{ scale: 0.9, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      onClick={resetLauncher}
-                      className="mt-2.5 px-2 py-0.5 rounded text-[8px] font-mono bg-white/10 hover:bg-white/20 uppercase tracking-widest text-slate-300 cursor-pointer"
-                    >
-                      Reset Sim
-                    </motion.button>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="h-56 w-full relative overflow-hidden rounded-2xl bg-slate-50/50 dark:bg-slate-950/40 border border-slate-100 dark:border-slate-900/50 mt-6 flex flex-col justify-center gap-3 p-5">
+          {[
+            { label: "Understand the brief", detail: "Start with the business need" },
+            { label: "Own your contribution", detail: "Keep progress and questions clear" },
+            { label: "Review and improve", detail: "Build on feedback together" },
+          ].map((step, index) => (
+            <motion.div
+              key={step.label}
+              initial={{ opacity: 0, x: 12 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.12 }}
+              className="flex items-start gap-3"
+            >
+              <span className="text-xs font-mono font-bold text-pink-500 mt-0.5">0{index + 1}</span>
+              <div>
+                <p className="text-xs font-semibold text-slate-700 dark:text-slate-200">{step.label}</p>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1">{step.detail}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </SpotlightCard>

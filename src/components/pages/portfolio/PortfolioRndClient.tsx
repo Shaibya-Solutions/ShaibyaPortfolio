@@ -83,7 +83,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
       className="relative w-full lg:w-1/2 overflow-hidden"
       style={{ minHeight: "clamp(280px,42vw,560px)" }}
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <Image src={p.thumbnail} alt={p.name} fill sizes="(max-width:1024px) 100vw,50vw"
+      <Image src={p.thumbnail} alt={p.thumbnailAlt ?? p.name} fill sizes="(max-width:1024px) 100vw,50vw"
         className="object-cover object-top"
         style={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
       <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.25 }}
@@ -97,6 +97,11 @@ function Row({ project: p, index }: { project: Project; index: number }) {
           </div>
         )}
       </motion.div>
+      {p.imageCaption && (
+        <p className="absolute bottom-4 left-4 right-4 z-10 w-fit max-w-[calc(100%_-_2rem)] rounded-full border border-white/20 bg-slate-950/80 px-3 py-1.5 text-[10px] font-medium tracking-wide text-white backdrop-blur-sm pointer-events-none">
+          {p.imageCaption}
+        </p>
+      )}
     </motion.div>
   );
 
@@ -217,7 +222,7 @@ export default function RNDPortfolioPage() {
   const hasMore = visibleCount < rndProjects.length;
   const remaining = rndProjects.length - visibleCount;
   return (
-    <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
+    <main className="min-h-screen flex flex-col overflow-x-clip" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
 
       <section style={{ paddingTop: "clamp(100px,14vw,176px)", paddingBottom: "clamp(40px,5vw,64px)", borderBottom: `1px solid ${BORDER}` }}>

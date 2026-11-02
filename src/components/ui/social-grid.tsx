@@ -21,7 +21,7 @@ const SOCIAL_LINKS = [
     label: "LinkedIn",
     desc: "Company news, hiring updates & professional insights",
     cta: "Connect",
-    href: "https://www.linkedin.com/company/shaibyasolutions/about/",
+    href: "https://www.linkedin.com/company/108785057/",
     icon: FaLinkedin,
     gradient: "from-blue-600 to-blue-700",
     bg: "bg-blue-50",

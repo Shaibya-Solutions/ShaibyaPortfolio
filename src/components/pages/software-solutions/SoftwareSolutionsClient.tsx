@@ -6,7 +6,9 @@ import Squares from "@/components/ui/Squares";
 import DecryptedText from "@/components/ui/DecryptedText";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import Carousel3D from "@/components/ui/carousel-3d";
-import { AbstractTechShape } from "@/components/ui/3d/AbstractTechShape";
+import dynamic from "next/dynamic";
+import { GeometricPreview } from "@/components/shared/SceneBoundary";
+import { websiteProjects } from "@/data/projects";
 import { motion } from "framer-motion";
 import { 
   Globe, 
@@ -21,6 +23,16 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const AbstractTechShape = dynamic(
+  () => import("@/components/ui/3d/AbstractTechShape").then((mod) => mod.AbstractTechShape),
+  { ssr: false, loading: () => <GeometricPreview /> },
+);
+
+const featuredWebsites = websiteProjects.slice(0, 5).map((project) => ({
+  src: project.thumbnail,
+  alt: project.name,
+}));
+
 const SOLUTIONS = [
   {
     title: "High-Performance Websites",
@@ -33,7 +45,7 @@ const SOLUTIONS = [
     ],
     icon: Globe,
     color: "#0ea5e9",
-    bgGlow: "rgba(14,165,233,0.15)"
+    bgGlow: "rgba(14, 165, 233, 0.15)"
   },
   {
     title: "Integrated CRM Systems",
@@ -46,7 +58,7 @@ const SOLUTIONS = [
     ],
     icon: Layout,
     color: "#10b981",
-    bgGlow: "rgba(16,185,129,0.15)"
+    bgGlow: "rgba(16, 185, 129, 0.15)"
   },
   {
     title: "WhatsApp API Automation",
@@ -59,7 +71,7 @@ const SOLUTIONS = [
     ],
     icon: Zap,
     color: "#eab308",
-    bgGlow: "rgba(234,179,8,0.15)"
+    bgGlow: "rgba(234, 179, 8, 0.15)"
   },
   {
     title: "Mobile App Development",
@@ -72,7 +84,7 @@ const SOLUTIONS = [
     ],
     icon: Smartphone,
     color: "#ec4899",
-    bgGlow: "rgba(236,72,153,0.15)"
+    bgGlow: "rgba(236, 72, 153, 0.15)"
   },
   {
     title: "Database Engineering",
@@ -85,7 +97,7 @@ const SOLUTIONS = [
     ],
     icon: Layers,
     color: "#8b5cf6",
-    bgGlow: "rgba(139,92,246,0.15)"
+    bgGlow: "rgba(139, 92, 246, 0.15)"
   },
   {
     title: "Digital Operations Hubs",
@@ -98,9 +110,9 @@ const SOLUTIONS = [
     ],
     icon: Cpu,
     color: "#f97316",
-    bgGlow: "rgba(249,115,22,0.15)"
+    bgGlow: "rgba(249, 115, 22, 0.15)"
   }
-];
+] as const;
 
 export default function SoftwareSolutionsClient() {
   return (
@@ -122,7 +134,7 @@ export default function SoftwareSolutionsClient() {
             speed={0.4}
             squareSize={40}
             borderColor="rgba(14,165,233,0.03)"
-            hoverColor="rgba(14,165,233,0.06)"
+            hoverFillColor="rgba(14,165,233,0.06)"
           />
         </div>
 
@@ -216,7 +228,7 @@ export default function SoftwareSolutionsClient() {
                 >
                   <SpotlightCard 
                     className="h-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-900 p-8 rounded-4xl flex flex-col justify-between hover:shadow-lg transition-all duration-300"
-                    spotlightColor={s.color}
+                    spotlightColor={s.bgGlow}
                   >
                     <div>
                       {/* Icon container */}
@@ -270,7 +282,7 @@ export default function SoftwareSolutionsClient() {
           </div>
 
           <div className="h-[480px] w-full flex items-center justify-center overflow-hidden">
-            <Carousel3D />
+            <Carousel3D images={featuredWebsites} />
           </div>
 
         </div>

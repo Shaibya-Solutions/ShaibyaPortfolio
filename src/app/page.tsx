@@ -1,4 +1,7 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import JsonLd from "@/components/seo/JsonLd";
+import { generalFaqs } from "@/data/seo/faqs";
 import GLHero from "@/components/features/landing/GLHero";
 import GLAbout from "@/components/features/landing/GLAbout";
 import GLStats from "@/components/features/landing/GLStats";
@@ -12,86 +15,13 @@ import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
 
-export const metadata: Metadata = {
-  title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
-  description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
-  alternates: {
-    canonical: "https://shaibya.solutions",
-  },
-  openGraph: {
-    title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
-    description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
-    url: "https://shaibya.solutions",
-    siteName: "Shaibya Solutions",
-    type: "website",
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Shaibya Solutions | Digital Engineering & Process Automation Studio",
-    description: "We build custom software, CRM integrations, real estate platforms, and WhatsApp automation systems that eliminate manual bottlenecks and accelerate growth.",
-  },
-};
+export const metadata = metadataFor("/");
 
 export default function HomePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": "https://shaibya.solutions/#organization",
-        "name": "Shaibya Solutions",
-        "url": "https://shaibya.solutions",
-        "logo": {
-          "@type": "ImageObject",
-          "@id": "https://shaibya.solutions/#logo",
-          "url": "https://shaibya.solutions/logo.png",
-          "caption": "Shaibya Solutions Logo"
-        },
-        "sameAs": [
-          "https://www.linkedin.com/company/shaibyasolutions/about/",
-          "https://www.instagram.com/deepoffduty/"
-        ]
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://shaibya.solutions/#website",
-        "url": "https://shaibya.solutions",
-        "name": "Shaibya Solutions",
-        "publisher": {
-          "@id": "https://shaibya.solutions/#organization"
-        }
-      },
-      {
-        "@type": "LocalBusiness",
-        "@id": "https://shaibya.solutions/#localbusiness",
-        "name": "Shaibya Solutions",
-        "image": "https://shaibya.solutions/logo.png",
-        "url": "https://shaibya.solutions",
-        "telephone": "+917498341146",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Nagpur",
-          "addressLocality": "Nagpur",
-          "addressRegion": "Maharashtra",
-          "postalCode": "440001",
-          "addressCountry": "IN"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "21.1458",
-          "longitude": "79.0882"
-        }
-      }
-    ]
-  };
 
   return (
     <main className="bg-white text-slate-900 min-h-screen flex flex-col">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/", { faqs: generalFaqs })} />
       <SiteHeader />
 
       {/* 1. HERO */}

@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import { pageSeo } from "@/data/seo/pages";
+import JsonLd from "@/components/seo/JsonLd";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
 
-export const metadata: Metadata = {
-  title: "Healthcare Website & Patient Booking Solutions | Shaibya Solutions",
-  description: "Learn how we build compliant hospital websites, medical portals, and clinic booking systems. Discover how VIMS Hospital digitized their patient intake.",
-  alternates: {
-    canonical: "https://shaibya.solutions/industry/healthcare",
-  },
-  openGraph: {
-    title: "Healthcare Website & Patient Booking Solutions | Shaibya Solutions",
-    description: "Learn how we build compliant hospital websites, medical portals, and clinic booking systems.",
-    url: "https://shaibya.solutions/industry/healthcare",
-    type: "website",
-  },
-};
+export const metadata = metadataFor("/industry/healthcare");
 
 const data: IndustryPageData = {
   slug: "healthcare",
@@ -99,46 +90,9 @@ const data: IndustryPageData = {
 };
 
 export default function HealthcarePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://shaibya.solutions/industry/healthcare/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://shaibya.solutions"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Healthcare",
-            "item": "https://shaibya.solutions/industry/healthcare"
-          }
-        ]
-      },
-      {
-        "@type": "Service",
-        "@id": "https://shaibya.solutions/industry/healthcare/#service",
-        "name": "Healthcare Digital Transformation & Clinic Booking Software",
-        "description": "Learn how we build compliant hospital websites, medical portals, and clinic booking systems.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Shaibya Solutions"
-        }
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/industry/healthcare", { service: { name: pageSeo["/industry/healthcare"].title, serviceType: pageSeo["/industry/healthcare"].title }, faqs: data.faqs })} />
       <IndustryPageTemplate data={data} />
     </>
   );

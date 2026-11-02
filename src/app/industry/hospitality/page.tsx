@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import { pageSeo } from "@/data/seo/pages";
+import JsonLd from "@/components/seo/JsonLd";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
 
-export const metadata: Metadata = {
-  title: "Hospitality & Boutique Hotel Direct Booking Systems | Shaibya Solutions",
-  description: "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals. Discover how Sonar Killa tripled direct bookings.",
-  alternates: {
-    canonical: "https://shaibya.solutions/industry/hospitality",
-  },
-  openGraph: {
-    title: "Hospitality & Boutique Hotel Direct Booking Systems | Shaibya Solutions",
-    description: "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals.",
-    url: "https://shaibya.solutions/industry/hospitality",
-    type: "website",
-  },
-};
+export const metadata = metadataFor("/industry/hospitality");
 
 const data: IndustryPageData = {
   slug: "hospitality",
@@ -91,46 +82,9 @@ const data: IndustryPageData = {
 };
 
 export default function HospitalityPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://shaibya.solutions/industry/hospitality/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://shaibya.solutions"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Hospitality",
-            "item": "https://shaibya.solutions/industry/hospitality"
-          }
-        ]
-      },
-      {
-        "@type": "Service",
-        "@id": "https://shaibya.solutions/industry/hospitality/#service",
-        "name": "Hospitality Booking Platforms & Custom Hotel Website Engineering",
-        "description": "Learn how we build boutique hotel booking platforms, reservation engines, and custom property portals.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Shaibya Solutions"
-        }
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/industry/hospitality", { service: { name: pageSeo["/industry/hospitality"].title, serviceType: pageSeo["/industry/hospitality"].title }, faqs: data.faqs })} />
       <IndustryPageTemplate data={data} />
     </>
   );

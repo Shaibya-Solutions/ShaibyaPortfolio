@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { site } from "@/config/site";
 import { motion, AnimatePresence } from "framer-motion";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
-import dynamic from "next/dynamic";
+import ContactOrbitHero from "@/components/ui/contact-orbit-hero";
 import { FaPhone, FaMapMarkerAlt, FaWhatsapp, FaChevronDown } from "react-icons/fa";
 import { IoMail } from "react-icons/io5";
-
-const ContactOrbitHero = dynamic(
-  () => import("@/components/ui/contact-orbit-hero"),
-  { ssr: false, loading: () => <div className="min-h-screen bg-gradient-to-br from-[#E0F5FC] to-white" /> }
-);
 
 interface ContactClientProps {
   faqs: Array<{
@@ -30,8 +27,8 @@ export default function ContactClient({ faqs }: ContactClientProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Hi Shaibya Solutions,%0A%0A*Name:* ${formData.name}%0A*Business:* ${formData.business}%0A*Interested in:* ${formData.service}%0A*Message:* ${formData.message}`;
-    window.open(`https://wa.me/+917498341146?text=${text}`, "_blank");
+    const text = encodeURIComponent(`Hi Shaibya Solutions,\n\n*Name:* ${formData.name}\n*Business:* ${formData.business}\n*Interested in:* ${formData.service}\n*Message:* ${formData.message}`);
+    window.open(`https://wa.me/917498341146?text=${text}`, "_blank");
   };
 
   return (
@@ -100,7 +97,9 @@ export default function ContactClient({ faqs }: ContactClientProps) {
                     <FaMapMarkerAlt className="text-slate-500 mt-1" size={18} />
                     <div>
                       <div className="font-semibold text-sm text-slate-500 mb-1">Locations</div>
-                      <div>Nagpur, India<br />Noida, India<br />Texas, USA</div>
+                      <div>{site.address.streetAddress}, {site.address.addressLocality} {site.address.postalCode}<br />{site.address.addressRegion}, India<br />Also serving clients across India and internationally</div>
+                      <p className="mt-2 text-sm text-slate-600">Open 24 hours · Every day</p>
+                      <a href={site.googleBusinessProfile} target="_blank" rel="noopener noreferrer" className="text-sm text-sky-700 hover:underline">View on Google Maps</a>
                     </div>
                   </div>
                 </div>
@@ -161,6 +160,11 @@ export default function ContactClient({ faqs }: ContactClientProps) {
                     placeholder="We're looking to automate our lead capture..."
                   />
                 </div>
+                <p className="text-xs text-slate-500 leading-relaxed">
+                  Continuing opens WhatsApp with your details as a draft. Read our{' '}
+                  <Link href="/privacy-policy" className="text-sky-600 underline underline-offset-4">Privacy Policy</Link>{' '}
+                  to learn how enquiries are handled.
+                </p>
                 <button
                   type="submit"
                   className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#bae6fd] via-[#7dd3fc] to-[#38bdf8] hover:brightness-95 text-slate-800 font-bold py-4 px-6 rounded-xl transition-all hover:shadow-lg hover:shadow-sky-300/30 active:scale-[0.98]"

@@ -103,7 +103,7 @@ export const nav = [
   { href: "/careers", label: "Careers" },
   { href: "/community", label: "Community" },
   {
-    href: "#",
+    href: "/services/software-solutions",
     label: "Services",
     hasDropdown: true,
     dropdownItems: [

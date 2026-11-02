@@ -1,4 +1,4 @@
-import { Code, LinkIcon, Palette, Settings, Shield, Zap } from "lucide-react";
+import { Code, LinkIcon, Palette, Settings, Shield, Zap, type LucideIcon } from "lucide-react";
 
 export interface CrewMember {
   codename: string;
@@ -6,7 +6,7 @@ export interface CrewMember {
   nightSkill: string;
   location: string;
   hoverQuote: string;
-  icon: React.ElementType;
+  icon: LucideIcon;
   color: string;
   /** Avatar/photo URL for ChromaGrid */
   image?: string;
@@ -54,7 +54,7 @@ export const TEAM_MEMBERS: CrewMember[] = [
     color: "#ffc700",
     image: "https://api.dicebear.com/7.x/bottts/png?seed=cloudweaver&size=300&backgroundColor=0f172a",
     handle: "@cloudweaver",
-    url: "https://www.linkedin.com/company/shaibyasolutions/about/",
+    url: "https://www.linkedin.com/company/108785057/",
   },
   {
     codename: "The Firewall Phantom",
@@ -92,6 +92,6 @@ export const TEAM_MEMBERS: CrewMember[] = [
     color: "#ffc700",
     image: "https://api.dicebear.com/7.x/bottts/png?seed=3dconjurer&size=300&backgroundColor=0f172a",
     handle: "@3dconjurer",
-    url: "https://www.instagram.com/shaibya.solutions",
+    url: "https://www.instagram.com/deepoffduty",
   },
 ];

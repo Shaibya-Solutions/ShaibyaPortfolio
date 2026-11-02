@@ -1,9 +1,10 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Environment, Sparkles } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Sparkles } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
+import { GeometricPreview, SceneBoundary } from "@/components/shared/SceneBoundary";
 
 function Shape() {
   const meshRef = useRef<THREE.Mesh>(null);
@@ -24,7 +25,7 @@ function Shape() {
           envMapIntensity={1}
           clearcoat={0.8}
           clearcoatRoughness={0.2}
-          metalness={0.7}
+          metalness={0.3}
           roughness={0.2}
           distort={0.4}
           speed={2}
@@ -47,19 +48,17 @@ function Shape() {
 
 export function AbstractTechShape({ className = "w-full h-full absolute inset-0 z-0 pointer-events-none" }: { className?: string }) {
   return (
-    <div className={className}>
-      <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1.5} color="#E0F5FC" />
-        <directionalLight position={[-10, -10, -5]} intensity={1} color="#0B4E61" />
-        
-        <Shape />
-        
-        {/* Adds techy floating particles */}
-        <Sparkles count={100} scale={10} size={2} speed={0.4} opacity={0.2} color="#1282A2" />
-        
-        <Environment preset="city" />
-      </Canvas>
+    <div className={className} data-scene="software-hero">
+      <SceneBoundary fallback={<GeometricPreview />}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 1.5]} fallback={<GeometricPreview />}>
+          <ambientLight intensity={0.9} />
+          <hemisphereLight args={["#e0f2fe", "#64748b", 1.8]} />
+          <directionalLight position={[10, 10, 5]} intensity={1.5} color="#E0F5FC" />
+          <directionalLight position={[-10, -10, -5]} intensity={1} color="#0B4E61" />
+          <Shape />
+          <Sparkles count={100} scale={10} size={2} speed={0.4} opacity={0.2} color="#1282A2" />
+        </Canvas>
+      </SceneBoundary>
     </div>
   );
 }

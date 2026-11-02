@@ -1,0 +1,50 @@
+// Install as src/app/resources/[slug]/page.tsx AFTER adding original published
+// content in getPublishedArticles(). No resource URLs are currently published.
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getPublishedArticle, getPublishedArticles } from "@/data/seo/articles";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { articleGraph } from "@/lib/seo/schema";
+import JsonLd from "@/components/seo/JsonLd";
+import { SiteHeader } from "@/components/layout/header/site-header";
+import { Footer } from "@/components/ui/footer-section";
+
+type Props = { params: Promise<{ slug: string }> };
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return (await getPublishedArticles()).filter((article) => article.routeReady).map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const article = await getPublishedArticle((await params).slug);
+  if (!article) notFound();
+  return createPageMetadata({
+    path: `/resources/${article.slug}`,
+    title: article.title,
+    description: article.description,
+    image: article.image,
+    article: { publishedTime: article.publishedAt, modifiedTime: article.modifiedAt },
+  });
+}
+
+export default async function ResourcePage({ params }: Props) {
+  const article = await getPublishedArticle((await params).slug);
+  if (!article) notFound();
+  return <>
+    <JsonLd data={articleGraph(article)} />
+    <SiteHeader />
+    <main className="bg-white text-slate-900">
+      <article className="mx-auto max-w-4xl px-6 pb-24 pt-40">
+        <h1 className="text-4xl font-bold">{article.title}</h1>
+        <p className="mt-4 text-slate-600">By Shaibya Solutions · <time dateTime={article.modifiedAt}>{article.modifiedAt.slice(0, 10)}</time></p>
+        {article.sections.map((section) => <section key={section.heading} className="mt-10">
+          <h2 className="text-2xl font-bold">{section.heading}</h2>
+          {section.paragraphs.map((paragraph, index) => <p key={index} className="mt-4 leading-relaxed">{paragraph}</p>)}
+        </section>)}
+        <a className="mt-10 inline-block text-sky-600 underline" href="/services/software-solutions">Explore our software and automation services</a>
+      </article>
+    </main>
+    <Footer />
+  </>;
+}

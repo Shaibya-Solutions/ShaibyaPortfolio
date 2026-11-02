@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { Quote, Star, ChevronLeft, ChevronRight, Sparkles } from "lucide-react"
-import { motion, useAnimation, useInView, AnimatePresence } from "framer-motion"
+import { motion, useAnimation, useInView, AnimatePresence, type Variants } from "framer-motion"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 export interface Testimonial {
@@ -54,7 +54,7 @@ export function AnimatedTestimonials({
     },
   }
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   }

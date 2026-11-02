@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import { pageSeo } from "@/data/seo/pages";
+import JsonLd from "@/components/seo/JsonLd";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
 
-export const metadata: Metadata = {
-  title: "Fitness & Gym Management Systems | Shaibya Solutions",
-  description: "Automate your gym operations, track attendance, send WhatsApp renewal alerts, and manage billing. Discover how Revolution Fitness automated their ops.",
-  alternates: {
-    canonical: "https://shaibya.solutions/industry/fitness",
-  },
-  openGraph: {
-    title: "Fitness & Gym Management Systems | Shaibya Solutions",
-    description: "Automate your gym operations, track attendance, send WhatsApp renewal alerts, and manage billing.",
-    url: "https://shaibya.solutions/industry/fitness",
-    type: "website",
-  },
-};
+export const metadata = metadataFor("/industry/fitness");
 
 const data: IndustryPageData = {
   slug: "fitness",
@@ -99,46 +90,9 @@ const data: IndustryPageData = {
 };
 
 export default function FitnessPage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://shaibya.solutions/industry/fitness/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://shaibya.solutions"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Fitness",
-            "item": "https://shaibya.solutions/industry/fitness"
-          }
-        ]
-      },
-      {
-        "@type": "Service",
-        "@id": "https://shaibya.solutions/industry/fitness/#service",
-        "name": "Fitness Gym Management Software Systems",
-        "description": "Automate your gym operations, track attendance, send WhatsApp renewal alerts, and manage billing.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Shaibya Solutions"
-        }
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/industry/fitness", { service: { name: pageSeo["/industry/fitness"].title, serviceType: pageSeo["/industry/fitness"].title }, faqs: data.faqs })} />
       <IndustryPageTemplate data={data} />
     </>
   );

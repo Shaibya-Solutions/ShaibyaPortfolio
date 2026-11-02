@@ -325,7 +325,7 @@ function CaseStudyRow({
         <>
           <Image
             src={p.thumbnail}
-            alt={p.name}
+            alt={p.thumbnailAlt ?? p.name}
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover object-top"
@@ -378,6 +378,11 @@ function CaseStudyRow({
         >
           <span style={{ color: FAINT, fontSize: 13 }}>No preview</span>
         </div>
+      )}
+      {p.imageCaption && (
+        <p className="absolute bottom-4 left-4 right-4 z-10 w-fit max-w-[calc(100%_-_2rem)] rounded-full border border-white/20 bg-slate-950/80 px-3 py-1.5 text-[10px] font-medium tracking-wide text-white backdrop-blur-sm pointer-events-none">
+          {p.imageCaption}
+        </p>
       )}
     </motion.div>
   );
@@ -621,7 +626,7 @@ export default function PortfolioPage() {
 
   return (
     <main
-      className="min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col overflow-x-clip"
       style={{ background: BG, color: TEXT }}
     >
       <SiteHeader />

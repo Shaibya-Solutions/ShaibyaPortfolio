@@ -46,12 +46,12 @@ export function SiteHeader() {
       >
 
         {/* Desktop: nav pill absolutely centered */}
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           <NavHeader items={nav} scrollProgress={scrollProgress} />
         </div>
 
         {/* Mobile: logo left + hamburger right */}
-        <div className="flex w-full items-center justify-between md:hidden">
+        <div className="flex w-full items-center justify-between xl:hidden">
           <Link href="/" aria-label="Shaibya Solutions Home">
             <Image
               src="/images/Screenshot 2026-07-05 011613.png"
@@ -72,8 +72,10 @@ export function SiteHeader() {
 
           <button
             aria-label="Toggle navigation"
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
             onClick={() => setOpen((v) => !v)}
-            className="rounded-xl p-2 text-white transition hover:bg-white/[0.1]"
+            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-900 transition hover:bg-slate-50"
           >
             {open ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
@@ -84,11 +86,12 @@ export function SiteHeader() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-navigation"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.28, ease: "easeOut" }}
-            className="overflow-hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl md:hidden"
+            className="overflow-hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl xl:hidden"
           >
             <nav className="mx-auto grid max-w-7xl gap-1 px-6 py-4">
               {nav.map((item) =>
@@ -96,6 +99,7 @@ export function SiteHeader() {
                   <div key={item.label}>
                     <button
                       onClick={() => toggleMobileDropdown(item.label)}
+                      aria-expanded={!!mobileDropdowns[item.label]}
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-gray-700 hover:bg-gray-100 hover:text-black transition-colors"
                     >
                       <span className="text-sm font-medium">{item.label}</span>
@@ -113,7 +117,7 @@ export function SiteHeader() {
                           exit={{ height: 0, opacity: 0 }}
                           className="ml-4 mt-1 flex flex-col gap-0.5 overflow-hidden border-l border-gray-200 pl-3"
                         >
-                          {item.dropdownItems.slice(0, 3).map((dropItem) => (
+                          {item.dropdownItems.map((dropItem) => (
                             <Link
                               key={dropItem.href}
                               href={dropItem.href}
@@ -126,18 +130,7 @@ export function SiteHeader() {
                               <span>{dropItem.label}</span>
                             </Link>
                           ))}
-                          {item.dropdownItems.length > 3 && (
-                            <Link
-                              href={item.href}
-                              onClick={() => setOpen(false)}
-                              className="flex items-center justify-end gap-1 rounded-lg px-2 py-2 text-xs font-semibold text-[#0ea5e9] hover:bg-[#0ea5e9]/8 transition-colors"
-                            >
-                              View more
-                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                                <path d="M2.5 6h7m0 0L6.5 3m3 3L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                              </svg>
-                            </Link>
-                          )}
+
                         </motion.div>
                       )}
                     </AnimatePresence>

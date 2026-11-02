@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
+import { metadataFor } from "@/lib/seo/metadata";
+import { pageGraph } from "@/lib/seo/schema";
+import { pageSeo } from "@/data/seo/pages";
+import JsonLd from "@/components/seo/JsonLd";
 import IndustryPageTemplate, { type IndustryPageData } from "@/components/features/industry/IndustryPageTemplate";
 
-export const metadata: Metadata = {
-  title: "Real Estate CRM & Property Listing Websites | Shaibya Solutions",
-  description: "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations. Discover how MG Infra tripled lead capture.",
-  alternates: {
-    canonical: "https://shaibya.solutions/industry/real-estate",
-  },
-  openGraph: {
-    title: "Real Estate CRM & Property Listing Websites | Shaibya Solutions",
-    description: "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations.",
-    url: "https://shaibya.solutions/industry/real-estate",
-    type: "website",
-  },
-};
+export const metadata = metadataFor("/industry/real-estate");
 
 const data: IndustryPageData = {
   slug: "real-estate",
@@ -101,46 +92,9 @@ const data: IndustryPageData = {
 };
 
 export default function RealEstatePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://shaibya.solutions/industry/real-estate/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://shaibya.solutions"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Real Estate",
-            "item": "https://shaibya.solutions/industry/real-estate"
-          }
-        ]
-      },
-      {
-        "@type": "Service",
-        "@id": "https://shaibya.solutions/industry/real-estate/#service",
-        "name": "Real Estate CRM & Compliant Website Engineering",
-        "description": "Learn how we build RERA-compliant property listing websites, lead pipelines, and real estate CRM integrations.",
-        "provider": {
-          "@type": "Organization",
-          "name": "Shaibya Solutions"
-        }
-      }
-    ]
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={pageGraph("/industry/real-estate", { service: { name: pageSeo["/industry/real-estate"].title, serviceType: pageSeo["/industry/real-estate"].title }, faqs: data.faqs })} />
       <IndustryPageTemplate data={data} />
     </>
   );
