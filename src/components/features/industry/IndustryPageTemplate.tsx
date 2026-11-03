@@ -23,6 +23,7 @@ export interface IndustryClient {
     role: string;
     desc: string;
     image: string;
+    imageCaption?: string;
     stats: Array<{ v: string; l: string }>;
 }
 
@@ -48,6 +49,7 @@ export interface IndustryPageData {
     slug: string;
     eyebrow: string;
     heroImage: string;
+    heroImageCaption?: string;
     headline: string[];          // array of lines; last line gets gradient
     heroSub: string;
     heroStats: IndustryStat[];
@@ -577,6 +579,7 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
                                     priority
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                                {data.heroImageCaption && <p className="absolute bottom-3 left-3 right-3 text-[10px] text-white">{data.heroImageCaption}</p>}
                             </div>
                             {/* Floating decorative elements */}
                             <div className="absolute -bottom-6 -left-6 bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl flex items-center gap-3">
@@ -826,6 +829,7 @@ export default function IndustryPageTemplate({ data }: { data: IndustryPageData 
                                 <div className="md:w-2/5 relative min-h-[280px] overflow-hidden">
                                     <Image src={client.image} alt={client.name} fill
                                         className="object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                                    {client.imageCaption && <p className="absolute bottom-3 left-3 right-3 z-10 text-[10px] text-white">{client.imageCaption}</p>}
                                     {/* Solid gradient — no text overlap */}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                                     {/* Accent hover tint */}

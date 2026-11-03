@@ -579,7 +579,7 @@ function SectionHeader() {
    ───────────────────────────────────────────────────────────── */
 function MobileLayout() {
     return (
-        <section style={{ background: T.bg, padding: "72px 20px 80px" }} aria-label="Our Work">
+        <section id="our-work" style={{ background: T.bg, padding: "72px 20px 80px", scrollMarginTop: 110 }} aria-label="Our Work">
             <div style={{ textAlign: "center", marginBottom: 36 }}>
                 <span style={{ color: T.accent, fontFamily: "var(--font-inter)", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 10 }}>
                     Our Work

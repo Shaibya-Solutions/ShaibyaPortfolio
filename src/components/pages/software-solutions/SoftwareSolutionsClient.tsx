@@ -5,10 +5,9 @@ import { Footer } from "@/components/ui/footer-section";
 import Squares from "@/components/ui/Squares";
 import DecryptedText from "@/components/ui/DecryptedText";
 import SpotlightCard from "@/components/ui/SpotlightCard";
-import Carousel3D from "@/components/ui/carousel-3d";
+import ProjectShowcase from "./ProjectShowcase";
 import dynamic from "next/dynamic";
 import { GeometricPreview } from "@/components/shared/SceneBoundary";
-import { websiteProjects } from "@/data/projects";
 import { motion } from "framer-motion";
 import { 
   Globe, 
@@ -27,11 +26,6 @@ const AbstractTechShape = dynamic(
   () => import("@/components/ui/3d/AbstractTechShape").then((mod) => mod.AbstractTechShape),
   { ssr: false, loading: () => <GeometricPreview /> },
 );
-
-const featuredWebsites = websiteProjects.slice(0, 5).map((project) => ({
-  src: project.thumbnail,
-  alt: project.name,
-}));
 
 const SOLUTIONS = [
   {
@@ -274,16 +268,14 @@ export default function SoftwareSolutionsClient() {
               Case Studies
             </span>
             <h2 className="text-3xl md:text-5xl font-bold font-heading text-slate-900 dark:text-white tracking-tight leading-none mb-4">
-              Featured Productions
+              Selected Software & Websites
             </h2>
             <p className="text-slate-500 dark:text-slate-400 font-light">
               Explore some of the high-performance platforms, dashboards, and portals we have designed and built.
             </p>
           </div>
 
-          <div className="h-[480px] w-full flex items-center justify-center overflow-hidden">
-            <Carousel3D images={featuredWebsites} />
-          </div>
+          <ProjectShowcase />
 
         </div>
       </section>

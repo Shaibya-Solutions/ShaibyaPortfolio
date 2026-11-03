@@ -1,121 +1,104 @@
 "use client";
 
-import React from "react";
-import { FaPlay } from "react-icons/fa";
+import { useState } from "react";
+import Image from "next/image";
+import { ArrowUpRight, Pause, Play } from "lucide-react";
+import { site } from "@/config/site";
 
-const INSTAGRAM_POSTS = [
+const posts = [
   {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&q=80&w=600",
-    alt: "Software development at Shaibya Solutions",
+    image: "/images/social/creator-shoot.webp",
+    title: "Stories worth stopping for",
+    alt: "Illustrative cafe content shoot with a camera operator and barista",
   },
   {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600",
-    alt: "Designing beautiful mobile applications",
+    image: "/images/social/product-story.webp",
+    title: "A closer look at the details",
+    alt: "Illustrative product photography set with soft studio lighting",
   },
   {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600",
-    alt: "3D modelling & animations showcase",
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600",
-    alt: "Team pair programming and collaboration",
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&q=80&w=600",
-    alt: "Modern workspace and tech infrastructure",
+    image: "/images/social/editing-studio.webp",
+    title: "Behind the edit",
+    alt: "Illustrative video editing workspace with a creator at the timeline",
   },
 ];
 
 export default function GLInstagram() {
-  const instagramUrl = "https://www.instagram.com/deepoffduty/";
-
+  const [paused, setPaused] = useState(false);
   return (
-    <section className="bg-[#faf5ef] py-16 md:py-24 overflow-hidden border-t border-slate-200/50">
-      <div className="max-w-7xl mx-auto px-6 text-center mb-12">
-        {/* Giant bold pink title */}
+    <section
+      className="bg-[#faf5ef] py-16 md:py-24 overflow-hidden border-t border-slate-200/50"
+      aria-label="Instagram creative studio"
+    >
+      <div className="max-w-7xl mx-auto px-6 text-center mb-10">
         <h2
-          className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-none select-none animate-fade-in"
-          style={{ fontFamily: "var(--font-syne)", color: "#0ea5e9" }}
+          className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-none text-sky-500"
+          style={{ fontFamily: "var(--font-syne)" }}
         >
           Follow Us
         </h2>
-        {/* Handle linked to instagram */}
         <a
-          href={instagramUrl}
+          href={site.social.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-4 text-base sm:text-lg font-bold hover:underline tracking-wide transition-all"
-          style={{ color: "rgba(14,165,233,0.75)" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#0ea5e9")}
-          onMouseLeave={e => (e.currentTarget.style.color = "rgba(14,165,233,0.75)")}
+          className="inline-block mt-4 text-lg font-bold text-sky-700 hover:underline"
         >
           @deepoffduty
         </a>
+        <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-slate-600">
+          Creative concepts from shoot to story. Explore the actual reels on
+          Instagram.
+        </p>
+        <button
+          type="button"
+          onClick={() => setPaused((value) => !value)}
+          aria-pressed={paused}
+          className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-white"
+        >
+          {paused ? <Play size={13} /> : <Pause size={13} />}
+          {paused ? "Resume gallery" : "Pause gallery"}
+        </button>
       </div>
-
-      {/* Infinite scrolling marquee of reels/posts with left and right gradient blur masks */}
       <div className="relative w-full overflow-hidden py-4">
-        {/* Left and Right blur masks */}
-        <div className="absolute top-0 left-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#faf5ef] via-[#faf5ef]/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 right-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#faf5ef] via-[#faf5ef]/80 to-transparent z-10 pointer-events-none" />
-
-        {/* Marquee Track container */}
-        <div className="marquee-track flex gap-5">
-          {/* First set of posts */}
-          {INSTAGRAM_POSTS.map((post) => (
-            <a
-              key={`set1-${post.id}`}
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative w-64 md:w-72 aspect-square rounded-2xl overflow-hidden group shrink-0 block cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
+        <div
+          className="marquee-track social-gallery-track flex gap-5"
+          style={{ animationPlayState: paused ? "paused" : undefined }}
+        >
+          {[0, 1].map((copy) => (
+            <div
+              key={copy}
+              className="flex gap-5"
+              aria-hidden={copy === 1 ? true : undefined}
             >
-              {/* Image */}
-              <img
-                src={post.image}
-                alt={post.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-
-              {/* Translucent play icon overlay */}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-slate-800 transform transition-transform duration-300 group-hover:scale-110">
-                  <FaPlay size={14} className="ml-1 text-[#e11d48]" />
-                </div>
-              </div>
-            </a>
-          ))}
-
-          {/* Second identical set of posts for seamless loop */}
-          {INSTAGRAM_POSTS.map((post) => (
-            <a
-              key={`set2-${post.id}`}
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative w-64 md:w-72 aspect-square rounded-2xl overflow-hidden group shrink-0 block cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
-            >
-              {/* Image */}
-              <img
-                src={post.image}
-                alt={post.alt}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
-
-              {/* Translucent play icon overlay */}
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/25 transition-colors duration-300 flex items-center justify-center">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/95 shadow-lg flex items-center justify-center text-slate-800 transform transition-transform duration-300 group-hover:scale-110">
-                  <FaPlay size={14} className="ml-1 text-[#e11d48]" />
-                </div>
-              </div>
-            </a>
+              {posts.map((post) => (
+                <a
+                  key={post.image}
+                  href={site.social.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tabIndex={copy === 1 ? -1 : 0}
+                  className="relative block w-64 md:w-80 aspect-[4/5] shrink-0 overflow-hidden rounded-2xl bg-slate-200 shadow-sm group focus-visible:outline-4 focus-visible:outline-sky-500"
+                  aria-label={`${post.title} — visit @deepoffduty on Instagram`}
+                >
+                  <Image
+                    src={post.image}
+                    alt={copy === 1 ? "" : post.alt}
+                    fill
+                    sizes="(max-width: 767px) 256px, 320px"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-5 pt-20 text-white">
+                    <span className="text-[10px] uppercase tracking-widest text-white/75">
+                      Illustrative creative
+                    </span>
+                    <h3 className="mt-2 text-xl font-bold">{post.title}</h3>
+                    <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold">
+                      Explore Instagram <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
           ))}
         </div>
       </div>

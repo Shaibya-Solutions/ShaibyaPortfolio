@@ -61,3 +61,22 @@ test("production sitemap and robots are exported correctly", () => {
   const notFound = readFileSync("out/404.html", "utf8");
   assert.match(notFound, /<meta name="robots" content="noindex"/);
 });
+
+test("public navigation points to existing routes and section anchors", () => {
+  const pages = new Map((Object.keys(pageSeo) as PublicPath[]).map(path => {
+    const html = readFileSync(path === "/" ? "out/index.html" : `out${path}.html`, "utf8");
+    const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match => decode(match[1])));
+    const links = [...html.matchAll(/<a\s[^>]+>/g)].map(([tag]) => attributes(tag).href).filter(Boolean);
+    return [path, { ids, links }] as const;
+  }));
+  for (const [path, page] of pages) for (const href of page.links) {
+    const url = new URL(href, absoluteUrl(path));
+    if (url.origin !== site.url) continue;
+    const target = pages.get(url.pathname as PublicPath);
+    if (!target) {
+      assert.ok(existsSync(`out${decodeURIComponent(url.pathname)}`), `${path} links to missing route ${href}`);
+    } else if (url.hash) {
+      assert.ok(target.ids.has(decodeURIComponent(url.hash.slice(1))), `${path} links to missing section ${href}`);
+    }
+  }
+});

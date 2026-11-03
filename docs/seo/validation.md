@@ -1,5 +1,7 @@
 # SEO validation — 2 November 2026
 
+The [3 November UI audit](../ui-audit-2026-11-03.md) records the subsequent service showcase, marketing animation, social imagery and full-site responsive checks.
+
 Validated locally on branch `add-on-branch`. No public deployment, Search Console submission or GBP edit was performed.
 
 | Check | Result |

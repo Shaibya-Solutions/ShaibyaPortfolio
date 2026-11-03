@@ -579,3 +579,7 @@ input:focus-visible {
     background-position: 200% center;
   }
 }
+/* Keep social links still while keyboard users explore the gallery. */
+.social-gallery-track:focus-within {
+  animation-play-state: paused !important;
+}

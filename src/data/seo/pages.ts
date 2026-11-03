@@ -16,7 +16,7 @@ export const pageSeo = {
     "kind": "core",
     "changeFrequency": "monthly",
     "priority": 1,
-    "modifiedAt": "2026-11-02"
+    "modifiedAt": "2026-11-03"
   },
   "/about": {
     "title": "About Our Software & Automation Studio",
@@ -104,7 +104,7 @@ export const pageSeo = {
     "kind": "service",
     "changeFrequency": "monthly",
     "priority": 0.9,
-    "modifiedAt": "2026-11-02"
+    "modifiedAt": "2026-11-03"
   },
   "/services/digital-marketing": {
     "title": "B2B Digital Marketing & Growth Services",
@@ -112,7 +112,7 @@ export const pageSeo = {
     "kind": "service",
     "changeFrequency": "monthly",
     "priority": 0.8,
-    "modifiedAt": "2026-11-02"
+    "modifiedAt": "2026-11-03"
   },
   "/services/cybersecurity": {
     "title": "Cybersecurity & Application Security",
@@ -168,7 +168,7 @@ export const pageSeo = {
     "kind": "industry",
     "changeFrequency": "monthly",
     "priority": 0.7,
-    "modifiedAt": "2026-11-02"
+    "modifiedAt": "2026-11-03"
   },
   "/industry/fashion-tech": {
     "title": "Fashion Technology & Custom Software MVPs",

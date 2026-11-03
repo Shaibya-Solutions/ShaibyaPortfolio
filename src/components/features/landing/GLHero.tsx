@@ -130,7 +130,7 @@ export default function GLHero() {
               />
 
               <Link
-                href="#work"
+                href="#our-work"
                 className="btn-dark group"
               >
                 See our work

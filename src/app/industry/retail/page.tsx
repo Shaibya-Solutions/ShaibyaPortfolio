@@ -9,7 +9,8 @@ export const metadata = metadataFor("/industry/retail");
 const data: IndustryPageData = {
   slug: "retail",
   eyebrow: "Retail",
-  heroImage: "/images/screenshots/bridgestone-nagpur.png",
+  heroImageCaption: "Illustrative retail showroom · Not a client photograph",
+  heroImage: "/images/social/retail-showroom.webp",
   headline: ["From local showrooms to", "an online catalog."],
   heroSub:
     "How we transformed Bridgestone Nagpur — the leading tire dealer in the region — replacing offline-only catalogs with a digital product showroom, expanding customer reach, and boosting inquiries.",
@@ -50,7 +51,8 @@ const data: IndustryPageData = {
       tag: "Featured",
       role: "Digital showroom",
       desc: "The leading tire dealer in the region. We built a <strong>responsive digital catalog</strong> showcasing Bridgestone's product lineup with filter specs (width, aspect ratio, rim size). Customers browse on mobile, select tires, and submit inquiries directly. Within 90 days, customer reach expanded 5× beyond Nagpur city limits.",
-      image: "/images/screenshots/bridgestone-nagpur.png",
+      image: "/images/social/retail-showroom.webp",
+      imageCaption: "Illustrative showroom · Not a client photograph",
       stats: [{ v: "40%", l: "More Inquiries" }, { v: "5×", l: "Reach Beyond Nagpur" }, { v: "90 days", l: "To Results" }],
     },
     {
