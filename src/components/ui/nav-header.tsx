@@ -47,7 +47,7 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
   // Dynamic scaling: 1.0 → 0.92 (gentle shrink)
   const navScale = 1 - scrollProgress * 0.08;
   // Dynamic logo height: 140px → 90px
-  const logoHeight = 140 - scrollProgress * 50;
+  const logoHeight = 38 - scrollProgress * 10;
   // Dynamic pill padding: 12px → 6px
   const pillPadding = 12 - scrollProgress * 6;
 
@@ -60,9 +60,9 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
       }}
     >
       <motion.ul
-        className="relative mx-auto flex w-fit items-center justify-evenly rounded-full border-2 border-[#0ea5e9] bg-white px-2"
+        className="relative mx-auto flex w-fit items-center justify-center rounded-full border-2 border-[#0ea5e9] bg-white px-2"
         animate={{
-          width: isExpanded ? "auto" : "210px",
+          width: isExpanded ? "auto" : "200px",
         }}
         transition={{
           type: "spring",
@@ -101,6 +101,8 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
           }}
           style={{
             display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
             flexShrink: 0,
             overflow: animComplete ? "visible" : "hidden",
           }}
@@ -122,21 +124,19 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
         </motion.div>
 
         {/* Logo in the center */}
-        <li className="relative z-10 px-6 md:px-10 flex items-center shrink-0">
+        <li className="relative z-10 px-5 md:px-7 flex items-center justify-center shrink-0">
           <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
             <Image
               src="/shaibya-logo-nav.webp"
               alt="Shaibya Solutions"
-              width={240}
-              height={88}
-              className="w-auto object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
+              width={160}
+              height={45}
+              className="h-auto w-auto object-contain hover:scale-105 transition-all duration-300 cursor-pointer"
               style={{
                 height: `${logoHeight}px`,
-                marginTop: `${-(logoHeight - (72 - scrollProgress * 16)) / 2}px`,
-                marginBottom: `${-(logoHeight - (72 - scrollProgress * 16)) / 2}px`,
                 filter: "drop-shadow(0 2px 8px rgba(14,165,233,0.15))",
                 mixBlendMode: "multiply",
-                transition: "all 0.15s ease-out",
+                transition: "height 0.15s ease-out",
               }}
               priority
             />
@@ -161,6 +161,8 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
           }}
           style={{
             display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
             flexShrink: 0,
             overflow: animComplete ? "visible" : "hidden",
           }}

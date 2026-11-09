@@ -203,7 +203,7 @@ export default function GLAbout() {
   const step = stepData[activeStepId - 1];
 
   return (
-    <section id="about" className="relative bg-[#020817]">
+    <section id="about" className="relative bg-[#020817] scroll-mt-20 sm:scroll-mt-28">
       <section
         ref={storySectionRef}
         data-process-section
@@ -215,21 +215,21 @@ export default function GLAbout() {
           data-process-panel
           className={immersive
             ? "sticky top-0 h-[100svh] w-full flex flex-col px-[4vw] pt-36 pb-8"
-            : "w-full px-6 lg:px-12 py-16 lg:py-20"}
+            : "w-full px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-20"}
           style={{ color: step.dark ? "#ffffff" : "#111827" }}
         >
           <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4 mb-5 shrink-0" style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)" }}>
             <p className="text-xs font-bold uppercase tracking-[0.2em]">{step.label}</p>
             <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-70">{step.right}</p>
           </div>
-          <nav aria-label="Our process stages" className="flex flex-wrap gap-2 mb-5 shrink-0">
+          <nav aria-label="Our process stages" className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:flex-wrap mb-5 shrink-0">
             {processTimelineData.map((item) => (
               <button
                 key={item.id}
                 type="button"
                 onClick={() => selectStep(item.id)}
                 aria-pressed={activeStepId === item.id}
-                className="rounded-full border px-3 py-2 text-xs font-semibold transition-colors"
+                className="rounded-full border px-2.5 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs font-semibold transition-colors shrink-0"
                 style={{ color: activeStepId === item.id ? "#0a1628" : "inherit", background: activeStepId === item.id ? "#ffffff" : "transparent", borderColor: step.dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.2)" }}
               >
                 {item.title}
@@ -267,7 +267,7 @@ export default function GLAbout() {
                 Discuss your project <ArrowRight size={15} aria-hidden="true" />
               </a>
             </div>
-            <div className={immersive ? "h-full min-h-0 min-w-0" : "h-[480px] sm:h-[500px] lg:h-[clamp(400px,calc(100svh_-_240px),500px)] min-w-0"}>
+            <div className={immersive ? "h-full min-h-0 min-w-0" : "min-h-[460px] sm:min-h-[500px] h-auto lg:h-[clamp(420px,calc(100svh_-_220px),520px)] min-w-0"}>
               <RadialOrbitalTimeline
                 timelineData={processTimelineData}
                 activeId={step.orbitalId}
