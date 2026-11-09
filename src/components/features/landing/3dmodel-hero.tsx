@@ -1,29 +1,23 @@
-// components/ModelViewer.js
-"use client"; // This is important for client-side rendering in Next.js
+"use client";
 
-import { Canvas } from "@react-three/fiber";
-import { useGLTF, OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-export default function ModelViewer() {
-  // Use useGLTF to load the model.
-  // This hook handles the loading state automatically.
-  const gltf = useGLTF("/shaibya_cube.glb");
+const InteractiveModelViewer = dynamic(
+  () => import("@/components/ui/3d/InteractiveModelViewer"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-96 flex items-center justify-center text-xs text-sky-400 font-mono">
+        Initializing 3D Model...
+      </div>
+    ),
+  }
+);
 
+export default function ModelViewer({ modelUrl }: { modelUrl?: string }) {
   return (
-    <Canvas>
-      {/* A light is needed to illuminate the model */}
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[1, 1, 1]} />
-
-      {/* This component will handle user interactions like rotating and zooming */}
-      <OrbitControls />
-
-      {/* The Suspense component shows a fallback while the model loads */}
-      <Suspense fallback={null}>
-        {/* The model is a React component, making it easy to add to the scene */}
-        <primitive object={gltf.scene} />
-      </Suspense>
-    </Canvas>
+    <div className="w-full h-96">
+      <InteractiveModelViewer modelUrl={modelUrl} color="#0ea5e9" autoRotate />
+    </div>
   );
 }
