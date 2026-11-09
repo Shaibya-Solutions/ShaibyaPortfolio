@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { triggerHaptic } from "@/lib/haptics";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { nav } from "@/data";
@@ -9,6 +11,7 @@ import { FaBars, FaChevronDown, FaTimes } from "react-icons/fa";
 import NavHeader from "@/components/ui/nav-header";
 
 export function SiteHeader() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -52,7 +55,7 @@ export function SiteHeader() {
 
         {/* Mobile: logo left + hamburger right */}
         <div className="flex w-full items-center justify-between xl:hidden">
-          <Link href="/" aria-label="Shaibya Solutions Home">
+          <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
             <Image
               src="/images/Screenshot 2026-07-05 011613.png"
               alt="Shaibya Solutions"
@@ -74,8 +77,9 @@ export function SiteHeader() {
             aria-label="Toggle navigation"
             aria-expanded={open}
             aria-controls="mobile-navigation"
+            onPointerDown={() => triggerHaptic(8)}
             onClick={() => setOpen((v) => !v)}
-            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-900 transition hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-900 transition-all duration-75 active:scale-90 hover:bg-slate-50"
           >
             {open ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
@@ -98,9 +102,12 @@ export function SiteHeader() {
                 item.hasDropdown && item.dropdownItems ? (
                   <div key={item.label}>
                     <button
-                      onClick={() => toggleMobileDropdown(item.label)}
+                      onClick={() => {
+                        triggerHaptic(6);
+                        toggleMobileDropdown(item.label);
+                      }}
                       aria-expanded={!!mobileDropdowns[item.label]}
-                      className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-gray-700 hover:bg-gray-100 hover:text-black transition-colors"
+                      className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                     >
                       <span className="text-sm font-medium">{item.label}</span>
                       <FaChevronDown
@@ -121,8 +128,10 @@ export function SiteHeader() {
                             <Link
                               key={dropItem.href}
                               href={dropItem.href}
+                              prefetch={true}
+                              onPointerDown={() => triggerHaptic(8)}
                               onClick={() => setOpen(false)}
-                              className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-black transition-colors"
+                              className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm text-gray-500 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                             >
                               {dropItem.icon && (
                                 <dropItem.icon className="text-[#0ea5e9]" size={13} />
@@ -139,8 +148,10 @@ export function SiteHeader() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    prefetch={true}
+                    onPointerDown={() => triggerHaptic(8)}
                     onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black transition-colors"
+                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                   >
                     {item.label}
                   </Link>
@@ -150,8 +161,10 @@ export function SiteHeader() {
               {/* Mobile CTA */}
               <Link
                 href="/contact"
+                prefetch={true}
+                onPointerDown={() => triggerHaptic(8)}
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-block rounded-full px-5 py-2.5 text-center text-sm font-semibold text-white"
+                className="mt-2 inline-block rounded-full px-5 py-2.5 text-center text-sm font-semibold text-white active:scale-95 transition-transform duration-75 shadow-sm select-none"
                 style={{ background: "linear-gradient(135deg, #0284c7, #0ea5e9)" }}
               >
                 Get in Touch

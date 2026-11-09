@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { triggerHaptic } from "@/lib/haptics";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
@@ -727,6 +728,7 @@ export default function PortfolioPage({ initialProjects }: { initialProjects?: P
                 key={f.value}
                 role="tab"
                 aria-selected={active === f.value}
+                onPointerDown={() => triggerHaptic(6)}
                 onClick={() => { setActive(f.value); setVisibleCount(4); }}
                 className="relative shrink-0 px-5 py-[18px] transition-colors duration-150"
                 style={{
@@ -781,6 +783,7 @@ export default function PortfolioPage({ initialProjects }: { initialProjects?: P
         {hasMore && (
           <div style={{ display: "flex", justifyContent: "flex-end", padding: "32px clamp(24px,4vw,48px) 40px", borderTop: `1px solid ${BORDER}` }}>
             <button
+              onPointerDown={() => triggerHaptic(8)}
               onClick={() => setVisibleCount(c => c + 4)}
               style={{
                 display: "inline-flex",

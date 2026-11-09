@@ -4,6 +4,8 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { triggerHaptic } from "@/lib/haptics";
 
 /* ─── Types ─── */
 export interface NavItem {
@@ -121,7 +123,7 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
 
         {/* Logo in the center */}
         <li className="relative z-10 px-6 md:px-10 flex items-center shrink-0">
-          <Link href="/" aria-label="Shaibya Solutions Home">
+          <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
             <Image
               src="/shaibya-logo-nav.png"
               alt="Shaibya Solutions"
@@ -208,6 +210,7 @@ const Tab = ({
   scrollProgress?: number;
 }) => {
   const ref = useRef<HTMLLIElement>(null);
+  const router = useRouter();
 
   // Dynamic text sizing: 20px → 15px
   const fontSize = 20 - scrollProgress * 5;
@@ -223,12 +226,17 @@ const Tab = ({
         const { width } = ref.current.getBoundingClientRect();
         setPosition({ width, opacity: 1, left: ref.current.offsetLeft });
         onHover();
+        if (href && !href.startsWith("#")) {
+          router.prefetch(href);
+        }
       }}
       className="relative z-10 block cursor-pointer group/tab"
     >
       <Link
         href={href}
-        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap transition-colors duration-200 ${isActive ? "text-white" : "text-black"
+        prefetch={true}
+        onPointerDown={() => triggerHaptic(8)}
+        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap active:scale-[0.97] transition-all duration-75 select-none ${isActive ? "text-white" : "text-black"
           }`}
         style={{
           fontSize: `${fontSize}px`,
@@ -261,7 +269,12 @@ const Tab = ({
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all hover:bg-gray-100 group/item"
+                prefetch={true}
+                onPointerDown={() => triggerHaptic(8)}
+                onMouseEnter={() => {
+                  if (item.href && !item.href.startsWith("#")) router.prefetch(item.href);
+                }}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 group/item"
               >
                 {item.icon && (
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gray-100 group-hover/item:bg-[#0ea5e9]/10 transition-colors">

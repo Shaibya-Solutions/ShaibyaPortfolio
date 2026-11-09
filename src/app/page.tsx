@@ -61,7 +61,7 @@ export default async function HomePage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Follow on Instagram"
-        className="fixed bottom-6 left-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
+        className="fixed bottom-6 left-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl"
         style={{
           background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
           boxShadow: "0 4px 24px rgba(220,39,67,0.4)",
@@ -76,7 +76,7 @@ export default async function HomePage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl"
+        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl"
         style={{
           background: "linear-gradient(135deg, #25D366, #1ebe5d)",
           boxShadow: "0 4px 24px rgba(37,211,102,0.4)",

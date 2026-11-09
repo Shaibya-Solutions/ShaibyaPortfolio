@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import { FaWhatsapp } from "react-icons/fa";
+import { triggerHaptic } from "@/lib/haptics";
 
 interface WhatsAppCTAProps {
   text?: string;
@@ -21,7 +24,8 @@ export function WhatsAppCTA({
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex items-center gap-2 rounded-full border border-teal-600 bg-teal-600 px-7 py-3 text-base font-semibold text-white shadow-lg transition-all hover:bg-teal-700 hover:shadow-teal-600/30 hover:-translate-y-1 ${className}`}
+      onPointerDown={() => triggerHaptic(10)}
+      className={`inline-flex items-center gap-2 rounded-full border border-teal-600 bg-teal-600 px-7 py-3 text-base font-semibold text-white shadow-lg active:scale-95 transition-all duration-75 select-none hover:bg-teal-700 hover:shadow-teal-600/30 hover:-translate-y-1 ${className}`}
     >
       <FaWhatsapp className="text-xl" />
       {text}

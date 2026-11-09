@@ -231,6 +231,21 @@ input:focus-visible {
   transform: translateY(-1px);
 }
 
+.btn-primary:active,
+.btn-secondary:active,
+.btn-dark:active {
+  transform: scale(0.975);
+  transition-duration: 75ms;
+}
+
+/* Micro-spring tactile feedback across interactive buttons */
+button:active:not(:disabled),
+a.btn:active,
+[role="button"]:active {
+  transform: scale(0.98);
+  transition-duration: 75ms;
+}
+
 @keyframes shine {
   0% {
     background-position: 0% 0;
