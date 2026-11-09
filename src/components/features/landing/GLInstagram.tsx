@@ -82,7 +82,7 @@ export default function GLInstagram() {
                 >
                   <Image
                     src={post.image}
-                    alt={copy === 1 ? "" : post.alt}
+                    alt={post.alt}
                     fill
                     sizes="(max-width: 767px) 256px, 320px"
                     className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"

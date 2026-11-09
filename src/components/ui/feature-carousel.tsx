@@ -8,13 +8,14 @@ import {
 import { HugeiconsIcon } from "@hugeicons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { getImageUrl } from "@/lib/imagekit";
 
 const FEATURES = [
     {
         id: "real-estate",
         label: "Real Estate",
         icon: Home01Icon,
-        image: "/images/landing/real_estate_vertical.png",
+        image: getImageUrl("/images/landing/real_estate_vertical.webp"),
         description: "Automated lead capture, WhatsApp bots, and SEO-first property portals. Build Nagpur's premium property listing web experiences.",
         href: "/industry/real-estate",
     },
@@ -22,7 +23,7 @@ const FEATURES = [
         id: "fitness",
         label: "Fitness & Gyms",
         icon: Dumbbell01Icon,
-        image: "/images/landing/fitness_vertical.png",
+        image: getImageUrl("/images/landing/fitness_vertical.webp"),
         description: "Membership management, renewals, and multi-branch dashboards. Automate client check-ins and payment reminders seamlessly.",
         href: "/industry/fitness",
     },
@@ -77,6 +78,8 @@ export function FeatureCarousel() {
                                     <img
                                         src={item.image}
                                         alt={item.label}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
                                     />
                                 </div>
@@ -118,20 +121,16 @@ export function FeatureCarousel() {
                                             height: isMobile ? "auto" : (isActive ? "auto" : 0),
                                             pointerEvents: isMobile ? "auto" : (isActive ? "auto" : "none"),
                                             transition: "opacity 0.4s ease-out, height 0.4s ease-out",
-                                            overflow: "hidden"
                                         }}
-                                        className="w-full"
+                                        className="w-full flex flex-col justify-between"
                                     >
-                                        <p className="text-slate-500 text-base md:text-lg leading-relaxed mb-10 max-w-md">
+                                        <p className="text-sm md:text-base text-slate-600 mb-8 leading-relaxed max-w-md font-normal">
                                             {item.description}
                                         </p>
-                                        
-                                        <div>
-                                            <span
-                                                className="inline-flex w-full sm:w-auto items-center justify-center gap-3 bg-[#0ea5e9] hover:bg-[#0284c7] text-white font-bold py-5 px-10 rounded-[1.25rem] shadow-lg shadow-sky-500/25 transition-all active:scale-95 uppercase tracking-wider text-xs md:text-sm"
-                                            >
-                                                View Case Study
-                                            </span>
+
+                                        <div className="inline-flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-[#0ea5e9] group-hover:translate-x-1 transition-transform">
+                                            <span>Explore Solutions</span>
+                                            <span>&rarr;</span>
                                         </div>
                                     </div>
                                 </div>
@@ -143,5 +142,3 @@ export function FeatureCarousel() {
         </div>
     );
 }
-
-export default FeatureCarousel;

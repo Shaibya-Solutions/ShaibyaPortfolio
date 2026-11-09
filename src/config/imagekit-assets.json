@@ -423,5 +423,13 @@
       "imagekitPath": "/shaibya-portfolio/work\\work6.png",
       "localFallback": "/images/work\\work6.png"
     }
-  }
+  },
+  "/images/landing/phones-cta.png": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/phones-cta.webp",
+  "/images/landing/phones-cta.webp": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/phones-cta.webp",
+  "/images/landing/real_estate_vertical.png": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/real_estate_vertical.webp",
+  "/images/landing/real_estate_vertical.webp": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/real_estate_vertical.webp",
+  "/images/landing/fitness_vertical.png": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/fitness_vertical.webp",
+  "/images/landing/fitness_vertical.webp": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/landing/fitness_vertical.webp",
+  "/images/Screenshot 2026-07-05 011613.png": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/logo-mobile.webp",
+  "/images/Screenshot 2026-07-05 011613.webp": "https://ik.imagekit.io/xefp2tbdp/shaibya-portfolio/logo-mobile.webp"
 }

@@ -57,7 +57,7 @@ export function SiteHeader() {
         <div className="flex w-full items-center justify-between xl:hidden">
           <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
             <Image
-              src="/images/Screenshot 2026-07-05 011613.png"
+              src="/images/logo-mobile.webp"
               alt="Shaibya Solutions"
               width={200}
               height={67}
@@ -79,7 +79,7 @@ export function SiteHeader() {
             aria-controls="mobile-navigation"
             onPointerDown={() => triggerHaptic(8)}
             onClick={() => setOpen((v) => !v)}
-            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-900 transition-all duration-75 active:scale-90 hover:bg-slate-50"
+            className="rounded-xl border border-slate-200 bg-white min-w-[48px] min-h-[48px] flex items-center justify-center p-2 text-slate-900 transition-all duration-75 active:scale-90 hover:bg-slate-50"
           >
             {open ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>

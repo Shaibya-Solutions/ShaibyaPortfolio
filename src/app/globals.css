@@ -1,4 +1,45 @@
-@import url('https://fonts.cdnfonts.com/css/proxima-nova-2');
+/* ═══════════════════════════════════════════════
+   LOCAL TYPOGRAPHY — Zero 3rd-party render-blocking font requests
+   ═══════════════════════════════════════════════ */
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Proxima Nova'), local('Proxima Nova Regular'), url('/fonts/proxima-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Proxima Nova Semibold'), local('Proxima Nova Semi Bold'), url('/fonts/proxima-semibold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Proxima Nova Bold'), url('/fonts/proxima-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: local('Proxima Nova Extrabold'), local('Proxima Nova Extra Bold'), url('/fonts/proxima-extrabold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('Proxima Nova Black'), url('/fonts/proxima-black.woff') format('woff');
+}
 @import "tailwindcss";
 @import "tw-animate-css";
 
