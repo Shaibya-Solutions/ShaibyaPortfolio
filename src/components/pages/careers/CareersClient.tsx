@@ -30,9 +30,11 @@ interface CareersClientProps {
     title: string;
     description: string;
   }>;
+  roles?: readonly any[] | any[];
 }
 
-export default function CareersClient({ IMPACT_LOCATIONS, MANIFESTO_ITEMS }: CareersClientProps) {
+export default function CareersClient({ IMPACT_LOCATIONS, MANIFESTO_ITEMS, roles }: CareersClientProps) {
+  const roleList = roles && roles.length > 0 ? roles : OPEN_ROLES;
   const heroRef = useRef<HTMLDivElement>(null);
   const heroInView = useInView(heroRef, { once: true, amount: 0.2 });
 
@@ -202,7 +204,7 @@ export default function CareersClient({ IMPACT_LOCATIONS, MANIFESTO_ITEMS }: Car
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {OPEN_ROLES.map((role, idx) => (
+            {roleList.map((role, idx) => (
               <motion.article
                 id={role.id}
                 key={role.id}
@@ -223,7 +225,7 @@ export default function CareersClient({ IMPACT_LOCATIONS, MANIFESTO_ITEMS }: Car
                   {role.description}
                 </p>
                 <ul className="space-y-3 mb-8 text-sm text-slate-600 dark:text-slate-300">
-                  {role.responsibilities.map((item) => (
+                  {role.responsibilities.map((item: any) => (
                     <li key={item} className="flex items-start gap-3">
                       <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-sky-500" />
                       {item}

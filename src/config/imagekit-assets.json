@@ -1,0 +1,427 @@
+{
+  "version": "1.0.0",
+  "description": "ImageKit CDN Asset Registry for Shaibya Solutions",
+  "folderPrefix": "/shaibya-portfolio",
+  "assets": {
+    "3d\\architectural-residence.webp": {
+      "imagekitPath": "/shaibya-portfolio/3d\\architectural-residence.webp",
+      "localFallback": "/images/3d\\architectural-residence.webp"
+    },
+    "3d\\explorer-character.webp": {
+      "imagekitPath": "/shaibya-portfolio/3d\\explorer-character.webp",
+      "localFallback": "/images/3d\\explorer-character.webp"
+    },
+    "3d\\headphone-product.webp": {
+      "imagekitPath": "/shaibya-portfolio/3d\\headphone-product.webp",
+      "localFallback": "/images/3d\\headphone-product.webp"
+    },
+    "3d\\living-room-render.webp": {
+      "imagekitPath": "/shaibya-portfolio/3d\\living-room-render.webp",
+      "localFallback": "/images/3d\\living-room-render.webp"
+    },
+    "3d\\living-room-wireframe.webp": {
+      "imagekitPath": "/shaibya-portfolio/3d\\living-room-wireframe.webp",
+      "localFallback": "/images/3d\\living-room-wireframe.webp"
+    },
+    "3d\\README.md": {
+      "imagekitPath": "/shaibya-portfolio/3d\\README.md",
+      "localFallback": "/images/3d\\README.md"
+    },
+    "fitness\\fit_pain_1.png": {
+      "imagekitPath": "/shaibya-portfolio/fitness\\fit_pain_1.png",
+      "localFallback": "/images/fitness\\fit_pain_1.png"
+    },
+    "landing\\abstract-geometric-shapes.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\abstract-geometric-shapes.png",
+      "localFallback": "/images/landing\\abstract-geometric-shapes.png"
+    },
+    "landing\\ai-dashboard-visualization.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\ai-dashboard-visualization.png",
+      "localFallback": "/images/landing\\ai-dashboard-visualization.png"
+    },
+    "landing\\ai-solution.webp": {
+      "imagekitPath": "/shaibya-portfolio/landing\\ai-solution.webp",
+      "localFallback": "/images/landing\\ai-solution.webp"
+    },
+    "landing\\bento_cloud_security.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\bento_cloud_security.png",
+      "localFallback": "/images/landing\\bento_cloud_security.png"
+    },
+    "landing\\bento_compliance_audits.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\bento_compliance_audits.png",
+      "localFallback": "/images/landing\\bento_compliance_audits.png"
+    },
+    "landing\\bento_incident_response.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\bento_incident_response.png",
+      "localFallback": "/images/landing\\bento_incident_response.png"
+    },
+    "landing\\bento_penetration_vertical.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\bento_penetration_vertical.png",
+      "localFallback": "/images/landing\\bento_penetration_vertical.png"
+    },
+    "landing\\bento_threat_intelligence.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\bento_threat_intelligence.png",
+      "localFallback": "/images/landing\\bento_threat_intelligence.png"
+    },
+    "landing\\customer-exp.jpg": {
+      "imagekitPath": "/shaibya-portfolio/landing\\customer-exp.jpg",
+      "localFallback": "/images/landing\\customer-exp.jpg"
+    },
+    "landing\\earth.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\earth.png",
+      "localFallback": "/images/landing\\earth.png"
+    },
+    "landing\\engineer.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\engineer.png",
+      "localFallback": "/images/landing\\engineer.png"
+    },
+    "landing\\fitness_vertical.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\fitness_vertical.png",
+      "localFallback": "/images/landing\\fitness_vertical.png"
+    },
+    "landing\\form-image.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\form-image.png",
+      "localFallback": "/images/landing\\form-image.png"
+    },
+    "landing\\futuristic-ai-dashboard.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\futuristic-ai-dashboard.png",
+      "localFallback": "/images/landing\\futuristic-ai-dashboard.png"
+    },
+    "landing\\jupiter.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\jupiter.png",
+      "localFallback": "/images/landing\\jupiter.png"
+    },
+    "landing\\mars.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\mars.png",
+      "localFallback": "/images/landing\\mars.png"
+    },
+    "landing\\mercury.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\mercury.png",
+      "localFallback": "/images/landing\\mercury.png"
+    },
+    "landing\\mobile1.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\mobile1.png",
+      "localFallback": "/images/landing\\mobile1.png"
+    },
+    "landing\\mobile2.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\mobile2.png",
+      "localFallback": "/images/landing\\mobile2.png"
+    },
+    "landing\\mobile3.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\mobile3.png",
+      "localFallback": "/images/landing\\mobile3.png"
+    },
+    "landing\\phones-cta.jpeg": {
+      "imagekitPath": "/shaibya-portfolio/landing\\phones-cta.jpeg",
+      "localFallback": "/images/landing\\phones-cta.jpeg"
+    },
+    "landing\\phones-cta.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\phones-cta.png",
+      "localFallback": "/images/landing\\phones-cta.png"
+    },
+    "landing\\real_estate_vertical.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\real_estate_vertical.png",
+      "localFallback": "/images/landing\\real_estate_vertical.png"
+    },
+    "landing\\saturn.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\saturn.png",
+      "localFallback": "/images/landing\\saturn.png"
+    },
+    "landing\\uranus.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\uranus.png",
+      "localFallback": "/images/landing\\uranus.png"
+    },
+    "landing\\venus.png": {
+      "imagekitPath": "/shaibya-portfolio/landing\\venus.png",
+      "localFallback": "/images/landing\\venus.png"
+    },
+    "LOGO BALCK BG.png": {
+      "imagekitPath": "/shaibya-portfolio/LOGO BALCK BG.png",
+      "localFallback": "/images/../ BALCK BG.png"
+    },
+    "LOGO FINAL.png": {
+      "imagekitPath": "/shaibya-portfolio/LOGO FINAL.png",
+      "localFallback": "/images/../ FINAL.png"
+    },
+    "logos\\amazon-dark.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\amazon-dark.svg",
+      "localFallback": "/images/logos\\amazon-dark.svg"
+    },
+    "logos\\coca-cola-2021.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\coca-cola-2021.svg",
+      "localFallback": "/images/logos\\coca-cola-2021.svg"
+    },
+    "logos\\flipkart.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\flipkart.svg",
+      "localFallback": "/images/logos\\flipkart.svg"
+    },
+    "logos\\intel.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\intel.svg",
+      "localFallback": "/images/logos\\intel.svg"
+    },
+    "logos\\mercedes-benz-9.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\mercedes-benz-9.svg",
+      "localFallback": "/images/logos\\mercedes-benz-9.svg"
+    },
+    "logos\\meta-3.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\meta-3.svg",
+      "localFallback": "/images/logos\\meta-3.svg"
+    },
+    "logos\\milestone0.jpg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\milestone0.jpg",
+      "localFallback": "/images/logos\\milestone0.jpg"
+    },
+    "logos\\netflix-3.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\netflix-3.svg",
+      "localFallback": "/images/logos\\netflix-3.svg"
+    },
+    "logos\\porsche-2.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\porsche-2.svg",
+      "localFallback": "/images/logos\\porsche-2.svg"
+    },
+    "logos\\tata-consultancy-services-1.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\tata-consultancy-services-1.svg",
+      "localFallback": "/images/logos\\tata-consultancy-services-1.svg"
+    },
+    "logos\\tech-mahindra-new-logo.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\tech-mahindra-new-logo.svg",
+      "localFallback": "/images/logos\\tech-mahindra-new-logo.svg"
+    },
+    "logos\\tesla-motors.svg": {
+      "imagekitPath": "/shaibya-portfolio/logos\\tesla-motors.svg",
+      "localFallback": "/images/logos\\tesla-motors.svg"
+    },
+    "real-estate\\real_estate_hero.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\real_estate_hero.png",
+      "localFallback": "/images/real-estate\\real_estate_hero.png"
+    },
+    "real-estate\\re_pain_1.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\re_pain_1.png",
+      "localFallback": "/images/real-estate\\re_pain_1.png"
+    },
+    "real-estate\\re_pain_2.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\re_pain_2.png",
+      "localFallback": "/images/real-estate\\re_pain_2.png"
+    },
+    "real-estate\\re_pain_3.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\re_pain_3.png",
+      "localFallback": "/images/real-estate\\re_pain_3.png"
+    },
+    "real-estate\\re_pain_4.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\re_pain_4.png",
+      "localFallback": "/images/real-estate\\re_pain_4.png"
+    },
+    "real-estate\\re_pain_5.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\re_pain_5.png",
+      "localFallback": "/images/real-estate\\re_pain_5.png"
+    },
+    "real-estate\\room-after.jpg": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\room-after.jpg",
+      "localFallback": "/images/real-estate\\room-after.jpg"
+    },
+    "real-estate\\room-after.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\room-after.png",
+      "localFallback": "/images/real-estate\\room-after.png"
+    },
+    "real-estate\\room-before.jpg": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\room-before.jpg",
+      "localFallback": "/images/real-estate\\room-before.jpg"
+    },
+    "real-estate\\room-before.png": {
+      "imagekitPath": "/shaibya-portfolio/real-estate\\room-before.png",
+      "localFallback": "/images/real-estate\\room-before.png"
+    },
+    "Screenshot 2026-07-05 011613.png": {
+      "imagekitPath": "/shaibya-portfolio/Screenshot 2026-07-05 011613.png",
+      "localFallback": "/images/Screenshot 2026-07-05 011613.png"
+    },
+    "screenshots\\client-1.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-1.png",
+      "localFallback": "/images/screenshots\\client-1.png"
+    },
+    "screenshots\\client-2.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-2.png",
+      "localFallback": "/images/screenshots\\client-2.png"
+    },
+    "screenshots\\client-3.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-3.png",
+      "localFallback": "/images/screenshots\\client-3.png"
+    },
+    "screenshots\\client-4.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-4.png",
+      "localFallback": "/images/screenshots\\client-4.png"
+    },
+    "screenshots\\client-5.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-5.png",
+      "localFallback": "/images/screenshots\\client-5.png"
+    },
+    "screenshots\\client-6.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\client-6.png",
+      "localFallback": "/images/screenshots\\client-6.png"
+    },
+    "screenshots\\mg-infra.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\mg-infra.png",
+      "localFallback": "/images/screenshots\\mg-infra.png"
+    },
+    "screenshots\\mg_infra_desktop.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\mg_infra_desktop.png",
+      "localFallback": "/images/screenshots\\mg_infra_desktop.png"
+    },
+    "screenshots\\parmatma-ek.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\parmatma-ek.png",
+      "localFallback": "/images/screenshots\\parmatma-ek.png"
+    },
+    "screenshots\\revolution-fitness.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\revolution-fitness.png",
+      "localFallback": "/images/screenshots\\revolution-fitness.png"
+    },
+    "screenshots\\revolution_fitness_desktop.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\revolution_fitness_desktop.png",
+      "localFallback": "/images/screenshots\\revolution_fitness_desktop.png"
+    },
+    "screenshots\\snyypit.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\snyypit.png",
+      "localFallback": "/images/screenshots\\snyypit.png"
+    },
+    "screenshots\\sonar-killa.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\sonar-killa.png",
+      "localFallback": "/images/screenshots\\sonar-killa.png"
+    },
+    "screenshots\\touchwood.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\touchwood.png",
+      "localFallback": "/images/screenshots\\touchwood.png"
+    },
+    "screenshots\\vims-hospital.png": {
+      "imagekitPath": "/shaibya-portfolio/screenshots\\vims-hospital.png",
+      "localFallback": "/images/screenshots\\vims-hospital.png"
+    },
+    "seo\\shaibya-social.png": {
+      "imagekitPath": "/shaibya-portfolio/seo\\shaibya-social.png",
+      "localFallback": "/images/seo\\shaibya-social.png"
+    },
+    "shaibya-logo-nav.png": {
+      "imagekitPath": "/shaibya-portfolio/shaibya-logo-nav.png",
+      "localFallback": "/images/../-nav.png"
+    },
+    "social\\creator-shoot.webp": {
+      "imagekitPath": "/shaibya-portfolio/social\\creator-shoot.webp",
+      "localFallback": "/images/social\\creator-shoot.webp"
+    },
+    "social\\editing-studio.webp": {
+      "imagekitPath": "/shaibya-portfolio/social\\editing-studio.webp",
+      "localFallback": "/images/social\\editing-studio.webp"
+    },
+    "social\\product-story.webp": {
+      "imagekitPath": "/shaibya-portfolio/social\\product-story.webp",
+      "localFallback": "/images/social\\product-story.webp"
+    },
+    "social\\README.md": {
+      "imagekitPath": "/shaibya-portfolio/social\\README.md",
+      "localFallback": "/images/social\\README.md"
+    },
+    "social\\retail-showroom.webp": {
+      "imagekitPath": "/shaibya-portfolio/social\\retail-showroom.webp",
+      "localFallback": "/images/social\\retail-showroom.webp"
+    },
+    "solutions\\biscuit-management.webp": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\biscuit-management.webp",
+      "localFallback": "/images/solutions\\biscuit-management.webp"
+    },
+    "solutions\\cellcurehub.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\cellcurehub.png",
+      "localFallback": "/images/solutions\\cellcurehub.png"
+    },
+    "solutions\\coal.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\coal.png",
+      "localFallback": "/images/solutions\\coal.png"
+    },
+    "solutions\\fitlife.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\fitlife.png",
+      "localFallback": "/images/solutions\\fitlife.png"
+    },
+    "solutions\\gym.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\gym.png",
+      "localFallback": "/images/solutions\\gym.png"
+    },
+    "solutions\\hrms-bot.webp": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\hrms-bot.webp",
+      "localFallback": "/images/solutions\\hrms-bot.webp"
+    },
+    "solutions\\memorybox.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\memorybox.png",
+      "localFallback": "/images/solutions\\memorybox.png"
+    },
+    "solutions\\pushkarna.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\pushkarna.png",
+      "localFallback": "/images/solutions\\pushkarna.png"
+    },
+    "solutions\\README.md": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\README.md",
+      "localFallback": "/images/solutions\\README.md"
+    },
+    "solutions\\sonarkilla.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\sonarkilla.png",
+      "localFallback": "/images/solutions\\sonarkilla.png"
+    },
+    "solutions\\vims.png": {
+      "imagekitPath": "/shaibya-portfolio/solutions\\vims.png",
+      "localFallback": "/images/solutions\\vims.png"
+    },
+    "team\\ml-engineer.png": {
+      "imagekitPath": "/shaibya-portfolio/team\\ml-engineer.png",
+      "localFallback": "/images/team\\ml-engineer.png"
+    },
+    "team\\modern-team-collaboration-workspace.png": {
+      "imagekitPath": "/shaibya-portfolio/team\\modern-team-collaboration-workspace.png",
+      "localFallback": "/images/team\\modern-team-collaboration-workspace.png"
+    },
+    "work\\work-1.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-1.png",
+      "localFallback": "/images/work\\work-1.png"
+    },
+    "work\\work-2.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-2.png",
+      "localFallback": "/images/work\\work-2.png"
+    },
+    "work\\work-3.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-3.png",
+      "localFallback": "/images/work\\work-3.png"
+    },
+    "work\\work-4.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-4.png",
+      "localFallback": "/images/work\\work-4.png"
+    },
+    "work\\work-5.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-5.png",
+      "localFallback": "/images/work\\work-5.png"
+    },
+    "work\\work-6.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work-6.png",
+      "localFallback": "/images/work\\work-6.png"
+    },
+    "work\\work1.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work1.png",
+      "localFallback": "/images/work\\work1.png"
+    },
+    "work\\work2.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work2.png",
+      "localFallback": "/images/work\\work2.png"
+    },
+    "work\\work3.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work3.png",
+      "localFallback": "/images/work\\work3.png"
+    },
+    "work\\work4.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work4.png",
+      "localFallback": "/images/work\\work4.png"
+    },
+    "work\\work5.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work5.png",
+      "localFallback": "/images/work\\work5.png"
+    },
+    "work\\work6.png": {
+      "imagekitPath": "/shaibya-portfolio/work\\work6.png",
+      "localFallback": "/images/work\\work6.png"
+    }
+  }
+}

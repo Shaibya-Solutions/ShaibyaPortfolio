@@ -1,9 +1,21 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { TEAM_MEMBERS } from "@/data/team";
+import { getTeamMembers } from "@/lib/supabase/portfolio";
 
 export default function TeamSection() {
+  const [members, setMembers] = useState(TEAM_MEMBERS);
+
+  useEffect(() => {
+    getTeamMembers().then((res) => {
+      if (res && res.length > 0) {
+        setMembers(res);
+      }
+    });
+  }, []);
+
   return (
     <section id="team" aria-labelledby="team-heading" className="scroll-mt-32 py-24 lg:py-32 bg-[#F8FAFB] border-b border-[#E5E7EB]">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -19,7 +31,7 @@ export default function TeamSection() {
           </p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {TEAM_MEMBERS.map((member, index) => {
+          {members.map((member, index) => {
             const Icon = member.icon;
             return (
               <motion.article

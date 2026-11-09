@@ -216,11 +216,12 @@ function Row({ project: p, index }: { project: Project; index: number }) {
 }
 
 /* ── page ── */
-export default function RNDPortfolioPage() {
+export default function RNDPortfolioPage({ projects }: { projects?: Project[] } = {}) {
+  const projectList = projects && projects.length > 0 ? projects : rndProjects;
   const [visibleCount, setVisibleCount] = useState(4);
-  const visible = rndProjects.slice(0, visibleCount);
-  const hasMore = visibleCount < rndProjects.length;
-  const remaining = rndProjects.length - visibleCount;
+  const visible = projectList.slice(0, visibleCount);
+  const hasMore = visibleCount < projectList.length;
+  const remaining = projectList.length - visibleCount;
   return (
     <main className="min-h-screen flex flex-col overflow-x-clip" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
@@ -238,7 +239,7 @@ export default function RNDPortfolioPage() {
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
             style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(15px,1.5vw,18px)", color: MUTED, lineHeight: 1.7, maxWidth: 520 }}>
-            {rndProjects.length} R&amp;D builds across AI, enterprise, manufacturing, and agriculture — including collaborations with Mirragio and Bridgestone.
+            {projectList.length} R&amp;D builds across AI, enterprise, manufacturing, and agriculture — including collaborations with Mirragio and Bridgestone.
           </motion.p>
           {/* Status legend */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}

@@ -179,11 +179,12 @@ function Row({ project: p, index }: { project: Project; index: number }) {
 }
 
 /* ── page ── */
-export default function SolutionsPortfolioPage() {
+export default function SolutionsPortfolioPage({ projects }: { projects?: Project[] } = {}) {
+  const projectList = projects && projects.length > 0 ? projects : solutionProjects;
   const [visibleCount, setVisibleCount] = useState(4);
-  const visible = solutionProjects.slice(0, visibleCount);
-  const hasMore = visibleCount < solutionProjects.length;
-  const remaining = solutionProjects.length - visibleCount;
+  const visible = projectList.slice(0, visibleCount);
+  const hasMore = visibleCount < projectList.length;
+  const remaining = projectList.length - visibleCount;
   return (
     <main className="min-h-screen flex flex-col" style={{ background: BG, color: TEXT }}>
       <SiteHeader />
@@ -201,7 +202,7 @@ export default function SolutionsPortfolioPage() {
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
             style={{ fontFamily: "var(--font-inter)", fontSize: "clamp(15px,1.5vw,18px)", color: MUTED, lineHeight: 1.7, maxWidth: 520 }}>
-            {solutionProjects.length} AI automations, CRM builds, and management platforms. Each one solves a real bottleneck with a measurable outcome.
+            {projectList.length} AI automations, CRM builds, and management platforms. Each one solves a real bottleneck with a measurable outcome.
           </motion.p>
         </div>
       </section>

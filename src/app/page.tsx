@@ -14,10 +14,12 @@ import GLInstagram from "@/components/features/landing/GLInstagram";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
+import { getTestimonials } from "@/lib/supabase/portfolio";
 
 export const metadata = metadataFor("/");
 
-export default function HomePage() {
+export default async function HomePage() {
+  const testimonials = await getTestimonials();
 
   return (
     <main className="bg-white text-slate-900 min-h-screen flex flex-col">
@@ -40,7 +42,7 @@ export default function HomePage() {
       <GLIndustries />
 
       {/* 8. TESTIMONIALS */}
-      <GLTestimonials />
+      <GLTestimonials items={testimonials} />
 
       {/* 9. FAQ */}
       <GLFAQ />

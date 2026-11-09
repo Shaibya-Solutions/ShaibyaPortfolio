@@ -611,15 +611,16 @@ function CaseStudyRow({
 /* ─────────────────────────────────────────────────────────────
    PAGE
    ───────────────────────────────────────────────────────────── */
-export default function PortfolioPage() {
+export default function PortfolioPage({ initialProjects }: { initialProjects?: Project[] } = {}) {
   const [active, setActive] = useState<FilterValue>("all");
   const [visibleCount, setVisibleCount] = useState(4);
 
+  const projectData = initialProjects && initialProjects.length > 0 ? initialProjects : allProjects;
   const filtered: Project[] =
-    active === "all" ? allProjects
-      : active === "website" ? websiteProjects
-        : active === "solution" ? solutionProjects
-          : rndProjects;
+    active === "all" ? projectData
+      : active === "website" ? projectData.filter(p => p.type === "website")
+        : active === "solution" ? projectData.filter(p => p.type === "solution")
+          : projectData.filter(p => p.type === "rnd");
 
   const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;

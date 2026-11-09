@@ -2,7 +2,7 @@ import { metadataFor } from "@/lib/seo/metadata";
 import { pageGraph } from "@/lib/seo/schema";
 import JsonLd from "@/components/seo/JsonLd";
 import CareersClient from "@/components/pages/careers/CareersClient";
-import { OPEN_ROLES } from "@/data/careers";
+import { getCareersRoles } from "@/lib/supabase/portfolio";
 
 export const metadata = metadataFor("/careers");
 
@@ -69,11 +69,12 @@ const MANIFESTO_ITEMS = [
   }
 ];
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const roles = await getCareersRoles();
   return (
     <>
-      <JsonLd data={pageGraph("/careers", { type: "CollectionPage", items: OPEN_ROLES.map((role) => ({ name: role.title, path: `/careers#${role.id}` })) })} />
-      <CareersClient IMPACT_LOCATIONS={IMPACT_LOCATIONS} MANIFESTO_ITEMS={MANIFESTO_ITEMS} />
+      <JsonLd data={pageGraph("/careers", { type: "CollectionPage", items: roles.map((role: any) => ({ name: role.title, path: `/careers#${role.id}` })) })} />
+      <CareersClient IMPACT_LOCATIONS={IMPACT_LOCATIONS} MANIFESTO_ITEMS={MANIFESTO_ITEMS} roles={roles} />
     </>
   );
 }

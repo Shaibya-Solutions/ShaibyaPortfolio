@@ -1,5 +1,4 @@
 "use client";
-
 import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import type { TestimonialItem } from "@/components/ui/testimonials-columns-1";
 import { testimonials as rawTestimonials } from "@/data";
@@ -14,18 +13,6 @@ const portraitImages = [
   "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face",
 ];
 
-const testimonials: TestimonialItem[] = rawTestimonials.map((t, i) => ({
-  text: t.text,
-  image: portraitImages[i % portraitImages.length],
-  name: t.author,
-  role: t.role,
-}));
-
-/* Split into 3 columns for the masonry effect */
-const firstColumn = testimonials.slice(0, 2);
-const secondColumn = testimonials.slice(2, 4);
-const thirdColumn = testimonials.slice(4, 5);
-
 /* Pad shorter columns by duplicating for visual balance */
 const padColumn = (col: TestimonialItem[], minLen: number): TestimonialItem[] => {
   if (col.length >= minLen) return col;
@@ -36,11 +23,23 @@ const padColumn = (col: TestimonialItem[], minLen: number): TestimonialItem[] =>
   return padded.slice(0, minLen);
 };
 
-const col1 = padColumn(firstColumn, 3);
-const col2 = padColumn(secondColumn, 3);
-const col3 = padColumn(thirdColumn, 3);
+const GLTestimonials = ({ items }: { items?: any[] } = {}) => {
+  const source = items && items.length > 0 ? items : rawTestimonials;
+  const testimonials: TestimonialItem[] = source.map((t, i) => ({
+    text: t.text,
+    image: portraitImages[i % portraitImages.length],
+    name: t.author,
+    role: t.role,
+  }));
 
-const GLTestimonials = () => {
+  const firstColumn = testimonials.slice(0, 2);
+  const secondColumn = testimonials.slice(2, 4);
+  const thirdColumn = testimonials.slice(4, 5);
+
+  const col1 = padColumn(firstColumn, 3);
+  const col2 = padColumn(secondColumn, 3);
+  const col3 = padColumn(thirdColumn, 3);
+
   return (
     <section id="testimonials" className="relative py-28 lg:py-40 overflow-hidden bg-white border-t border-[#E5E7EB]">
       {/* Subtle background accent */}
@@ -54,42 +53,28 @@ const GLTestimonials = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="max-w-7xl mx-auto mb-16"
+          className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
-          <div className="accent-line w-12 mb-10 origin-left" />
-          <span className="inline-block text-xs font-semibold uppercase tracking-[0.2em] text-[#0ea5e9] mb-5">
-            Client Stories
-          </span>
-          <h2
-            className="text-[clamp(2rem,4vw,3rem)] font-bold text-[#111827] leading-[1.15]"
-            style={{ fontFamily: "var(--font-syne)" }}
-          >
-            What our clients <span className="heading-gradient">say.</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#0ea5e9]/20 bg-[#0ea5e9]/[0.04] mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0ea5e9]" />
+            <span className="text-xs font-semibold text-[#0ea5e9] uppercase tracking-[0.2em]">Client Stories</span>
+          </div>
+
+          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-[#111827] font-heading">
+            What founders and operators say about working with us.
           </h2>
-          <p className="mt-4 text-[15px] text-[#6B7280] max-w-md leading-relaxed">
-            Real results from real businesses. Every testimonial reflects measurable impact.
+          <p className="mt-4 text-lg text-[#6B7280] font-sans">
+            Real outcomes from real businesses. Here is how our software and automation helped them scale.
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          viewport={{ once: true }}
-          className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[740px] overflow-hidden"
-        >
-          <TestimonialsColumn testimonials={col1} duration={18} />
-          <TestimonialsColumn
-            testimonials={col2}
-            className="hidden md:block"
-            duration={22}
-          />
-          <TestimonialsColumn
-            testimonials={col3}
-            className="hidden lg:block"
-            duration={16}
-          />
-        </motion.div>
+        <div className="relative [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] -my-4 py-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[700px] overflow-hidden">
+            <TestimonialsColumn testimonials={col1} duration={35} />
+            <TestimonialsColumn testimonials={col2} className="hidden md:block" duration={45} />
+            <TestimonialsColumn testimonials={col3} className="hidden lg:block" duration={40} />
+          </div>
+        </div>
       </div>
     </section>
   );

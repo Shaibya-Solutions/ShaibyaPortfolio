@@ -6,5 +6,10 @@ import JsonLd from "@/components/seo/JsonLd";
 export const metadata = metadataFor("/about");
 
 export default function AboutPage() {
-  return <><JsonLd data={pageGraph("/about", { type: "AboutPage" })} /><AboutClient /></>;
+  return (
+    <>
+      <JsonLd data={pageGraph("/about", { type: "AboutPage" })} />
+      <AboutClient />
+    </>
+  );
 }

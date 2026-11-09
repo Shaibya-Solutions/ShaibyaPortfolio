@@ -1,4 +1,5 @@
 "use client";
+import { getImageUrl } from "@/lib/imagekit";
 
 import {
     useRef,
@@ -463,7 +464,7 @@ function BrowserFrame({
                             {/* Static image wrapper for smooth cross-fades */}
                             <div style={{ position: "absolute", inset: 0 }}>
                                 <Image
-                                    src={proj.image}
+                                    src={getImageUrl(proj.image)}
                                     alt={proj.title}
                                     fill
                                     sizes="(max-width: 960px) 100vw, 880px"
@@ -599,7 +600,7 @@ function MobileLayout() {
                         boxShadow: `0 2px 16px ${T.shadow}`,
                     }}>
                         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", overflow: "hidden" }}>
-                            <Image src={p.image} alt={p.title} fill sizes="100vw" style={{ objectFit: "cover", objectPosition: "top" }} />
+                            <Image src={getImageUrl(p.image)} alt={p.title} fill sizes="100vw" style={{ objectFit: "cover", objectPosition: "top" }} />
                         </div>
                         <div style={{ padding: "18px 18px 20px" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
