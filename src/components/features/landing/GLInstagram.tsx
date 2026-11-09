@@ -78,7 +78,7 @@ export default function GLInstagram() {
                   rel="noopener noreferrer"
                   tabIndex={copy === 1 ? -1 : 0}
                   className="relative block w-64 md:w-80 aspect-[4/5] shrink-0 overflow-hidden rounded-2xl bg-slate-200 shadow-sm group focus-visible:outline-4 focus-visible:outline-sky-500"
-                  aria-label={`${post.title} — visit @deepoffduty on Instagram`}
+                  
                 >
                   <Image
                     src={post.image}

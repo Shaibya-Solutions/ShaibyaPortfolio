@@ -125,7 +125,7 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
         <li className="relative z-10 px-6 md:px-10 flex items-center shrink-0">
           <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
             <Image
-              src="/shaibya-logo-nav.png"
+              src="/shaibya-logo-nav.webp"
               alt="Shaibya Solutions"
               width={240}
               height={88}

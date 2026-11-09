@@ -16,7 +16,7 @@ export const site = {
   locale: "en_IN",
   telephone: "+917498341146",
   email: "shaibyasolutions@gmail.com",
-  logo: "/shaibya-logo-nav.png",
+  logo: "/shaibya-logo-nav.webp",
   socialImage: "/images/seo/shaibya-social.png",
   address: {
     streetAddress: "Ramdaspeth",

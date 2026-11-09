@@ -53,7 +53,7 @@ const processTimelineData = [
 const stepData = [
   {
     id: 1,
-    bg: "#0ea5e9",
+    bg: "#0369a1",
     dark: true,
     accentLabel: "#ffffff",      // card labels on blue bg
     accentDot: "rgba(255,255,255,0.5)",
@@ -104,7 +104,7 @@ const stepData = [
   },
   {
     id: 4,
-    bg: "#0ea5e9",
+    bg: "#0369a1",
     dark: true,
     accentLabel: "#ffffff",
     accentDot: "rgba(255,255,255,0.5)",

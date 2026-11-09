@@ -86,10 +86,10 @@ export function Footer() {
                 Solutions
               </span>
             </Link>
-            <p className="text-gray-600 text-sm leading-relaxed max-w-xs">
+            <p className="text-gray-700 text-sm leading-relaxed max-w-xs">
               Digital products studio building custom websites, CRMs, and automation tools for businesses that want to grow.
             </p>
-            <p className="text-gray-500 mt-6 text-sm">
+            <p className="text-gray-600 mt-6 text-sm">
               © {new Date().getFullYear()} Shaibya Solutions. All rights reserved.
             </p>
           </AnimatedContainer>
@@ -114,10 +114,10 @@ export function Footer() {
                         <li key={link.title} className="min-w-0">
                           <Wrapper
                             href={link.href}
-                            className="text-gray-500 hover:text-sky-600 inline-flex items-center gap-1.5 transition-all duration-300 max-w-full"
+                            className="text-gray-700 hover:text-sky-700 inline-flex items-center gap-1.5 py-1.5 min-h-[40px] transition-all duration-300 max-w-full"
                             {...extraProps}
                           >
-                            {link.icon && <link.icon className="size-4 text-gray-400 shrink-0" />}
+                            {link.icon && <link.icon className="size-4 text-gray-600 shrink-0" />}
                             <span className="truncate">{link.title}</span>
                           </Wrapper>
                         </li>

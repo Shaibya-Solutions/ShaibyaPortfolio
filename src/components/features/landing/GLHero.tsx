@@ -87,7 +87,7 @@ export default function GLHero() {
                       text="We Engineer"
                       speed={40}
                       maxIterations={12}
-                      animateOn="view"
+                      animateOn="hover"
                       className="text-white"
                       encryptedClassName="encrypted-char"
                     />
@@ -96,7 +96,7 @@ export default function GLHero() {
                       text="Digital Impact."
                       speed={40}
                       maxIterations={12}
-                      animateOn="view"
+                      animateOn="hover"
                       className="text-[#38bdf8]"
                       encryptedClassName="encrypted-char"
                     />
