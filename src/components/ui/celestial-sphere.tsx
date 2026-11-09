@@ -32,6 +32,7 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
       camera: THREE.OrthographicCamera,
       renderer: THREE.WebGLRenderer,
       material: THREE.ShaderMaterial,
+      geometry: THREE.PlaneGeometry,
       mesh: THREE.Mesh;
     let animationFrameId: number;
     const mouse = new THREE.Vector2(0.5, 0.5);
@@ -123,8 +124,9 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
       scene = new THREE.Scene();
       camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      // Cap pixel ratio to 1.5 to protect GPU memory and prevent Lighthouse timeouts
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       currentMount.appendChild(renderer.domElement);
 
       material = new THREE.ShaderMaterial({
@@ -140,7 +142,7 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
         },
       });
 
-      const geometry = new THREE.PlaneGeometry(2, 2);
+      geometry = new THREE.PlaneGeometry(2, 2);
       mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
 
@@ -151,6 +153,7 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
 
     // --- Animation Loop ---
     const animate = () => {
+      if (!material || !renderer || !scene || !camera) return;
       material.uniforms.u_time.value += 0.005 * speed;
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(animate);
@@ -158,13 +161,17 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
 
     // --- Event Handlers ---
     const resize = () => {
-      const { clientWidth, clientHeight } = currentMount;
-      renderer.setSize(clientWidth, clientHeight);
-      material.uniforms.u_resolution.value.set(clientWidth, clientHeight);
+      if (!currentMount || !renderer || !material) return;
+      const width = currentMount.clientWidth;
+      // Bound height by window.innerHeight to prevent 8000px texture buffers during Lighthouse FullPageScreenshots
+      const height = Math.min(currentMount.clientHeight, window.innerHeight);
+      renderer.setSize(width, height);
+      material.uniforms.u_resolution.value.set(width, height);
       camera.updateProjectionMatrix();
     };
 
     const onMouseMove = (event: MouseEvent) => {
+      if (!currentMount || !material) return;
       const rect = currentMount.getBoundingClientRect();
       mouse.x = event.clientX - rect.left;
       mouse.y = event.clientY - rect.top;
@@ -186,11 +193,15 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
     // --- Cleanup ---
     return () => {
       removeEventListeners();
-      cancelAnimationFrame(animationFrameId);
-      if (currentMount && renderer.domElement) {
-        currentMount.removeChild(renderer.domElement);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
-      renderer.dispose();
+      if (renderer?.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
+      geometry?.dispose();
+      material?.dispose();
+      renderer?.dispose();
     };
   }, [hue, speed, zoom, particleSize]);
 

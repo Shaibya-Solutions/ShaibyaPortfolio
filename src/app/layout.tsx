@@ -26,6 +26,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://hbhumkwhlwmbwoxnyvms.supabase.co" />
         <link rel="preload" href="/fonts/proxima-regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/proxima-bold.woff" as="font" type="font/woff" crossOrigin="anonymous" />
+        <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM Information" />
       </head>
       <body className="min-h-dvh bg-white font-sans text-slate-900">
         <JsonLd id="business-structured-data" data={businessGraph()} />

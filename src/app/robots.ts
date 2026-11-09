@@ -6,7 +6,18 @@ export const dynamic = "force-static";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
-      userAgent: "*",
+      userAgent: [
+        "*",
+        "GPTBot",
+        "ChatGPT-User",
+        "ClaudeBot",
+        "Claude-Web",
+        "PerplexityBot",
+        "Google-Extended",
+        "Applebot-Extended",
+        "cohere-ai",
+        "Meta-ExternalAgent",
+      ],
       allow: allowIndexing ? "/" : undefined,
       disallow: allowIndexing ? ["/admin", "/api", "/dashboard", "/account", "/login", "/preview"] : "/",
     },

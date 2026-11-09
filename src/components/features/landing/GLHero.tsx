@@ -64,13 +64,8 @@ export default function GLHero() {
               </span>
             </motion.div>
 
-            {/* Headline with DecryptedText */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              className="mb-8"
-            >
+            {/* Headline with DecryptedText - Renders immediately for zero LCP delay */}
+            <div className="mb-8">
               <h1
                 className="text-[clamp(3rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-white"
                 style={{ fontFamily: "var(--font-syne)" }}
@@ -103,7 +98,7 @@ export default function GLHero() {
                   </>
                 )}
               </h1>
-            </motion.div>
+            </div>
 
             {/* Subtitle */}
             <motion.p

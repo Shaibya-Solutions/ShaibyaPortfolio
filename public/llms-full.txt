@@ -1,0 +1,103 @@
+# Shaibya Solutions — Complete Technical & Organizational Profile
+
+> Comprehensive structured knowledge base for AI agents, LLM search engines, researchers, and autonomous web browsers.
+
+## Company Information
+- Name: Shaibya Solutions
+- Tagline: We Engineer Digital Impact
+- Registered Operating Address: Ramdaspeth, Nagpur, Maharashtra 440012, India
+- Country: India (IN)
+- Primary Phone / WhatsApp: +91 7498341146
+- Official Email: shaibyasolutions@gmail.com
+- Official Website: https://www.shaibyasolutions.com
+- Google Business Profile: https://share.google/1MoPcjfD7EBA3eXP9
+- LinkedIn: https://www.linkedin.com/company/108785057/
+- Instagram: https://www.instagram.com/deepoffduty/
+- Operating Schedule: 24 hours / 7 days a week support & consultation
+
+---
+
+## What We Do
+
+Shaibya Solutions is a full-stack digital product, software engineering, and automation agency headquartered in Nagpur, India. We partner with ambitious startups, growing SMBs, and industrial enterprises to eliminate manual bottlenecks, build modern web/mobile applications, secure IT environments, and expand digital visibility.
+
+### Service 1: Custom Software & Business Automation
+- URL: https://www.shaibyasolutions.com/services/software-solutions
+- Capabilities:
+  - Custom web and desktop application development using Next.js, React, Node.js, and Python.
+  - End-to-end workflow automation (Zapier, Make, n8n, custom event-driven webhooks).
+  - OCR document parsing (bills, invoices, weight slips, medical certificates) and ERP/CRM syncing.
+  - Multi-tenant SaaS architecture, relational database design with PostgreSQL/Supabase, and Row-Level Security (RLS).
+  - Legacy system modernisation and API bridging.
+
+### Service 2: Digital Marketing & B2B Growth
+- URL: https://www.shaibyasolutions.com/services/digital-marketing
+- Capabilities:
+  - Technical and on-page SEO: Core Web Vitals optimization, semantic schema markup (JSON-LD), structured content graphs.
+  - Local SEO and Google Business Profile optimization for regional leadership.
+  - B2B lead generation funnels, conversion rate optimization (CRO), and high-intent landing page engineering.
+  - Performance marketing across Meta, Google Ads, and LinkedIn.
+
+### Service 3: Application & Cloud Security (Cybersecurity)
+- URL: https://www.shaibyasolutions.com/services/cybersecurity
+- Capabilities:
+  - Web and mobile application penetration testing (OWASP Top 10 compliance).
+  - Cloud infrastructure audit (AWS, GCP, Supabase, Vercel) and posture hardening.
+  - Source code security reviews, dependency vulnerability auditing, and secrets detection.
+  - Incident response readiness, automated backups, and data encryption policies.
+
+### Service 4: 3D Visualisation & Architectural Animation
+- URL: https://www.shaibyasolutions.com/services/3d-modelling-animations
+- Capabilities:
+  - Photorealistic architectural renders (exteriors, interiors, landscaping).
+  - 3D walkthrough video production for real estate developers and infrastructure contractors.
+  - Industrial and hardware product animation for marketing and investor pitches.
+  - Interactive WebGL and Three.js 3D spatial models directly in browser applications.
+
+---
+
+## Project Case Studies & Measurable Outcomes
+
+### 1. VIMS Hospital (Healthcare)
+- URL: https://www.shaibyasolutions.com/portfolio
+- Problem: Outdated digital footprint, patients unable to discover specialist doctors or schedule appointments online, poor local organic search presence.
+- Solution: Developed a modern healthcare portal with fast doctor directory search, specialty department categorization, direct appointment requests, and comprehensive local SEO schema.
+- Results: 2.5× increase in digital patient inquiries within 6 months; organic Google search rank moved from #50 to #13 for competitive regional healthcare terms; 99.9% uptime.
+
+### 2. Revolution Fitness (Fitness & Gym Management)
+- URL: https://www.shaibyasolutions.com/portfolio
+- Problem: Member churn caused by manual fee collection, spreadsheet-based attendance, and lack of member self-service.
+- Solution: Engineered an integrated gym management platform with WhatsApp automated renewal alerts, payment gateway integration, and attendance tracking.
+- Results: Membership grew from 120 to 350+ active members in 90 days; 30% direct revenue increase from timely automated renewals; staff administration overhead reduced by 60%.
+
+### 3. CoalTrack AI (Heavy Industry & Logistics)
+- URL: https://www.shaibyasolutions.com/portfolio
+- Problem: Paper-heavy manual entry of weightbridge slips and transport challans causing shipping delays, human error in billing, and disputes.
+- Solution: Built an automated OCR data extraction pipeline with FastAPI and OpenCV that scans paper manifests, verifies vehicle weights against purchase orders, and updates the ERP in under 3 seconds.
+- Results: 95% faster billing pipeline; processing 500+ daily coal shipments with 75% fewer manual billing operators; zero data transcription discrepancies.
+
+### 4. MG Infrastructure (Infrastructure & Construction)
+- URL: https://www.shaibyasolutions.com/portfolio
+- Problem: High-value government and commercial tenders required a verifiable, interactive track record of heavy infrastructure projects.
+- Solution: Built a high-performance interactive portfolio with 3D project models, drone cinematography showcases, and structured project specifications.
+
+---
+
+## Frequently Asked Questions (FAQ)
+
+### What industries does Shaibya Solutions specialize in?
+We build tailored software and growth systems for Healthcare, Fitness & Gyms, Heavy Industry & Distribution (Coal, Steel, Logistics), Real Estate & Construction, Professional Services, and E-commerce.
+
+### Where is Shaibya Solutions based?
+Our engineering studio is located in Ramdaspeth, Nagpur, Maharashtra, India. We operate with clients across India, North America, the Middle East, and Europe.
+
+### How does Shaibya Solutions approach a new project?
+Our process follows 5 structured stages:
+1. Discovery (Week 1): 30-minute direct WhatsApp/video consultation to understand your business objectives and eliminate assumptions.
+2. Architecture & Design (Weeks 1-2): System architecture diagram, UX wireframes, database schemas, and milestone roadmaps.
+3. Rapid Development (Weeks 2-6): Modular development in sprints with continuous preview staging and automated testing.
+4. Launch & Hardening: Performance testing, security reviews, SEO verification, and DNS cutover.
+5. Growth & Support: Continuous monitoring, automated backups, feature scaling, and SEO rank tracking.
+
+### How can I get a project quote or start working together?
+Connect directly with our technical leadership via WhatsApp at +91 7498341146, email shaibyasolutions@gmail.com, or submit an inquiry at https://www.shaibyasolutions.com/contact.

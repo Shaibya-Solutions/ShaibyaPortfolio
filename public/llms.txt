@@ -1,0 +1,40 @@
+# Shaibya Solutions
+
+> Shaibya Solutions is a custom software development, business automation, and digital engineering company based in Nagpur, Maharashtra, India. We architect scalable web platforms, automate operations, build enterprise integrations, and deliver high-performance digital products for businesses worldwide.
+
+## Overview
+Shaibya Solutions helps growing companies and established enterprises digitize manual workflows, connect ERP/CRM backends, develop custom mobile and web applications, secure digital infrastructure, and produce high-fidelity 3D animations and architectural visualizations.
+
+- Website: https://www.shaibyasolutions.com
+- Location: Ramdaspeth, Nagpur, Maharashtra 440012, India
+- Phone / WhatsApp: +91 7498341146
+- Email: shaibyasolutions@gmail.com
+- Business Hours: 24/7 client coverage (Monday - Sunday)
+- Full Context for LLMs: https://www.shaibyasolutions.com/llms-full.txt
+
+## Core Services
+- [Custom Software & Business Automation](https://www.shaibyasolutions.com/services/software-solutions): Custom full-stack web and cloud systems, automated business workflows, OCR data pipelines, and ERP/CRM integrations built with modern TypeScript, Next.js, Python, and cloud infrastructure.
+- [Digital Marketing & B2B Growth](https://www.shaibyasolutions.com/services/digital-marketing): Data-driven search engine optimization (SEO), conversion rate optimization, technical content marketing, and targeted B2B growth funnels.
+- [Application & Cloud Security](https://www.shaibyasolutions.com/services/cybersecurity): Security architecture assessments, penetration testing, compliance audits (ISO 27001 / SOC 2 readiness), vulnerability remediation, and cloud security hardening.
+- [3D Visualisation & Animation](https://www.shaibyasolutions.com/services/3d-modelling-animations): Photorealistic architectural walkthroughs, industrial product animations, interior rendering, and interactive 3D spatial models.
+
+## Industry Solutions
+- [Healthcare & Hospital Platforms](https://www.shaibyasolutions.com/industries/healthcare): Doctor discovery, online appointment scheduling, digital patient management, and clinic workflow portals.
+- [Gym & Fitness Management](https://www.shaibyasolutions.com/industries/gyms-fitness): Member management, automated billing and recurring renewal reminders, attendance tracking, and member mobile apps.
+- [Heavy Industry & Distribution](https://www.shaibyasolutions.com/industries/coal-distribution): Gate pass automation, truck weightbridge integrations, automated challan generation, and real-time inventory tracking.
+- [Real Estate & Construction](https://www.shaibyasolutions.com/industries/real-estate-developers): Interactive project portfolios, 3D floor plan viewers, lead management, and property showcase websites.
+
+## Key Case Studies
+- [VIMS Hospital](https://www.shaibyasolutions.com/portfolio): Scaled digital patient acquisition by 2.5x with 150+ searchable specialist profiles and online booking. SEO rank improved from #50 to #13 within months.
+- [Revolution Fitness](https://www.shaibyasolutions.com/portfolio): Grew gym membership from 120 to 350+ in 90 days with end-to-end member management, automated renewal workflows, and 30% revenue growth.
+- [CoalTrack AI](https://www.shaibyasolutions.com/portfolio): 95% faster billing pipeline processing 500+ daily coal dispatches with 75% manpower reduction using automated OCR and validation.
+- [MG Infrastructure](https://www.shaibyasolutions.com/portfolio): High-speed engineering showcase with verified infrastructure deliveries and interactive portfolio navigation.
+
+## Engineering Standards & Technology Stack
+- Frontend: Next.js (App Router), React, TypeScript, Tailwind CSS, Lenis Smooth Scroll, Three.js / WebGL.
+- Backend & Cloud: Node.js, Python (FastAPI), Supabase (PostgreSQL, Row-Level Security), REST & GraphQL APIs, Vercel edge deployment.
+- Quality Assurance: Strict TypeScript, automated SEO validation, WCAG AA accessibility, mobile-first responsive architecture.
+
+## Direct Inquiries
+- [Contact & Consultation](https://www.shaibyasolutions.com/contact): Book a 30-minute discovery call via WhatsApp or web form.
+- [Careers](https://www.shaibyasolutions.com/careers): Engineering, design, and growth marketing opportunities at Shaibya Solutions.
