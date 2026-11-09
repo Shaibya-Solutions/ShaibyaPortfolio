@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { triggerHaptic } from "@/lib/haptics";
 
 /* ─── Types ─── */
@@ -21,10 +21,20 @@ interface NavHeaderProps {
 }
 
 function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
-  const [position, setPosition] = useState({ left: 0, width: 0, opacity: 0 });
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const [animComplete, setAnimComplete] = useState(false);
+  const pathname = usePathname();
+
+  // Find index of currently active route
+  const currentPathIndex = items.findIndex((item) => {
+    if (item.href === "/" && pathname === "/") return true;
+    if (item.href !== "/" && pathname.startsWith(item.href)) return true;
+    if (item.dropdownItems?.some((sub) => pathname.startsWith(sub.href))) return true;
+    return false;
+  });
+
+  const activeIndex = hoveredIndex !== null ? hoveredIndex : (currentPathIndex !== -1 ? currentPathIndex : null);
 
   // Trigger smooth expanding animation 600ms after load
   React.useEffect(() => {
@@ -40,8 +50,7 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
   const rightItems = items.slice(mid);
 
   const resetCursor = () => {
-    setPosition((pv) => ({ ...pv, opacity: 0 }));
-    setActiveIndex(null);
+    setHoveredIndex(null);
   };
 
   // Dynamic scaling: 1.0 → 0.92 (gentle shrink)
@@ -110,12 +119,11 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
           {leftItems.map((item, index) => (
             <Tab
               key={item.label}
-              setPosition={setPosition}
               href={item.href}
               hasDropdown={item.hasDropdown}
               dropdownItems={item.dropdownItems}
               isActive={activeIndex === index}
-              onHover={() => setActiveIndex(index)}
+              onHover={() => setHoveredIndex(index)}
               scrollProgress={scrollProgress}
             >
               {item.label}
@@ -170,23 +178,17 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
           {rightItems.map((item, index) => (
             <Tab
               key={item.label}
-              setPosition={setPosition}
               href={item.href}
               hasDropdown={item.hasDropdown}
               dropdownItems={item.dropdownItems}
               isActive={activeIndex === mid + index}
-              onHover={() => setActiveIndex(mid + index)}
+              onHover={() => setHoveredIndex(mid + index)}
               scrollProgress={scrollProgress}
             >
               {item.label}
             </Tab>
           ))}
         </motion.div>
-
-        <Cursor
-          position={position}
-          scrollProgress={scrollProgress}
-        />
       </motion.ul>
     </div>
   );
@@ -194,7 +196,6 @@ function NavHeader({ items, scrollProgress = 0 }: NavHeaderProps) {
 
 const Tab = ({
   children,
-  setPosition,
   href,
   hasDropdown,
   dropdownItems,
@@ -203,7 +204,6 @@ const Tab = ({
   scrollProgress = 0,
 }: {
   children: React.ReactNode;
-  setPosition: React.Dispatch<React.SetStateAction<{ left: number; width: number; opacity: number }>>;
   href: string;
   hasDropdown?: boolean;
   dropdownItems?: NavItem["dropdownItems"];
@@ -211,7 +211,6 @@ const Tab = ({
   onHover: () => void;
   scrollProgress?: number;
 }) => {
-  const ref = useRef<HTMLLIElement>(null);
   const router = useRouter();
 
   // Dynamic text sizing: 20px → 15px
@@ -222,24 +221,38 @@ const Tab = ({
 
   return (
     <li
-      ref={ref}
       onMouseEnter={() => {
-        if (!ref.current) return;
-        const { width } = ref.current.getBoundingClientRect();
-        setPosition({ width, opacity: 1, left: ref.current.offsetLeft });
         onHover();
         if (href && !href.startsWith("#")) {
           router.prefetch(href);
         }
       }}
-      className="relative z-10 block cursor-pointer group/tab"
+      className="relative z-10 block cursor-pointer group/tab rounded-full"
     >
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            layoutId="nav-cursor-pill"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 450, damping: 32 }}
+            className="absolute inset-0 rounded-full pointer-events-none"
+            style={{
+              background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
+              zIndex: 0,
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       <Link
         href={href}
         prefetch={true}
         onPointerDown={() => triggerHaptic(8)}
-        className={`flex items-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap active:scale-[0.97] transition-all duration-75 select-none ${isActive ? "text-white" : "text-black"
-          }`}
+        className={`relative z-10 flex items-center justify-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap active:scale-[0.97] transition-colors duration-150 select-none ${
+          isActive ? "text-white" : "text-black hover:text-[#0ea5e9]"
+        }`}
         style={{
           fontSize: `${fontSize}px`,
           paddingLeft: `${paddingX}px`,
@@ -249,14 +262,15 @@ const Tab = ({
           transition: "font-size 0.15s ease-out, padding 0.15s ease-out",
         }}
       >
-        {children}
+        <span>{children}</span>
         {hasDropdown && (
           <svg
             width="12"
             height="12"
             viewBox="0 0 10 10"
-            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${isActive ? "text-white" : "text-black"
-              }`}
+            className={`mt-px transition-transform duration-200 group-hover/tab:rotate-180 ${
+              isActive ? "text-white" : "text-black"
+            }`}
           >
             <path d="M2 4L5 7L8 4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -292,34 +306,6 @@ const Tab = ({
         </div>
       )}
     </li>
-  );
-};
-
-const Cursor = ({
-  position,
-  scrollProgress = 0,
-}: {
-  position: { left: number; width: number; opacity: number };
-  scrollProgress?: number;
-}) => {
-  // Match exactly the tab content height: paddingY*2 + fontSize
-  const paddingY = 20 - scrollProgress * 8;
-  const fontSize = 20 - scrollProgress * 5;
-  const cursorHeight = paddingY * 2 + fontSize;
-
-  return (
-    <motion.li
-      animate={position}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className="absolute z-0 rounded-full pointer-events-none"
-      style={{
-        height: `${cursorHeight}px`,
-        top: "50%",
-        transform: "translateY(-50%)",
-        background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
-        transition: "height 0.15s ease-out",
-      }}
-    />
   );
 };
 
