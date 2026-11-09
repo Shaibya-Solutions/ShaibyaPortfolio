@@ -16,7 +16,24 @@ const CelestialSphere = dynamic(
 export default function GLHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [canLoadSphere, setCanLoadSphere] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Defer heavy WebGL canvas slightly so FCP and Speed Index finalize on the initial frame
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        const id = (window as unknown as { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(
+          () => setCanLoadSphere(true),
+          { timeout: 800 }
+        );
+        return () => (window as unknown as { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(id);
+      } else {
+        const timer = setTimeout(() => setCanLoadSphere(true), 400);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
 
   return (
     <section
@@ -24,8 +41,8 @@ export default function GLHero() {
       className="relative min-h-screen flex flex-col overflow-hidden"
       style={{ background: "#020817" }}
     >
-      {/* WebGL Celestial Sphere Background */}
-      {mounted && (
+      {/* WebGL Celestial Sphere Background — gracefully deferred */}
+      {canLoadSphere && (
         <div className="absolute inset-0 z-0">
           <CelestialSphere
             hue={210}
@@ -108,48 +125,42 @@ export default function GLHero() {
               className="text-lg lg:text-xl text-[#9CA3AF] max-w-xl leading-relaxed mb-12 font-light"
             >
               We build systems that eliminate manual work and drive measurable
-              growth — for businesses ready to scale.
+              business growth. From bespoke internal tools to high-converting
+              client portals, engineered for performance and scale.
             </motion.p>
 
-            {/* CTAs with Magnet */}
+            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1.0 }}
-              className="flex flex-wrap gap-4"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
             >
               <WhatsAppCTA
                 text="Start a project"
                 message="Hi, I'd like to discuss a project with Shaibya Solutions."
-                className="!rounded-xl !px-8 !py-4 !text-[15px] !font-semibold !bg-[#0ea5e9] !border-[#0ea5e9] hover:!bg-[#0284c7] hover:!shadow-[0_4px_20px_rgba(14,165,233,0.3)] !transition-all"
+                className="!rounded-full !px-8 !py-4 !text-[15px] !font-semibold !bg-[#0ea5e9] !border-[#0ea5e9] hover:!bg-[#0284c7] hover:!shadow-[0_4px_20px_rgba(14,165,233,0.3)] !transition-all text-center justify-center"
               />
-
               <Link
-                href="#our-work"
-                className="btn-dark group"
+                href="/portfolio"
+                prefetch={true}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full border border-white/20 text-white font-medium hover:bg-white/5 hover:border-white/40 transition-all duration-200 text-sm tracking-wide"
               >
-                See our work
-                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                <span>View Our Work</span>
+                <ArrowRight size={16} />
               </Link>
             </motion.div>
+
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
-        className="relative z-10 flex flex-col items-center pb-10 gap-2"
-      >
-        <span className="text-[10px] text-[#6B7280] uppercase tracking-[0.3em] font-medium">
-          Scroll
-        </span>
-        <div className="scroll-indicator">
-          <ChevronDown size={16} className="text-[#38bdf8]" />
+      <div className="relative z-10 flex justify-center pb-8 pointer-events-none">
+        <div className="flex flex-col items-center gap-2 text-white/50 text-xs tracking-widest uppercase">
+          <ChevronDown size={14} className="animate-bounce" />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
