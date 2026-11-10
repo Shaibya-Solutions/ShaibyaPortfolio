@@ -34,7 +34,7 @@ export function SiteHeader() {
   const verticalPadding = 32 - scrollProgress * 20;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${scrollProgress > 0.05 ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-slate-200/40 xl:bg-transparent xl:shadow-none xl:border-b-0" : "bg-transparent"}`}>
       {/* 
         Use a full-width relative container.
         The nav pill is absolutely centered; nothing else on desktop.
@@ -66,7 +66,6 @@ export function SiteHeader() {
                 transform: `scale(${1 - scrollProgress * 0.15})`,
                 transformOrigin: "left center",
                 filter: "drop-shadow(0 2px 6px rgba(14,165,233,0.15))",
-                mixBlendMode: "multiply",
                 transition: "all 0.1s ease-out",
               }}
               priority

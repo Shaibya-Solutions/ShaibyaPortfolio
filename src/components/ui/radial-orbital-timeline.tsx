@@ -70,8 +70,8 @@ export default function RadialOrbitalTimeline({
       <div ref={diagramRef} data-orbit-diagram className="relative flex min-h-0 w-full items-center justify-center">
         <div className="absolute h-48 w-48 rounded-full blur-3xl pointer-events-none" style={{ background: accent, opacity: 0.08 }} />
         <div className="absolute rounded-full border-2" style={{ width: radius * 2, height: radius * 2, borderColor: accent, opacity: 0.35 }} />
-        <div className="absolute flex h-16 w-16 items-center justify-center rounded-full shadow-xl" style={{ background: isLight ? "#0ea5e9" : "#ffffff" }}>
-          <div className="h-8 w-8 rounded-full border" style={{ borderColor: isLight ? "#bae6fd" : "#e2e8f0", background: isLight ? "#ffffff" : "#e0f2fe" }} />
+        <div className="absolute flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full shadow-xl" style={{ background: isLight ? "#0ea5e9" : "#ffffff" }}>
+          <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full border" style={{ borderColor: isLight ? "#bae6fd" : "#e2e8f0", background: isLight ? "#ffffff" : "#e0f2fe" }} />
         </div>
         {timelineData.map((item, index) => {
           const angle = ((index / timelineData.length) * 360 + angleOffset) * Math.PI / 180;
@@ -90,11 +90,19 @@ export default function RadialOrbitalTimeline({
                 onClick={() => select(item.id)}
                 aria-label={`View ${item.title} stage`}
                 aria-pressed={active}
-                className="relative flex h-12 w-12 items-center justify-center rounded-full border-2 shadow-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
+                className="relative flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full border-2 shadow-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-4"
                 style={{ color: active ? "#0ea5e9" : accent, background: active ? "#ffffff" : isLight ? "#ffffff" : "rgba(255,255,255,0.08)", borderColor: active ? "#ffffff" : accent, outlineColor: accent }}
               >
-                <Icon size={21} aria-hidden="true" />
-                <span className="absolute left-1/2 top-14 -translate-x-1/2 whitespace-nowrap text-[11px] font-semibold" style={{ color: accent }}>{item.title}</span>
+                <Icon size={19} className="sm:hidden" aria-hidden="true" />
+                <Icon size={21} className="hidden sm:block" aria-hidden="true" />
+                <span
+                  className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] sm:text-[11px] font-semibold ${
+                    Math.sin(angle) < -0.2 ? "-top-5 sm:-top-6" : "top-12 sm:top-13"
+                  }`}
+                  style={{ color: accent }}
+                >
+                  {item.title}
+                </span>
               </button>
             </div>
           );

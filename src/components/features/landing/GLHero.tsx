@@ -71,9 +71,9 @@ export default function GLHero() {
 
             {/* Label */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.3 }}
               className="mb-8"
             >
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#9CA3AF]">
@@ -119,9 +119,9 @@ export default function GLHero() {
 
             {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.35, delay: 0.08 }}
               className="text-lg lg:text-xl text-[#9CA3AF] max-w-xl leading-relaxed mb-12 font-light"
             >
               We build systems that eliminate manual work and drive measurable
@@ -131,9 +131,9 @@ export default function GLHero() {
 
             {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.0 }}
+              transition={{ duration: 0.35, delay: 0.12 }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
             >
               <WhatsAppCTA

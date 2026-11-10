@@ -20,8 +20,6 @@ export default function RootLayout({
       className="antialiased"
     >
       <head>
-        <link rel="preconnect" href="https://ik.imagekit.io" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://ik.imagekit.io" />
         <link rel="preconnect" href="https://hbhumkwhlwmbwoxnyvms.supabase.co" />
         <link rel="dns-prefetch" href="https://hbhumkwhlwmbwoxnyvms.supabase.co" />
         <link rel="preload" href="/fonts/proxima-regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />

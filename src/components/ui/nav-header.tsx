@@ -250,7 +250,7 @@ const Tab = ({
         href={href}
         prefetch={true}
         onPointerDown={() => triggerHaptic(8)}
-        className={`relative z-10 flex items-center justify-center gap-2 uppercase font-semibold tracking-wide whitespace-nowrap active:scale-[0.97] transition-colors duration-150 select-none ${
+        className={`relative z-10 flex items-center justify-center ${hasDropdown ? "gap-2" : ""} uppercase font-semibold tracking-wide whitespace-nowrap active:scale-[0.97] transition-colors duration-150 select-none ${
           isActive ? "text-white" : "text-black hover:text-[#0ea5e9]"
         }`}
         style={{
@@ -262,7 +262,7 @@ const Tab = ({
           transition: "font-size 0.15s ease-out, padding 0.15s ease-out",
         }}
       >
-        <span>{children}</span>
+        <span style={{ marginRight: "-0.025em" }}>{children}</span>
         {hasDropdown && (
           <svg
             width="12"

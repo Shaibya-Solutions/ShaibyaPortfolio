@@ -46,15 +46,15 @@ export function getImageUrl(pathOrKey?: string | null, options?: ImageTransformO
 
   const trQuery = trParams.length > 0 ? `?tr=${trParams.join(",")}` : "";
 
-  // If ImageKit endpoint is available, construct the CDN URL
-  if (IMAGEKIT_ENDPOINT) {
+  // If ImageKit is explicitly enabled via env, construct the CDN URL
+  if (process.env.NEXT_PUBLIC_USE_IMAGEKIT === "true" && IMAGEKIT_ENDPOINT) {
     const base = IMAGEKIT_ENDPOINT.replace(/\/+$/, "");
     const folder = FOLDER_PREFIX.replace(/^\/+|\/+$/g, "");
     return `${base}/${folder}/${cleanPath}${trQuery}`;
   }
 
-  // Local fallback
-  return pathOrKey.startsWith("/") ? pathOrKey : `/${pathOrKey}`;
+  // Same-origin local serving: zero 3rd-party cookies (HotJar/ImageKit), zero external DNS lookup
+  return `/images/${cleanPath}`;
 }
 
 export default getImageUrl;
