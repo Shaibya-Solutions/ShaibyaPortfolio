@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   FolderGit2,
   Users,
@@ -22,29 +23,25 @@ import {
   Key,
 } from "lucide-react";
 import {
-  getProjects,
-  getTestimonials,
-  getTeamMembers,
-  getCareersRoles,
-  getFaqs,
-  upsertProject,
+  loadPortfolioAdmin,
+  saveProject,
   deleteProject,
   upsertTestimonial,
-  deleteTestimonial,
   upsertCareerRole,
   deleteCareerRole,
   upsertFaq,
-  deleteFaq,
-} from "@/lib/supabase/portfolio";
-import { getImageUrl } from "@/lib/imagekit";
+  signIn,
+  signOut,
+} from "@/app/admin/actions";
+import { getImageKitAssetUrl, getImageUrl, MAX_PROJECT_IMAGE_BYTES } from "@/lib/imagekit";
 import assetRegistry from "@/config/imagekit-assets.json";
 import type { Project, ProjectType } from "@/data/projects";
 
 type AdminTab = "projects" | "testimonials" | "careers" | "team" | "faqs" | "media" | "database";
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: boolean }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<AdminTab>("projects");
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authKey, setAuthKey] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -58,6 +55,7 @@ export default function AdminDashboard() {
 
   // Editing state
   const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
+  const [originalProjectSlug, setOriginalProjectSlug] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState<any | null>(null);
   const [editingCareer, setEditingCareer] = useState<any | null>(null);
   const [editingFaq, setEditingFaq] = useState<any | null>(null);
@@ -66,43 +64,48 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
-    // Check session or auto-authenticate if in development
-    const saved = localStorage.getItem("shaibya_admin_auth");
-    if (saved === "authenticated" || process.env.NODE_ENV === "development") {
-      setIsAuthenticated(true);
-      loadAllData();
-    }
-  }, []);
+    if (isAuthenticated) void loadAllData();
+  }, [isAuthenticated]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (authKey.trim() === "shaibya2026") {
-      setIsAuthenticated(true);
-      localStorage.setItem("shaibya_admin_auth", "authenticated");
-      loadAllData();
-    } else {
-      setStatusMsg({ type: "error", text: "Invalid Admin Passkey or Secret Key." });
+    setLoading(true);
+    try {
+      const { error } = await signIn(authKey);
+      if (error) {
+        setStatusMsg({ type: "error", text: error });
+        return;
+      }
+      setAuthKey("");
+      router.refresh();
+    } catch {
+      setStatusMsg({ type: "error", text: "Unable to sign in right now." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.refresh();
+    } catch {
+      showStatus("error", "Unable to sign out. Try again.");
     }
   };
 
   const loadAllData = async () => {
     setLoading(true);
     try {
-      const [projs, tests, jobs, crew, questions] = await Promise.all([
-        getProjects(),
-        getTestimonials(),
-        getCareersRoles(),
-        getTeamMembers(),
-        getFaqs(),
-      ]);
-      setProjectsList(projs);
-      setTestimonialsList(tests);
-      setCareersList([...jobs]);
-      setTeamList(crew);
-      setFaqsList([...questions]);
+      const { data, error } = await loadPortfolioAdmin();
+      if (!data) throw new Error(error);
+      setProjectsList(data.projects);
+      setTestimonialsList(data.testimonials);
+      setCareersList(data.careers);
+      setTeamList(data.team);
+      setFaqsList(data.faqs);
     } catch (err: any) {
-      console.error(err);
-      setStatusMsg({ type: "error", text: "Error fetching data from Supabase." });
+      setStatusMsg({ type: "error", text: err.message || "Unable to load the portfolio." });
     } finally {
       setLoading(false);
     }
@@ -114,16 +117,24 @@ export default function AdminDashboard() {
   };
 
   // ─── PROJECT HANDLERS ───
-  const handleSaveProject = async (e: React.FormEvent) => {
+  const handleSaveProject = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editingProject?.slug || !editingProject?.name) {
       showStatus("error", "Slug and Name are required.");
       return;
     }
+    const images = new FormData(e.currentTarget);
+    const uploadBytes = [...images.values()].reduce((total, value) => (
+      total + (typeof value === "string" ? 0 : value.size)
+    ), 0);
+    if (uploadBytes > MAX_PROJECT_IMAGE_BYTES) {
+      showStatus("error", "Choose images totaling 3.75 MB or less.");
+      return;
+    }
     setLoading(true);
     try {
-      const { error } = await upsertProject(editingProject as any);
-      if (error) throw error;
+      const { error } = await saveProject(editingProject, originalProjectSlug, images);
+      if (error) throw new Error(error);
       showStatus("success", `Project "${editingProject.name}" saved to shaibya_portfolio.`);
       setEditingProject(null);
       await loadAllData();
@@ -139,7 +150,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const { error } = await deleteProject(slug);
-      if (error) throw error;
+      if (error) throw new Error(error);
       showStatus("success", `Project deleted.`);
       await loadAllData();
     } catch (err: any) {
@@ -155,7 +166,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const { error } = await upsertTestimonial(editingTestimonial);
-      if (error) throw error;
+      if (error) throw new Error(error);
       showStatus("success", "Testimonial saved.");
       setEditingTestimonial(null);
       await loadAllData();
@@ -172,7 +183,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const { error } = await upsertCareerRole(editingCareer);
-      if (error) throw error;
+      if (error) throw new Error(error);
       showStatus("success", "Career opening saved.");
       setEditingCareer(null);
       await loadAllData();
@@ -189,7 +200,7 @@ export default function AdminDashboard() {
     setLoading(true);
     try {
       const { error } = await upsertFaq(editingFaq);
-      if (error) throw error;
+      if (error) throw new Error(error);
       showStatus("success", "FAQ saved.");
       setEditingFaq(null);
       await loadAllData();
@@ -208,19 +219,19 @@ export default function AdminDashboard() {
             <Key className="w-6 h-6" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight mb-2">Shaibya CMS Admin</h1>
-          <p className="text-sm text-slate-400 mb-6">
-            Enter passkey or Supabase secret key to manage database records in <code className="text-sky-400 font-mono">shaibya_portfolio</code>.
-          </p>
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                Passkey
+              <label htmlFor="portfolio-password" className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
+                Portfolio admin password
               </label>
               <input
+                id="portfolio-password"
                 type="password"
+                autoComplete="current-password"
+                maxLength={256}
+                required
                 value={authKey}
                 onChange={(e) => setAuthKey(e.target.value)}
-                placeholder="Enter passkey (default: shaibya2026)"
                 className="w-full px-4 py-2.5 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
               />
             </div>
@@ -231,9 +242,10 @@ export default function AdminDashboard() {
             )}
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-2.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-white font-medium transition-colors shadow-lg shadow-sky-500/20"
             >
-              Sign In to CMS
+              {loading ? "Signing in…" : "Sign In to CMS"}
             </button>
           </form>
         </div>
@@ -246,6 +258,9 @@ export default function AdminDashboard() {
       {/* Top Header */}
       <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
+          <button type="button" onClick={handleLogout} className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">
+            Sign out
+          </button>
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
           <h1 className="font-bold text-lg text-white">Shaibya CMS</h1>
           <span className="text-xs px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 font-mono">
@@ -396,9 +411,10 @@ export default function AdminDashboard() {
                   </p>
                 </div>
                 <button
-                  onClick={() =>
+                  onClick={() => {
+                    setOriginalProjectSlug(null);
                     setEditingProject({
-                      slug: "new-project-" + Date.now().toString().slice(-4),
+                      slug: "",
                       name: "",
                       tagline: "",
                       type: "solution",
@@ -409,11 +425,11 @@ export default function AdminDashboard() {
                       solution: "",
                       techStack: ["Next.js", "TypeScript", "Tailwind CSS"],
                       stats: [{ value: "85%", label: "Efficiency Increase" }],
-                      thumbnail: "/images/solutions/coal.png",
+                      thumbnail: "",
                       featured: false,
                       status: "Production",
-                    })
-                  }
+                    });
+                  }}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold transition-colors"
                 >
                   <Plus className="w-4 h-4" />
@@ -537,8 +553,9 @@ export default function AdminDashboard() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-slate-400 mb-1">Thumbnail Path / ImageKit Key</label>
+                      <label htmlFor="thumbnail-url" className="block text-xs text-slate-400 mb-1">Thumbnail URL or path</label>
                       <input
+                        id="thumbnail-url"
                         type="text"
                         value={editingProject.thumbnail || ""}
                         onChange={(e) => setEditingProject({ ...editingProject, thumbnail: e.target.value })}
@@ -554,6 +571,29 @@ export default function AdminDashboard() {
                         className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
                       />
                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className="text-xs text-slate-400 space-y-2">
+                      <span className="block">Upload thumbnail</span>
+                      <input name="thumbnail" type="file" accept="image/jpeg,image/png,image/webp" className="block w-full text-xs" />
+                    </label>
+                    <label className="text-xs text-slate-400 space-y-2">
+                      <span className="block">Add screenshots</span>
+                      <input name="screenshots" type="file" accept="image/jpeg,image/png,image/webp" multiple className="block w-full text-xs" />
+                    </label>
+                    <p className="text-xs text-slate-400 md:col-span-2">
+                      JPEG, PNG, or WebP. One thumbnail and up to eight new screenshots, 3.75 MB total per save.
+                    </p>
+                    {editingProject.screenshots?.map((url, index) => (
+                      <div key={`${url}-${index}`} className="flex items-center gap-2 text-xs text-slate-400">
+                        <img src={getImageUrl(url)} alt={`Screenshot ${index + 1}`} className="h-10 w-16 object-cover rounded" />
+                        <button type="button" onClick={() => setEditingProject({
+                          ...editingProject,
+                          screenshots: editingProject.screenshots?.filter((_, item) => item !== index),
+                        })}>Remove screenshot {index + 1}</button>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="flex items-center gap-6 pt-2">
@@ -621,7 +661,10 @@ export default function AdminDashboard() {
                         </td>
                         <td className="p-3 text-right space-x-2">
                           <button
-                            onClick={() => setEditingProject(p)}
+                            onClick={() => {
+                              setOriginalProjectSlug(p.slug);
+                              setEditingProject(p);
+                            }}
                             className="p-1.5 rounded hover:bg-slate-800 text-sky-400"
                             title="Edit"
                           >
@@ -875,14 +918,15 @@ export default function AdminDashboard() {
                       <button
                         onClick={() =>
                           setEditingCareer({
-                            role_id: job.id,
+                            id: job.id,
+                            role_id: job.role_id,
                             title: job.title,
                             team: job.team,
                             experience: job.experience,
                             description: job.description,
                             responsibilities: job.responsibilities,
-                            application_note: job.applicationNote,
-                            is_active: true,
+                            application_note: job.application_note,
+                            is_active: job.is_active,
                           })
                         }
                         className="p-2 rounded hover:bg-slate-800 text-sky-400"
@@ -892,8 +936,13 @@ export default function AdminDashboard() {
                       <button
                         onClick={async () => {
                           if (confirm(`Remove role ${job.title}?`)) {
-                            await deleteCareerRole(job.id);
-                            await loadAllData();
+                            try {
+                              const { error } = await deleteCareerRole(job.id);
+                              if (error) throw new Error(error);
+                              await loadAllData();
+                            } catch (error) {
+                              showStatus("error", error instanceof Error ? error.message : "Unable to delete role.");
+                            }
                           }
                         }}
                         className="p-2 rounded hover:bg-slate-800 text-rose-400"
@@ -923,15 +972,15 @@ export default function AdminDashboard() {
                         className="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-sm"
                         style={{ backgroundColor: `${member.color || "#0ea5e9"}22`, color: member.color || "#0ea5e9" }}
                       >
-                        {member.dayJob?.[0]}
+                        {member.day_job?.[0]}
                       </div>
                       <div>
-                        <div className="font-semibold text-xs text-white">{member.dayJob}</div>
+                        <div className="font-semibold text-xs text-white">{member.day_job}</div>
                         <div className="text-[11px] text-slate-400">{member.location}</div>
                       </div>
                     </div>
-                    <p className="text-xs text-slate-300 mb-2">{member.nightSkill}</p>
-                    <p className="text-[11px] text-slate-500 italic">"{member.hoverQuote}"</p>
+                    <p className="text-xs text-slate-300 mb-2">{member.night_skill}</p>
+                    <p className="text-[11px] text-slate-500 italic">"{member.hover_quote}"</p>
                   </div>
                 ))}
               </div>
@@ -1032,22 +1081,22 @@ export default function AdminDashboard() {
                   >
                     <div className="h-28 rounded bg-slate-950 flex items-center justify-center overflow-hidden mb-2 border border-slate-800">
                       <img
-                        src={getImageUrl(key, { width: 160, height: 110 })}
+                        src={getImageKitAssetUrl(asset.imagekitPath)}
                         alt={key}
                         className="max-h-full max-w-full object-contain"
-                        onError={(e) => {
-                          // local fallback preview
-                          (e.target as any).src = `/images/${key}`;
-                        }}
                       />
                     </div>
                     <div className="text-[11px] font-mono text-slate-300 truncate mb-1" title={key}>
                       {key}
                     </div>
                     <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(getImageUrl(key));
-                        showStatus("success", `Copied CDN URL for ${key}`);
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText(getImageKitAssetUrl(asset.imagekitPath));
+                          showStatus("success", `Copied CDN URL for ${key}`);
+                        } catch {
+                          showStatus("error", "Unable to copy the CDN URL.");
+                        }
                       }}
                       className="w-full flex items-center justify-center gap-1 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-medium"
                     >

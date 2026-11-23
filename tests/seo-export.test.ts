@@ -5,8 +5,11 @@ import { pageSeo, type PublicPath } from "../src/data/seo/pages";
 import { absoluteUrl } from "../src/lib/seo/metadata";
 import { site } from "../src/config/site";
 
-// Read the actual production export, including Next.js metadata resolution.
+// Read the production prerenders, including Next.js metadata resolution.
 // Run npm run build first; source-level checks cannot catch title-template mistakes.
+const prerenders = ".next/server/app";
+const htmlFor = (path: string) => `${prerenders}${path === "/" ? "/index" : path}.html`;
+
 function decode(value: string): string {
   return value.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 }
@@ -16,8 +19,8 @@ function attributes(tag: string): Record<string, string> {
 
 for (const path of Object.keys(pageSeo) as PublicPath[]) {
   test(`production HTML: ${path}`, () => {
-    const filename = path === "/" ? "out/index.html" : `out${path}.html`;
-    assert.ok(existsSync(filename), `Missing export: ${filename}; run npm run build first.`);
+    const filename = htmlFor(path);
+    assert.ok(existsSync(filename), `Missing prerender: ${filename}; run npm run build first.`);
     const html = readFileSync(filename, "utf8");
     const meta = Object.fromEntries([...html.matchAll(/<meta\s[^>]+>/g)].map(([tag]) => {
       const attrs = attributes(tag);
@@ -50,21 +53,21 @@ for (const path of Object.keys(pageSeo) as PublicPath[]) {
   });
 }
 
-test("production sitemap and robots are exported correctly", () => {
-  const xml = readFileSync("out/sitemap.xml", "utf8");
+test("production sitemap and robots are generated correctly", () => {
+  const xml = readFileSync(`${prerenders}/sitemap.xml.body`, "utf8");
   const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]).sort();
   assert.deepEqual(urls, (Object.keys(pageSeo) as PublicPath[]).map(absoluteUrl).sort());
-  const robots = readFileSync("out/robots.txt", "utf8");
+  const robots = readFileSync(`${prerenders}/robots.txt.body`, "utf8");
   assert.ok(robots.includes(`Sitemap: ${site.url}/sitemap.xml`));
   assert.ok(robots.includes("Disallow: /admin"));
   assert.ok(!robots.includes("_next"));
-  const notFound = readFileSync("out/404.html", "utf8");
+  const notFound = readFileSync(htmlFor("/_not-found"), "utf8");
   assert.match(notFound, /<meta name="robots" content="noindex"/);
 });
 
 test("public navigation points to existing routes and section anchors", () => {
   const pages = new Map((Object.keys(pageSeo) as PublicPath[]).map(path => {
-    const html = readFileSync(path === "/" ? "out/index.html" : `out${path}.html`, "utf8");
+    const html = readFileSync(htmlFor(path), "utf8");
     const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(match => decode(match[1])));
     const links = [...html.matchAll(/<a\s[^>]+>/g)].map(([tag]) => attributes(tag).href).filter(Boolean);
     return [path, { ids, links }] as const;
@@ -74,7 +77,8 @@ test("public navigation points to existing routes and section anchors", () => {
     if (url.origin !== site.url) continue;
     const target = pages.get(url.pathname as PublicPath);
     if (!target) {
-      assert.ok(existsSync(`out${decodeURIComponent(url.pathname)}`), `${path} links to missing route ${href}`);
+      const pathname = decodeURIComponent(url.pathname);
+      assert.ok(existsSync(`public${pathname}`) || existsSync(htmlFor(pathname)), `${path} links to missing route ${href}`);
     } else if (url.hash) {
       assert.ok(target.ids.has(decodeURIComponent(url.hash.slice(1))), `${path} links to missing section ${href}`);
     }

@@ -1,48 +1,43 @@
+import { readFileSync } from "node:fs";
 import pg from "pg";
-import fs from "fs";
-import path from "path";
-
-const { Client } = pg;
 
 async function run() {
-  const password = process.argv[2] || process.env.SUPABASE_DB_PASSWORD;
-  if (!password) {
-    console.error("Usage: node scripts/run-migration.mjs <YOUR_DB_PASSWORD>");
-    process.exit(1);
+  const password = process.env.SUPABASE_DB_PASSWORD || process.argv[2];
+  const caFile = process.env.SUPABASE_DB_CA_FILE;
+  if (!password || !caFile) {
+    console.error("Set SUPABASE_DB_PASSWORD and SUPABASE_DB_CA_FILE, then run node scripts/run-migration.mjs.");
+    process.exitCode = 1;
+    return;
   }
 
-  const connectionString = `postgresql://postgres.hbhumkwhlwmbwoxnyvms:${encodeURIComponent(
-    password
-  )}@aws-1-ap-south-1.pooler.supabase.com:5432/postgres`;
-
-  console.log("Connecting to Supabase PostgreSQL database directly...");
-
-  const client = new Client({
-    connectionString,
-    ssl: { rejectUnauthorized: false },
+  const host = "aws-1-ap-south-1.pooler.supabase.com";
+  const client = new pg.Client({
+    host,
+    user: "postgres.hbhumkwhlwmbwoxnyvms",
+    database: "postgres",
+    password,
+    ssl: { ca: readFileSync(caFile), servername: host, rejectUnauthorized: true },
+    connectionTimeoutMillis: 10000,
   });
 
   try {
     await client.connect();
-    console.log("Connected successfully to PostgreSQL!");
-
-    const sqlPath = path.resolve(process.cwd(), "supabase/migrations/20261109_shaibya_portfolio.sql");
-    const sql = fs.readFileSync(sqlPath, "utf8");
-
-    console.log("Executing migration on schema 'shaibya_portfolio'...");
-    await client.query(sql);
-
-    console.log("Migration executed successfully!");
-    console.log("Checking created tables in shaibya_portfolio:");
-    const res = await client.query(
-      `SELECT table_name FROM information_schema.tables WHERE table_schema = 'shaibya_portfolio';`
+    const { rows: [schema] } = await client.query(
+      "SELECT to_regnamespace('shaibya_portfolio') IS NOT NULL AS exists",
     );
-    console.log(res.rows.map((r) => r.table_name));
-  } catch (err) {
-    console.error("Migration error:", err.message || err);
+    if (!schema.exists) {
+      const initial = new URL("../supabase/migrations/20261109_shaibya_portfolio.sql", import.meta.url);
+      await client.query(readFileSync(initial, "utf8"));
+    }
+    const security = new URL("../supabase/migrations/20261123000000_secure_portfolio_cms.sql", import.meta.url);
+    await client.query(readFileSync(security, "utf8"));
+    console.log("Portfolio migrations applied to shaibya_portfolio.");
   } finally {
     await client.end();
   }
 }
 
-run();
+run().catch((error) => {
+  console.error("Portfolio migration failed:", error.code || error.name);
+  process.exitCode = 1;
+});

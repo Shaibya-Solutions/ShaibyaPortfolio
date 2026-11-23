@@ -1,4 +1,4 @@
-import { supabase, supabaseAdmin } from "./client";
+import { supabase } from "./client";
 import { allProjects, type Project, type ProjectType } from "@/data/projects";
 import { testimonials as defaultTestimonials } from "@/data/index";
 import { TEAM_MEMBERS, type CrewMember } from "@/data/team";
@@ -16,6 +16,7 @@ const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const memoryCache = new Map<string, CacheEntry<unknown>>();
 
 export function getCached<T>(key: string): T | null {
+  if (typeof window === "undefined") return null;
   const entry = memoryCache.get(key);
   if (!entry) return null;
   if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
@@ -26,6 +27,7 @@ export function getCached<T>(key: string): T | null {
 }
 
 export function setCached<T>(key: string, data: T): void {
+  if (typeof window === "undefined") return;
   memoryCache.set(key, { data, timestamp: Date.now() });
 }
 
@@ -58,7 +60,8 @@ async function withTimeout<T>(promiseLike: PromiseLike<T>, ms = 2500): Promise<T
 }
 
 // ─── HELPER: MAP DB PROJECT ROW TO TYPE ───
-function mapDbProject(row: any): Project {
+export function mapDbProject(row: any, resolveImages = true): Project {
+  const imageUrl = resolveImages ? getImageUrl : (value?: string | null) => value || "";
   return {
     slug: row.slug,
     name: row.name,
@@ -66,7 +69,7 @@ function mapDbProject(row: any): Project {
     type: row.type as ProjectType,
     industry: row.industry,
     client: row.client,
-    clientLogo: row.client_logo ? getImageUrl(row.client_logo) : undefined,
+    clientLogo: row.client_logo ? imageUrl(row.client_logo) : undefined,
     liveUrl: row.live_url || undefined,
     year: row.year,
     problem: row.problem,
@@ -74,10 +77,10 @@ function mapDbProject(row: any): Project {
     keyFeatures: Array.isArray(row.key_features) ? row.key_features : [],
     techStack: Array.isArray(row.tech_stack) ? row.tech_stack : [],
     stats: Array.isArray(row.stats) ? row.stats : [],
-    thumbnail: getImageUrl(row.thumbnail),
+    thumbnail: imageUrl(row.thumbnail),
     thumbnailAlt: row.thumbnail_alt || row.name,
     imageCaption: row.image_caption || undefined,
-    screenshots: Array.isArray(row.screenshots) ? row.screenshots.map((s: string) => getImageUrl(s)) : [],
+    screenshots: Array.isArray(row.screenshots) ? row.screenshots.map((s: string) => imageUrl(s)) : [],
     brandColor: row.brand_color || undefined,
     testimonial: row.testimonial || undefined,
     servicesDelivered: Array.isArray(row.services_delivered) ? row.services_delivered : [],
@@ -104,8 +107,8 @@ export async function getProjects(type?: ProjectType): Promise<Project[]> {
     }
     const res = (await withTimeout(query, 2500)) as any;
     const { data, error } = res || {};
-    if (!error && data && data.length > 0) {
-      const mapped = data.map(mapDbProject);
+    if (!error && data) {
+      const mapped = data.map((row: any) => mapDbProject(row));
       setCached(cacheKey, mapped);
       return mapped;
     }
@@ -289,8 +292,8 @@ export async function getFaqs() {
     if (!error && data && data.length > 0) {
       const mapped = data.map((f: any) => ({
         id: f.id,
-        question: f.question,
-        answer: f.answer,
+          q: f.question,
+          a: f.answer,
       }));
       setCached(cacheKey, mapped);
       return mapped;
@@ -300,77 +303,4 @@ export async function getFaqs() {
   }
   setCached(cacheKey, generalFaqs);
   return generalFaqs;
-}
-
-// ─── ADMIN MUTATIONS (AUTO-INVALIDATES CACHE) ───
-export async function upsertProject(project: Partial<Project> & { slug: string }) {
-  invalidateCache("projects");
-  invalidateCache(`project_slug_${project.slug}`);
-  const payload = {
-    slug: project.slug,
-    name: project.name,
-    tagline: project.tagline,
-    type: project.type,
-    industry: project.industry,
-    client: project.client,
-    client_logo: project.clientLogo,
-    live_url: project.liveUrl,
-    year: project.year,
-    problem: project.problem,
-    solution: project.solution,
-    key_features: project.keyFeatures,
-    tech_stack: project.techStack,
-    stats: project.stats,
-    thumbnail: project.thumbnail,
-    thumbnail_alt: project.thumbnailAlt,
-    image_caption: project.imageCaption,
-    screenshots: project.screenshots,
-    brand_color: project.brandColor,
-    testimonial: project.testimonial,
-    services_delivered: project.servicesDelivered,
-    tags: project.tags,
-    featured: project.featured,
-    confidential: project.confidential,
-    status: project.status,
-    collaborator: project.collaborator,
-    updated_at: new Date().toISOString(),
-  };
-
-  return supabaseAdmin.from("projects").upsert(payload, { onConflict: "slug" });
-}
-
-export async function deleteProject(slug: string) {
-  invalidateCache("projects");
-  invalidateCache(`project_slug_${slug}`);
-  return supabaseAdmin.from("projects").delete().eq("slug", slug);
-}
-
-export async function upsertTestimonial(testimonial: { id?: string; title: string; rating: number; text: string; author: string; role: string }) {
-  invalidateCache("testimonials");
-  return supabaseAdmin.from("testimonials").upsert(testimonial);
-}
-
-export async function deleteTestimonial(id: string) {
-  invalidateCache("testimonials");
-  return supabaseAdmin.from("testimonials").delete().eq("id", id);
-}
-
-export async function upsertCareerRole(role: { id?: string; role_id: string; title: string; team: string; experience: string; description: string; responsibilities: string[]; application_note: string; is_active?: boolean }) {
-  invalidateCache("careers_roles");
-  return supabaseAdmin.from("careers_roles").upsert(role, { onConflict: "role_id" });
-}
-
-export async function deleteCareerRole(roleId: string) {
-  invalidateCache("careers_roles");
-  return supabaseAdmin.from("careers_roles").delete().eq("role_id", roleId);
-}
-
-export async function upsertFaq(faq: { id?: string; question: string; answer: string; category?: string }) {
-  invalidateCache("faqs");
-  return supabaseAdmin.from("faqs").upsert(faq);
-}
-
-export async function deleteFaq(id: string) {
-  invalidateCache("faqs");
-  return supabaseAdmin.from("faqs").delete().eq("id", id);
 }

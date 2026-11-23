@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+import { hasAdminSession } from "@/lib/admin-session";
 
 export const metadata: Metadata = {
   title: "Shaibya CMS Admin",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AdminPage() {
-  return <AdminDashboard />;
+export default async function AdminPage() {
+  const isAuthenticated = await hasAdminSession();
+  return <AdminDashboard key={String(isAuthenticated)} isAuthenticated={isAuthenticated} />;
 }

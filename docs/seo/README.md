@@ -63,15 +63,15 @@ npm run seo:export-check
 npm run dev -- --hostname 0.0.0.0 --port 3000
 ```
 
-The repository uses Next.js 15.2.6 and production static export (`out/`). Development leaves export mode off so unknown dynamic-service slugs return normal 404 responses instead of Next.js's missing-export-parameter error. The dev script uses Webpack: the installed Turbopack version mishandled the `force-static` configuration on native sitemap/robots metadata routes. Production compilation uses the normal Next.js build.
+Production uses the Next.js server runtime. The build prerenders the public pages, sitemap and robots in `.next/server/app`. The admin route renders on request.
 
 `npm run seo:image` regenerates the checked-in social PNG. It is not required on every build. No SEO API keys are required. Set `GOOGLE_SITE_VERIFICATION` to the Search Console HTML verification token if using that verification method; otherwise DNS verification needs no code.
 
-For a preview/staging export, set `SEO_ALLOW_INDEXING=false` **before building**. This emits `noindex` page metadata, a disallow-all robots file and an empty sitemap. Keep production indexing enabled and rebuild to apply changes. An already-blocked preview URL may need crawler access temporarily for Google to observe `noindex`; robots exclusions do not guarantee deindexing.
+For a preview or staging build, set `SEO_ALLOW_INDEXING=false` **before building**. This emits `noindex` page metadata, a disallow-all robots file and an empty sitemap. Keep production indexing enabled and rebuild to apply changes. An already-blocked preview URL may need crawler access temporarily for Google to observe `noindex`; robots exclusions do not guarantee deindexing.
 
 Production builds now validate TypeScript: the former `ignoreBuildErrors` override was removed after fixing all 17 baseline diagnostics. `npm run typecheck` also runs the complete repository check independently. Lint validation is still skipped by the existing configuration; no lint-pass claim is made. The fixes and validation results are recorded in `validation.md`.
 
-The static host must serve clean URLs (`/about` → `/about.html`, `/services/software-solutions` → its exported HTML), serve `/robots.txt` as plain text and `/sitemap.xml` as XML, and return HTTP 404 for unknown URLs using `404.html`. Do not configure a universal HTTP-200 SPA fallback. Redirect HTTP and alternate hostnames to one HTTPS canonical host at the hosting layer. `next.config.js` redirects are unavailable with static export. The owner confirmed `www.shaibyasolutions.com` as the primary host. Configure permanent redirects from the non-www host and any former domains to this host.
+Deploy the Next.js build to a host that supports its server runtime. Verify clean URLs, `/robots.txt` as plain text, `/sitemap.xml` as XML, and HTTP 404 for unknown URLs. Redirect HTTP and alternate hostnames to the canonical host, `https://www.shaibyasolutions.com`.
 
 ## Publishing services and resources
 
@@ -82,9 +82,9 @@ No on-site blog currently exists. Planned keyword topics are **not** published, 
 1. Create useful original articles with a clear byline, publication date, genuine updated date, 155–160 character description, optional 1200 × 630 share image and nonempty content sections.
 2. Connect `getPublishedArticles()` to the CMS or a reviewed local data source. Return only published documents whose real route is ready; draft, scheduled and empty documents must be filtered out. The `PublishedArticle` contract uses `routeReady: true` to make this explicit.
 3. Install the complete resource route from `templates/resource-page.tsx.example` as `src/app/resources/[slug]/page.tsx` together with that content. This uses `generateMetadata()`, static params, article Open Graph fields and BlogPosting JSON-LD. The template renders plain text safely; use a trusted renderer if adapting to rich text.
-4. Add a useful resource index and contextual links. Update tests to include the real published inventory, rebuild the static export and verify every new sitemap URL returns HTTP 200.
+4. Add a useful resource index and contextual links. Update tests to include the published inventory, run a production build and verify every new sitemap URL returns HTTP 200.
 
-With static export, publishing CMS content requires a deployment rebuild. Do not advertise nonexistent blog routes or use ISR-only assumptions.
+Portfolio project, careers, testimonial, and FAQ updates invalidate their corresponding public pages. Verify changes against a running production build.
 
 ## Local SEO and on-page checklist
 
@@ -107,7 +107,7 @@ With static export, publishing CMS content requires a deployment rebuild. Do not
 
 - Use `next/image` with descriptive alt text for meaningful imagery, explicit width/height or a stable `fill` container, and an appropriate `sizes` value. Decorative imagery uses `alt=""`; do not stuff keywords into image text.
 - Example for a two-column case-study image: `sizes="(max-width: 768px) 100vw, 50vw"`. Hero imagery should request only the necessary resolution; use priority only for a real above-the-fold LCP image, lazy-load the rest, and reserve image dimensions to prevent layout shift.
-- The current static export uses `images.unoptimized: true`, so `next/image` does **not** provide the runtime Next.js image optimizer. Supply compressed WebP/AVIF assets or an approved image CDN/custom loader with correctly generated variants. Do not assume adding `sizes` alone creates responsive variants with this setting.
+- With `images.unoptimized: true`, supply compressed WebP/AVIF assets or image CDN variants. This setting serves the source image URL directly.
 - Audit on mobile with PageSpeed Insights/Search Console field data: target LCP ≤2.5s, INP ≤200ms and CLS ≤0.1 at the 75th percentile. Keep WebGL optional with fallbacks and defer heavy scenes below the fold. These are targets, not measured claims from this implementation.
 
 ### Internal links

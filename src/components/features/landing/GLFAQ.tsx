@@ -3,11 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { generalFaqs as faqs } from "@/data/seo/faqs";
-
-
-
-export default function GLFAQ() {
+export default function GLFAQ({ faqs }: { faqs: readonly { q: string; a: string }[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [openIndex, setOpenIndex] = useState<number | null>(0);

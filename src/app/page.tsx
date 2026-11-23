@@ -1,7 +1,6 @@
 import { metadataFor } from "@/lib/seo/metadata";
 import { pageGraph } from "@/lib/seo/schema";
 import JsonLd from "@/components/seo/JsonLd";
-import { generalFaqs } from "@/data/seo/faqs";
 import GLHero from "@/components/features/landing/GLHero";
 import GLAbout from "@/components/features/landing/GLAbout";
 import GLStats from "@/components/features/landing/GLStats";
@@ -14,16 +13,18 @@ import GLInstagram from "@/components/features/landing/GLInstagram";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import { getTestimonials } from "@/lib/supabase/portfolio";
+import { getFaqs, getTestimonials } from "@/lib/supabase/portfolio";
+
+export const revalidate = 60;
 
 export const metadata = metadataFor("/");
 
 export default async function HomePage() {
-  const testimonials = await getTestimonials();
+  const [testimonials, faqs] = await Promise.all([getTestimonials(), getFaqs()]);
 
   return (
     <main className="bg-white text-slate-900 min-h-screen flex flex-col">
-      <JsonLd data={pageGraph("/", { faqs: generalFaqs })} />
+      <JsonLd data={pageGraph("/", { faqs })} />
       <SiteHeader />
 
       {/* 1. HERO */}
@@ -45,7 +46,7 @@ export default async function HomePage() {
       <GLTestimonials items={testimonials} />
 
       {/* 9. FAQ */}
-      <GLFAQ />
+      <GLFAQ faqs={faqs} />
 
       {/* 11. CONTACT CTA */}
       <GLContact />

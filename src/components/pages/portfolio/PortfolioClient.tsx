@@ -616,7 +616,7 @@ export default function PortfolioPage({ initialProjects }: { initialProjects?: P
   const [active, setActive] = useState<FilterValue>("all");
   const [visibleCount, setVisibleCount] = useState(4);
 
-  const projectData = initialProjects && initialProjects.length > 0 ? initialProjects : allProjects;
+  const projectData = initialProjects ?? allProjects;
   const filtered: Project[] =
     active === "all" ? projectData
       : active === "website" ? projectData.filter(p => p.type === "website")

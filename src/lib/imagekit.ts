@@ -7,6 +7,12 @@ import assetsRegistry from "@/config/imagekit-assets.json";
 
 const IMAGEKIT_ENDPOINT = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "https://ik.imagekit.io/xefp2tbdp";
 const FOLDER_PREFIX = assetsRegistry.folderPrefix || "/shaibya-portfolio";
+export const MAX_PROJECT_IMAGE_BYTES = 3.75 * 1024 * 1024;
+
+export function getImageKitAssetUrl(path: string) {
+  const encoded = path.replace(/\\/g, "/").replace(/^\/+/, "").split("/").map(encodeURIComponent).join("/");
+  return `${IMAGEKIT_ENDPOINT.replace(/\/+$/, "")}/${encoded}`;
+}
 
 export interface ImageTransformOptions {
   width?: number;
@@ -22,15 +28,16 @@ export interface ImageTransformOptions {
  * @param options Optional image transformations
  */
 export function getImageUrl(pathOrKey?: string | null, options?: ImageTransformOptions): string {
-  if (!pathOrKey) return "";
-  
+  const path = pathOrKey?.trim();
+  if (!path) return "";
+
   // Return external URLs or data URIs unchanged
-  if (pathOrKey.startsWith("http://") || pathOrKey.startsWith("https://") || pathOrKey.startsWith("data:")) {
-    return pathOrKey;
+  if (path.startsWith("http://") || path.startsWith("https://") || path.startsWith("data:")) {
+    return path;
   }
 
   // Clean relative path
-  let cleanPath = pathOrKey.trim();
+  let cleanPath = path.replace(/\\/g, "/");
   if (cleanPath.startsWith("/images/")) {
     cleanPath = cleanPath.substring("/images/".length);
   } else if (cleanPath.startsWith("/")) {
@@ -48,9 +55,8 @@ export function getImageUrl(pathOrKey?: string | null, options?: ImageTransformO
 
   // If ImageKit is explicitly enabled via env, construct the CDN URL
   if (process.env.NEXT_PUBLIC_USE_IMAGEKIT === "true" && IMAGEKIT_ENDPOINT) {
-    const base = IMAGEKIT_ENDPOINT.replace(/\/+$/, "");
     const folder = FOLDER_PREFIX.replace(/^\/+|\/+$/g, "");
-    return `${base}/${folder}/${cleanPath}${trQuery}`;
+    return `${getImageKitAssetUrl(`${folder}/${cleanPath}`)}${trQuery}`;
   }
 
   // Same-origin local serving: zero 3rd-party cookies (HotJar/ImageKit), zero external DNS lookup

@@ -4,6 +4,8 @@ import JsonLd from "@/components/seo/JsonLd";
 import CareersClient from "@/components/pages/careers/CareersClient";
 import { getCareersRoles } from "@/lib/supabase/portfolio";
 
+export const revalidate = 60;
+
 export const metadata = metadataFor("/careers");
 
 const IMPACT_LOCATIONS = [

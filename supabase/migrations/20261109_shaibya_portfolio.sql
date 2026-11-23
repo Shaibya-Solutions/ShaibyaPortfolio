@@ -143,35 +143,13 @@ DO $$ BEGIN
   CREATE POLICY "Public Read Site Content" ON shaibya_portfolio.site_content FOR SELECT USING (true);
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- 11. RLS Policies: Service Role / Admin Write Access
-DO $$ BEGIN
-  CREATE POLICY "Admin Write Projects" ON shaibya_portfolio.projects FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
-DO $$ BEGIN
-  CREATE POLICY "Admin Write Testimonials" ON shaibya_portfolio.testimonials FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
-DO $$ BEGIN
-  CREATE POLICY "Admin Write Team" ON shaibya_portfolio.team_members FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
-DO $$ BEGIN
-  CREATE POLICY "Admin Write Careers" ON shaibya_portfolio.careers_roles FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
-DO $$ BEGIN
-  CREATE POLICY "Admin Write FAQs" ON shaibya_portfolio.faqs FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
-DO $$ BEGIN
-  CREATE POLICY "Admin Write Site Content" ON shaibya_portfolio.site_content FOR ALL USING (true) WITH CHECK (true);
-EXCEPTION WHEN duplicate_object THEN NULL; END $$;
-
--- 12. Table Permissions
-GRANT ALL ON ALL TABLES IN SCHEMA shaibya_portfolio TO anon, authenticated, service_role;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA shaibya_portfolio TO anon, authenticated, service_role;
-
+-- 11. Public reads and server-side writes
+GRANT SELECT ON shaibya_portfolio.projects, shaibya_portfolio.testimonials,
+  shaibya_portfolio.team_members, shaibya_portfolio.careers_roles,
+  shaibya_portfolio.faqs, shaibya_portfolio.site_content TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON shaibya_portfolio.projects, shaibya_portfolio.testimonials,
+  shaibya_portfolio.team_members, shaibya_portfolio.careers_roles,
+  shaibya_portfolio.faqs, shaibya_portfolio.site_content TO service_role;
 -- ==============================================================================
 -- SEED DATA
 -- ==============================================================================
