@@ -12,7 +12,7 @@ import GLContact from "@/components/features/landing/GLContact";
 import GLInstagram from "@/components/features/landing/GLInstagram";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa";
+import { FaPhoneAlt, FaWhatsapp } from "react-icons/fa";
 import { getFaqs, getProjects, getTestimonials } from "@/lib/supabase/portfolio";
 
 export const revalidate = 60;
@@ -56,19 +56,17 @@ export default async function HomePage() {
 
       <Footer />
 
-      {/* Instagram FAB */}
+      {/* Call FAB */}
       <a
-        href="https://www.instagram.com/deepoffduty/"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Follow on Instagram"
-        className="fixed bottom-6 left-6 z-30 hidden size-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl lg:pointer-fine:flex"
+        href="tel:+917498341146"
+        aria-label="Call Shaibya Solutions"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-40 flex size-12 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl sm:left-6 sm:size-14"
         style={{
-          background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
-          boxShadow: "0 4px 24px rgba(220,39,67,0.4)",
+          background: "linear-gradient(135deg, #0284c7, #0ea5e9)",
+          boxShadow: "0 4px 24px rgba(14,165,233,0.4)",
         }}
       >
-        <FaInstagram size={26} className="text-white" />
+        <FaPhoneAlt size={21} className="text-white sm:text-[24px]" />
       </a>
 
       {/* WhatsApp FAB */}
@@ -77,7 +75,7 @@ export default async function HomePage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed right-6 bottom-6 z-30 hidden size-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl lg:pointer-fine:flex"
+        className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex size-12 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl sm:right-6 sm:size-14"
         style={{
           background: "linear-gradient(135deg, #25D366, #1ebe5d)",
           boxShadow: "0 4px 24px rgba(37,211,102,0.4)",
