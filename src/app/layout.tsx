@@ -8,6 +8,10 @@ import { businessGraph } from "@/lib/seo/schema";
 import JsonLd from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = rootMetadata;
+// The nonce in the site-wide CSP is generated per request. Every page that
+// uses this layout must therefore render on demand so Next can attach it to
+// its bootstrap scripts.
+export const dynamic = "force-dynamic";
 
 export default function RootLayout({
   children,
@@ -20,8 +24,6 @@ export default function RootLayout({
       className="antialiased"
     >
       <head>
-        <link rel="preconnect" href="https://hbhumkwhlwmbwoxnyvms.supabase.co" />
-        <link rel="dns-prefetch" href="https://hbhumkwhlwmbwoxnyvms.supabase.co" />
         <link rel="preload" href="/fonts/proxima-regular.woff" as="font" type="font/woff" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/proxima-bold.woff" as="font" type="font/woff" crossOrigin="anonymous" />
         <link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM Information" />

@@ -75,7 +75,7 @@ export function SiteHeader() {
         <div className="flex w-full items-center justify-between xl:hidden">
           <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} onClick={() => setOpen(false)} aria-label="Shaibya Solutions Home">
             <Image
-              src="/images/logo-mobile.webp"
+              src="/images/logo-mobile-400.webp"
               alt="Shaibya Solutions"
               width={200}
               height={67}
