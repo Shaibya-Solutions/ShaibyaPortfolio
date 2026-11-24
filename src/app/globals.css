@@ -50,6 +50,12 @@ html {
   --font-syne: "Proxima Nova", sans-serif !important;
 }
 
+@media (width < 80rem) {
+  html:has(header[data-mobile-menu-open="true"]) {
+    overflow: hidden;
+  }
+}
+
 :root {
   /* ── Brand — restrained accent usage ── */
   --brand: #0ea5e9;
@@ -635,7 +641,66 @@ a.btn:active,
     background-position: 200% center;
   }
 }
-/* Keep social links still while keyboard users explore the gallery. */
-.social-gallery-track:focus-within {
-  animation-play-state: paused !important;
+.social-gallery {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.5rem;
+  padding-inline: 1.5rem;
+}
+
+.social-gallery-copy,
+.social-gallery-toggle {
+  display: none;
+}
+
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .social-gallery {
+    overflow: hidden;
+    scroll-snap-type: none;
+    padding-inline: 0;
+  }
+
+  .social-gallery-track {
+    padding-right: 1rem;
+    animation: marquee-scroll 30s linear infinite;
+  }
+
+  .social-gallery-track:hover,
+  .social-gallery-track:focus-within {
+    animation-play-state: paused;
+  }
+
+  .social-gallery-copy {
+    display: flex;
+  }
+
+  .social-gallery-toggle {
+    display: inline-flex;
+  }
+}
+
+@keyframes testimonial-scroll {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.testimonial-track {
+  animation: testimonial-scroll linear infinite;
+}
+
+.work-pinned-showcase {
+  display: none;
+}
+
+/* Match the media query that activates the pinned showcase's ScrollTrigger. */
+@media (min-width: 1024px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .work-project-grid {
+    display: none;
+  }
+
+  .work-pinned-showcase {
+    display: block;
+  }
 }

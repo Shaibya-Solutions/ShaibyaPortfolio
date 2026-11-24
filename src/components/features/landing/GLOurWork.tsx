@@ -142,19 +142,10 @@ interface ShowcaseProject {
     desc: string;
 }
 
-/* ─────────────────────────────────────────────────────────────
-   SCROLL ENGINE  (v3 — spec-accurate)
-   ─────────────────────────────────────────────────────────────
-   ENTRY  — lock only when getBoundingClientRect().top <= 0
-             AND .bottom >= window.innerHeight  (fully covers viewport)
-   DURING — each wheel/swipe tick advances exactly one project;
-             preventDefault() called only while locked
-   EXIT   — on first project + scroll-up  → release (no preventDefault)
-           — on last project  + scroll-down → release (no preventDefault)
-   ───────────────────────────────────────────────────────────── */
-const ANIM_DURATION = 700; // ms per project transition
+const PINNED_SHOWCASE = "(min-width: 1024px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)";
+const ANIM_DURATION = 700;
 
-function useScrollEngine(total: number, media: string) {
+function useScrollEngine(total: number) {
     const wrapperRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<ScrollTrigger | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -162,10 +153,11 @@ function useScrollEngine(total: number, media: string) {
 
     useEffect(() => {
         const el = wrapperRef.current;
-        if (!el) return;
+        if (!el || total <= 1) return;
 
-        const ctx = gsap.context(() => {
-            ScrollTrigger.create({
+        const media = gsap.matchMedia();
+        media.add(PINNED_SHOWCASE, () => {
+            triggerRef.current = ScrollTrigger.create({
                 id: "our-work-trigger",
                 trigger: el,
                 start: "top top",
@@ -183,8 +175,8 @@ function useScrollEngine(total: number, media: string) {
             return () => { triggerRef.current = null; };
         }, el);
 
-        return () => ctx.revert();
-    }, [total, media]);
+        return () => media.revert();
+    }, [total]);
 
     const jumpToProject = useCallback((i: number) => {
         const st = triggerRef.current;
@@ -589,9 +581,9 @@ function SectionHeader() {
 /* ─────────────────────────────────────────────────────────────
    MOBILE LAYOUT
    ───────────────────────────────────────────────────────────── */
-function MobileLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
+function ProjectGrid({ projects }: { projects: readonly ShowcaseProject[] }) {
     return (
-        <section style={{ background: T.bg, padding: "72px 20px 80px", scrollMarginTop: 110 }} aria-label="Our Work">
+        <section className="px-6 py-16 sm:py-20" style={{ background: T.bg }} aria-label="Our Work">
             <div style={{ textAlign: "center", marginBottom: 36 }}>
                 <span style={{ color: T.accent, fontFamily: "var(--font-inter)", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 10 }}>
                     Our Work
@@ -602,7 +594,7 @@ function MobileLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
                 </h2>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 sm:grid-cols-2">
                 {projects.map((p, i) => (
                     <div key={i} style={{
                         background: T.bgCard,
@@ -611,20 +603,20 @@ function MobileLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
                         boxShadow: `0 2px 16px ${T.shadow}`,
                     }}>
                         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", overflow: "hidden" }}>
-                            <ProjectMedia cover={p.image} gallery={p.gallery} title={p.title} sizes="100vw" />
+                            <ProjectMedia cover={p.image} gallery={p.gallery} title={p.title} sizes="(min-width: 640px) 50vw, 100vw" />
                         </div>
                         <div style={{ padding: "18px 18px 20px" }}>
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                                <span style={{ color: T.accent, fontFamily: "var(--font-inter)", fontSize: 11, fontWeight: 700 }}>{p.serial} / {p.year}</span>
-                                <div style={{ display: "flex", gap: 4 }}>
+                            <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+                                <span className="shrink-0 whitespace-nowrap" style={{ color: T.accent, fontFamily: "var(--font-inter)", fontSize: 11, fontWeight: 700 }}>{p.serial} / {p.year}</span>
+                                <div className="flex min-w-0 flex-wrap gap-1 [overflow-wrap:anywhere]">
                                     {p.tags.map(t => (
                                         <span key={t} style={{ background: "rgba(14,165,233,0.07)", border: "1px solid rgba(14,165,233,0.2)", color: T.brand, borderRadius: 999, padding: "2px 7px", fontSize: 9, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "var(--font-inter)" }}>{t}</span>
                                     ))}
                                 </div>
                             </div>
-                            <h3 style={{ fontFamily: "var(--font-syne)", fontSize: 19, color: T.text, fontWeight: 700, margin: "0 0 5px" }}>{p.title}</h3>
-                            <p style={{ color: T.textMuted, fontSize: 13, fontFamily: "var(--font-inter)", lineHeight: 1.6, margin: "0 0 12px" }}>{p.desc}</p>
-                            <div style={{ display: "flex", gap: 14, paddingTop: 10, borderTop: `1px solid ${T.border}` }}>
+                            <h3 className="[overflow-wrap:anywhere]" style={{ fontFamily: "var(--font-syne)", fontSize: 19, color: T.text, fontWeight: 700, margin: "0 0 5px" }}>{p.title}</h3>
+                            <p className="mb-3 text-sm leading-relaxed [overflow-wrap:anywhere]" style={{ color: T.textMuted }}>{p.desc}</p>
+                            <div className="grid grid-cols-2 gap-3 pt-2.5 [overflow-wrap:anywhere]" style={{ borderTop: `1px solid ${T.border}` }}>
                                 {p.stats.slice(0, 2).map(s => (
                                     <div key={s.label}>
                                         <div style={{ color: T.text, fontFamily: "var(--font-syne)", fontSize: 17, fontWeight: 800 }}>{s.value}</div>
@@ -641,7 +633,7 @@ function MobileLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   STICKY SHELL — reused by desktop + tablet
+   STICKY SHELL
    ───────────────────────────────────────────────────────────── */
 function StickyShell({ children, bg = T.bg }: { children: React.ReactNode; bg?: string }) {
     return (
@@ -655,7 +647,7 @@ function StickyShell({ children, bg = T.bg }: { children: React.ReactNode; bg?: 
    DESKTOP LAYOUT
    ───────────────────────────────────────────────────────────── */
 function DesktopLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
-    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine(projects.length, "(min-width: 1024px)");
+    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine(projects.length);
 
     return (
         <div ref={wrapperRef} style={{ height: "120vh", position: "relative" }}>
@@ -705,27 +697,6 @@ function DesktopLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   TABLET LAYOUT
-   ───────────────────────────────────────────────────────────── */
-function TabletLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
-    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine(projects.length, "(640px <= width < 1024px)");
-
-    return (
-        <div ref={wrapperRef} style={{ height: "120vh", position: "relative" }}>
-            <StickyShell>
-                <div style={{ padding: "28px 20px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", height: "100%", boxSizing: "border-box" }}>
-                    <SectionHeader />
-                    <div style={{ flex: 1, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
-                        <BrowserFrame projects={projects} imageProgress={imageProgress} activeIndex={activeIndex} onDotClick={jumpToProject} />
-                    </div>
-                </div>
-                <ProgressRail activeIndex={activeIndex} total={projects.length} />
-            </StickyShell>
-        </div>
-    );
-}
-
-/* ─────────────────────────────────────────────────────────────
    ROOT EXPORT
    ───────────────────────────────────────────────────────────── */
 export default function GLOurWork({ featured = [] }: { featured?: Project[] }) {
@@ -744,14 +715,11 @@ export default function GLOurWork({ featured = [] }: { featured?: Project[] }) {
         desc: project.solution || project.tagline,
     })) : PROJECTS;
     return (
-        <div id="our-work" className="scroll-mt-24">
-            <div className="block sm:hidden">
-                <MobileLayout projects={projects} />
+        <div id="our-work" className="scroll-mt-24 isolate lg:scroll-mt-28">
+            <div className="work-project-grid">
+                <ProjectGrid projects={projects} />
             </div>
-            <div className="hidden sm:block lg:hidden">
-                <TabletLayout projects={projects} />
-            </div>
-            <div className="hidden lg:block">
+            <div className="work-pinned-showcase">
                 <DesktopLayout projects={projects} />
             </div>
         </div>

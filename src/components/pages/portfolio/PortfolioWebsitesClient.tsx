@@ -76,11 +76,11 @@ function Row({ project: p, index }: { project: Project; index: number }) {
       <ProjectMedia cover={p.thumbnail} gallery={p.screenshots} title={p.name} alt={p.thumbnailAlt}
         imageStyle={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
       <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.25 }}
-        className="absolute inset-0 flex items-center justify-center"
+        className="pointer-events-none absolute inset-0 hidden items-center justify-center pointer-fine:flex"
         style={{ background: "rgba(17,24,39,0.50)" }}>
         {p.liveUrl ? (
-          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-white font-bold px-7 py-3.5 rounded-full shadow-2xl hover:scale-105 transition-transform"
+          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden
+            className={`flex items-center gap-2 rounded-full bg-white px-7 py-3.5 font-bold shadow-2xl transition-transform hover:scale-105 ${hovered ? "pointer-events-auto" : ""}`}
             style={{ color: TEXT, fontFamily: "var(--font-inter)", fontSize: 13 }}>
             Visit Live Site <ArrowUpRight size={14} />
           </a>
@@ -104,7 +104,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
       </span>
       <div className="relative z-10 flex flex-col gap-6">
         {/* Meta row */}
-        <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <div className="flex items-center gap-3">
             <span style={{ fontFamily: "var(--font-inter)", fontSize: 12, fontWeight: 700, color: BRAND, letterSpacing: "0.06em" }}>{rowNum}</span>
             <span style={{ color: BORDER }}>·</span>
@@ -112,7 +112,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
           </div>
           {p.liveUrl && (
             <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
-              className="group flex items-center gap-1 shrink-0"
+              className="group flex min-h-11 shrink-0 items-center gap-1"
               style={{ fontFamily: "var(--font-inter)", fontSize: 11, fontWeight: 700, color: FAINT, textTransform: "uppercase", letterSpacing: "0.14em", textDecoration: "none", transition: "color 0.2s" }}
               onMouseEnter={e => (e.currentTarget.style.color = TEXT)}
               onMouseLeave={e => (e.currentTarget.style.color = FAINT)}>
@@ -162,7 +162,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
   );
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="overflow-x-clip">
       {index > 0 && <div style={{ height: 1, background: BORDER }} />}
       <div className="flex flex-col lg:flex-row" style={{ minHeight: "clamp(300px,55vh,600px)" }}>
         {imgLeft ? <>{ImageHalf}{TextHalf}</> : <>{TextHalf}{ImageHalf}</>}

@@ -32,7 +32,7 @@ export default function GLInstagram() {
     >
       <div className="max-w-7xl mx-auto px-6 text-center mb-10">
         <h2
-          className="text-6xl sm:text-7xl md:text-8xl font-black tracking-tighter uppercase leading-none text-sky-500"
+          className="text-[clamp(2.75rem,12vw,6rem)] font-black tracking-tighter uppercase leading-none text-sky-700"
           style={{ fontFamily: "var(--font-syne)" }}
         >
           Follow Us
@@ -41,7 +41,7 @@ export default function GLInstagram() {
           href={site.social.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-4 text-lg font-bold text-sky-700 hover:underline"
+          className="mt-2 inline-flex min-h-11 items-center text-lg font-bold text-sky-700 hover:underline"
         >
           @deepoffduty
         </a>
@@ -53,21 +53,21 @@ export default function GLInstagram() {
           type="button"
           onClick={() => setPaused((value) => !value)}
           aria-pressed={paused}
-          className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-white"
+          className="social-gallery-toggle mt-5 min-h-11 items-center gap-2 rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-white"
         >
           {paused ? <Play size={13} /> : <Pause size={13} />}
           {paused ? "Resume gallery" : "Pause gallery"}
         </button>
       </div>
-      <div className="relative w-full overflow-hidden py-4">
+      <div className="social-gallery relative w-full py-4" aria-label="Instagram posts">
         <div
-          className="marquee-track social-gallery-track flex gap-5"
+          className="social-gallery-track flex w-max gap-4"
           style={{ animationPlayState: paused ? "paused" : undefined }}
         >
           {[0, 1].map((copy) => (
             <div
               key={copy}
-              className="flex gap-5"
+              className={copy === 1 ? "social-gallery-copy flex gap-4" : "flex gap-4"}
               aria-hidden={copy === 1 ? true : undefined}
             >
               {posts.map((post) => (
@@ -77,8 +77,7 @@ export default function GLInstagram() {
                   target="_blank"
                   rel="noopener noreferrer"
                   tabIndex={copy === 1 ? -1 : 0}
-                  className="relative block w-64 md:w-80 aspect-[4/5] shrink-0 overflow-hidden rounded-2xl bg-slate-200 shadow-sm group focus-visible:outline-4 focus-visible:outline-sky-500"
-                  
+                  className="group relative block aspect-[4/5] w-[min(76vw,16rem)] shrink-0 snap-start overflow-hidden rounded-2xl bg-slate-200 shadow-sm focus-visible:outline-4 focus-visible:outline-sky-500 md:w-80"
                 >
                   <Image
                     src={post.image}
@@ -87,11 +86,11 @@ export default function GLInstagram() {
                     sizes="(max-width: 767px) 256px, 320px"
                     className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
                   />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 to-transparent p-5 pt-20 text-white">
-                    <span className="text-[10px] uppercase tracking-widest text-white/75">
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/85 to-transparent p-4 pt-12 text-white sm:p-5 sm:pt-16">
+                    <span className="text-[10px] uppercase tracking-widest text-white/85">
                       Illustrative creative
                     </span>
-                    <h3 className="mt-2 text-xl font-bold">{post.title}</h3>
+                    <h3 className="mt-1 text-xl font-bold text-white">{post.title}</h3>
                     <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold">
                       Explore Instagram <ArrowUpRight size={14} />
                     </span>

@@ -1,10 +1,11 @@
 "use client";
-import { TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
+import { useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { TestimonialCard, TestimonialsColumn } from "@/components/ui/testimonials-columns-1";
 import type { TestimonialItem } from "@/components/ui/testimonials-columns-1";
 import { testimonials as rawTestimonials } from "@/data";
-import { motion } from "framer-motion";
 
-/* Map existing data → TestimonialsColumn shape, using real Unsplash portraits */
 const portraitImages = [
   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face",
   "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&crop=face",
@@ -13,71 +14,100 @@ const portraitImages = [
   "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face",
 ];
 
-/* Pad shorter columns by duplicating for visual balance */
-const padColumn = (col: TestimonialItem[], minLen: number): TestimonialItem[] => {
-  if (col.length >= minLen) return col;
-  const padded = [...col];
-  while (padded.length < minLen) {
-    padded.push(...col);
+function TestimonialRail({ testimonials }: { testimonials: TestimonialItem[] }) {
+  const rail = useRef<HTMLUListElement>(null);
+  const [active, setActive] = useState(0);
+  const reducedMotion = useReducedMotion();
+
+  function goTo(index: number) {
+    const list = rail.current;
+    const card = list?.children[index] as HTMLElement | undefined;
+    if (!list || !card) return;
+    list.scrollTo({ left: card.offsetLeft, behavior: reducedMotion ? "instant" : "smooth" });
   }
-  return padded.slice(0, minLen);
-};
 
-const GLTestimonials = ({ items }: { items?: any[] } = {}) => {
-  const source = items && items.length > 0 ? items : rawTestimonials;
-  const testimonials: TestimonialItem[] = source.map((t, i) => ({
-    text: t.text,
-    image: portraitImages[i % portraitImages.length],
-    name: t.author,
-    role: t.role,
-  }));
-
-  const firstColumn = testimonials.slice(0, 2);
-  const secondColumn = testimonials.slice(2, 4);
-  const thirdColumn = testimonials.slice(4, 5);
-
-  const col1 = padColumn(firstColumn, 3);
-  const col2 = padColumn(secondColumn, 3);
-  const col3 = padColumn(thirdColumn, 3);
+  function syncActiveCard() {
+    const list = rail.current;
+    const second = list?.children[1] as HTMLElement | undefined;
+    if (!list || !second) return;
+    const atEnd = list.scrollLeft >= list.scrollWidth - list.clientWidth - 2;
+    setActive(atEnd ? testimonials.length - 1 : Math.round(list.scrollLeft / second.offsetLeft));
+  }
 
   return (
-    <section id="testimonials" className="relative py-28 lg:py-40 overflow-hidden bg-white border-t border-[#E5E7EB]">
-      {/* Subtle background accent */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-[#0ea5e9]/[0.03] blur-3xl" />
-      </div>
+    <div className="lg:motion-safe:hidden">
+      <ul ref={rail} aria-label="Client stories" onScroll={syncActiveCard}
+        className="relative grid auto-cols-[calc(100%-1.25rem)] grid-flow-col snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-3 sm:auto-cols-[75%] md:auto-cols-[62%]">
+        {testimonials.map((item, index) => (
+          <li key={index} className="min-w-0 snap-start last:snap-end">
+            <TestimonialCard item={item} />
+          </li>
+        ))}
+      </ul>
+      {testimonials.length > 1 && (
+        <div className="mt-3 flex items-center justify-center gap-3">
+          <button type="button" aria-label="Previous client story" disabled={active === 0} onClick={() => goTo(active - 1)}
+            className="grid size-11 place-items-center rounded-full border border-slate-200 text-slate-800 hover:bg-sky-50 disabled:opacity-45">
+            <ChevronLeft size={18} aria-hidden />
+          </button>
+          <span className="min-w-12 text-center text-sm tabular-nums text-slate-600" aria-live="polite">
+            {active + 1} / {testimonials.length}
+          </span>
+          <button type="button" aria-label="Next client story" disabled={active === testimonials.length - 1} onClick={() => goTo(active + 1)}
+            className="grid size-11 place-items-center rounded-full border border-slate-200 text-slate-800 hover:bg-sky-50 disabled:opacity-45">
+            <ChevronRight size={18} aria-hidden />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
-      <div className="container relative z-10 mx-auto px-6 lg:px-12">
+type TestimonialSource = { text: string; author: string; role: string };
+
+export default function GLTestimonials({ items }: { items?: readonly TestimonialSource[] }) {
+  const testimonials = (items?.length ? items : rawTestimonials).map((item, index) => ({
+    text: item.text,
+    image: portraitImages[index % portraitImages.length],
+    name: item.author,
+    role: item.role,
+  }));
+  const columnCount = Math.min(3, testimonials.length);
+  const columns = Array.from({ length: columnCount }, (_, index) =>
+    testimonials.filter((_, position) => position % columnCount === index));
+
+  return (
+    <section id="testimonials" className="relative overflow-hidden border-t border-slate-200 bg-white py-16 sm:py-24 lg:py-40">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-sky-500/5 blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto mb-16 lg:mb-20"
+          className="mx-auto mb-8 flex max-w-3xl flex-col items-center text-center lg:mb-20"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#0ea5e9]/20 bg-[#0ea5e9]/[0.04] mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0ea5e9]" />
-            <span className="text-xs font-semibold text-[#0ea5e9] uppercase tracking-[0.2em]">Client Stories</span>
+          <div className="mb-4 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-700">
+            Client Stories
           </div>
-
-          <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-[#111827] font-heading">
+          <h2 className="font-heading text-[clamp(1.85rem,6vw,3rem)] leading-tight font-bold tracking-tight text-slate-900 text-balance">
             What founders and operators say about working with us.
           </h2>
-          <p className="mt-4 text-lg text-[#6B7280] font-sans">
+          <p className="mt-4 text-base text-slate-600 sm:text-lg">
             Real outcomes from real businesses. Here is how our software and automation helped them scale.
           </p>
         </motion.div>
 
-        <div className="relative [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] -my-4 py-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[700px] overflow-hidden">
-            <TestimonialsColumn testimonials={col1} duration={35} />
-            <TestimonialsColumn testimonials={col2} className="hidden md:block" duration={45} />
-            <TestimonialsColumn testimonials={col3} className="hidden lg:block" duration={40} />
+        <TestimonialRail testimonials={testimonials} />
+        <div className="hidden overflow-hidden lg:motion-safe:block [mask-image:linear-gradient(to_bottom,transparent,black_8%,black_92%,transparent)]">
+          <div className="mx-auto flex max-h-[700px] max-w-5xl justify-center gap-6">
+            {columns.map((column, index) => (
+              <TestimonialsColumn key={index} testimonials={column} duration={35 + index * 5} />
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default GLTestimonials;
+}

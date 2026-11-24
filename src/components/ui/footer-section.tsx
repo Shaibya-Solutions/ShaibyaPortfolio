@@ -95,14 +95,14 @@ export function Footer() {
           </AnimatedContainer>
 
           {/* Link columns */}
-          <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4 xl:col-span-2 xl:mt-0">
+          <div className="grid grid-cols-2 gap-x-5 gap-y-6 md:grid-cols-4 xl:col-span-2">
             {footerLinks.map((section, index) => (
               <AnimatedContainer key={section.label} delay={0.1 + index * 0.1}>
-                <div className="mb-10 md:mb-0 min-w-0 overflow-hidden">
+                <div className="min-w-0">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-800">
                     {section.label}
                   </h3>
-                  <ul className="mt-4 space-y-2.5 text-sm">
+                  <ul className="mt-2 space-y-1 text-sm">
                     {section.links.map((link) => {
                       const isExternal = link.external;
                       const Wrapper = isExternal ? 'a' : Link;
@@ -114,11 +114,11 @@ export function Footer() {
                         <li key={link.title} className="min-w-0">
                           <Wrapper
                             href={link.href}
-                            className="text-gray-700 hover:text-sky-700 inline-flex items-center gap-1.5 py-1.5 min-h-[40px] transition-all duration-300 max-w-full"
+                            className="inline-flex min-h-11 max-w-full items-center gap-1.5 py-1.5 text-gray-700 transition-colors hover:text-sky-700"
                             {...extraProps}
                           >
                             {link.icon && <link.icon className="size-4 text-gray-600 shrink-0" />}
-                            <span className="truncate">{link.title}</span>
+                            <span className="min-w-0 [overflow-wrap:anywhere]">{link.title}</span>
                           </Wrapper>
                         </li>
                       );
@@ -132,7 +132,7 @@ export function Footer() {
       </div>
 
       {/* Bottom disclaimer: full-width black section */}
-      <div className="w-full bg-black py-16 px-6 lg:px-12 text-center border-t border-white/5 relative z-10">
+      <div className="relative w-full border-t border-white/5 bg-black px-6 py-12 text-center lg:px-12 lg:py-16">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           {/* Shadowed wordmark */}
           <div

@@ -39,7 +39,7 @@ export default function GLHero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col overflow-hidden"
+      className="relative isolate flex min-h-svh flex-col overflow-hidden"
       style={{ background: "radial-gradient(ellipse at 70% 30%, #0d2442, #020817 64%)" }}
     >
       {/* WebGL Celestial Sphere Background — gracefully deferred */}
@@ -67,7 +67,7 @@ export default function GLHero() {
       <div
         className="relative z-10 flex-1 flex items-center"
       >
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full pt-32 pb-16 lg:pt-40 lg:pb-0">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full pt-28 pb-8 lg:pt-40 lg:pb-0">
           <div className="max-w-4xl">
 
             {/* Label */}
@@ -75,7 +75,7 @@ export default function GLHero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="mb-8"
+              className="mb-4 sm:mb-8"
             >
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#9CA3AF]">
                 Digital Engineering Studio
@@ -83,9 +83,9 @@ export default function GLHero() {
             </motion.div>
 
             {/* Headline with DecryptedText - Renders immediately for zero LCP delay */}
-            <div className="mb-8">
+            <div className="mb-5 sm:mb-8">
               <h1
-                className="text-[clamp(3rem,7.5vw,6.5rem)] font-bold leading-[0.95] tracking-[-0.04em] text-white"
+                className="text-[clamp(2.5rem,11vw,3.25rem)] font-bold leading-[0.98] tracking-[-0.04em] text-white sm:text-[clamp(3.25rem,7.5vw,6.5rem)]"
                 style={{ fontFamily: "var(--font-syne)" }}
               >
                 {!mounted ? (
@@ -123,7 +123,7 @@ export default function GLHero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.08 }}
-              className="text-lg lg:text-xl text-[#9CA3AF] max-w-xl leading-relaxed mb-12 font-light"
+              className="mb-6 max-w-xl text-base leading-relaxed text-slate-300 sm:mb-10 sm:text-lg lg:text-xl"
             >
               We build systems that eliminate manual work and drive measurable
               business growth. From bespoke internal tools to high-converting
@@ -135,7 +135,7 @@ export default function GLHero() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.12 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+              className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4"
             >
               <WhatsAppCTA
                 text="Start a project"
@@ -157,7 +157,7 @@ export default function GLHero() {
       </div>
 
       {/* Scroll indicator */}
-      <div className="relative z-10 flex justify-center pb-8 pointer-events-none">
+      <div className="pointer-events-none relative z-10 flex justify-center pb-5 sm:pb-8">
         <div className="flex flex-col items-center gap-2 text-white/50 text-xs tracking-widest uppercase">
           <ChevronDown size={14} className="animate-bounce" />
         </div>

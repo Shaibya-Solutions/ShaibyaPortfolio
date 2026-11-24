@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { triggerHaptic } from "@/lib/haptics";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,7 +10,6 @@ import { FaBars, FaChevronDown, FaTimes } from "react-icons/fa";
 import NavHeader from "@/components/ui/nav-header";
 
 export function SiteHeader() {
-  const router = useRouter();
   const menuToggle = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
@@ -46,18 +44,26 @@ export function SiteHeader() {
   const verticalPadding = 32 - scrollProgress * 20;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${open || scrollProgress > 0.05 ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-slate-200/40 xl:bg-transparent xl:shadow-none xl:border-b-0" : "bg-transparent"}`}>
+    <header
+      data-mobile-menu-open={open}
+      className="fixed inset-x-0 top-0 z-50 isolate border-b border-slate-200 bg-white shadow-xs xl:border-b-0 xl:bg-transparent xl:shadow-none"
+    >
+      {open && (
+        <div
+          aria-hidden="true"
+          onClick={() => setOpen(false)}
+          className="fixed inset-x-0 bottom-0 top-[81px] -z-10 bg-slate-950/40 xl:hidden"
+        />
+      )}
       {/* 
         Use a full-width relative container.
         The nav pill is absolutely centered; nothing else on desktop.
       */}
       <div
-        className="relative w-full px-6 lg:px-12 flex items-center justify-center md:justify-center"
+        className="relative flex w-full items-center justify-center px-4 py-3 sm:px-6 lg:px-12 xl:py-(--desktop-nav-padding) xl:transition-[padding] xl:duration-100"
         style={{
-          paddingTop: `${verticalPadding}px`,
-          paddingBottom: `${verticalPadding}px`,
-          transition: "padding 0.1s ease-out",
-        }}
+          "--desktop-nav-padding": `${verticalPadding}px`,
+        } as React.CSSProperties}
       >
 
         {/* Desktop: nav pill absolutely centered */}
@@ -67,19 +73,13 @@ export function SiteHeader() {
 
         {/* Mobile: logo left + hamburger right */}
         <div className="flex w-full items-center justify-between xl:hidden">
-          <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} aria-label="Shaibya Solutions Home">
+          <Link href="/" prefetch={true} onPointerDown={() => triggerHaptic(8)} onClick={() => setOpen(false)} aria-label="Shaibya Solutions Home">
             <Image
               src="/images/logo-mobile.webp"
               alt="Shaibya Solutions"
               width={200}
               height={67}
-              className="h-16 w-auto object-contain"
-              style={{
-                transform: `scale(${1 - scrollProgress * 0.15})`,
-                transformOrigin: "left center",
-                filter: "drop-shadow(0 2px 6px rgba(14,165,233,0.15))",
-                transition: "all 0.1s ease-out",
-              }}
+              className="h-14 w-auto object-contain"
               priority
             />
           </Link>
@@ -109,8 +109,7 @@ export function SiteHeader() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.28, ease: "easeOut" }}
-            className="overflow-x-hidden overflow-y-auto overscroll-contain border-t border-gray-200 bg-white/95 backdrop-blur-xl xl:hidden"
-            style={{ maxHeight: `calc(100dvh - ${65 + 2 * verticalPadding}px)` }}
+            className="max-h-[calc(100dvh-81px)] overflow-x-hidden overflow-y-auto overscroll-contain border-t border-gray-200 bg-white xl:hidden"
           >
             <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1 px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               {nav.map((item) =>
@@ -122,7 +121,7 @@ export function SiteHeader() {
                         toggleMobileDropdown(item.label);
                       }}
                       aria-expanded={!!mobileDropdowns[item.label]}
-                      className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
+                      className="flex min-h-11 w-full items-center justify-between rounded-xl px-3 py-2.5 text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                     >
                       <span className="text-sm font-medium">{item.label}</span>
                       <FaChevronDown
@@ -146,7 +145,7 @@ export function SiteHeader() {
                               prefetch={true}
                               onPointerDown={() => triggerHaptic(8)}
                               onClick={() => setOpen(false)}
-                              className="flex items-center gap-3 rounded-lg px-2 py-2 text-sm text-gray-500 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
+                              className="flex min-h-11 items-center gap-3 rounded-lg px-2 py-2 text-sm text-gray-600 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                             >
                               {dropItem.icon && (
                                 <dropItem.icon className="text-[#0ea5e9]" size={13} />
@@ -166,7 +165,7 @@ export function SiteHeader() {
                     prefetch={true}
                     onPointerDown={() => triggerHaptic(8)}
                     onClick={() => setOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
+                    className="flex min-h-11 items-center rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 active:scale-[0.98] transition-all duration-75 hover:bg-gray-100 hover:text-black"
                   >
                     {item.label}
                   </Link>
@@ -179,8 +178,7 @@ export function SiteHeader() {
                 prefetch={true}
                 onPointerDown={() => triggerHaptic(8)}
                 onClick={() => setOpen(false)}
-                className="mt-2 inline-block rounded-full px-5 py-2.5 text-center text-sm font-semibold text-white active:scale-95 transition-transform duration-75 shadow-sm select-none"
-                style={{ background: "linear-gradient(135deg, #0284c7, #0ea5e9)" }}
+                className="mt-2 flex min-h-11 items-center justify-center rounded-full bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white active:scale-95 transition-transform duration-75 shadow-sm select-none"
               >
                 Get in Touch
               </Link>

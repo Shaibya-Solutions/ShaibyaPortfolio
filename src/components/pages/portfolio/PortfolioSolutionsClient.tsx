@@ -75,7 +75,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
       <ProjectMedia cover={p.thumbnail} gallery={p.screenshots} title={p.name} alt={p.thumbnailAlt}
         imageStyle={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
       <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.25 }}
-        className="absolute inset-0 flex items-center justify-center"
+        className="pointer-events-none absolute inset-0 hidden items-center justify-center pointer-fine:flex"
         style={{ background: "rgba(17,24,39,0.50)" }}>
         {p.stats[0] && (
           <div className="bg-white rounded-2xl px-6 py-4 shadow-2xl text-center">
@@ -168,7 +168,7 @@ function Row({ project: p, index }: { project: Project; index: number }) {
   );
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="overflow-x-clip">
       {index > 0 && <div style={{ height: 1, background: BORDER }} />}
       <div className="flex flex-col lg:flex-row" style={{ minHeight: "clamp(300px,55vh,600px)" }}>
         {imgLeft ? <>{ImageHalf}{TextHalf}</> : <>{TextHalf}{ImageHalf}</>}

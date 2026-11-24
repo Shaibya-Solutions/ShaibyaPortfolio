@@ -17,10 +17,10 @@ export default function GLContact() {
       ref={ref}
       id="contact"
       aria-labelledby="contact-heading"
-      className="scroll-mt-32 relative py-28 lg:py-36 overflow-hidden bg-white border-t border-slate-200"
+      className="relative scroll-mt-24 overflow-hidden border-t border-slate-200 bg-white py-16 sm:py-24 lg:scroll-mt-32 lg:py-36"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16">
 
           {/* Left: Copy & Actions */}
           <motion.div
@@ -45,37 +45,33 @@ export default function GLContact() {
               to full-stack platforms, we turn ambitious ideas into scalable products.
             </p>
 
-            <div className="flex flex-wrap gap-4 items-center mb-10">
+            <div className="mb-8 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
               <WhatsAppCTA
                 text="Chat on WhatsApp"
                 message="Hi, I'd like to discuss a project with Shaibya Solutions."
-                className="!rounded-xl !px-8 !py-4 !text-[15px] !font-semibold !bg-[#0ea5e9] !border-[#0ea5e9] hover:!bg-[#0284c7] hover:!shadow-[0_4px_20px_rgba(14,165,233,0.3)] !transition-all"
+                className="!justify-center !rounded-xl !border-sky-700 !bg-sky-700 !px-5 !py-4 !text-[15px] !font-semibold !transition-all hover:!bg-sky-800"
               />
 
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-7 py-4 text-[15px] font-semibold text-slate-800 transition hover:bg-slate-50 hover:border-slate-400"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-4 text-[15px] font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50"
               >
                 Book a consultation
                 <ArrowRight size={15} />
               </Link>
             </div>
 
-            <div className="flex items-center gap-8 pt-8 border-t border-slate-200">
-              <div>
-                <span className="text-2xl font-bold text-slate-900 font-mono">15+</span>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mt-0.5">Projects Delivered</p>
-              </div>
-              <div className="h-8 w-px bg-slate-200" />
-              <div>
-                <span className="text-2xl font-bold text-slate-900 font-mono">100%</span>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mt-0.5">On-Time Launch</p>
-              </div>
-              <div className="h-8 w-px bg-slate-200" />
-              <div>
-                <span className="text-2xl font-bold text-slate-900 font-mono">24/7</span>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mt-0.5">Direct Support</p>
-              </div>
+            <div className="grid grid-cols-3 gap-2 border-t border-slate-200 pt-6 sm:gap-4">
+              {[
+                { value: "15+", label: "Projects delivered" },
+                { value: "100%", label: "On-time launch" },
+                { value: "24/7", label: "Direct support" },
+              ].map((stat) => (
+                <div key={stat.label} className="border-slate-200 not-first:border-l not-first:pl-2 sm:not-first:pl-4">
+                  <span className="font-mono text-xl font-bold text-slate-900 sm:text-2xl">{stat.value}</span>
+                  <p className="mt-0.5 text-xs leading-tight text-slate-600">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </motion.div>
 

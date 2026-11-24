@@ -9,9 +9,9 @@ export default function GLFAQ({ faqs }: { faqs: readonly { q: string; a: string 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section ref={ref} id="faq" className="relative bg-white py-32 lg:py-44 overflow-hidden">
+    <section ref={ref} id="faq" className="relative scroll-mt-24 bg-white py-16 sm:py-24 lg:scroll-mt-32 lg:py-44">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-[380px_1fr] gap-16 lg:gap-24">
+        <div className="grid gap-8 lg:grid-cols-[380px_minmax(0,1fr)] lg:gap-24">
 
           {/* Left — sticky header */}
           <div className="lg:sticky lg:top-32 lg:self-start">
@@ -69,7 +69,7 @@ export default function GLFAQ({ faqs }: { faqs: readonly { q: string; a: string 
                 >
                   <button
                     onClick={() => setOpenIndex(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between px-6 py-5 text-left"
+                    className="flex w-full items-center justify-between px-4 py-4 text-left focus-visible:outline-offset-[-3px] sm:px-6 sm:py-5"
                     aria-expanded={isOpen}
                   >
                     <span
@@ -100,7 +100,7 @@ export default function GLFAQ({ faqs }: { faqs: readonly { q: string; a: string 
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <div className="px-6 pb-5">
+                        <div className="px-4 pb-5 sm:px-6">
                           <div className="h-px bg-[#E5E7EB] mb-4" />
                           <p className="text-[14px] text-[#6B7280] leading-[1.8]">
                             {faq.a}

@@ -12,7 +12,7 @@ export default function GLIndustries() {
     <section
       ref={ref}
       id="industries"
-      className="relative bg-white py-20 lg:py-32 overflow-hidden"
+      className="relative scroll-mt-24 overflow-hidden bg-white py-16 lg:scroll-mt-32 lg:py-32"
     >
       {/* Subtle dot-grid background */}
       <div className="absolute inset-0 dot-grid opacity-[0.4] pointer-events-none" />
@@ -54,10 +54,9 @@ export default function GLIndustries() {
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className="mt-4 text-sm text-[#9CA3AF] max-w-lg"
+          className="mt-4 max-w-lg text-sm leading-relaxed text-slate-600"
         >
           From real estate portals to gym management systems — we've shipped across industries.
-          Click any chip to explore.
         </motion.p>
       </div>
 

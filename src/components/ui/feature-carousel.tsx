@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import {
     Home01Icon,
     Dumbbell01Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { getImageUrl } from "@/lib/imagekit";
 
@@ -31,18 +30,9 @@ const FEATURES = [
 
 export function FeatureCarousel() {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-    const [isMobile, setIsMobile] = useState(false);
-
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
-    }, []);
-
     return (
-        <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
-            <div className="flex flex-col lg:flex-row gap-8 lg:min-h-[600px] max-w-[1340px] mx-auto items-stretch">
+        <div className="mx-auto w-full max-w-7xl px-6">
+            <div className="flex flex-col items-stretch gap-6 sm:grid sm:grid-cols-2 lg:pointer-fine:flex lg:pointer-fine:flex-row lg:pointer-fine:gap-8">
                 {FEATURES.map((item, index) => {
                     const isAnyHovered = hoveredIndex !== null;
                     const isActive = isAnyHovered ? hoveredIndex === index : false;
@@ -53,26 +43,17 @@ export function FeatureCarousel() {
                             key={item.id}
                             href={item.href}
                             aria-label={`Explore ${item.label} case studies`}
-                            onFocus={() => !isMobile && setHoveredIndex(index)}
+                            data-active={isActive}
+                            data-collapsed={isCollapsed}
+                            onFocus={() => setHoveredIndex(index)}
                             onBlur={() => setHoveredIndex(null)}
-                            onMouseEnter={() => !isMobile && setHoveredIndex(index)}
-                            onMouseLeave={() => !isMobile && setHoveredIndex(null)}
-                            style={{
-                                flex: isMobile ? 1 : (isActive ? 2.8 : (isCollapsed ? 1.2 : 2)),
-                                transition: "all 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
-                            }}
-                            className="bg-white rounded-[2.5rem] md:rounded-[3rem] shadow-[0_30px_70px_rgba(0,0,0,0.06)] border border-slate-200/60 relative overflow-hidden flex flex-col lg:flex-row h-auto lg:h-[600px] w-full cursor-pointer"
+                            onMouseEnter={() => setHoveredIndex(index)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            className="group relative flex w-full min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-lg shadow-slate-900/5 transition-[flex] duration-650 ease-out lg:pointer-fine:h-[600px] lg:pointer-fine:flex-[2] lg:pointer-fine:flex-row lg:pointer-fine:data-[active=true]:flex-[2.8] lg:pointer-fine:data-[collapsed=true]:flex-[1.2]"
                         >
                             {/* Image Container — animated width for desktop slide, height for mobile view */}
                             <div
-                                style={{
-                                    width: isMobile ? "100%" : (isActive ? "50%" : "0%"),
-                                    height: isMobile ? "400px" : "100%",
-                                    transition: "width 0.65s cubic-bezier(0.16, 1, 0.3, 1), height 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
-                                }}
-                                className={`overflow-hidden relative shrink-0 ${
-                                    isMobile ? "block" : "hidden lg:block"
-                                } ${index === 1 ? "lg:order-first" : "lg:order-last"}`}
+                                className={`relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-slate-100 transition-[width] duration-650 ease-out lg:pointer-fine:aspect-auto lg:pointer-fine:w-0 lg:pointer-fine:group-data-[active=true]:w-1/2 ${index === 1 ? "lg:order-first" : "lg:order-last"}`}
                             >
                                 <div className="h-full w-full absolute inset-0">
                                     <img
@@ -80,7 +61,7 @@ export function FeatureCarousel() {
                                         alt={item.label}
                                         loading="lazy"
                                         decoding="async"
-                                        className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
+                                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                                     />
                                 </div>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
@@ -88,27 +69,16 @@ export function FeatureCarousel() {
 
                             {/* Content Container — adjusts automatically to fill the remaining width */}
                             <div
-                                style={{
-                                    width: isMobile ? "100%" : (isActive ? "50%" : "100%"),
-                                    transition: "width 0.65s cubic-bezier(0.16, 1, 0.3, 1)"
-                                }}
-                                className={`p-10 md:p-14 lg:p-16 flex flex-col justify-center relative z-10 bg-white shrink-0 overflow-hidden lg:order-none min-h-[300px] lg:min-h-0 transition-all duration-500 ${
-                                    isMobile || isActive ? "items-start text-left" : "items-center text-center"
-                                }`}
+                                className="relative flex w-full shrink-0 flex-1 flex-col justify-center bg-white p-5 transition-[width] duration-650 ease-out sm:p-6 lg:pointer-fine:flex-none lg:pointer-fine:p-8 lg:pointer-fine:group-data-[active=true]:w-1/2 xl:pointer-fine:p-12"
                             >
-                                <div className={`w-full flex-1 flex flex-col justify-center ${
-                                    isMobile || isActive ? "items-start text-left" : "items-center text-center"
-                                }`}>
+                                <div className="flex w-full flex-1 flex-col items-start justify-center lg:pointer-fine:group-data-[active=false]:items-center">
                                     {/* Icon & Label */}
-                                    <div className={`flex ${isMobile || isActive ? "flex-row items-center text-left" : "flex-col items-center text-center"} gap-5 mb-8`}>
-                                        <div className="w-14 h-14 md:w-16 md:h-16 rounded-[1.25rem] bg-[#0ea5e9]/10 flex items-center justify-center text-[#0ea5e9] shrink-0">
+                                    <div className="mb-4 flex items-center gap-3 lg:pointer-fine:group-data-[active=false]:mb-0 lg:pointer-fine:group-data-[active=false]:flex-col lg:pointer-fine:group-data-[active=false]:text-center">
+                                        <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-700 md:size-14">
                                             <HugeiconsIcon icon={item.icon} size={28} strokeWidth={2} />
                                         </div>
-                                        <div className={`flex flex-col ${isMobile || isActive ? "items-start text-left" : "items-center text-center"}`}>
-                                            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#0ea5e9] mb-1">
-                                                Industry Vertical
-                                            </span>
-                                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 uppercase leading-none" style={{ fontFamily: "var(--font-syne)" }}>
+                                        <div className="min-w-0">
+                                            <h3 className="text-xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-2xl lg:text-3xl" style={{ fontFamily: "var(--font-syne)" }}>
                                                 {item.label}
                                             </h3>
                                         </div>
@@ -116,19 +86,13 @@ export function FeatureCarousel() {
 
                                     {/* Collapsible Info Section: hides description and CTA when card is collapsed on desktop */}
                                     <div
-                                        style={{
-                                            opacity: isMobile ? 1 : (isActive ? 1 : 0),
-                                            height: isMobile ? "auto" : (isActive ? "auto" : 0),
-                                            pointerEvents: isMobile ? "auto" : (isActive ? "auto" : "none"),
-                                            transition: "opacity 0.4s ease-out, height 0.4s ease-out",
-                                        }}
-                                        className="w-full flex flex-col justify-between"
+                                        className="flex w-full flex-col justify-between overflow-hidden transition-opacity lg:pointer-fine:group-data-[active=false]:h-0 lg:pointer-fine:group-data-[active=false]:opacity-0"
                                     >
-                                        <p className="text-sm md:text-base text-slate-600 mb-8 leading-relaxed max-w-md font-normal">
+                                        <p className="mb-4 max-w-md text-sm leading-relaxed text-slate-600 md:text-base">
                                             {item.description}
                                         </p>
 
-                                        <div className="inline-flex items-center gap-3 text-xs md:text-sm font-bold uppercase tracking-widest text-[#0ea5e9] group-hover:translate-x-1 transition-transform">
+                                        <div className="inline-flex items-center gap-2 text-sm font-bold text-sky-700 transition-transform group-hover:translate-x-1">
                                             <span>Explore Solutions</span>
                                             <span>&rarr;</span>
                                         </div>

@@ -242,6 +242,78 @@
   }
 }
 
+@media (max-width: 639px) and (max-height: 700px) {
+  .heading h2 {
+    font-size: clamp(1.75rem, 7.3vw, 2.1rem);
+  }
+
+  .art {
+    height: clamp(7.5rem, 22svh, 10rem);
+  }
+
+  .outcomes {
+    gap: 0.25rem;
+  }
+}
+
+@media (min-width: 600px) and (max-height: 500px) and (orientation: landscape) {
+  .inner {
+    padding-block: 5.35rem 0.6rem;
+  }
+
+  .container {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    grid-template-areas: "copy heading" "copy art";
+    gap: 0.25rem 1rem;
+    align-items: center;
+  }
+
+  .heading {
+    grid-area: heading;
+    align-self: end;
+  }
+
+  .heading h2 {
+    font-size: clamp(1.4rem, 3.6vw, 1.9rem);
+  }
+
+  .stages span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    clip-path: inset(50%);
+  }
+
+  .panel {
+    display: contents;
+  }
+
+  .copies {
+    grid-area: copy;
+  }
+
+  .copy h3 {
+    font-size: 1.4rem;
+  }
+
+  .description,
+  .outcomes {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .outcomes {
+    gap: 0.2rem;
+  }
+
+  .art {
+    grid-area: art;
+    height: clamp(7rem, 40svh, 12rem);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stages li,
   .contact svg {
