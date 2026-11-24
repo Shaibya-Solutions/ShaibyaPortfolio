@@ -1,7 +1,7 @@
 .section {
   position: relative;
   isolation: isolate;
-  min-height: calc(100svh + clamp(56rem, 150svh, 100rem));
+  min-height: calc(100svh + clamp(56rem, 280svh, 200rem));
   scroll-margin-top: 5.5rem;
   background-color: var(--process-background, #0a182a);
   color: #f6faff;
