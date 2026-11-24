@@ -1,4 +1,5 @@
 import type { ServiceSlug } from "@/data/seo/services";
+import type { Project } from "@/data/projects";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import SoftwareSolutionsClient from "@/components/pages/software-solutions/SoftwareSolutionsClient";
@@ -14,9 +15,9 @@ import { ThreatRadarSection } from "@/components/pages/cybersecurity/ThreatRadar
 import { CyberCTASection } from "@/components/pages/cybersecurity/CyberCTASection";
 
 // The existing page components, order, classes and styling are preserved.
-export default function ServiceContent({ slug }: { slug: ServiceSlug }) {
+export default function ServiceContent({ slug, projects }: { slug: ServiceSlug; projects?: Project[] }) {
   switch (slug) {
-    case "software-solutions": return <SoftwareSolutionsClient />;
+    case "software-solutions": return <SoftwareSolutionsClient projects={projects} />;
     case "digital-marketing": return <DigitalMarketingClient />;
     case "3d-modelling-animations": return (
       <main className="min-h-screen flex flex-col bg-slate-50 text-slate-900 overflow-x-hidden font-sans selection:bg-pink-500/30">

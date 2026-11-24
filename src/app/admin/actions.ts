@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { clearAdminSession, createAdminSession, hasAdminSession } from "@/lib/admin-session";
 import { prepareProjectImages } from "@/lib/project-image-upload";
+import { getImageKitAdmin, mapPortfolioAsset } from "@/lib/portfolio-media-admin";
+import { PORTFOLIO_MEDIA_FOLDER } from "@/lib/imagekit";
 import { getPortfolioAdmin } from "@/lib/supabase/admin";
 import { mapDbProject } from "@/lib/supabase/portfolio";
 import type { Project } from "@/data/projects";
@@ -52,8 +54,29 @@ export async function loadPortfolioAdmin() {
   }
 }
 
-const portfolioPages = ["/portfolio", "/portfolio/websites", "/portfolio/solutions", "/portfolio/rnd"];
+const portfolioPages = ["/", "/portfolio", "/portfolio/websites", "/portfolio/solutions", "/portfolio/rnd", "/services/software-solutions"];
 const projectTypes = new Set(["website", "solution", "rnd"]);
+
+export async function loadPortfolioMedia(query = "", skip = 0) {
+  if (!(await hasAdminSession())) return { error: signInRequired, items: [], next: null };
+  const limit = 30;
+  const offset = Number.isSafeInteger(skip) && skip >= 0 ? skip : 0;
+  const name = String(query).trim().slice(0, 80);
+  const escaped = name.replace(/["\\]/g, "\\$&");
+  const searchQuery = `path : "${PORTFOLIO_MEDIA_FOLDER}/" AND type = "file"` +
+    (escaped ? ` AND name : "${escaped}"` : "");
+
+  try {
+    const files = await getImageKitAdmin().listFiles({ searchQuery, limit, skip: offset, sort: "DESC_CREATED" });
+    const items = files.flatMap((file) => {
+      const asset = file.type === "file" ? mapPortfolioAsset(file) : null;
+      return asset ? [asset] : [];
+    });
+    return { error: null, items, next: files.length === limit ? offset + limit : null };
+  } catch {
+    return { error: "Unable to load the ImageKit library.", items: [], next: null };
+  }
+}
 
 async function mutate(
   failure: string,
@@ -75,7 +98,12 @@ async function mutate(
   return { error: null };
 }
 
-export async function saveProject(project: Partial<Project>, originalSlug: string | null, media: FormData) {
+export async function saveProject(
+  project: Partial<Project>,
+  originalSlug: string | null,
+  media: FormData,
+  mediaIds: Record<string, string> = {},
+) {
   if (!(await hasAdminSession())) return { error: signInRequired };
 
   const slug = project?.slug?.trim();
@@ -86,13 +114,40 @@ export async function saveProject(project: Partial<Project>, originalSlug: strin
   }
   const thumbnailFile = media.get("thumbnail");
   if (!project.thumbnail?.trim() && !(thumbnailFile instanceof File && thumbnailFile.size)) {
-    return { error: "Choose a thumbnail or enter its URL or path." };
+    return { error: "Choose or upload a cover from ImageKit." };
   }
 
   let database: ReturnType<typeof getPortfolioAdmin>;
   let uploads: Awaited<ReturnType<typeof prepareProjectImages>>;
   try {
     database = getPortfolioAdmin();
+    const gallery = project.screenshots ?? [];
+    const retained = new Set<string>();
+    let galleryLimit = 8;
+    if (originalSlug) {
+      const { data: previous, error } = await database.from("projects").select("thumbnail,screenshots").eq("slug", originalSlug).single();
+      if (error || !previous) return { error: "This project is unavailable. Refresh the list and try again." };
+      const previousGallery = Array.isArray(previous.screenshots) ? previous.screenshots : [];
+      galleryLimit = Math.max(galleryLimit, previousGallery.length);
+      for (const url of [previous.thumbnail, ...previousGallery]) retained.add(url);
+    }
+    const newUrls = [...new Set([project.thumbnail, ...gallery])].filter(
+      (url): url is string => typeof url === "string" && url.length > 0 && !retained.has(url),
+    );
+    const incomingCount = media.getAll("screenshots").filter((file) => file instanceof File && file.size > 0).length;
+    if (gallery.length + incomingCount > galleryLimit || newUrls.length > 9) {
+      return { error: "Choose up to eight gallery items." };
+    }
+    if (newUrls.length) {
+      const imageKit = getImageKitAdmin();
+      const verified = await Promise.all(newUrls.map(async (url) => {
+        const id = mediaIds[url];
+        if (typeof id !== "string" || !/^[a-f\d]{24}$/i.test(id)) return false;
+        const asset = mapPortfolioAsset(await imageKit.getFileDetails(id));
+        return asset?.url === url;
+      }));
+      if (verified.includes(false)) return { error: "Choose public media from the portfolio’s ImageKit library." };
+    }
     uploads = await prepareProjectImages(slug, media);
   } catch (error) {
     return { error: error instanceof Error ? error.message : "Image upload failed." };

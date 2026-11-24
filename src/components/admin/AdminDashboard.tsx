@@ -13,10 +13,8 @@ import {
   Plus,
   Trash2,
   Edit2,
-  Save,
   CheckCircle2,
   AlertCircle,
-  Copy,
   ExternalLink,
   RefreshCw,
   Eye,
@@ -24,7 +22,6 @@ import {
 } from "lucide-react";
 import {
   loadPortfolioAdmin,
-  saveProject,
   deleteProject,
   upsertTestimonial,
   upsertCareerRole,
@@ -33,9 +30,10 @@ import {
   signIn,
   signOut,
 } from "@/app/admin/actions";
-import { getImageKitAssetUrl, getImageUrl, MAX_PROJECT_IMAGE_BYTES } from "@/lib/imagekit";
-import assetRegistry from "@/config/imagekit-assets.json";
-import type { Project, ProjectType } from "@/data/projects";
+import { getProjectMediaPoster, getProjectMediaUrl } from "@/lib/imagekit";
+import type { Project } from "@/data/projects";
+import ImageKitLibrary from "./ImageKitLibrary";
+import ProjectEditor from "./ProjectEditor";
 
 type AdminTab = "projects" | "testimonials" | "careers" | "team" | "faqs" | "media" | "database";
 
@@ -54,8 +52,7 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
   const [faqsList, setFaqsList] = useState<any[]>([]);
 
   // Editing state
-  const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
-  const [originalProjectSlug, setOriginalProjectSlug] = useState<string | null>(null);
+  const [editingProject, setEditingProject] = useState<Project | "new" | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState<any | null>(null);
   const [editingCareer, setEditingCareer] = useState<any | null>(null);
   const [editingFaq, setEditingFaq] = useState<any | null>(null);
@@ -117,34 +114,6 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
   };
 
   // ─── PROJECT HANDLERS ───
-  const handleSaveProject = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!editingProject?.slug || !editingProject?.name) {
-      showStatus("error", "Slug and Name are required.");
-      return;
-    }
-    const images = new FormData(e.currentTarget);
-    const uploadBytes = [...images.values()].reduce((total, value) => (
-      total + (typeof value === "string" ? 0 : value.size)
-    ), 0);
-    if (uploadBytes > MAX_PROJECT_IMAGE_BYTES) {
-      showStatus("error", "Choose images totaling 3.75 MB or less.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { error } = await saveProject(editingProject, originalProjectSlug, images);
-      if (error) throw new Error(error);
-      showStatus("success", `Project "${editingProject.name}" saved to shaibya_portfolio.`);
-      setEditingProject(null);
-      await loadAllData();
-    } catch (err: any) {
-      showStatus("error", err.message || "Failed to save project.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleDeleteProject = async (slug: string) => {
     if (!confirm(`Delete project "${slug}" permanently?`)) return;
     setLoading(true);
@@ -256,14 +225,14 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
       {/* Top Header */}
-      <header className="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 bg-slate-900/95 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4">
         <div className="flex items-center gap-3">
           <button type="button" onClick={handleLogout} className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-medium">
             Sign out
           </button>
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
           <h1 className="font-bold text-lg text-white">Shaibya CMS</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 font-mono">
+          <span className="hidden rounded-full border border-sky-500/20 bg-sky-500/10 px-2 py-0.5 font-mono text-xs text-sky-400 sm:inline">
             schema: shaibya_portfolio
           </span>
         </div>
@@ -304,7 +273,7 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
       {/* Main Layout */}
       <div className="flex-1 flex flex-col md:flex-row">
         {/* Sidebar Tabs */}
-        <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-slate-800 bg-slate-900/30 p-4 space-y-1">
+        <aside className="w-full shrink-0 md:w-64 border-b md:border-b-0 md:border-r border-slate-800 bg-slate-900/30 p-4 space-y-1">
           <button
             onClick={() => { setActiveTab("projects"); setEditingProject(null); }}
             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
@@ -380,9 +349,6 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
               <ImageIcon className="w-4 h-4" />
               <span>ImageKit Assets</span>
             </div>
-            <span className="text-xs bg-slate-800 px-2 py-0.5 rounded-full">
-              {Object.keys(assetRegistry.assets).length}
-            </span>
           </button>
 
           <button
@@ -399,7 +365,7 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
         </aside>
 
         {/* Content Area */}
-        <main className="flex-1 p-6 lg:p-8 max-w-6xl overflow-y-auto">
+        <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl">
           {/* TAB 1: PROJECTS */}
           {activeTab === "projects" && (
             <div className="space-y-6">
@@ -411,25 +377,7 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
                   </p>
                 </div>
                 <button
-                  onClick={() => {
-                    setOriginalProjectSlug(null);
-                    setEditingProject({
-                      slug: "",
-                      name: "",
-                      tagline: "",
-                      type: "solution",
-                      industry: "Technology",
-                      client: "",
-                      year: "2026",
-                      problem: "",
-                      solution: "",
-                      techStack: ["Next.js", "TypeScript", "Tailwind CSS"],
-                      stats: [{ value: "85%", label: "Efficiency Increase" }],
-                      thumbnail: "",
-                      featured: false,
-                      status: "Production",
-                    });
-                  }}
+                  onClick={() => setEditingProject("new")}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold transition-colors"
                 >
                   <Plus className="w-4 h-4" />
@@ -437,190 +385,21 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
                 </button>
               </div>
 
-              {/* Editing Form Modal/Drawer */}
               {editingProject && (
-                <form
-                  onSubmit={handleSaveProject}
-                  className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4"
-                >
-                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                    <h3 className="font-bold text-sm text-sky-400">
-                      {projectsList.some((p) => p.slug === editingProject.slug) ? "Edit Project" : "Create New Project"}
-                    </h3>
-                    <button
-                      type="button"
-                      onClick={() => setEditingProject(null)}
-                      className="text-xs text-slate-400 hover:text-white"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Slug (Unique ID)</label>
-                      <input
-                        type="text"
-                        value={editingProject.slug || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, slug: e.target.value })}
-                        required
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Project Name</label>
-                      <input
-                        type="text"
-                        value={editingProject.name || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, name: e.target.value })}
-                        required
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Category Type</label>
-                      <select
-                        value={editingProject.type || "solution"}
-                        onChange={(e) => setEditingProject({ ...editingProject, type: e.target.value as ProjectType })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      >
-                        <option value="website">Website</option>
-                        <option value="solution">Solution</option>
-                        <option value="rnd">R&D / MVP</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Client</label>
-                      <input
-                        type="text"
-                        value={editingProject.client || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, client: e.target.value })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Industry</label>
-                      <input
-                        type="text"
-                        value={editingProject.industry || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, industry: e.target.value })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Year</label>
-                      <input
-                        type="text"
-                        value={editingProject.year || "2026"}
-                        onChange={(e) => setEditingProject({ ...editingProject, year: e.target.value })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Tagline</label>
-                    <input
-                      type="text"
-                      value={editingProject.tagline || ""}
-                      onChange={(e) => setEditingProject({ ...editingProject, tagline: e.target.value })}
-                      className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Problem Statement</label>
-                    <textarea
-                      rows={2}
-                      value={editingProject.problem || ""}
-                      onChange={(e) => setEditingProject({ ...editingProject, problem: e.target.value })}
-                      className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Solution Statement</label>
-                    <textarea
-                      rows={2}
-                      value={editingProject.solution || ""}
-                      onChange={(e) => setEditingProject({ ...editingProject, solution: e.target.value })}
-                      className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="thumbnail-url" className="block text-xs text-slate-400 mb-1">Thumbnail URL or path</label>
-                      <input
-                        id="thumbnail-url"
-                        type="text"
-                        value={editingProject.thumbnail || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, thumbnail: e.target.value })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs text-slate-400 mb-1">Live URL (optional)</label>
-                      <input
-                        type="text"
-                        value={editingProject.liveUrl || ""}
-                        onChange={(e) => setEditingProject({ ...editingProject, liveUrl: e.target.value })}
-                        className="w-full px-3 py-2 rounded bg-slate-800 border border-slate-700 text-xs"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label className="text-xs text-slate-400 space-y-2">
-                      <span className="block">Upload thumbnail</span>
-                      <input name="thumbnail" type="file" accept="image/jpeg,image/png,image/webp" className="block w-full text-xs" />
-                    </label>
-                    <label className="text-xs text-slate-400 space-y-2">
-                      <span className="block">Add screenshots</span>
-                      <input name="screenshots" type="file" accept="image/jpeg,image/png,image/webp" multiple className="block w-full text-xs" />
-                    </label>
-                    <p className="text-xs text-slate-400 md:col-span-2">
-                      JPEG, PNG, or WebP. One thumbnail and up to eight new screenshots, 3.75 MB total per save.
-                    </p>
-                    {editingProject.screenshots?.map((url, index) => (
-                      <div key={`${url}-${index}`} className="flex items-center gap-2 text-xs text-slate-400">
-                        <img src={getImageUrl(url)} alt={`Screenshot ${index + 1}`} className="h-10 w-16 object-cover rounded" />
-                        <button type="button" onClick={() => setEditingProject({
-                          ...editingProject,
-                          screenshots: editingProject.screenshots?.filter((_, item) => item !== index),
-                        })}>Remove screenshot {index + 1}</button>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center gap-6 pt-2">
-                    <label className="flex items-center gap-2 text-xs text-slate-300">
-                      <input
-                        type="checkbox"
-                        checked={Boolean(editingProject.featured)}
-                        onChange={(e) => setEditingProject({ ...editingProject, featured: e.target.checked })}
-                        className="rounded bg-slate-800 border-slate-700 text-sky-500"
-                      />
-                      Feature on Homepage Showcase
-                    </label>
-
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="ml-auto flex items-center gap-1.5 px-4 py-2 rounded-lg bg-sky-500 hover:bg-sky-400 text-white text-xs font-semibold"
-                    >
-                      <Save className="w-3.5 h-3.5" />
-                      Save to Supabase
-                    </button>
-                  </div>
-                </form>
+                <ProjectEditor
+                  key={editingProject === "new" ? "new" : editingProject.slug}
+                  project={editingProject === "new" ? null : editingProject}
+                  onCancel={() => setEditingProject(null)}
+                  onSaved={(name) => {
+                    setEditingProject(null);
+                    showStatus("success", `Project "${name}" saved.`);
+                    void loadAllData();
+                  }}
+                />
               )}
 
               {/* Projects List Table */}
-              <div className="border border-slate-800 rounded-xl overflow-hidden bg-slate-900/40">
+              <div className="border border-slate-800 rounded-xl overflow-x-auto bg-slate-900/40">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-slate-800/60 text-slate-400 uppercase font-semibold">
                     <tr>
@@ -637,7 +416,7 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
                       <tr key={p.slug} className="hover:bg-slate-800/30">
                         <td className="p-3">
                           <img
-                            src={getImageUrl(p.thumbnail, { width: 80, height: 50 })}
+                            src={getProjectMediaPoster(getProjectMediaUrl(p.thumbnail), 160) || undefined}
                             alt={p.name}
                             className="w-16 h-10 object-cover rounded border border-slate-800 bg-slate-950"
                           />
@@ -661,10 +440,8 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
                         </td>
                         <td className="p-3 text-right space-x-2">
                           <button
-                            onClick={() => {
-                              setOriginalProjectSlug(p.slug);
-                              setEditingProject(p);
-                            }}
+                            onClick={() => setEditingProject(p)}
+                            aria-label={`Edit ${p.name}`}
                             className="p-1.5 rounded hover:bg-slate-800 text-sky-400"
                             title="Edit"
                           >
@@ -1063,50 +840,11 @@ export default function AdminDashboard({ isAuthenticated }: { isAuthenticated: b
             </div>
           )}
 
-          {/* TAB 6: MEDIA / IMAGEKIT */}
           {activeTab === "media" && (
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-xl font-bold">ImageKit CDN Assets</h2>
-                <p className="text-xs text-slate-400">
-                  All 105 project assets mapped from <code className="text-sky-400 font-mono">src/config/imagekit-assets.json</code>.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {Object.entries(assetRegistry.assets).slice(0, 32).map(([key, asset]: [string, any]) => (
-                  <div
-                    key={key}
-                    className="p-3 rounded-lg border border-slate-800 bg-slate-900/40 hover:border-slate-700 transition-colors flex flex-col justify-between"
-                  >
-                    <div className="h-28 rounded bg-slate-950 flex items-center justify-center overflow-hidden mb-2 border border-slate-800">
-                      <img
-                        src={getImageKitAssetUrl(asset.imagekitPath)}
-                        alt={key}
-                        className="max-h-full max-w-full object-contain"
-                      />
-                    </div>
-                    <div className="text-[11px] font-mono text-slate-300 truncate mb-1" title={key}>
-                      {key}
-                    </div>
-                    <button
-                      onClick={async () => {
-                        try {
-                          await navigator.clipboard.writeText(getImageKitAssetUrl(asset.imagekitPath));
-                          showStatus("success", `Copied CDN URL for ${key}`);
-                        } catch {
-                          showStatus("error", "Unable to copy the CDN URL.");
-                        }
-                      }}
-                      className="w-full flex items-center justify-center gap-1 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-medium"
-                    >
-                      <Copy className="w-3 h-3" />
-                      Copy URL
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <section className="space-y-4" aria-label="ImageKit library">
+              <h2 className="text-xl font-bold !text-white">ImageKit library</h2>
+              <ImageKitLibrary />
+            </section>
           )}
 
           {/* TAB 7: SQL MIGRATION */}

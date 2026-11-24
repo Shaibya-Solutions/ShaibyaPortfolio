@@ -28,13 +28,24 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
     if (!mountRef.current) return;
 
     const currentMount = mountRef.current;
+    const canvas = document.createElement("canvas");
+    let renderer: THREE.WebGLRenderer;
+    try {
+      const context = canvas.getContext("webgl2", { antialias: true, powerPreference: "low-power" });
+      if (!context) return;
+      renderer = new THREE.WebGLRenderer({ canvas, context });
+    } catch {
+      return;
+    }
+
     let scene: THREE.Scene,
       camera: THREE.OrthographicCamera,
-      renderer: THREE.WebGLRenderer,
       material: THREE.ShaderMaterial,
       geometry: THREE.PlaneGeometry,
       mesh: THREE.Mesh;
-    let animationFrameId: number;
+    let animationFrameId = 0;
+    let visible = false;
+    let contextLost = false;
     const mouse = new THREE.Vector2(0.5, 0.5);
 
     // --- Shaders ---
@@ -124,7 +135,6 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
       scene = new THREE.Scene();
       camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
       // Cap pixel ratio to 1.5 to protect GPU memory and prevent Lighthouse timeouts
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
       currentMount.appendChild(renderer.domElement);
@@ -148,15 +158,25 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
 
       addEventListeners();
       resize();
-      animate();
     };
 
-    // --- Animation Loop ---
+    const requestFrame = () => {
+      if (visible && !contextLost && !document.hidden && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+
     const animate = () => {
-      if (!material || !renderer || !scene || !camera) return;
+      animationFrameId = 0;
+      if (!visible || contextLost || document.hidden) return;
       material.uniforms.u_time.value += 0.005 * speed;
       renderer.render(scene, camera);
-      animationFrameId = requestAnimationFrame(animate);
+      requestFrame();
+    };
+
+    const onContextLost = () => {
+      contextLost = true;
+      canvas.hidden = true;
     };
 
     // --- Event Handlers ---
@@ -189,9 +209,19 @@ export const CelestialSphere: React.FC<CelestialSphereProps> = ({
     };
 
     init();
+    const viewport = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      requestFrame();
+    });
+    viewport.observe(currentMount);
+    document.addEventListener("visibilitychange", requestFrame);
+    canvas.addEventListener("webglcontextlost", onContextLost);
 
     // --- Cleanup ---
     return () => {
+      viewport.disconnect();
+      document.removeEventListener("visibilitychange", requestFrame);
+      canvas.removeEventListener("webglcontextlost", onContextLost);
       removeEventListeners();
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);

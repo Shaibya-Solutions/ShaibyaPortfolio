@@ -1,5 +1,6 @@
 "use client";
-import { getImageUrl } from "@/lib/imagekit";
+import ProjectMedia from "@/components/pages/portfolio/ProjectMedia";
+import type { Project } from "@/data/projects";
 
 import {
     useRef,
@@ -8,7 +9,6 @@ import {
     useCallback,
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { gsap } from "gsap";
@@ -127,7 +127,20 @@ const PROJECTS = [
     },
 ] as const;
 
-const TOTAL = PROJECTS.length;
+interface ShowcaseProject {
+    serial: string;
+    title: string;
+    client: string;
+    tagline: string;
+    tags: readonly string[];
+    stats: readonly { value: string; label: string }[];
+    tech: readonly string[];
+    link: string;
+    image: string;
+    gallery?: string[];
+    year: string;
+    desc: string;
+}
 
 /* ─────────────────────────────────────────────────────────────
    SCROLL ENGINE  (v3 — spec-accurate)
@@ -141,8 +154,9 @@ const TOTAL = PROJECTS.length;
    ───────────────────────────────────────────────────────────── */
 const ANIM_DURATION = 700; // ms per project transition
 
-function useScrollEngine() {
+function useScrollEngine(total: number, media: string) {
     const wrapperRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<ScrollTrigger | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [imageProgress, setImageProgress] = useState(0);
 
@@ -155,31 +169,32 @@ function useScrollEngine() {
                 id: "our-work-trigger",
                 trigger: el,
                 start: "top top",
-                end: `+=${(TOTAL - 1) * 50}%`,
+                end: `+=${(total - 1) * 50}%`,
                 pin: true,
                 scrub: 0.5,
                 onUpdate: (self) => {
-                    const rawIndex = self.progress * (TOTAL - 1);
+                    const rawIndex = self.progress * (total - 1);
                     setImageProgress(rawIndex);
                     
-                    const idx = Math.min(Math.round(rawIndex), TOTAL - 1);
+                    const idx = Math.min(Math.round(rawIndex), total - 1);
                     setActiveIndex(idx);
                 }
             });
+            return () => { triggerRef.current = null; };
         }, el);
 
         return () => ctx.revert();
-    }, []);
+    }, [total, media]);
 
     const jumpToProject = useCallback((i: number) => {
-        const st = ScrollTrigger.getById("our-work-trigger");
+        const st = triggerRef.current;
         if (st) {
-            const targetScroll = st.start + (i / (TOTAL - 1)) * (st.end - st.start);
+            const targetScroll = st.start + (i / (total - 1)) * (st.end - st.start);
             window.scrollTo({ top: targetScroll, behavior: "smooth" });
         }
-    }, []);
+    }, [total]);
 
-    return { wrapperRef, imageProgress, activeIndex, jumpToProject };
+    return { wrapperRef, imageProgress, activeIndex: Math.min(activeIndex, total - 1), jumpToProject };
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -190,7 +205,7 @@ function InfoCard({
     position,
     activeIndex,
 }: {
-    project: (typeof PROJECTS)[number];
+    project: ShowcaseProject;
     position: "top-right" | "bottom-left";
     activeIndex: number;
 }) {
@@ -368,15 +383,17 @@ function InfoCard({
    — aspect ratio 16:9 is preserved at all times
    ───────────────────────────────────────────────────────────── */
 function BrowserFrame({
+    projects,
     imageProgress,
     activeIndex,
     onDotClick,
 }: {
+    projects: readonly ShowcaseProject[];
     imageProgress: number;
     activeIndex: number;
     onDotClick: (i: number) => void;
 }) {
-    const proj = PROJECTS[activeIndex];
+    const proj = projects[activeIndex];
 
     /*
       imageProgress is an integer (0, 1, 2 …) between projects.
@@ -463,15 +480,8 @@ function BrowserFrame({
                         >
                             {/* Static image wrapper for smooth cross-fades */}
                             <div style={{ position: "absolute", inset: 0 }}>
-                                <Image
-                                    src={getImageUrl(proj.image)}
-                                    alt={proj.title}
-                                    fill
-                                    sizes="(max-width: 960px) 100vw, 880px"
-                                    style={{ objectFit: "cover", objectPosition: "top center", background: "#ffffff" }}
-                                    crossOrigin="anonymous"
-                                    priority={activeIndex === 0}
-                                />
+                                <ProjectMedia cover={proj.image} gallery={proj.gallery} title={proj.title}
+                                    sizes="(max-width: 960px) 100vw, 880px" />
                             </div>
                         </motion.div>
                     </AnimatePresence>
@@ -498,7 +508,7 @@ function BrowserFrame({
                 display: "flex", alignItems: "center",
                 justifyContent: "center", gap: 7, marginTop: 20,
             }}>
-                {PROJECTS.map((_, i) => (
+                {projects.map((_, i) => (
                     <button
                         key={i}
                         onClick={() => onDotClick(i)}
@@ -521,7 +531,7 @@ function BrowserFrame({
 /* ─────────────────────────────────────────────────────────────
    PROGRESS RAIL — bottom centre
    ───────────────────────────────────────────────────────────── */
-function ProgressRail({ activeIndex }: { activeIndex: number }) {
+function ProgressRail({ activeIndex, total }: { activeIndex: number; total: number }) {
     return (
         <div style={{
             position: "absolute", bottom: 20, left: "50%",
@@ -533,14 +543,14 @@ function ProgressRail({ activeIndex }: { activeIndex: number }) {
                 color: T.textLight, letterSpacing: "0.18em",
                 textTransform: "uppercase",
             }}>
-                {String(activeIndex + 1).padStart(2, "0")} / {String(TOTAL).padStart(2, "0")}
+                {String(activeIndex + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
             <div style={{
                 width: 100, height: 2,
                 background: T.border, borderRadius: 999, overflow: "hidden",
             }}>
                 <motion.div
-                    animate={{ width: `${((activeIndex + 1) / TOTAL) * 100}%` }}
+                    animate={{ width: `${((activeIndex + 1) / total) * 100}%` }}
                     transition={{ duration: ANIM_DURATION / 1000, ease: [0.16, 1, 0.3, 1] }}
                     style={{ height: "100%", background: T.accent, borderRadius: 999 }}
                 />
@@ -579,9 +589,9 @@ function SectionHeader() {
 /* ─────────────────────────────────────────────────────────────
    MOBILE LAYOUT
    ───────────────────────────────────────────────────────────── */
-function MobileLayout() {
+function MobileLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
     return (
-        <section id="our-work" style={{ background: T.bg, padding: "72px 20px 80px", scrollMarginTop: 110 }} aria-label="Our Work">
+        <section style={{ background: T.bg, padding: "72px 20px 80px", scrollMarginTop: 110 }} aria-label="Our Work">
             <div style={{ textAlign: "center", marginBottom: 36 }}>
                 <span style={{ color: T.accent, fontFamily: "var(--font-inter)", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", display: "block", marginBottom: 10 }}>
                     Our Work
@@ -593,7 +603,7 @@ function MobileLayout() {
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-                {PROJECTS.map((p, i) => (
+                {projects.map((p, i) => (
                     <div key={i} style={{
                         background: T.bgCard,
                         border: `1px solid ${T.border}`,
@@ -601,7 +611,7 @@ function MobileLayout() {
                         boxShadow: `0 2px 16px ${T.shadow}`,
                     }}>
                         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9", overflow: "hidden" }}>
-                            <Image src={getImageUrl(p.image)} alt={p.title} fill crossOrigin="anonymous" sizes="100vw" style={{ objectFit: "cover", objectPosition: "top" }} />
+                            <ProjectMedia cover={p.image} gallery={p.gallery} title={p.title} sizes="100vw" />
                         </div>
                         <div style={{ padding: "18px 18px 20px" }}>
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
@@ -644,17 +654,18 @@ function StickyShell({ children, bg = T.bg }: { children: React.ReactNode; bg?: 
 /* ─────────────────────────────────────────────────────────────
    DESKTOP LAYOUT
    ───────────────────────────────────────────────────────────── */
-function DesktopLayout() {
-    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine();
+function DesktopLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
+    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine(projects.length, "(min-width: 1024px)");
 
     return (
-        <div ref={wrapperRef} id="our-work" style={{ height: "120vh", position: "relative" }}>
+        <div ref={wrapperRef} style={{ height: "120vh", position: "relative" }}>
             <StickyShell>
                 <div style={{ padding: "clamp(24px,5vh,56px) clamp(24px,5vw,80px)", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", height: "100%", boxSizing: "border-box" }}>
                     <SectionHeader />
 
                     <div style={{ flex: 1, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
                         <BrowserFrame
+                            projects={projects}
                             imageProgress={imageProgress}
                             activeIndex={activeIndex}
                             onDotClick={jumpToProject}
@@ -662,7 +673,7 @@ function DesktopLayout() {
                     </div>
                 </div>
 
-                <ProgressRail activeIndex={activeIndex} />
+                <ProgressRail activeIndex={activeIndex} total={projects.length} />
 
                 {/* Scroll hint — fades after first interaction */}
                 <motion.div
@@ -696,8 +707,8 @@ function DesktopLayout() {
 /* ─────────────────────────────────────────────────────────────
    TABLET LAYOUT
    ───────────────────────────────────────────────────────────── */
-function TabletLayout() {
-    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine();
+function TabletLayout({ projects }: { projects: readonly ShowcaseProject[] }) {
+    const { wrapperRef, imageProgress, activeIndex, jumpToProject } = useScrollEngine(projects.length, "(640px <= width < 1024px)");
 
     return (
         <div ref={wrapperRef} style={{ height: "120vh", position: "relative" }}>
@@ -705,10 +716,10 @@ function TabletLayout() {
                 <div style={{ padding: "28px 20px", width: "100%", display: "flex", flexDirection: "column", alignItems: "center", height: "100%", boxSizing: "border-box" }}>
                     <SectionHeader />
                     <div style={{ flex: 1, width: "100%", display: "flex", alignItems: "center", justifyContent: "center", minHeight: 0 }}>
-                        <BrowserFrame imageProgress={imageProgress} activeIndex={activeIndex} onDotClick={jumpToProject} />
+                        <BrowserFrame projects={projects} imageProgress={imageProgress} activeIndex={activeIndex} onDotClick={jumpToProject} />
                     </div>
                 </div>
-                <ProgressRail activeIndex={activeIndex} />
+                <ProgressRail activeIndex={activeIndex} total={projects.length} />
             </StickyShell>
         </div>
     );
@@ -717,18 +728,32 @@ function TabletLayout() {
 /* ─────────────────────────────────────────────────────────────
    ROOT EXPORT
    ───────────────────────────────────────────────────────────── */
-export default function GLOurWork() {
+export default function GLOurWork({ featured = [] }: { featured?: Project[] }) {
+    const projects: readonly ShowcaseProject[] = featured.length ? featured.map((project, i) => ({
+        serial: String(i + 1).padStart(2, "0"),
+        title: project.name,
+        client: project.client,
+        tagline: project.tagline,
+        tags: project.tags.slice(0, 3),
+        stats: project.stats,
+        tech: project.techStack,
+        link: "/portfolio",
+        image: project.thumbnail,
+        gallery: project.screenshots,
+        year: project.year,
+        desc: project.solution || project.tagline,
+    })) : PROJECTS;
     return (
-        <>
+        <div id="our-work" className="scroll-mt-24">
             <div className="block sm:hidden">
-                <MobileLayout />
+                <MobileLayout projects={projects} />
             </div>
             <div className="hidden sm:block lg:hidden">
-                <TabletLayout />
+                <TabletLayout projects={projects} />
             </div>
             <div className="hidden lg:block">
-                <DesktopLayout />
+                <DesktopLayout projects={projects} />
             </div>
-        </>
+        </div>
     );
 }

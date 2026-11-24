@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
-import Image from "next/image";
+import ProjectMedia from "./ProjectMedia";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
@@ -83,9 +83,8 @@ function Row({ project: p, index }: { project: Project; index: number }) {
       className="relative w-full lg:w-1/2 overflow-hidden"
       style={{ minHeight: "clamp(280px,42vw,560px)" }}
       onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <Image src={p.thumbnail} alt={p.thumbnailAlt ?? p.name} fill sizes="(max-width:1024px) 100vw,50vw"
-        className="object-cover object-top"
-        style={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
+      <ProjectMedia cover={p.thumbnail} gallery={p.screenshots} title={p.name} alt={p.thumbnailAlt}
+        imageStyle={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
       <motion.div animate={{ opacity: hovered ? 1 : 0 }} transition={{ duration: 0.25 }}
         className="absolute inset-0 flex items-center justify-center"
         style={{ background: "rgba(17,24,39,0.50)" }}>

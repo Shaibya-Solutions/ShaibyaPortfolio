@@ -8,10 +8,63 @@ import assetsRegistry from "@/config/imagekit-assets.json";
 const IMAGEKIT_ENDPOINT = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || "https://ik.imagekit.io/xefp2tbdp";
 const FOLDER_PREFIX = assetsRegistry.folderPrefix || "/shaibya-portfolio";
 export const MAX_PROJECT_IMAGE_BYTES = 3.75 * 1024 * 1024;
+export const PORTFOLIO_MEDIA_FOLDER = FOLDER_PREFIX;
 
 export function getImageKitAssetUrl(path: string) {
   const encoded = path.replace(/\\/g, "/").replace(/^\/+/, "").split("/").map(encodeURIComponent).join("/");
   return `${IMAGEKIT_ENDPOINT.replace(/\/+$/, "")}/${encoded}`;
+}
+
+const normalizePath = (path: string) => path.replace(/\\/g, "/").replace(/^\/+/, "").replace(/^images\//, "");
+const portfolioAssets = new Map(Object.values(assetsRegistry.assets).map((asset) => [
+  normalizePath(asset.localFallback), asset.imagekitPath,
+]));
+
+export function getProjectMediaUrl(value?: string | null) {
+  const path = value?.trim();
+  if (!path) return "";
+  const cdnPath = portfolioAssets.get(normalizePath(path));
+  return cdnPath ? getImageKitAssetUrl(cdnPath) : getImageUrl(path);
+}
+
+export function isPortfolioMediaUrl(value: string) {
+  try {
+    const endpoint = new URL(IMAGEKIT_ENDPOINT);
+    const url = new URL(value);
+    const root = endpoint.pathname.replace(/\/+$/, "") + FOLDER_PREFIX + "/";
+    return url.protocol === "https:" && url.origin === endpoint.origin && url.pathname.startsWith(root);
+  } catch {
+    return false;
+  }
+}
+
+export function isProjectVideo(value: string) {
+  return /\.(?:mp4|webm|mov|m4v|mkv)(?:[?#]|$)/i.test(value);
+}
+
+export function getProjectMediaPoster(value: string, width = 960) {
+  if (!isPortfolioMediaUrl(value)) return value;
+  const url = new URL(value);
+  if (isProjectVideo(value)) {
+    url.pathname = url.pathname.replace(/\/ik-video\.(?:mp4|webm)$/i, "") + "/ik-thumbnail.jpg";
+  }
+  url.searchParams.set("tr", `w-${width}`);
+  return url.toString();
+}
+
+export function getProjectVideoSource(value: string) {
+  if (!isPortfolioMediaUrl(value) || !/\.(?:mov|m4v|mkv)(?:[?#]|$)/i.test(value)) return value;
+  const url = new URL(value);
+  url.searchParams.set("tr", "f-mp4");
+  return url.toString();
+}
+
+export interface PortfolioMediaAsset {
+  id: string;
+  name: string;
+  path: string;
+  url: string;
+  kind: "image" | "video";
 }
 
 export interface ImageTransformOptions {

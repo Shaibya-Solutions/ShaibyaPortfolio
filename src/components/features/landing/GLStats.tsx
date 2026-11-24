@@ -35,10 +35,10 @@ function useCounter(target: number, isActive: boolean, duration = 2000) {
 
 export default function GLStats() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, margin: "0px 0px 96px 0px" });
 
   return (
-    <section ref={ref} className="relative bg-white py-28 lg:py-40 overflow-hidden border-t border-[#E5E7EB]">
+    <section ref={ref} className="relative bg-white py-16 sm:py-24 lg:py-40 overflow-hidden border-t border-[#E5E7EB]">
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
 
@@ -47,7 +47,7 @@ export default function GLStats() {
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-20"
+          className="mb-10 sm:mb-20"
         >
           <div className="accent-line w-12 mb-10 origin-left" style={{ transform: "scaleX(1)" }} />
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0ea5e9] mb-5 inline-block">
@@ -62,7 +62,7 @@ export default function GLStats() {
         </motion.div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-24">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-8 lg:gap-12 mb-14 sm:mb-24">
           {stats.map((stat, i) => {
             const count = useCounter(stat.value, isInView);
             return (

@@ -5,6 +5,7 @@ import { metadataFor } from "@/lib/seo/metadata";
 import { pageGraph } from "@/lib/seo/schema";
 import JsonLd from "@/components/seo/JsonLd";
 import ServiceContent from "@/components/pages/services/ServiceContent";
+import { getProjects } from "@/lib/supabase/portfolio";
 
 type ServicePageProps = { params: Promise<{ slug: string }> };
 
@@ -23,10 +24,11 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 export default async function ServicePage({ params }: ServicePageProps) {
   const service = getService((await params).slug);
   if (!service) notFound();
+  const projects = service.slug === "software-solutions" ? await getProjects() : undefined;
   return (
     <>
       <JsonLd data={pageGraph(service.path, { service })} />
-      <ServiceContent slug={service.slug} />
+      <ServiceContent slug={service.slug} projects={projects} />
     </>
   );
 }

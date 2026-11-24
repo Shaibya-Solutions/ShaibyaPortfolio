@@ -13,14 +13,14 @@ import GLInstagram from "@/components/features/landing/GLInstagram";
 import { SiteHeader } from "@/components/layout/header/site-header";
 import { Footer } from "@/components/ui/footer-section";
 import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import { getFaqs, getTestimonials } from "@/lib/supabase/portfolio";
+import { getFaqs, getProjects, getTestimonials } from "@/lib/supabase/portfolio";
 
 export const revalidate = 60;
 
 export const metadata = metadataFor("/");
 
 export default async function HomePage() {
-  const [testimonials, faqs] = await Promise.all([getTestimonials(), getFaqs()]);
+  const [testimonials, faqs, projects] = await Promise.all([getTestimonials(), getFaqs(), getProjects()]);
 
   return (
     <main className="bg-white text-slate-900 min-h-screen flex flex-col">
@@ -37,7 +37,7 @@ export default async function HomePage() {
       <GLStats />
 
       {/* 4. OUR WORK — sticky scroll showcase */}
-      <GLOurWork />
+      <GLOurWork featured={projects.filter((project) => project.featured)} />
 
       {/* 5. INDUSTRIES */}
       <GLIndustries />
@@ -62,7 +62,7 @@ export default async function HomePage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Follow on Instagram"
-        className="fixed bottom-6 left-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl"
+        className="fixed bottom-6 left-6 z-30 hidden h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl sm:flex"
         style={{
           background: "linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
           boxShadow: "0 4px 24px rgba(220,39,67,0.4)",
@@ -77,7 +77,7 @@ export default async function HomePage() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl"
+        className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 flex h-11 w-11 items-center justify-center rounded-full shadow-xl transition-all duration-200 active:scale-95 hover:scale-110 hover:shadow-2xl sm:right-6 sm:bottom-6 sm:h-14 sm:w-14"
         style={{
           background: "linear-gradient(135deg, #25D366, #1ebe5d)",
           boxShadow: "0 4px 24px rgba(37,211,102,0.4)",

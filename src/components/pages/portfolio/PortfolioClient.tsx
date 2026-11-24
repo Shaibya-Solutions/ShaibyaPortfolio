@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, useInView, useAnimation } from "framer-motion";
-import Image from "next/image";
+import ProjectMedia from "./ProjectMedia";
 import { ArrowUpRight } from "lucide-react";
 import { triggerHaptic } from "@/lib/haptics";
 import { SiteHeader } from "@/components/layout/header/site-header";
@@ -322,19 +322,10 @@ function CaseStudyRow({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {p.thumbnail ? (
+      {p.thumbnail || p.screenshots?.length ? (
         <>
-          <Image
-            src={p.thumbnail}
-            alt={p.thumbnailAlt ?? p.name}
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover object-top"
-            style={{
-              transform: hovered ? "scale(1.03)" : "scale(1)",
-              transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)",
-            }}
-          />
+          <ProjectMedia cover={p.thumbnail} gallery={p.screenshots} title={p.name} alt={p.thumbnailAlt}
+            imageStyle={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.7s cubic-bezier(0.22,1,0.36,1)" }} />
           {/* Hover overlay */}
           <motion.div
             animate={{ opacity: hovered ? 1 : 0 }}

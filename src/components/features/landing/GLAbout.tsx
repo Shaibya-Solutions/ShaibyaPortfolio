@@ -1,283 +1,218 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
-import { useLenis } from "lenis/react";
-import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
-import {
-  MessageCircle, PenTool, Code2, Rocket,
-  HeadphonesIcon, BarChart3,
-} from "lucide-react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform, type MotionStyle } from "framer-motion";
+import { ArrowRight, AudioLines, Code2, DraftingCompass, Rocket, Search, TrendingUp } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useInView } from "react-intersection-observer";
+import { formations, pieceTone } from "./process-formations";
+import styles from "./GLAbout.module.css";
 
-gsap.registerPlugin(ScrollTrigger);
+const ProcessScene = dynamic(() => import("./ProcessScene"), { ssr: false });
+const scrollLayout = "(min-width: 1280px) and (min-height: 850px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
 
-/* ───── Process timeline data ───── */
-const processTimelineData = [
+const stages = [
   {
-    id: 1, title: "Discovery", date: "Week 1",
-    content: "Every successful partnership begins with understanding. In a 30-minute WhatsApp call, we take the time to learn about your business, the challenges you face, and the outcomes you want to achieve. No presentations or sales pitches—just a focused conversation to explore how we can create meaningful value together.",
-    category: "Planning", icon: MessageCircle, relatedIds: [2], status: "completed" as const, energy: 100,
+    title: "Discovery",
+    time: "Week 1",
+    heading: "Understand what matters.",
+    body: "In a free 30-minute WhatsApp call, we learn how your business works, where you’re getting stuck, and what a better outcome looks like.",
+    outcomes: ["A map of your current workflow", "High-impact improvements to tackle first", "A clear next step for your project"],
+    icon: Search,
+    accent: "#81d9ff",
+    background: "#0a182a",
   },
   {
-    id: 2, title: "Design", date: "Week 1–2",
-    content: "We map out the architecture, wireframes, and user flows. You see exactly what we're building before a single line of code is written — no surprises.",
-    category: "Design", icon: PenTool, relatedIds: [1, 3], status: "completed" as const, energy: 90,
+    title: "Design",
+    time: "Weeks 1–2",
+    heading: "See it before we build it.",
+    body: "We turn the plan into wireframes, user flows, and a technical blueprint. You can see how it will work and approve the design before development starts.",
+    outcomes: ["Wireframes for the main screens", "Agreed architecture and data structure", "Design sign-off before development"],
+    icon: DraftingCompass,
+    accent: "#b3c5ff",
+    background: "#15203a",
   },
   {
-    id: 3, title: "Build", date: "Week 2–4",
-    content: "We execute in focused sprints with complete transparency, delivering working software incrementally and refining it through continuous feedback. Every release is backed by rigorous engineering standards, thorough testing, and uncompromising quality assurance.",
-    category: "Development", icon: Code2, relatedIds: [2, 4], status: "in-progress" as const, energy: 70,
+    title: "Build",
+    time: "Weeks 2–4",
+    heading: "Build in the open.",
+    body: "We deliver working software in focused sprints, show you progress every week, and refine each release with your feedback.",
+    outcomes: ["Working software in increments", "Weekly demos and a clear view of progress", "Testing throughout development"],
+    icon: Code2,
+    accent: "#83ead7",
+    background: "#0a222c",
   },
   {
-    id: 4, title: "Launch", date: "Week 4–5",
-    content: "We deploy, configure domains, and run final QA. Your system goes live — optimized for performance, SEO, and real-world usage.",
-    category: "Launch", icon: Rocket, relatedIds: [3, 5], status: "pending" as const, energy: 45,
+    title: "Launch",
+    time: "Weeks 4–5",
+    heading: "Launch with a plan.",
+    body: "We run final QA, configure the domain, and roll out your system. Your team gets the documentation, access, and training to run it.",
+    outcomes: ["Staged rollout and final checks", "Performance and search readiness", "Documentation and full handover"],
+    icon: Rocket,
+    accent: "#8edcff",
+    background: "#102442",
   },
   {
-    id: 5, title: "Support", date: "Ongoing",
-    content: "WE DON'T DISAPPEAR AFTER LAUNCH. 30 days of free post-launch support included with every project. We monitor performance, fix issues fast, and provide hands-on training so your team is fully self-sufficient.",
-    category: "Support", icon: HeadphonesIcon, relatedIds: [4, 6], status: "pending" as const, energy: 30,
+    title: "Support",
+    time: "Post-launch",
+    heading: "Keep things running.",
+    body: "Every project includes 30 days of post-launch support. We monitor performance, fix issues, and help your team get comfortable using the system.",
+    outcomes: ["30 days of included support", "Uptime and performance monitoring", "Hands-on team walkthroughs"],
+    icon: AudioLines,
+    accent: "#d2baff",
+    background: "#1b1c37",
   },
   {
-    id: 6, title: "Optimize", date: "Ongoing",
-    content: "Launch is only the beginning. We use data and analytics to identify opportunities for continuous improvement, streamline workflows, and enhance performance. As your business evolves, we help scale your technology—from process automation to seamless CRM integration.",
-    category: "Growth", icon: BarChart3, relatedIds: [5, 1], status: "pending" as const, energy: 15,
+    title: "Optimize",
+    time: "Ongoing",
+    heading: "Improve what’s working.",
+    body: "Analytics help us decide what to improve next. As your business grows, we can streamline workflows, add automation, and connect tools such as your CRM.",
+    outcomes: ["Analytics to guide improvements", "Automation for repeated work", "Room to scale as your needs change"],
+    icon: TrendingUp,
+    accent: "#b9edb3",
+    background: "#102832",
   },
 ];
 
-/* ───── Per-step content ───── */
-const stepData = [
-  {
-    id: 1,
-    bg: "#0369a1",
-    dark: true,
-    accentLabel: "#ffffff",      // card labels on blue bg
-    accentDot: "rgba(255,255,255,0.5)",
-    label: "01 — Discovery",
-    right: "Our Core Process",
-    heading: "UNDERSTANDING FIRST.",
-    body: "Every successful partnership begins with understanding. In a 30-minute WhatsApp call, we take the time to learn about your business, the challenges you face, and the outcomes you want to achieve. No presentations or sales pitches—just a focused conversation to explore how we can create meaningful value together.",
-    cards: [
-      { label: "Free Audit", desc: "Zero-commitment discovery call to map your workflow." },
-      { label: "30 mins", desc: "That's all it takes to get a clear picture." },
-      { label: "Quick Wins", desc: "We identify the highest-impact changes immediately." },
-    ],
-    orbitalId: 1,
-  },
-  {
-    id: 2,
-    bg: "#F8FAFB",
-    dark: false,
-    accentLabel: "#0ea5e9",
-    accentDot: "#0ea5e9",
-    label: "02 — Design",
-    right: "Blueprint Before Build",
-    heading: "SEE IT BEFORE WE BUILD IT.",
-    body: "We map out architecture, wireframes, and user flows before writing a single line of code. You get full visibility into exactly what we're building — no surprises, no scope creep.",
-    cards: [
-      { label: "Wireframes", desc: "Every screen laid out and approved before development." },
-      { label: "Architecture", desc: "Tech stack and data structure decided upfront." },
-      { label: "No Surprises", desc: "You sign off on design before we touch code." },
-    ],
-    orbitalId: 2,
-  },
-  {
-    id: 3,
-    bg: "#022648",
-    dark: true,
-    accentLabel: "#38bdf8",
-    accentDot: "#38bdf8",
-    label: "03 — Build",
-    right: "Agile Sprints",
-    heading: "BUILD.",
-    body: "We execute in focused sprints with complete transparency, delivering working software incrementally and refining it through continuous feedback. Every release is backed by rigorous engineering standards, thorough testing, and uncompromising quality assurance.",
-    cards: [
-      { label: "2–4 Weeks", desc: "Most projects built and ready for review in under a month." },
-      { label: "Agile", desc: "Weekly demos so you always know the exact progress." },
-      { label: "QA Built-in", desc: "Testing happens throughout — not just at the end." },
-    ],
-    orbitalId: 3,
-  },
-  {
-    id: 4,
-    bg: "#0369a1",
-    dark: true,
-    accentLabel: "#ffffff",
-    accentDot: "rgba(255,255,255,0.5)",
-    label: "04 — Launch",
-    right: "Go Live",
-    heading: "SHIP IT. MAKE IT COUNT.",
-    body: "We deploy, configure domains, and run final QA. Your system goes live — optimized for performance, SEO, and real-world usage. Handover includes full documentation and team training.",
-    cards: [
-      { label: "Zero Downtime", desc: "Staged rollouts ensure a smooth go-live every time." },
-      { label: "SEO Ready", desc: "Performance-optimised and search-engine-indexed from day one." },
-      { label: "Full Handover", desc: "Docs, training, and admin access — all yours." },
-    ],
-    orbitalId: 4,
-  },
-  {
-    id: 5,
-    bg: "#F8FAFB",
-    dark: false,
-    accentLabel: "#0ea5e9",
-    accentDot: "#0ea5e9",
-    label: "05 — Support",
-    right: "Always There",
-    heading: "WE DON'T DISAPPEAR AFTER LAUNCH.",
-    body: "30 days of free post-launch support included with every project. We monitor performance, fix issues fast, and provide hands-on training so your team is fully self-sufficient.",
-    cards: [
-      { label: "30 Days", desc: "Free post-launch support included in every engagement." },
-      { label: "Monitoring", desc: "Uptime and performance tracked from our end continuously." },
-      { label: "Training", desc: "Your team gets hands-on walkthroughs until they're confident." },
-    ],
-    orbitalId: 5,
-  },
-  {
-    id: 6,
-    bg: "#022648",
-    dark: true,
-    accentLabel: "#38bdf8",
-    accentDot: "#38bdf8",
-    label: "06 — Optimize",
-    right: "Continuous Growth",
-    heading: "OPTIMIZE.",
-    body: "Launch is only the beginning. We use data and analytics to identify opportunities for continuous improvement, streamline workflows, and enhance performance. As your business evolves, we help scale your technology—from process automation to seamless CRM integration.",
-    cards: [
-      { label: "Analytics", desc: "Every system tracked and measured from day one." },
-      { label: "Automation", desc: "We keep adding automation layers post-launch." },
-      { label: "Scale", desc: "Built to grow — from 1 user to 10,000 and beyond." },
-    ],
-    orbitalId: 6,
-  },
-];
+const positions = stages.map((_, index) => index / (stages.length - 1));
+const stageBackgrounds = stages.map(({ background }) => background);
 
-/* ───── Main section ───── */
+function ProcessPreview({ stage, accent }: { stage: number; accent: string }) {
+  return (
+    <div className={styles.preview} data-process-preview>
+      {formations[stage].map(({ x, y, z, angle, width, height }, index) => (
+        <span
+          key={index}
+          style={{
+            left: `${50 + (x * 0.95 - z * 0.3) * 18}%`,
+            top: `${50 - (y * 0.98 - x * 0.05 - z * 0.21) * 24}%`,
+            width: `${width * 18}%`,
+            height: `${height * 24}%`,
+            rotate: `${-angle}rad`,
+            zIndex: Math.round((z + 2) * 10),
+            backgroundColor: pieceTone(stage, index, accent),
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function GLAbout() {
-  const [activeStepId, setActiveStepId] = useState(1);
-  const [largeViewport, setLargeViewport] = useState(false);
-  const reduceMotion = useReducedMotion();
-  const lenis = useLenis();
-  const immersive = largeViewport && !reduceMotion;
-  const storySectionRef = useRef<HTMLElement>(null);
+  const section = useRef<HTMLElement>(null);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+  const [pinned, setPinned] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const { ref: artwork, inView: showScene } = useInView({ rootMargin: "240px 0px", triggerOnce: true });
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const easedProgress = useSpring(scrollYProgress, { stiffness: 175, damping: 30, restDelta: 0.001 });
+  const scrollColor = useTransform(easedProgress, positions, stageBackgrounds);
 
   useEffect(() => {
-    const query = window.matchMedia("(min-width: 1280px) and (min-height: 800px)");
-    const update = () => setLargeViewport(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
+    const media = window.matchMedia(scrollLayout);
+    const sync = () => {
+      setPinned(media.matches);
+      if (media.matches) setActive(Math.round(scrollYProgress.get() * (stages.length - 1)));
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, [scrollYProgress]);
 
-  useGSAP(() => {
-    if (!immersive || !storySectionRef.current) return;
-    const trigger = ScrollTrigger.create({
-      id: "homepage-process",
-      trigger: storySectionRef.current,
-      start: "top top",
-      end: "bottom bottom",
-      onUpdate: (self) => setActiveStepId(Math.min(6, Math.floor(self.progress * 6) + 1)),
-    });
-    const refresh = requestAnimationFrame(() => ScrollTrigger.refresh());
-    return () => { cancelAnimationFrame(refresh); trigger.kill(); };
-  }, { scope: storySectionRef, dependencies: [immersive], revertOnUpdate: true });
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    if (pinned) setActive(Math.round(progress * (stages.length - 1)));
+  });
 
-  const selectStep = (id: number | null) => {
-    if (id === null) return;
-    setActiveStepId(id);
-    const element = storySectionRef.current;
-    if (immersive && element) {
-      const trigger = ScrollTrigger.getById("homepage-process");
-      trigger?.refresh();
-      const start = trigger?.start ?? element.getBoundingClientRect().top + window.scrollY;
-      const distance = trigger ? trigger.end - trigger.start : element.offsetHeight - window.innerHeight;
-      const destination = start + ((id - 0.5) / stepData.length) * distance;
-      if (lenis) lenis.scrollTo(destination, { duration: 0.6 });
-      else window.scrollTo({ top: destination, behavior: "smooth" });
+  function select(index: number) {
+    const bounds = section.current?.getBoundingClientRect();
+    if (pinned && bounds) {
+      const distance = Math.max(0, bounds.height - window.innerHeight);
+      window.scrollTo({ top: window.scrollY + bounds.top + distance * positions[index], behavior: "instant" });
     }
-  };
+    setActive(index);
+  }
 
-  const step = stepData[activeStepId - 1];
+  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const key = event.key;
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(key)) return;
+    event.preventDefault();
+    const last = stages.length - 1;
+    const next = key === "Home" ? 0 : key === "End" ? last
+      : (index + (key === "ArrowRight" ? 1 : -1) + stages.length) % stages.length;
+    tabs.current[next]?.focus({ preventScroll: true });
+    select(next);
+  }
+
+  const step = stages[active];
+  const inquiry = encodeURIComponent(`Hi Shaibya Solutions, I'd like to discuss the ${step.title.toLowerCase()} stage of a project.`);
 
   return (
-    <section id="about" className="relative bg-[#020817] scroll-mt-20 sm:scroll-mt-28">
-      <section
-        ref={storySectionRef}
-        data-process-section
-        data-process-layout={immersive ? "immersive" : "compact"}
-        className={immersive ? "relative h-[600svh] w-full" : "relative w-full"}
-        style={{ backgroundColor: step.bg, transition: "background-color 0.6s ease" }}
-      >
-        <div
-          data-process-panel
-          className={immersive
-            ? "sticky top-0 h-[100svh] w-full flex flex-col px-[4vw] pt-36 pb-8"
-            : "w-full px-4 sm:px-6 lg:px-12 py-12 sm:py-16 lg:py-20"}
-          style={{ color: step.dark ? "#ffffff" : "#111827" }}
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b pb-4 mb-5 shrink-0" style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)" }}>
-            <p className="text-xs font-bold uppercase tracking-[0.2em]">{step.label}</p>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-70">{step.right}</p>
-          </div>
-          <nav aria-label="Our process stages" className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 sm:flex-wrap mb-5 shrink-0">
-            {processTimelineData.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => selectStep(item.id)}
-                aria-pressed={activeStepId === item.id}
-                className="rounded-full border px-2.5 py-1.5 sm:px-3 sm:py-2 text-[11px] sm:text-xs font-semibold transition-colors shrink-0"
-                style={{ color: activeStepId === item.id ? "#0a1628" : "inherit", background: activeStepId === item.id ? "#ffffff" : "transparent", borderColor: step.dark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.2)" }}
-              >
-                {item.title}
-              </button>
-            ))}
-          </nav>
+    <motion.section
+      id="about"
+      ref={section}
+      aria-labelledby="process-heading"
+      className={styles.section}
+      data-process-section
+      data-process-layout={pinned ? "immersive" : "compact"}
+      style={{
+        "--process-accent": step.accent,
+        "--process-background": step.background,
+        backgroundColor: pinned ? scrollColor : undefined,
+      } as MotionStyle}
+    >
+      <div className={styles.inner}>
+        <div className={styles.container}>
+          <header className={styles.heading}>
+            <h2 id="process-heading">How we build with you<span>.</span></h2>
+            <nav className={styles.tabs} role="tablist" aria-label="Project stages">
+              {stages.map(({ title, icon: Icon }, index) => (
+                <button
+                  key={title}
+                  ref={(element) => { tabs.current[index] = element; }}
+                  id={`process-tab-${index}`}
+                  type="button"
+                  role="tab"
+                  aria-selected={index === active}
+                  aria-controls="process-panel"
+                  tabIndex={index === active ? 0 : -1}
+                  onClick={() => select(index)}
+                  onKeyDown={(event) => navigate(event, index)}
+                >
+                  <Icon aria-hidden="true" size={17} strokeWidth={1.7} />
+                  {title}
+                </button>
+              ))}
+            </nav>
+          </header>
 
-          <div className={`grid lg:grid-cols-2 items-center gap-8 lg:gap-10 ${immersive ? "flex-1 min-h-0" : ""}`}>
-            <div data-process-copy className="min-w-0">
-              <motion.h2
-                key={activeStepId}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: reduceMotion ? 0 : 0.25 }}
-                className="font-bold leading-[0.98] uppercase tracking-tight mb-5"
-                style={{ fontFamily: "var(--font-syne)", fontSize: "clamp(1.8rem, 3.4vw, 3.5rem)", color: step.dark ? "#ffffff" : "#111827" }}
-              >
-                {step.heading}
-              </motion.h2>
-              <p className="max-w-[48ch] text-sm xl:text-base leading-relaxed mb-6 font-medium opacity-90">{step.body}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                {step.cards.map((card) => (
-                  <div key={card.label} className="border p-3 rounded-xl" style={{ borderColor: step.dark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)", background: step.dark ? "rgba(0,0,0,0.1)" : "rgba(0,0,0,0.03)" }}>
-                    <p className="mb-1 text-xs font-bold uppercase tracking-wider" style={{ color: step.accentLabel }}>{card.label}</p>
-                    <p className="text-xs leading-relaxed opacity-75">{card.desc}</p>
-                  </div>
-                ))}
-              </div>
-              <a
-                href={`https://wa.me/917498341146?text=${encodeURIComponent(`Hi Shaibya Solutions, I'd like to discuss the ${processTimelineData[activeStepId - 1].title.toLowerCase()} stage of a project.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-              >
-                Discuss your project <ArrowRight size={15} aria-hidden="true" />
+          <div id="process-panel" role="tabpanel" aria-labelledby={`process-tab-${active}`} className={styles.panel}>
+            <motion.div
+              key={step.title}
+              className={styles.copy}
+              data-process-copy
+              initial={reducedMotion ? false : { opacity: 0.72, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: reducedMotion ? 0 : 0.28, ease: "easeOut" }}
+            >
+              <p className={styles.timing}>{step.time}</p>
+              <h3>{step.heading}</h3>
+              <p className={styles.description}>{step.body}</p>
+              <ul className={styles.outcomes}>
+                {step.outcomes.map((outcome) => <li key={outcome}>{outcome}</li>)}
+              </ul>
+              <a className={styles.contact} href={`https://wa.me/917498341146?text=${inquiry}`} target="_blank" rel="noopener noreferrer">
+                Discuss your project <ArrowRight aria-hidden="true" size={17} />
               </a>
-            </div>
-            <div className={immersive ? "h-full min-h-0 min-w-0" : "min-h-[460px] sm:min-h-[500px] h-auto lg:h-[clamp(420px,calc(100svh_-_220px),520px)] min-w-0"}>
-              <RadialOrbitalTimeline
-                timelineData={processTimelineData}
-                activeId={step.orbitalId}
-                activeStepId={activeStepId}
-                onActiveChange={selectStep}
-              />
+            </motion.div>
+
+            <div ref={artwork} className={styles.art} data-process-art aria-hidden="true">
+              <ProcessPreview stage={active} accent={step.accent} />
+              {showScene && !reducedMotion && <ProcessScene stage={active} accent={step.accent} />}
             </div>
           </div>
         </div>
-      </section>
-    </section>
+      </div>
+    </motion.section>
   );
 }

@@ -1,20 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import ProjectMedia from "@/components/pages/portfolio/ProjectMedia";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Check } from "lucide-react";
-import { solutionProjects, websiteProjects } from "@/data/projects";
+import { solutionProjects, websiteProjects, type Project } from "@/data/projects";
 
-const projects = [
+const curatedProjects = [
   ...solutionProjects.slice(0, 3),
   ...websiteProjects.slice(0, 2),
 ];
 
-export default function ProjectShowcase() {
+export default function ProjectShowcase({ projects: cmsProjects }: { projects?: Project[] }) {
   const [selected, setSelected] = useState(0);
   const reduceMotion = useReducedMotion();
+  const projects = curatedProjects.map((project) => cmsProjects?.find((item) => item.slug === project.slug) ?? project);
   const project = projects[selected];
   return (
     <div
@@ -86,16 +87,8 @@ export default function ProjectShowcase() {
               transition={{ type: "tween", duration: reduceMotion ? 0 : 0.35 }}
               className="absolute inset-0"
             >
-              <Image
-                src={project.thumbnail}
-                alt={
-                  project.thumbnailAlt ??
-                  `${project.name} ${project.type === "website" ? "website" : "software"} project preview`
-                }
-                fill
-                sizes="(max-width: 1023px) 100vw, 65vw"
-                className="object-cover object-top"
-              />
+              <ProjectMedia cover={project.thumbnail} gallery={project.screenshots} title={project.name}
+                alt={project.thumbnailAlt} sizes="(max-width: 1023px) 100vw, 65vw" />
             </motion.div>
           </AnimatePresence>
         </div>

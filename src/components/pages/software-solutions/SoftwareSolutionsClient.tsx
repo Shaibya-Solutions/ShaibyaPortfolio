@@ -6,6 +6,7 @@ import Squares from "@/components/ui/Squares";
 import DecryptedText from "@/components/ui/DecryptedText";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import ProjectShowcase from "./ProjectShowcase";
+import type { Project } from "@/data/projects";
 import dynamic from "next/dynamic";
 import { GeometricPreview } from "@/components/shared/SceneBoundary";
 import { motion } from "framer-motion";
@@ -108,7 +109,7 @@ const SOLUTIONS = [
   }
 ] as const;
 
-export default function SoftwareSolutionsClient() {
+export default function SoftwareSolutionsClient({ projects }: { projects?: Project[] }) {
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF9F6] text-slate-800 dark:bg-slate-950 dark:text-slate-100 overflow-x-hidden font-sans selection:bg-[#0284c7]/30">
       <SiteHeader />
@@ -275,7 +276,7 @@ export default function SoftwareSolutionsClient() {
             </p>
           </div>
 
-          <ProjectShowcase />
+          <ProjectShowcase projects={projects} />
 
         </div>
       </section>

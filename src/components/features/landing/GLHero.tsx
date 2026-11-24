@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { WhatsAppCTA } from "@/components/ui/whatsapp-cta";
 import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
@@ -17,6 +17,7 @@ export default function GLHero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [mounted, setMounted] = useState(false);
   const [canLoadSphere, setCanLoadSphere] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
     setMounted(true);
@@ -39,10 +40,10 @@ export default function GLHero() {
     <section
       ref={sectionRef}
       className="relative min-h-screen flex flex-col overflow-hidden"
-      style={{ background: "#020817" }}
+      style={{ background: "radial-gradient(ellipse at 70% 30%, #0d2442, #020817 64%)" }}
     >
       {/* WebGL Celestial Sphere Background — gracefully deferred */}
-      {canLoadSphere && (
+      {canLoadSphere && !reducedMotion && (
         <div className="absolute inset-0 z-0">
           <CelestialSphere
             hue={210}

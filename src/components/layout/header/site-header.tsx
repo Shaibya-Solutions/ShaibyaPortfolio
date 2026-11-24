@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { triggerHaptic } from "@/lib/haptics";
@@ -12,6 +12,7 @@ import NavHeader from "@/components/ui/nav-header";
 
 export function SiteHeader() {
   const router = useRouter();
+  const menuToggle = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -30,11 +31,22 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      menuToggle.current?.focus();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   // Interpolate padding: py-8 (32px) → py-3 (12px)
   const verticalPadding = 32 - scrollProgress * 20;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${scrollProgress > 0.05 ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-slate-200/40 xl:bg-transparent xl:shadow-none xl:border-b-0" : "bg-transparent"}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-200 ${open || scrollProgress > 0.05 ? "bg-white/95 backdrop-blur-md shadow-xs border-b border-slate-200/40 xl:bg-transparent xl:shadow-none xl:border-b-0" : "bg-transparent"}`}>
       {/* 
         Use a full-width relative container.
         The nav pill is absolutely centered; nothing else on desktop.
@@ -73,6 +85,8 @@ export function SiteHeader() {
           </Link>
 
           <button
+            ref={menuToggle}
+            type="button"
             aria-label="Toggle navigation"
             aria-expanded={open}
             aria-controls="mobile-navigation"
@@ -90,13 +104,15 @@ export function SiteHeader() {
         {open && (
           <motion.div
             id="mobile-navigation"
+            data-lenis-prevent
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.28, ease: "easeOut" }}
-            className="overflow-hidden border-t border-gray-200 bg-white/95 backdrop-blur-xl xl:hidden"
+            className="overflow-x-hidden overflow-y-auto overscroll-contain border-t border-gray-200 bg-white/95 backdrop-blur-xl xl:hidden"
+            style={{ maxHeight: `calc(100dvh - ${65 + 2 * verticalPadding}px)` }}
           >
-            <nav className="mx-auto grid max-w-7xl gap-1 px-6 py-4">
+            <nav aria-label="Mobile navigation" className="mx-auto grid max-w-7xl gap-1 px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
               {nav.map((item) =>
                 item.hasDropdown && item.dropdownItems ? (
                   <div key={item.label}>

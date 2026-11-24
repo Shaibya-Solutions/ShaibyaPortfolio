@@ -4,7 +4,7 @@ import { testimonials as defaultTestimonials } from "@/data/index";
 import { TEAM_MEMBERS, type CrewMember } from "@/data/team";
 import { OPEN_ROLES } from "@/data/careers";
 import { generalFaqs } from "@/data/seo/faqs";
-import { getImageUrl } from "@/lib/imagekit";
+import { getImageUrl, getProjectMediaUrl } from "@/lib/imagekit";
 
 // ─── IN-MEMORY TTL CACHE ───
 interface CacheEntry<T> {
@@ -61,7 +61,7 @@ async function withTimeout<T>(promiseLike: PromiseLike<T>, ms = 2500): Promise<T
 
 // ─── HELPER: MAP DB PROJECT ROW TO TYPE ───
 export function mapDbProject(row: any, resolveImages = true): Project {
-  const imageUrl = resolveImages ? getImageUrl : (value?: string | null) => value || "";
+  const imageUrl = resolveImages ? getProjectMediaUrl : (value?: string | null) => value || "";
   return {
     slug: row.slug,
     name: row.name,
@@ -120,8 +120,8 @@ export async function getProjects(type?: ProjectType): Promise<Project[]> {
   const fallback = type ? allProjects.filter((p) => p.type === type) : allProjects;
   const result = fallback.map((p) => ({
     ...p,
-    thumbnail: getImageUrl(p.thumbnail),
-    screenshots: p.screenshots?.map((s) => getImageUrl(s)),
+    thumbnail: getProjectMediaUrl(p.thumbnail),
+    screenshots: p.screenshots?.map(getProjectMediaUrl),
     clientLogo: p.clientLogo ? getImageUrl(p.clientLogo) : undefined,
   }));
   setCached(cacheKey, result);
@@ -156,8 +156,8 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
   }
   const result: Project = {
     ...p,
-    thumbnail: getImageUrl(p.thumbnail),
-    screenshots: p.screenshots?.map((s) => getImageUrl(s)),
+    thumbnail: getProjectMediaUrl(p.thumbnail),
+    screenshots: p.screenshots?.map(getProjectMediaUrl),
     clientLogo: p.clientLogo ? getImageUrl(p.clientLogo) : undefined,
   };
   setCached(cacheKey, result);
