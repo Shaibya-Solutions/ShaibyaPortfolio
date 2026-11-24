@@ -32,10 +32,10 @@ const T = {
     bgBar: "#E5E7EB",   // browser top bar
     text: "#111827",   // --gray-900
     textMuted: "#6B7280",   // --gray-500
-    textLight: "#9CA3AF",   // --gray-400
+    textLight: "#64748B",   // accessible secondary text
     border: "#E5E7EB",   // --gray-200
-    accent: "#0ea5e9",   // --brand  (sky blue — used for ALL accents)
-    brand: "#0ea5e9",   // same — tags, pills, serial numbers
+    accent: "#0369A1",   // accessible sky-blue accent
+    brand: "#0369A1",   // same — tags, pills, serial numbers
     shadow: "rgba(17,24,39,0.08)",
 } as const;
 

@@ -140,7 +140,7 @@ export default function GLHero() {
               <WhatsAppCTA
                 text="Start a project"
                 message="Hi, I'd like to discuss a project with Shaibya Solutions."
-                className="!rounded-full !px-8 !py-4 !text-[15px] !font-semibold !bg-[#0ea5e9] !border-[#0ea5e9] hover:!bg-[#0284c7] hover:!shadow-[0_4px_20px_rgba(14,165,233,0.3)] !transition-all text-center justify-center"
+                className="!rounded-full !px-8 !py-4 !text-[15px] !font-semibold !bg-[#0369a1] !border-[#0369a1] hover:!bg-[#075985] hover:!shadow-[0_4px_20px_rgba(3,105,161,0.3)] !transition-all text-center justify-center"
               />
               <Link
                 href="/portfolio"
